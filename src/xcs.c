@@ -34,7 +34,6 @@ int main(int argc, char** argv)
 	/*
 		2.) Handle Compiler Options
 	*/
-	if 
 	
 
 	//  Set standard input, if in Interpreter Mode

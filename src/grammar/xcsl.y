@@ -61,7 +61,18 @@ void yyerror(const char* s);
 //  Functional Keywords
 %token LET IN
 
+//  Datatype Keywords
 %token TYPE TYPECLASS
+
+//  Primitive Types/Constructors
+%token INT_T INT_C
+%token REAL_T REAL_C
+%token CHAR_T CHAR_C
+%token STRING_T STRING_C
+
+
+//  Constructors/Identifiers
+%token CONSTRUCTOR IDENTIFIER
 
 /*
   2.) Order of Operations
@@ -85,6 +96,8 @@ exp:
   | STRING
   | bool_exp
   | exp OP_SEP exp
+  | CONSTRUCTOR {/* For Testing */}
+  | IDENTIFIER  {/* For Testing */}
 ;
 
 bool_exp:

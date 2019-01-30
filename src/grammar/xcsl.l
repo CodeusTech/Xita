@@ -107,3 +107,31 @@ extern int yylex();
 "typeclass" { return TYPECLASS; }
 
 
+%{
+/*
+  6.) Primitive Types/Constructors
+*/
+%}
+
+"int"       { return INT_T;  }
+"Int"       { return INT_C;  }
+
+"real"      { return REAL_T; }
+"Real"      { return REAL_C; }
+
+"char"      { return CHAR_T; }
+"Char"      { return CHAR_C; }
+
+"string"    { return STRING_T; }
+"String"    { return STRING_C; }
+
+
+%{
+/*
+  A.) Constructors/Identifiers
+*/
+%}
+
+[A-Z][a-zA-Z0-9_]*\'?   { printf("Found Constructor: %s\n", yytext); return CONSTRUCTOR; }
+[a-z_][a-zA-Z0-9_]*\'? { printf("Found Identifier: %s\n", yytext); return IDENTIFIER; }
+
