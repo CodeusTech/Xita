@@ -29,17 +29,53 @@ extern int yylex();
 
 %{
 /*
-  1.) Primitive Data Types
+  1.) Primitive Types/Constructors
 */
 %}
 
-[0-9]+              { printf("Found Int: %s\n", yytext); return INT; }       //  INTEGER PRIMITIVE
-[0-9]+\.[0-9]*      { printf("Found Real: %s\n", yytext); return REAL; }     //  REAL PRIMITIVE
-\'\\?[a-zA-Z0-9]\'  { printf("Found Char: %s\n", yytext); return CHAR; }     //  CHARACTER PRIMITIVE
-\"[a-zA-Z0-9]+\"    { printf("Found String: %s\n", yytext); return STRING; } //  STRING PRIMITIVE
+[0-9]+              
+  { yylval.val_int = atoi(yytext); return INT; }    //  INTEGER PRIMITIVE
+[0-9]+\.[0-9]*      
+  { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE
+\'\\[a-zA-Z0-9]\'   
+  { yylval.val_char = yytext[2]; return CHAR; }     //  ESCAPED CHARACTER
+\'[a-zA-Z0-9]\'     
+  { yylval.val_char =  yytext[1]; return CHAR; }    //  CHARACTER PRIMITIVE
+\"[a-zA-Z0-9]+\"    
+  { strdup(yylval.val_string, yytext); return STRING; }  //  STRING PRIMITIVE
 
-"True"  { printf("Found Boolean: %s\n", yytext); return TRUE; }    //  BOOLEAN PRIMITIVE
-"False" { printf("Found Boolean: %s\n", yytext); return FALSE; }   //  BOOLEAN PRIMITIVE
+"int" { return INT_T;  }  //  INFERRED INTEGER TYPE
+"u8" { return U8_T; }     //  8-Bit UNSIGNED INTEGER TYPE
+"U8" { return U8_C; }     //  8-Bit UNSIGNED INTEGER CONSTRUCTOR
+"i8" { return I8_T; }     //  8-Bit SIGNED INTEGER TYPE
+"I8" { return I8_C; }     //  8-Bit SIGNED INTEGER CONSTRUCTOR
+"u16" { return U16_T; }   //  16-Bit UNSIGNED INTEGER TYPE
+"U16" { return U16_C; }   //  16-Bit UNSIGNED INTEGER CONSTRUCTOR
+"i16" { return I16_T; }   //  16-Bit SIGNED INTEGER TYPE
+"I16" { return I16_C; }   //  16-Bit SIGNED INTEGER CONSTRUCTOR
+"u32" { return U32_T; }   //  32-Bit UNSIGNED INTEGER TYPE
+"U32" { return U32_C; }   //  32-Bit UNSIGNED INTEGER CONSTRUCTOR
+"i32" { return I32_T; }   //  32-Bit SIGNED INTEGER TYPE
+"I32" { return I32_C; }   //  32-Bit SIGNED INTEGER CONSTRUCTOR
+"u64" { return U64_T; }   //  64-Bit UNSIGNED INTEGER TYPE
+"U64" { return U64_C; }   //  64-Bit UNSIGNED INTEGER CONSTRUCTOR
+"i64" { return I64_T; }   //  64-Bit SIGNED INTEGER TYPE
+"I64" { return I64_C; }   //  64-Bit SIGNED INTEGER CONSTRUCTOR
+
+"real" { return REAL_T; }       //  INFERRED REAL NUMBER TYPE
+"float" { return FLOAT_T; }     //  FLOATING POINT TYPE
+"Float" { return FLOAT_C; }     //  FLOATING POINT CONSTRUCTOR
+"double" { return DOUBLE_T; }   //  DOUBLE PRECISION TYPE
+"Double" { return DOUBLE_C; }   //  DOUBLE PRECISION CONSTRUCTOR
+
+"char" { return CHAR_T; }  //  CHARACTER TYPE
+"Char" { return CHAR_C; }  //  CHARACTER CONSTRUCTOR 
+"string" { return STRING_T; }  //  STRING TYPE
+"String" { return STRING_C; }  //  STRING CONSTRUCTOR
+
+"bool" { return BOOL_T; }
+"True" { return TRUE; }     //  BOOLEAN PRIMITIVE
+"False" { return FALSE; }   //  BOOLEAN PRIMITIVE
 
 %{
 /*
@@ -69,7 +105,8 @@ extern int yylex();
 "<"  { return OP_LT;  } // LESS THAN
 ">"  { return OP_GT;  } // GREATER THAN
 
-";;" { return OP_SEP; } // SEPERATOR OPERATOR
+"="  { return OP_ASSIGN; } //  ASSIGNMENT OPERATOR
+";;" { return OP_SEP; }    // SEPERATOR OPERATOR
 
 
 
@@ -93,6 +130,8 @@ extern int yylex();
 */
 %}
 
+"const" { return CONST; }
+
 "let" { return LET; }
 "in"  { return IN;  }
 
@@ -103,7 +142,7 @@ extern int yylex();
 */  
 %}
 
-"type"      { return TYPE; }
+"type"      { return TYPE;      }
 "typeclass" { return TYPECLASS; }
 
 
@@ -113,17 +152,6 @@ extern int yylex();
 */
 %}
 
-"int"       { return INT_T;  }
-"Int"       { return INT_C;  }
-
-"real"      { return REAL_T; }
-"Real"      { return REAL_C; }
-
-"char"      { return CHAR_T; }
-"Char"      { return CHAR_C; }
-
-"string"    { return STRING_T; }
-"String"    { return STRING_C; }
 
 
 %{
@@ -132,6 +160,6 @@ extern int yylex();
 */
 %}
 
-[A-Z][a-zA-Z0-9_]*\'?   { printf("Found Constructor: %s\n", yytext); return CONSTRUCTOR; }
-[a-z_][a-zA-Z0-9_]*\'? { printf("Found Identifier: %s\n", yytext); return IDENTIFIER; }
+[A-Z][a-zA-Z0-9_]*\'?   { return CONSTRUCTOR; }
+[a-z_][a-zA-Z0-9_]*\'? { return IDENTIFIER; }
 

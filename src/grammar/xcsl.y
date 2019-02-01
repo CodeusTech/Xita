@@ -12,6 +12,7 @@
   Table of Contents
   ======================
   1.) Token Declarations
+    1.1) Primitive Types/Constructors
   2.) Order of Operations
   3.) Start of Grammar
 */
@@ -34,17 +35,17 @@ void yyerror(const char* s);
 
 //  Primitive Data Types
 %union {
-	int Int;
-	float Real;
-  char Char;
-  char* String;
+	int val_int;
+	double val_real;
+  char val_char;
+  char* val_string;
 }
 
 //  Primitive Tokens
-%token<Int> INT
-%token<Real> REAL
-%token<Char> CHAR
-%token<String> STRING
+%token<val_int> INT
+%token<val_real> REAL
+%token<val_char> CHAR
+%token<val_string> STRING
 %token TRUE FALSE
 
 //  Syntactic Operators
@@ -52,21 +53,33 @@ void yyerror(const char* s);
 %token OP_GTE OP_GT OP_EQ OP_NEQ OP_LTE OP_LT   // INTEGER COMPARISON
 %token BIT_AND BIT_OR BIT_XOR BIT_SHR BIT_SHL   // BITWISE MANIPULATION
 %token BOOL_OR BOOL_AND BOOL_XOR                // BOOLEAN COMPARISON
-%token OP_SEP
+%token OP_SEP OP_ASSIGN
 
 //  Conditional Keywords
 %token IF THEN ELSE
 %token MATCH WITH
 
 //  Functional Keywords
-%token LET IN
+%token CONST LET IN
 
 //  Datatype Keywords
-%token TYPE TYPECLASS
+%token TYPE TYPECLASS OF IS
 
-//  Primitive Types/Constructors
-%token INT_T INT_C
+/*  
+  1.1) Primitive Types/Constructors
+*/
+// Integers
+%token INT_T 
+%token U8_T U8_C I8_T I8_C 
+%token U16_T U16_C I16_T I16_T
+%token U32_T U32_C I32_T I32_T
+%token U64_T U64_C I64_T I64_T
+
+// Real Numbers
 %token REAL_T REAL_C
+%token FLOAT_T FLOAT_C DOUBLE_T DOUBLE_C
+
+// Characters/Strings
 %token CHAR_T CHAR_C
 %token STRING_T STRING_C
 
@@ -90,19 +103,30 @@ void yyerror(const char* s);
 %%
 
 exp: 
-    INT
-  | REAL
-  | CHAR
-  | STRING
-  | bool_exp
-  | exp OP_SEP exp
-  | CONSTRUCTOR {/* For Testing */}
-  | IDENTIFIER  {/* For Testing */}
+    INT                                       {/* For Testing */}
+  | REAL                                      {/* For Testing */}
+  | CHAR                                      {/* For Testing */}
+  | STRING                                    {/* For Testing */}
+  | exp_boolean                               {/* For Testing */}
+  | exp OP_SEP exp                            {/* For Testing */}
+  | TYPE IDENTIFIER OP_ASSIGN exp_constructor { printf("Type Declared\n"); }
+  | IDENTIFIER                                {/* For Testing */}
 ;
 
-bool_exp:
+/*
+  BOOLEAN EXPRESSIONS
+*/
+exp_boolean:
     TRUE
   | FALSE
+;
+
+/*
+  CONSTRUCTOR EXPRESSIONS
+*/
+exp_constructor:
+    CONSTRUCTOR BIT_OR exp_constructor
+  | CONSTRUCTOR
 ;
 
 %%

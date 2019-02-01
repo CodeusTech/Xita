@@ -10,7 +10,7 @@ CFLAGS=-std=gnu99
 
 #  Build and Install Cross Compiler
 install: build tidy
-	cp _build/xcs-aarch64 /usr/bin/xcs-aarch64
+	sudo cp _build/xcs-aarch64 /usr/bin/xcs-aarch64
 
 #  Build XCSL Cross Compiler
 build:  grammar src/xcs.c

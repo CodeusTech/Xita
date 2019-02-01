@@ -26,7 +26,8 @@
 /*
 	1.) Default Compiler Options
 */
-bool interpreted = true;	// LIVE INTERPRETER MODE
+bool interpreted 		= true;	// LIVE INTERPRETER MODE
+bool keep_assembly 	= false;
 
 //  Driver File
 int main(int argc, char** argv) 
