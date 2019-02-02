@@ -83,12 +83,6 @@ extern int yylex();
 */
 %}
 
-"+" { return OP_ADD; } //  ADDITION OPERATOR
-"-" { return OP_SUB; } //  SUBTRACTION OPERATOR  
-"*" { return OP_MUL; } //  MULTIPLICATION OPERATOR
-"/" { return OP_DIV; } //  DIVISION OPERATOR
-"%" { return OP_MOD; } //  MODULUS OPERATOR
-
 "&&" { return BOOL_AND; } // BOOLEAN AND
 "||" { return BOOL_OR;  } // BOOLEAN OR
 "^^" { return BOOL_XOR; } // BOOLEAN XOR
@@ -99,15 +93,29 @@ extern int yylex();
 "|"  { return BIT_OR;  } // BITWISE OR
 "^"  { return BIT_XOR; } // BITWISE XOR
 
+"*->"   { return MEM_READ; }  //  READ FROM MEMORY
+"<-*"   { return MEM_SET; }   //  SET MEMORY
+
+"<-"    { return ARROW_L; }   //  LEFT FACING ARROW
+"->"    { return ARROW_R; }   //  RIGHT FACING ARROW
+
+"+" { return OP_ADD; } //  ADDITION OPERATOR
+"-" { return OP_SUB; } //  SUBTRACTION OPERATOR  
+"*" { return OP_MUL; } //  MULTIPLICATION OPERATOR
+"/" { return OP_DIV; } //  DIVISION OPERATOR
+"%" { return OP_MOD; } //  MODULUS OPERATOR
+
 "<=" { return OP_LTE; } // LESS THAN OR EQUAL TO
 ">=" { return OP_GTE; } // GREATER THAN OR EQUAL TO
 "==" { return OP_EQ;  } // EXACTLY EQUAL TO
 "<"  { return OP_LT;  } // LESS THAN
 ">"  { return OP_GT;  } // GREATER THAN
 
+"(" { return PAR_LEFT; }  //  LEFT PARENTHESIS
+")" { return PAR_RIGHT; } //  RIGHT PARENTHESIS
+
 "="  { return OP_ASSIGN; } //  ASSIGNMENT OPERATOR
 ";;" { return OP_SEP; }    // SEPERATOR OPERATOR
-
 
 
 %{
@@ -122,7 +130,6 @@ extern int yylex();
 
 "match" {return MATCH; }
 "with"  {return WITH;  }
-
 
 %{
 /*
@@ -145,13 +152,8 @@ extern int yylex();
 "type"      { return TYPE;      }
 "typeclass" { return TYPECLASS; }
 
-
-%{
-/*
-  6.) Primitive Types/Constructors
-*/
-%}
-
+"is"        { return IS;  }
+"of"        { return OF;  }
 
 
 %{

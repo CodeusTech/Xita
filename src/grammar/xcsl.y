@@ -63,7 +63,11 @@ void yyerror(const char* s);
 %token CONST LET IN
 
 //  Datatype Keywords
-%token TYPE TYPECLASS OF IS
+%token TYPE TYPECLASS
+%token IS OF
+
+//  Static Memory Manipulation
+%token MEM_READ MEM_SET
 
 /*  
   1.1) Primitive Types/Constructors
