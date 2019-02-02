@@ -53,7 +53,8 @@ void yyerror(const char* s);
 %token OP_GTE OP_GT OP_EQ OP_NEQ OP_LTE OP_LT   // INTEGER COMPARISON
 %token BIT_AND BIT_OR BIT_XOR BIT_SHR BIT_SHL   // BITWISE MANIPULATION
 %token BOOL_OR BOOL_AND BOOL_XOR                // BOOLEAN COMPARISON
-%token OP_SEP OP_ASSIGN
+%token ARROW_L ARROW_R
+%token OP_SEP OP_ASSIGN PAR_LEFT PAR_RIGHT
 
 //  Conditional Keywords
 %token IF THEN ELSE
@@ -75,18 +76,20 @@ void yyerror(const char* s);
 // Integers
 %token INT_T 
 %token U8_T U8_C I8_T I8_C 
-%token U16_T U16_C I16_T I16_T
-%token U32_T U32_C I32_T I32_T
-%token U64_T U64_C I64_T I64_T
+%token U16_T U16_C I16_T I16_C
+%token U32_T U32_C I32_T I32_C
+%token U64_T U64_C I64_T I64_C
 
 // Real Numbers
-%token REAL_T REAL_C
+%token REAL_T
 %token FLOAT_T FLOAT_C DOUBLE_T DOUBLE_C
 
 // Characters/Strings
 %token CHAR_T CHAR_C
 %token STRING_T STRING_C
 
+// Booleans
+%token BOOL_T
 
 //  Constructors/Identifiers
 %token CONSTRUCTOR IDENTIFIER
@@ -107,14 +110,29 @@ void yyerror(const char* s);
 %%
 
 exp: 
-    INT                                       {/* For Testing */}
-  | REAL                                      {/* For Testing */}
-  | CHAR                                      {/* For Testing */}
-  | STRING                                    {/* For Testing */}
+    exp_integer                               {/* For Testing */}
+  | exp_real                                  {/* For Testing */}
+  | exp_char                                  {/* For Testing */}
+  | exp_string                                {/* For Testing */}
   | exp_boolean                               {/* For Testing */}
   | exp OP_SEP exp                            {/* For Testing */}
   | TYPE IDENTIFIER OP_ASSIGN exp_constructor { printf("Type Declared\n"); }
   | IDENTIFIER                                {/* For Testing */}
+;
+
+/*
+  INTEGER EXPRESSIONS
+*/
+exp_integer:
+    INT
+  | U8_C  INT
+  | I8_C  INT
+  | U16_C INT 
+  | I16_C INT
+  | U32_C INT
+  | I32_C INT
+  | U64_C INT
+  | I64_C INT
 ;
 
 /*
@@ -126,6 +144,31 @@ exp_boolean:
 ;
 
 /*
+  REAL EXPRESSIONS
+*/
+exp_real:
+    REAL
+  | FLOAT_C  REAL
+  | DOUBLE_C REAL
+;
+
+/*
+  CHARACTER EXPRESSIONS
+*/
+exp_char:
+    CHAR
+  | CHAR_C INT
+;
+
+/*
+  STRING EXPRESSIONS
+*/
+exp_string:
+    STRING
+;
+
+
+/*
   CONSTRUCTOR EXPRESSIONS
 */
 exp_constructor:
@@ -133,9 +176,11 @@ exp_constructor:
   | CONSTRUCTOR
 ;
 
+
 %%
 
 void yyerror(const char* s) {
 	fprintf(stderr, "Parse error: %s\n", s);
 	exit(1);
 }
+

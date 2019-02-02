@@ -21,6 +21,8 @@
 #include "xcsl.tab.c"
 extern int yylex();
 
+#include "string.h"
+
 %}
 %option noyywrap
 %%
@@ -33,16 +35,11 @@ extern int yylex();
 */
 %}
 
-[0-9]+              
-  { yylval.val_int = atoi(yytext); return INT; }    //  INTEGER PRIMITIVE
-[0-9]+\.[0-9]*      
-  { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE
-\'\\[a-zA-Z0-9]\'   
-  { yylval.val_char = yytext[2]; return CHAR; }     //  ESCAPED CHARACTER
-\'[a-zA-Z0-9]\'     
-  { yylval.val_char =  yytext[1]; return CHAR; }    //  CHARACTER PRIMITIVE
-\"[a-zA-Z0-9]+\"    
-  { strdup(yylval.val_string, yytext); return STRING; }  //  STRING PRIMITIVE
+[0-9]+            { yylval.val_int = atoi(yytext); return INT; }    //  INTEGER PRIMITIVE
+[0-9]+\.[0-9]*    { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE
+\'\\[a-zA-Z0-9]\' { yylval.val_char = yytext[2]; return CHAR; }     //  ESCAPED CHARACTER
+\'[a-zA-Z0-9]\'   { yylval.val_char =  yytext[1]; return CHAR; }    //  CHARACTER PRIMITIVE
+\"[a-zA-Z0-9]+\"  { yylval.val_string = strdup(yytext); return STRING; }  //  STRING PRIMITIVE
 
 "int" { return INT_T;  }  //  INFERRED INTEGER TYPE
 "u8" { return U8_T; }     //  8-Bit UNSIGNED INTEGER TYPE
@@ -163,5 +160,6 @@ extern int yylex();
 %}
 
 [A-Z][a-zA-Z0-9_]*\'?   { return CONSTRUCTOR; }
-[a-z_][a-zA-Z0-9_]*\'? { return IDENTIFIER; }
+[a-z_][a-zA-Z0-9_]*\'?  { return IDENTIFIER;  }
+
 
