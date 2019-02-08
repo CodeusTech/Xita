@@ -131,7 +131,7 @@ exp:
   | exp_boolean       {/* For Testing */}
   | exp_funct         { printf("Function Declared\n"); }
   | exp_const         { printf("Constant Declared\n"); }
-  | TYPE IDENTIFIER OP_ASSIGN exp_constructor { printf("Type Declared\n"); }
+  | exp_type          { printf("Type Declared\n"); }
   | IDENTIFIER        {printf("Found Identifier: %s\n", $1);}
 ;
 
@@ -194,7 +194,7 @@ exp_string:
   CONSTANT EXPRESSIONS
 */
 exp_const:
-    CONST IDENTIFIER OF INT_T OP_ASSIGN exp
+    CONST IDENTIFIER OF ident_type OP_ASSIGN exp
 ;
 
 /*
@@ -217,6 +217,32 @@ exp_param:
 /*
   7.) Datatype Expressions
 */
+
+/*
+  TYPE EXPRESSIONS
+*/
+ident_type:
+    INT_T
+  | U8_T
+  | I8_T
+  | U16_T
+  | I16_T
+  | U32_T
+  | I32_T
+  | U64_T
+  | I64_T
+  | REAL_T
+  | FLOAT_T
+  | DOUBLE_T
+  | CHAR_T
+  | STRING_T
+  | BOOL_T
+  | IDENTIFIER
+;
+
+exp_type:
+    TYPE IDENTIFIER OP_ASSIGN exp_constructor
+;
 
 /*
   CONSTRUCTOR EXPRESSIONS
