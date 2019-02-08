@@ -15,6 +15,10 @@
     1.1) Primitive Types/Constructors
   2.) Order of Operations
   3.) Start of Grammar
+  4.) XCSL Expressions
+  5.) Primitive Expressions
+  6.) Functional Expressions
+  7.) Datatype Expressions
 */
 
 #include <stdio.h>
@@ -39,6 +43,7 @@ void yyerror(const char* s);
 	double val_real;
   char val_char;
   char* val_string;
+  char* val_ident;
 }
 
 //  Primitive Tokens
@@ -46,6 +51,7 @@ void yyerror(const char* s);
 %token<val_real> REAL
 %token<val_char> CHAR
 %token<val_string> STRING
+%token<val_ident> IDENTIFIER
 %token TRUE FALSE
 
 //  Syntactic Operators
@@ -92,7 +98,7 @@ void yyerror(const char* s);
 %token BOOL_T
 
 //  Constructors/Identifiers
-%token CONSTRUCTOR IDENTIFIER
+%token CONSTRUCTOR
 
 /*
   2.) Order of Operations
@@ -106,19 +112,32 @@ void yyerror(const char* s);
 /*
   3.)  Start of Grammar
 */
-%start exp
+%start xcs
 %%
 
-exp: 
-    exp_integer                               {/* For Testing */}
-  | exp_real                                  {/* For Testing */}
-  | exp_char                                  {/* For Testing */}
-  | exp_string                                {/* For Testing */}
-  | exp_boolean                               {/* For Testing */}
-  | exp OP_SEP exp                            {/* For Testing */}
-  | TYPE IDENTIFIER OP_ASSIGN exp_constructor { printf("Type Declared\n"); }
-  | IDENTIFIER                                {/* For Testing */}
+xcs:
+    xcs OP_SEP xcs
+  | exp
 ;
+
+/*
+  4.) XCSL Expressions
+*/
+exp: 
+    exp_integer       {/* For Testing */}
+  | exp_real          {/* For Testing */}
+  | exp_char          {/* For Testing */}
+  | exp_string        {/* For Testing */}
+  | exp_boolean       {/* For Testing */}
+  | exp_funct         { printf("Function Declared\n"); }
+  | exp_const         { printf("Constant Declared\n"); }
+  | TYPE IDENTIFIER OP_ASSIGN exp_constructor { printf("Type Declared\n"); }
+  | IDENTIFIER        {printf("Found Identifier: %s\n", $1);}
+;
+
+/*
+  5.) Primitive Expressions
+*/
 
 /*
   INTEGER EXPRESSIONS
@@ -167,6 +186,37 @@ exp_string:
     STRING  {/* Push pointer to string onto Register Stack */}
 ;
 
+/*
+  6.) Functional Expressions
+*/
+
+/*
+  CONSTANT EXPRESSIONS
+*/
+exp_const:
+    CONST IDENTIFIER OF INT_T OP_ASSIGN exp
+;
+
+/*
+  FUNCTION DECLARATIONS
+*/
+exp_funct:
+    LET IDENTIFIER exp_param OP_ASSIGN exp
+  | LET IDENTIFIER OF IDENTIFIER exp_param OP_ASSIGN exp
+;
+
+/*
+  PARAMETER EXPRESSIONS
+*/
+exp_param:
+    IDENTIFIER exp_param  {/* Accept arbitrary number of paramters */}
+  | {/* INTENTIONALLY LEFT BLANK */}
+;
+
+
+/*
+  7.) Datatype Expressions
+*/
 
 /*
   CONSTRUCTOR EXPRESSIONS
@@ -179,6 +229,9 @@ exp_constructor:
 
 %%
 
+/*
+  GENERIC ERROR MESSAGE
+*/
 void yyerror(const char* s) {
 	fprintf(stderr, "Parse error: %s\n", s);
 	exit(1);
