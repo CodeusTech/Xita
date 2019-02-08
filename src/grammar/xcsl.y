@@ -124,47 +124,47 @@ exp:
   INTEGER EXPRESSIONS
 */
 exp_integer:
-    INT
-  | U8_C  INT
-  | I8_C  INT
-  | U16_C INT 
-  | I16_C INT
-  | U32_C INT
-  | I32_C INT
-  | U64_C INT
-  | I64_C INT
+    INT        {/* Push int into Register Stack */}
+  | U8_C  INT  {/* Push int into Register Stack */}
+  | I8_C  INT  {/* Push int into Register Stack */}
+  | U16_C INT  {/* Push int into Register Stack */}
+  | I16_C INT  {/* Push int into Register Stack */}
+  | U32_C INT  {/* Push int into Register Stack */}
+  | I32_C INT  {/* Push int into Register Stack */}
+  | U64_C INT  {/* Push int into Register Stack */}
+  | I64_C INT  {/* Push int into Register Stack */}
 ;
 
 /*
   BOOLEAN EXPRESSIONS
 */
 exp_boolean:
-    TRUE
-  | FALSE
+    TRUE   {/* Push '1' into Register Stack */}
+  | FALSE  {/* Push '0' into Register Stack */}
 ;
 
 /*
   REAL EXPRESSIONS
 */
 exp_real:
-    REAL
-  | FLOAT_C  REAL
-  | DOUBLE_C REAL
+    REAL           {/* Push real into SSE stack */}
+  | FLOAT_C  REAL  {/* Push float into SSE stack */}
+  | DOUBLE_C REAL  {/* Push double into SSE stack */}
 ;
 
 /*
   CHARACTER EXPRESSIONS
 */
 exp_char:
-    CHAR
-  | CHAR_C INT
+    CHAR        {/* Push Character onto Register Stack */}
+  | CHAR_C INT  {/* Convert Integer to Character using ASCII Code */}
 ;
 
 /*
   STRING EXPRESSIONS
 */
 exp_string:
-    STRING
+    STRING  {/* Push pointer to string onto Register Stack */}
 ;
 
 
@@ -172,8 +172,8 @@ exp_string:
   CONSTRUCTOR EXPRESSIONS
 */
 exp_constructor:
-    CONSTRUCTOR BIT_OR exp_constructor
-  | CONSTRUCTOR
+    CONSTRUCTOR BIT_OR exp_constructor  {/* Nonterminal Constructors */}
+  | CONSTRUCTOR                         {/* Terminal Cosntructor */}
 ;
 
 
