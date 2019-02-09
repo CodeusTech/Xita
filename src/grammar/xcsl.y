@@ -224,8 +224,8 @@ exp_match:
 ;
 
 exp_with:
-    CONSTRUCTOR param_match ARROW_R exp OP_COMMA exp_with  {  }
-  | CONSTRUCTOR param_match ARROW_R exp                    {  }
+    ident_construct param_match ARROW_R exp OP_COMMA exp_with  {  }
+  | ident_construct param_match ARROW_R exp                    {  }
 ;
 
 param_match: 
@@ -300,6 +300,28 @@ ident_type:
   | BOOL_T
   | IDENTIFIER
 ;
+
+/*
+  CONSTRUCTOR IDENTIFIERS
+*/
+ident_construct:
+    INT
+  | U8_C
+  | I8_C
+  | U16_C
+  | I16_C
+  | U32_C
+  | I32_C
+  | U64_C
+  | I64_C
+  | REAL
+  | FLOAT_C
+  | DOUBLE_C
+  | CHAR_C
+  | TRUE
+  | FALSE
+  | STRING_C
+  | CONSTRUCTOR
 
 /*
   TYPE EXPRESSIONS
