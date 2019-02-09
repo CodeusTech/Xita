@@ -19,6 +19,7 @@
   5.) Primitive Expressions
   6.) Functional Expressions
   7.) Datatype Expressions
+  8.) Bytecode Operations
 */
 
 #include <stdio.h>
@@ -44,6 +45,7 @@ void yyerror(const char* s);
   char val_char;
   char* val_string;
   char* val_ident;
+  char* val_byte;
 }
 
 //  Primitive Tokens
@@ -51,6 +53,7 @@ void yyerror(const char* s);
 %token<val_real> REAL
 %token<val_char> CHAR
 %token<val_string> STRING
+%token<val_byte> BYTE_STRING
 %token<val_ident> IDENTIFIER
 %token TRUE FALSE
 
@@ -93,12 +96,16 @@ void yyerror(const char* s);
 // Characters/Strings
 %token CHAR_T CHAR_C
 %token STRING_T STRING_C
+%token BYTE_STRING
 
 // Booleans
 %token BOOL_T
 
 //  Constructors/Identifiers
 %token CONSTRUCTOR
+
+//  Bytecode Operations
+%token BUILD RUN
 
 /*
   2.) Order of Operations
@@ -129,10 +136,13 @@ exp:
   | exp_char          {/* For Testing */}
   | exp_string        {/* For Testing */}
   | exp_boolean       {/* For Testing */}
-  | exp_funct         { printf("Function Declared\n"); }
+  | exp_byte_build    {  }
+  | exp_byte_run      {  }
+  | decl_funct        { printf("Function Declared\n"); }
+  | exp_funct         { printf("Function Invoked\n"); }
   | exp_const         { printf("Constant Declared\n"); }
   | exp_type          { printf("Type Declared\n"); }
-  | IDENTIFIER        {printf("Found Identifier: %s\n", $1);}
+  | IDENTIFIER        { printf("Found Identifier: %s\n", $1); }
 ;
 
 /*
@@ -200,26 +210,41 @@ exp_const:
 /*
   FUNCTION DECLARATIONS
 */
-exp_funct:
+decl_funct:
     LET IDENTIFIER exp_param OP_ASSIGN exp
   | LET IDENTIFIER OF IDENTIFIER exp_param OP_ASSIGN exp
 ;
 
 /*
-  PARAMETER EXPRESSIONS
+  PARAMETER EXPRESSIONS (DECLARATIONS)
 */
 exp_param:
-    IDENTIFIER exp_param  {/* Accept arbitrary number of paramters */}
+    IDENTIFIER exp_param  {/* Accept arbitrary number of parameters */}
   | {/* INTENTIONALLY LEFT BLANK */}
 ;
 
+
+/*
+  FUNCTION EXPRESSIONS (INVOCATIONS)
+*/
+exp_funct:
+    IDENTIFIER exp_arg
+;
+
+/*
+  ARGUMENT EXPRESSIONS (INVOCATIONS)
+*/
+exp_arg:
+    IDENTIFIER exp_arg  {/* Accept arbitrary number of arguments */}
+  | {/*INTENTIONALLY LEFT BLANK*/}
+;
 
 /*
   7.) Datatype Expressions
 */
 
 /*
-  TYPE EXPRESSIONS
+  TYPE IDENTIFIERS
 */
 ident_type:
     INT_T
@@ -240,6 +265,9 @@ ident_type:
   | IDENTIFIER
 ;
 
+/*
+  TYPE EXPRESSIONS
+*/
 exp_type:
     TYPE IDENTIFIER OP_ASSIGN exp_constructor
 ;
@@ -252,6 +280,20 @@ exp_constructor:
   | CONSTRUCTOR                         {/* Terminal Cosntructor */}
 ;
 
+/*
+  8.) Bytecode Operations
+*/
+
+/*
+  BYTECODE EXPRESSIONS
+*/
+exp_byte_build:
+    BUILD IDENTIFIER { printf("Building %s...\n", $2); }
+;
+
+exp_byte_run:
+    RUN BYTE_STRING  { printf("Running %s...\n", $2); }
+;
 
 %%
 

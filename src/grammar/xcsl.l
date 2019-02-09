@@ -16,6 +16,7 @@
   3.) Conditional Keywords
   4.) Functional Keywords
   5.) Datatype Keywords
+  6.) Bytecode Operations
 */
 
 #include "xcsl.tab.c"
@@ -148,11 +149,24 @@ extern int yylex();
 "of"        { return OF;  }
 
 
+
+%{
+/*
+  6.) Bytecode Operations
+*/  
+%}
+
+"build"   { return BUILD; }
+"run"     { return RUN;   }
+
+
 %{
 /*
   A.) Constructors/Identifiers
 */
 %}
+
+[01]+             { yylval.val_byte = strdup(yytext); return BYTE_STRING; }
 
 [0-9]+            { yylval.val_int = atoi(yytext); return INT; }    //  INTEGER PRIMITIVE
 [0-9]+\.[0-9]*    { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE
@@ -162,5 +176,3 @@ extern int yylex();
 
 [A-Z][a-zA-Z0-9_]*\'?   { return CONSTRUCTOR; }
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }
-
-
