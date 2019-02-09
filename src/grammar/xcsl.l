@@ -109,7 +109,7 @@ extern int yylex();
 
 "="  { return OP_ASSIGN; } //  ASSIGNMENT OPERATOR
 ";;" { return OP_SEP; }    // SEPERATOR OPERATOR
-
+","  { return OP_COMMA; }  //  COMMA OPERATOR
 
 %{
 /*
@@ -165,8 +165,6 @@ extern int yylex();
   A.) Constructors/Identifiers
 */
 %}
-
-[01]+             { yylval.val_byte = strdup(yytext); return BYTE_STRING; }
 
 [0-9]+            { yylval.val_int = atoi(yytext); return INT; }    //  INTEGER PRIMITIVE
 [0-9]+\.[0-9]*    { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE

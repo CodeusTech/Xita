@@ -17,9 +17,10 @@
   3.) Start of Grammar
   4.) XCSL Expressions
   5.) Primitive Expressions
-  6.) Functional Expressions
-  7.) Datatype Expressions
-  8.) Bytecode Operations
+  6.) Conditional Expressions
+  7.) Functional Expressions
+  8.) Datatype Expressions
+  9.) Bytecode Operations
 */
 
 #include <stdio.h>
@@ -45,7 +46,6 @@ void yyerror(const char* s);
   char val_char;
   char* val_string;
   char* val_ident;
-  char* val_byte;
 }
 
 //  Primitive Tokens
@@ -53,7 +53,6 @@ void yyerror(const char* s);
 %token<val_real> REAL
 %token<val_char> CHAR
 %token<val_string> STRING
-%token<val_byte> BYTE_STRING
 %token<val_ident> IDENTIFIER
 %token TRUE FALSE
 
@@ -63,7 +62,7 @@ void yyerror(const char* s);
 %token BIT_AND BIT_OR BIT_XOR BIT_SHR BIT_SHL   // BITWISE MANIPULATION
 %token BOOL_OR BOOL_AND BOOL_XOR                // BOOLEAN COMPARISON
 %token ARROW_L ARROW_R
-%token OP_SEP OP_ASSIGN PAR_LEFT PAR_RIGHT
+%token OP_SEP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
 
 //  Conditional Keywords
 %token IF THEN ELSE
@@ -96,7 +95,7 @@ void yyerror(const char* s);
 // Characters/Strings
 %token CHAR_T CHAR_C
 %token STRING_T STRING_C
-%token BYTE_STRING
+%token BYTE_STRING  // DEPRECATED
 
 // Booleans
 %token BOOL_T
@@ -142,6 +141,8 @@ exp:
   | exp_funct         { printf("Function Invoked\n"); }
   | exp_const         { printf("Constant Declared\n"); }
   | exp_type          { printf("Type Declared\n"); }
+  | exp_if            { printf("If Statement Invoked\n"); }
+  | exp_match         { printf("Match Statement Invoked\n"); }
   | IDENTIFIER        { printf("Found Identifier: %s\n", $1); }
 ;
 
@@ -197,7 +198,42 @@ exp_string:
 ;
 
 /*
-  6.) Functional Expressions
+  6.) Conditional Expressions
+*/
+
+/*
+  IF ... THEN ... ELSE ... EXPRESSIONS
+*/
+exp_if:
+    IF exp_boolean exp_then   {  }
+;
+
+exp_then: 
+    THEN exp exp_else
+;
+
+exp_else:
+    ELSE exp
+;
+
+/*
+  MATCH ... WITH ... EXPRESSIONS
+*/
+exp_match:
+    MATCH IDENTIFIER WITH exp_with
+;
+
+exp_with:
+    CONSTRUCTOR param_match ARROW_R exp OP_COMMA exp_with  {  }
+  | CONSTRUCTOR param_match ARROW_R exp                    {  }
+;
+
+param_match: 
+  IDENTIFIER param_match
+  | {/* INTENTIONALLY LEFT BLANK */}
+
+/*
+  7.) Functional Expressions
 */
 
 /*
@@ -240,7 +276,7 @@ exp_arg:
 ;
 
 /*
-  7.) Datatype Expressions
+  8.) Datatype Expressions
 */
 
 /*
@@ -281,18 +317,21 @@ exp_constructor:
 ;
 
 /*
-  8.) Bytecode Operations
+  9.) Bytecode Operations
 */
 
 /*
-  BYTECODE EXPRESSIONS
+  BUILD EXECUTABLE BYTECODE STRING
 */
 exp_byte_build:
     BUILD IDENTIFIER { printf("Building %s...\n", $2); }
 ;
 
+/*
+  RUN EXECUTABLE BYTECODE STRING
+*/
 exp_byte_run:
-    RUN BYTE_STRING  { printf("Running %s...\n", $2); }
+    RUN INT  { printf("Running %s...\n", $2); }
 ;
 
 %%
