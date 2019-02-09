@@ -147,6 +147,7 @@ extern int yylex();
 
 "is"        { return IS;  }
 "of"        { return OF;  }
+"requires"  { return REQ; }
 
 
 

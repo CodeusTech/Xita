@@ -73,7 +73,7 @@ void yyerror(const char* s);
 
 //  Datatype Keywords
 %token TYPE TYPECLASS
-%token IS OF
+%token IS OF REQ
 
 //  Static Memory Manipulation
 %token MEM_READ MEM_SET
@@ -141,6 +141,7 @@ exp:
   | exp_funct         { printf("Function Invoked\n"); }
   | exp_const         { printf("Constant Declared\n"); }
   | exp_type          { printf("Type Declared\n"); }
+  | exp_typeclass     { printf("Typeclass Declared\n"); }
   | exp_if            { printf("If Statement Invoked\n"); }
   | exp_match         { printf("Match Statement Invoked\n"); }
   | IDENTIFIER        { printf("Found Identifier: %s\n", $1); }
@@ -231,6 +232,7 @@ exp_with:
 param_match: 
   IDENTIFIER param_match
   | {/* INTENTIONALLY LEFT BLANK */}
+;
 
 /*
   7.) Functional Expressions
@@ -322,9 +324,10 @@ ident_construct:
   | FALSE
   | STRING_C
   | CONSTRUCTOR
+;
 
 /*
-  TYPE EXPRESSIONS
+  TYPE DECLARATIONS
 */
 exp_type:
     TYPE IDENTIFIER OP_ASSIGN exp_constructor
@@ -335,8 +338,33 @@ exp_type:
 */
 exp_constructor:
     CONSTRUCTOR BIT_OR exp_constructor  {/* Nonterminal Constructors */}
-  | CONSTRUCTOR                         {/* Terminal Cosntructor */}
+  | CONSTRUCTOR                         {/* Terminal Cosntructor     */}
 ;
+
+/*
+  TYPECLASS DECLARATIONS
+*/
+exp_typeclass:
+    TYPECLASS IDENTIFIER REQ exp_prototype
+;
+
+/*
+  PROTOTYPE EXPRESSIONS
+*/
+exp_prototype:
+    exp_prototype OP_COMMA exp_prototype  {/* Arbitrary Number of Function Prototypes */}
+  | IDENTIFIER param_prototype            {/* Each Function must be implemented by all members of the typeclass */}
+;
+
+/*
+  PROTOTYPE PARAMETERS
+*/
+param_prototype:
+    IDENTIFIER param_prototype  {/* Prototype Parameters */}
+  |         {/* INTENTIONALLY LEFT BLANK */}
+;
+
+
 
 /*
   9.) Bytecode Operations
