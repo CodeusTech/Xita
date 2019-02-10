@@ -158,7 +158,17 @@ exp:
   INTEGER EXPRESSIONS
 */
 exp_integer:
-    INT        {/* Push int into Register Stack */}
+    exp_integer OP_ADD exp_integer
+  | exp_integer OP_SUB exp_integer
+  | exp_integer OP_MUL exp_integer
+  | exp_integer OP_DIV exp_integer
+  | exp_integer OP_MOD exp_integer
+  | exp_integer BIT_AND exp_integer
+  | exp_integer BIT_OR exp_integer
+  | exp_integer BIT_SHL exp_integer
+  | exp_integer BIT_SHR exp_integer
+  | exp_integer BIT_XOR exp_integer
+  | INT        {/* Push int into Register Stack */}
   | U8_C  INT  {/* Push int into Register Stack */}
   | I8_C  INT  {/* Push int into Register Stack */}
   | U16_C INT  {/* Push int into Register Stack */}
@@ -168,6 +178,7 @@ exp_integer:
   | U64_C INT  {/* Push int into Register Stack */}
   | I64_C INT  {/* Push int into Register Stack */}
   | RNG        { printf("Random Number Generated\n"); }
+  | IDENTIFIER {/* Push ident into Register Stack */}
 ;
 
 /*
