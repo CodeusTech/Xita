@@ -62,7 +62,8 @@ void yyerror(const char* s);
 %token BIT_AND BIT_OR BIT_XOR BIT_SHR BIT_SHL   // BITWISE MANIPULATION
 %token BOOL_OR BOOL_AND BOOL_XOR                // BOOLEAN COMPARISON
 %token ARROW_L ARROW_R
-%token OP_SEP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
+%token OP_SEP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
+%token OP_LIST_L OP_LIST_R
 
 //  Conditional Keywords
 %token IF THEN ELSE
@@ -82,7 +83,7 @@ void yyerror(const char* s);
   1.1) Primitive Types/Constructors
 */
 // Integers
-%token INT_T 
+%token INT_T RNG
 %token U8_T U8_C I8_T I8_C 
 %token U16_T U16_C I16_T I16_C
 %token U32_T U32_C I32_T I32_C
@@ -109,7 +110,7 @@ void yyerror(const char* s);
 /*
   2.) Order of Operations
 */
-
+%left OP_TUP
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 %left OP_SEQ
@@ -129,7 +130,7 @@ xcs:
 /*
   4.) XCSL Expressions
 */
-exp: 
+exp:
     exp_integer       {/* For Testing */}
   | exp_real          {/* For Testing */}
   | exp_char          {/* For Testing */}
@@ -144,6 +145,8 @@ exp:
   | exp_typeclass     { printf("Typeclass Declared\n"); }
   | exp_if            { printf("If Statement Invoked\n"); }
   | exp_match         { printf("Match Statement Invoked\n"); }
+  | exp_list          { printf("List Declared\n"); }
+  | exp OP_TUP exp    { printf("Tuple Operator Invoked\n"); }
   | IDENTIFIER        { printf("Found Identifier: %s\n", $1); }
 ;
 
@@ -164,6 +167,7 @@ exp_integer:
   | I32_C INT  {/* Push int into Register Stack */}
   | U64_C INT  {/* Push int into Register Stack */}
   | I64_C INT  {/* Push int into Register Stack */}
+  | RNG        { printf("Random Number Generated\n"); }
 ;
 
 /*
@@ -196,6 +200,21 @@ exp_char:
 */
 exp_string:
     STRING  {/* Push pointer to string onto Register Stack */}
+;
+
+/*
+  LIST EXPRESSIONS
+*/
+exp_list:
+    OP_LIST_L param_list OP_LIST_R
+;
+
+/*
+  LIST PARAMETERS
+*/
+param_list:
+    param_list OP_COMMA param_list
+  | exp
 ;
 
 /*
@@ -361,7 +380,7 @@ exp_prototype:
 */
 param_prototype:
     IDENTIFIER param_prototype  {/* Prototype Parameters */}
-  |         {/* INTENTIONALLY LEFT BLANK */}
+  |                             {/* INTENTIONALLY LEFT BLANK */}
 ;
 
 

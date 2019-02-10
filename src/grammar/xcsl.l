@@ -70,6 +70,9 @@ extern int yylex();
 "True" { return TRUE; }     //  BOOLEAN PRIMITIVE
 "False" { return FALSE; }   //  BOOLEAN PRIMITIVE
 
+"RNG" { return RNG; } //  RANDOM NUMBER GENERATOR
+
+
 %{
 /*
   2.) Syntactic Operators
@@ -108,8 +111,12 @@ extern int yylex();
 ")" { return PAR_RIGHT; } //  RIGHT PARENTHESIS
 
 "="  { return OP_ASSIGN; } //  ASSIGNMENT OPERATOR
-";;" { return OP_SEP; }    // SEPERATOR OPERATOR
+";;" { return OP_SEP; }    //  SEPERATOR OPERATOR
+";"  { return OP_TUP; }    //  TUPPLE OPERATOR
 ","  { return OP_COMMA; }  //  COMMA OPERATOR
+
+"["  { return OP_LIST_L; }  //  BEGINNING OF LIST
+"]"  { return OP_LIST_R; }  //  END OF LIST
 
 %{
 /*
