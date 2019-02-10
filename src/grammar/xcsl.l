@@ -3,7 +3,7 @@
   xcsl.l (AArch64)
   Cody Fagley
   Authored on   January 30, 2019
-  Last Modified January 30, 2019
+  Last Modified February 10, 2019
 */
 
 /*
@@ -17,6 +17,9 @@
   4.) Functional Keywords
   5.) Datatype Keywords
   6.) Special Operations
+
+  A.) Tether Modules 
+  B.) Constructors/Identifiers
 */
 
 #include "xcsl.tab.c"
@@ -174,7 +177,16 @@ extern int yylex();
 
 %{
 /*
-  A.) Constructors/Identifiers
+  A.) Tether Modules
+*/  
+%}
+
+"offer"  { return OFFER; }
+
+
+%{
+/*
+  B.) Constructors/Identifiers
 */
 %}
 

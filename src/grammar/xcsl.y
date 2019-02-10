@@ -3,16 +3,15 @@
   xcsl.y  (AArch64)
   Cody Fagley
   Authored on   January 29, 2019
-  Last Modified January 29, 2019
+  Last Modified February 10, 2019
 */
 
 /*
-  Contains context-free grammar for X-Ita Control System Language (XCSL)
+  Contains context-free grammar used in all XCS Modules.
 
   Table of Contents
   ======================
   1.) Token Declarations
-    1.1) Primitive Types/Constructors
   2.) Order of Operations
   3.) Start of Grammar
   4.) XCSL Expressions
@@ -21,6 +20,8 @@
   7.) Functional Expressions
   8.) Datatype Expressions
   9.) Special Operations
+  
+  A.) Tether Module Expressions 
 */
 
 #include <stdio.h>
@@ -107,6 +108,7 @@ void yyerror(const char* s);
 
 //  Module Operations
 %token LOAD
+%token OFFER
 
 /*
   2.) Order of Operations
@@ -124,7 +126,12 @@ void yyerror(const char* s);
 %%
 
 xcs:
-    xcs OP_SEP xcs
+    xcs_source  {/* Source Module Structure */}
+  | xcs_tether  {/* Tether Module Structure */}
+;
+
+xcs_source:
+    xcs_source OP_SEP xcs_source
   | exp
   | LOAD STRING     { printf("Module %s Loaded\n", $2); }
 ;
@@ -421,7 +428,8 @@ exp_byte_build:
   RUN EXECUTABLE BYTECODE STRING
 */
 exp_byte_run:
-    RUN INT  { printf("Running %s...\n", $2); }
+    RUN INT    { printf("Running %d...\n", $2); }
+  | RUN STRING { printf("Running %s...\n", $2); }
 ;
 
 /*
@@ -437,6 +445,35 @@ exp_tether:
 */
 exp_regex:
     REGEX STRING {/* Process Regular Expression */}
+;
+
+
+
+
+/*
+  A.) Tether Module Expressions 
+*/
+
+/*
+  TETHER MODULE STRUCTURE
+*/
+xcs_tether:
+    xcs_tether OP_SEP xcs_tether
+  | exp_offer
+  | exp
+;
+
+/*
+  TETHER MODULE OFFERING EXPRESSIONS
+*/
+exp_offer:
+    exp_offer OP_SEP exp_offer
+  | OFFER IDENTIFIER param_offer OP_ASSIGN exp
+;
+
+param_offer:
+    IDENTIFIER param_offer  {/* Function Parameters for Offer */}
+  |       {/* INTENTIONALLY LEFT BLANK */}
 ;
 
 %%
