@@ -79,9 +79,6 @@ void yyerror(const char* s);
 //  Static Memory Manipulation
 %token MEM_READ MEM_SET
 
-/*  
-  1.1) Primitive Types/Constructors
-*/
 // Integers
 %token INT_T RNG
 %token U8_T U8_C I8_T I8_C 
@@ -105,8 +102,11 @@ void yyerror(const char* s);
 %token CONSTRUCTOR
 
 //  Special Operations
-%token BUILD RUN
+%token BUILD RUN TETHER
 %token REGEX
+
+//  Module Operations
+%token LOAD
 
 /*
   2.) Order of Operations
@@ -126,6 +126,7 @@ void yyerror(const char* s);
 xcs:
     xcs OP_SEP xcs
   | exp
+  | LOAD STRING     { printf("Module %s Loaded\n", $2); }
 ;
 
 /*
@@ -139,6 +140,7 @@ exp:
   | exp_boolean       {/* For Testing */}
   | exp_byte_build    {  }
   | exp_byte_run      {  }
+  | exp_tether        { printf("Process Tethered\n"); }
   | exp_regex         { printf("Regular Expression Invoked\n"); }
   | decl_funct        { printf("Function Declared\n"); }
   | exp_funct         { printf("Function Invoked\n"); }
@@ -420,6 +422,14 @@ exp_byte_build:
 */
 exp_byte_run:
     RUN INT  { printf("Running %s...\n", $2); }
+;
+
+/*
+  TETHER EXPRESSIONS
+*/
+exp_tether:
+    TETHER STRING {/* FILE NAME ARGUMENT */}
+  | TETHER INT {/* BYTECODE ARGUMENT */}
 ;
 
 /*

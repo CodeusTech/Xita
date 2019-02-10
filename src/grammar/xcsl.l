@@ -166,9 +166,11 @@ extern int yylex();
 
 "build"   { return BUILD; }
 "run"     { return RUN;   }
+"tether"  { return TETHER;}
 
 "regex"   { return REGEX; }
 
+"load"    { return LOAD; }
 
 %{
 /*
