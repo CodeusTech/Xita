@@ -20,7 +20,7 @@
   6.) Conditional Expressions
   7.) Functional Expressions
   8.) Datatype Expressions
-  9.) Bytecode Operations
+  9.) Special Operations
 */
 
 #include <stdio.h>
@@ -104,8 +104,9 @@ void yyerror(const char* s);
 //  Constructors/Identifiers
 %token CONSTRUCTOR
 
-//  Bytecode Operations
+//  Special Operations
 %token BUILD RUN
+%token REGEX
 
 /*
   2.) Order of Operations
@@ -138,6 +139,7 @@ exp:
   | exp_boolean       {/* For Testing */}
   | exp_byte_build    {  }
   | exp_byte_run      {  }
+  | exp_regex         { printf("Regular Expression Invoked\n"); }
   | decl_funct        { printf("Function Declared\n"); }
   | exp_funct         { printf("Function Invoked\n"); }
   | exp_const         { printf("Constant Declared\n"); }
@@ -185,7 +187,13 @@ exp_integer:
   BOOLEAN EXPRESSIONS
 */
 exp_boolean:
-    TRUE   {/* Push '1' into Register Stack */}
+    exp_integer OP_EQ  exp_integer
+  | exp_integer OP_NEQ exp_integer
+  | exp_integer OP_GT  exp_integer
+  | exp_integer OP_GTE exp_integer
+  | exp_integer OP_LT  exp_integer
+  | exp_integer OP_LTE exp_integer
+  | TRUE   {/* Push '1' into Register Stack */}
   | FALSE  {/* Push '0' into Register Stack */}
 ;
 
@@ -397,7 +405,7 @@ param_prototype:
 
 
 /*
-  9.) Bytecode Operations
+  9.) Special Operations
 */
 
 /*
@@ -412,6 +420,13 @@ exp_byte_build:
 */
 exp_byte_run:
     RUN INT  { printf("Running %s...\n", $2); }
+;
+
+/*
+  REGULAR EXPRESSIONS
+*/
+exp_regex:
+    REGEX STRING {/* Process Regular Expression */}
 ;
 
 %%

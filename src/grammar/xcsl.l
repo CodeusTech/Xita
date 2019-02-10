@@ -16,7 +16,7 @@
   3.) Conditional Keywords
   4.) Functional Keywords
   5.) Datatype Keywords
-  6.) Bytecode Operations
+  6.) Special Operations
 */
 
 #include "xcsl.tab.c"
@@ -160,12 +160,14 @@ extern int yylex();
 
 %{
 /*
-  6.) Bytecode Operations
+  6.) Special Operations
 */  
 %}
 
 "build"   { return BUILD; }
 "run"     { return RUN;   }
+
+"regex"   { return REGEX; }
 
 
 %{
@@ -178,7 +180,7 @@ extern int yylex();
 [0-9]+\.[0-9]*    { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE
 \'\\[a-zA-Z0-9]\' { yylval.val_char = yytext[2]; return CHAR; }     //  ESCAPED CHARACTER
 \'[a-zA-Z0-9]\'   { yylval.val_char =  yytext[1]; return CHAR; }    //  CHARACTER PRIMITIVE
-\"[a-zA-Z0-9]+\"  { yylval.val_string = strdup(yytext); return STRING; }  //  STRING PRIMITIVE
+\"(\\.|[^"\\])*\"  { yylval.val_string = strdup(yytext); return STRING; }  //  STRING PRIMITIVE
 
 [A-Z][a-zA-Z0-9_]*\'?   { return CONSTRUCTOR; }
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }
