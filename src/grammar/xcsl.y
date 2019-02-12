@@ -108,7 +108,7 @@ void yyerror(const char* s);
 
 //  Module Operations
 %token LOAD
-%token OFFER
+%token TETHER_H OFFER ASK
 
 /*
   2.) Order of Operations
@@ -131,7 +131,11 @@ xcs:
 ;
 
 xcs_source:
-    xcs_source OP_SEP xcs_source
+    src             { printf("Finished Parsing Source Module.\n"); }
+;
+
+src:
+    src OP_SEP src
   | exp
   | LOAD STRING     { printf("Module %s Loaded\n", $2); }
 ;
@@ -145,9 +149,10 @@ exp:
   | exp_char          {/* For Testing */}
   | exp_string        {/* For Testing */}
   | exp_boolean       {/* For Testing */}
-  | exp_byte_build    {  }
-  | exp_byte_run      {  }
-  | exp_tether        { printf("Process Tethered\n"); }
+  | exp_byte_build    { printf("Bytecode Built\n"); }
+  | exp_byte_run      { printf("Bytecode/Module Executed\n"); }
+  | exp_tether        { printf("Processes Tethered\n"); }
+  | exp_ask           { printf("Process Requested\n"); }
   | exp_regex         { printf("Regular Expression Invoked\n"); }
   | decl_funct        { printf("Function Declared\n"); }
   | exp_funct         { printf("Function Invoked\n"); }
@@ -169,7 +174,7 @@ exp:
   INTEGER EXPRESSIONS
 */
 exp_integer:
-    exp_integer OP_ADD exp_integer
+    exp_integer OP_ADD exp_integer 
   | exp_integer OP_SUB exp_integer
   | exp_integer OP_MUL exp_integer
   | exp_integer OP_DIV exp_integer
@@ -202,6 +207,12 @@ exp_boolean:
   | exp_integer OP_GTE exp_integer
   | exp_integer OP_LT  exp_integer
   | exp_integer OP_LTE exp_integer
+  | exp_integer BOOL_AND exp_integer
+  | exp_integer BOOL_OR  exp_integer
+  | exp_integer BOOL_XOR exp_integer
+  | exp_boolean BOOL_AND exp_boolean
+  | exp_boolean BOOL_OR  exp_boolean
+  | exp_boolean BOOL_XOR exp_boolean
   | TRUE   {/* Push '1' into Register Stack */}
   | FALSE  {/* Push '0' into Register Stack */}
 ;
@@ -210,7 +221,11 @@ exp_boolean:
   REAL EXPRESSIONS
 */
 exp_real:
-    REAL           {/* Push real into SSE stack */}
+    exp_number OP_ADD exp_number 
+  | exp_number OP_SUB exp_number
+  | exp_number OP_MUL exp_number
+  | exp_number OP_DIV exp_number
+  | REAL           {/* Push real into SSE stack */}
   | FLOAT_C  REAL  {/* Push float into SSE stack */}
   | DOUBLE_C REAL  {/* Push double into SSE stack */}
 ;
@@ -313,14 +328,14 @@ exp_param:
   FUNCTION EXPRESSIONS (INVOCATIONS)
 */
 exp_funct:
-    IDENTIFIER exp_arg
+    IDENTIFIER param_arg
 ;
 
 /*
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
-exp_arg:
-    IDENTIFIER exp_arg  {/* Accept arbitrary number of arguments */}
+param_arg:
+    exp param_arg  {/* Accept arbitrary number of arguments */}
   | {/*INTENTIONALLY LEFT BLANK*/}
 ;
 
@@ -411,6 +426,14 @@ param_prototype:
   |                             {/* INTENTIONALLY LEFT BLANK */}
 ;
 
+/*
+  TYPECLASSES IDENTIFIERS
+*/
+exp_number:
+    exp_real
+  | exp_integer
+;
+    
 
 
 /*
@@ -436,8 +459,15 @@ exp_byte_run:
   TETHER EXPRESSIONS
 */
 exp_tether:
-    TETHER STRING {/* FILE NAME ARGUMENT */}
-  | TETHER INT {/* BYTECODE ARGUMENT */}
+    TETHER param_tether {/* FILE NAME ARGUMENTS */}
+;
+
+/*
+  TETHER PARAMETERS
+*/
+param_tether:
+    IDENTIFIER param_tether {/*  */}
+  |                   {/* INTENTIONALLY LEFT BLANK */}
 ;
 
 /*
@@ -458,21 +488,40 @@ exp_regex:
   TETHER MODULE STRUCTURE
 */
 xcs_tether:
-    xcs_tether OP_SEP xcs_tether
-  | exp_offer
+    TETHER_H teth_sep           { printf("Finished Parsing Tether Module.\n"); }
+;
+
+teth_sep:
+    teth_sep OP_SEP teth_sep
+  | teth
   | exp
 ;
 
+teth:
+    exp_offer                     { printf("Service Offered\n"); }
+;
+
 /*
-  TETHER MODULE OFFERING EXPRESSIONS
+  OFFERING EXPRESSIONS/PARAMETERS
 */
 exp_offer:
-    exp_offer OP_SEP exp_offer
-  | OFFER IDENTIFIER param_offer OP_ASSIGN exp
+    OFFER IDENTIFIER param_offer OP_ASSIGN exp
 ;
 
 param_offer:
     IDENTIFIER param_offer  {/* Function Parameters for Offer */}
+  |       {/* INTENTIONALLY LEFT BLANK */}
+;
+
+/*
+  ASK EXPRESSIONS/PARAMETERS
+*/
+exp_ask:
+    ASK CONSTRUCTOR IDENTIFIER arg_ask
+;
+
+arg_ask:
+    exp arg_ask
   |       {/* INTENTIONALLY LEFT BLANK */}
 ;
 

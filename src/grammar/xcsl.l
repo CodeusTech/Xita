@@ -181,14 +181,20 @@ extern int yylex();
 */  
 %}
 
-"offer"  { return OFFER; }
+"!TETHER\n" { return TETHER_H; }
 
+"offer" { return OFFER; }
+"ask"   { return ASK;   }
 
 %{
 /*
   B.) Constructors/Identifiers
 */
 %}
+
+0[bB][01]+           { yylval.val_int = strtol(yytext, NULL,  2); return INT; } //  BINARY PRIMITIVE
+0[oO][0-7]+          { yylval.val_int = strtol(yytext, NULL,  8); return INT; } //  OCTAL PRIMITIVE
+0[xX][0-9a-fA-F]+    { yylval.val_int = strtol(yytext, NULL, 16); return INT; } //  HEXADECIMAL PRIMITIVE
 
 [0-9]+            { yylval.val_int = atoi(yytext); return INT; }    //  INTEGER PRIMITIVE
 [0-9]+\.[0-9]*    { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE
