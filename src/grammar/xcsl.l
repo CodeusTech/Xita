@@ -172,6 +172,9 @@ extern int yylex();
 "run"     { return RUN;   }
 "tether"  { return TETHER;}
 
+"send"    { return SEND;    }
+"receive" { return RECEIVE; }
+
 "regex"   { return REGEX; }
 
 "load"    { return LOAD; }

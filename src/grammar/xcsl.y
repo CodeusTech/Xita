@@ -104,8 +104,9 @@ void yyerror(const char* s);
 %token CONSTRUCTOR
 
 //  Special Operations
-%token BUILD RUN TETHER
-%token REGEX
+%token BUILD RUN            //  Bytecode Operations
+%token REGEX                //  Regular Expressions
+%token TETHER SEND RECEIVE  //  Interprocess Communication
 
 //  Module Operations
 %token LOAD
@@ -150,21 +151,23 @@ exp:
   | exp_char          {/* For Testing */}
   | exp_string        {/* For Testing */}
   | exp_boolean       {/* For Testing */}
-  | exp_byte_build    { printf("Bytecode Built\n"); }
-  | exp_byte_run      { printf("Bytecode/Module Executed\n"); }
-  | exp_tether        { printf("Processes Tethered\n"); }
-  | exp_ask           { printf("Process Requested\n"); }
+  | exp_byte_build    { printf("Bytecode Built\n");             }
+  | exp_byte_run      { printf("Bytecode/Module Executed\n");   }
+  | exp_tether        { printf("Processes Tethered\n");         }
+  | exp_ask           { printf("Process Requested\n");          }
+  | exp_send          { printf("Expression Sent\n");            }
+  | exp_receive       { printf("Expression Received\n");        }
   | exp_regex         { printf("Regular Expression Invoked\n"); }
-  | decl_funct        { printf("Function Declared\n"); }
-  | exp_funct         { printf("Function Invoked\n"); }
-  | exp_const         { printf("Constant Declared\n"); }
-  | exp_type          { printf("Type Declared\n"); }
-  | exp_typeclass     { printf("Typeclass Declared\n"); }
-  | exp_if            { printf("If Statement Invoked\n"); }
-  | exp_match         { printf("Match Statement Invoked\n"); }
-  | exp_list          { printf("List Declared\n"); }
-  | exp OP_TUP exp    { printf("Tuple Operator Invoked\n"); }
-  | IDENTIFIER        { printf("Found Identifier: %s\n", $1); }
+  | decl_funct        { printf("Function Declared\n");          }
+  | exp_funct         { printf("Function Invoked\n");           }
+  | exp_const         { printf("Constant Declared\n");          }
+  | exp_type          { printf("Type Declared\n");              }
+  | exp_typeclass     { printf("Typeclass Declared\n");         }
+  | exp_if            { printf("If Statement Invoked\n");       }
+  | exp_match         { printf("Match Statement Invoked\n");    }
+  | exp_list          { printf("List Declared\n");              }
+  | exp OP_TUP exp    { printf("Tuple Operator Invoked\n");     }
+  | IDENTIFIER        { printf("Found Identifier: %s\n", $1);   }
 ;
 
 /*
@@ -475,11 +478,20 @@ param_tether:
   REGULAR EXPRESSIONS
 */
 exp_regex:
-    REGEX STRING {/* Process Regular Expression */}
+    REGEX STRING  {/* Process Regular Expression */}
 ;
 
 
+/*
+  INTERPROCESS COMMUNICATION
+*/
+exp_send:
+    SEND exp_string exp  {/* Send Expression using Key String */}
+;
 
+exp_receive:
+    RECEIVE exp_string   {/* Receive Expression using Key String */}
+;
 
 /*
   A.) Tether Module Expressions 
