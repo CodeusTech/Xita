@@ -29,6 +29,7 @@ extern int yylex();
 
 %}
 %option noyywrap
+%option yylineno
 %%
 [ \t\n] ;           // Eliminate Whitespace
 

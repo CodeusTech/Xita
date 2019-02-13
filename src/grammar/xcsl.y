@@ -30,6 +30,7 @@
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
+extern int yylineno;
 
 void yyerror(const char* s);
 
@@ -493,11 +494,14 @@ xcs_tether:
 
 teth_sep:
     teth_sep OP_SEP teth_sep
-  | teth
+  | tether
   | exp
 ;
 
-teth:
+/*
+  TETHER EXPRESSIONS
+*/
+tether:
     exp_offer                     { printf("Service Offered\n"); }
 ;
 
@@ -531,7 +535,7 @@ arg_ask:
   GENERIC ERROR MESSAGE
 */
 void yyerror(const char* s) {
-	fprintf(stderr, "Parse error: %s\n", s);
+	fprintf(stderr, "Parse error in line %d: %s\n", yylineno, s);
 	exit(1);
 }
 
