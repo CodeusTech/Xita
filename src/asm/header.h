@@ -12,6 +12,8 @@
 #ifndef ASM_HEADER_H
 #define ASM_HEADER_H
 
+#include "stdio.h"
+
 FILE* asm_file;
 
 // Generate Assembly Header for Source Module

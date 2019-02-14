@@ -24,6 +24,7 @@
 
 //  Assembly Libraries
 #include "asm/asm.h"
+#include "buffers.h"
 
 //  Linux Libraries
 #include "stdbool.h"
@@ -58,6 +59,9 @@ int main(int argc, char** argv)
 		{
 			interpreted = false;
 
+			//  Initialize Buffers
+			init_buffer(buf_asm_text);
+
 			//  Set Parser File Pointer
 			yyin = fopen(argv[i], "r");
 			while(!feof(yyin)) yyparse();
@@ -65,9 +69,12 @@ int main(int argc, char** argv)
 			//  Create Assembly File
 			char* asm_fname = strdup(argv[i]);
 			strcat(asm_fname, ".s");
+
+			//  Populate Assembly File
 			write_asm_file(asm_fname);
 
-			
+			//  Free Buffered Memory
+			clear_buffer(buf_asm_text);
 
 			//  Delete Assembly File (if not Keep Assembly)
 			if (!keep_assembly) delete_asm_file(asm_fname);
