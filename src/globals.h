@@ -20,7 +20,10 @@
   1.) Assembly Buffers
 */
 
-char** buf_asm_text;
+char** start_asm_text;
+char**  curr_asm_text;
+int count_asm_text;
+int index_asm_text;
 
 
 /*
@@ -35,9 +38,12 @@ char** buf_asm_text;
 int init_buffer(char** buffer)
 {
   //  Allocate Memory
-  buf_asm_text = (char**) malloc(256 * sizeof(char*));
+  start_asm_text = (char**) malloc(256 * sizeof(char*));
+  curr_asm_text  = start_asm_text;
+  index_asm_text = 0;
 
-  buf_asm_text[255] = (char*) 0;
+  start_asm_text[255] = (char*) 0;
+  curr_asm_text[255]  = (char*) 0;
 
   return 0;
 }
@@ -50,8 +56,8 @@ int clear_buffer(char** buffer)
 {
 
   //  If not at end of list, recurse next buffer
-  if ( buf_asm_text[255] != (char*) 0)
-    clear_buffer((char**) buf_asm_text[255]);
+  if ( start_asm_text[255] != (char*) 0)
+    clear_buffer((char**) start_asm_text[255]);
 
   //  Free Current Buffer
   free(buffer);

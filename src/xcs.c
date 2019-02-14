@@ -24,7 +24,7 @@
 
 //  Assembly Libraries
 #include "asm/asm.h"
-#include "buffers.h"
+#include "globals.h"
 
 //  Linux Libraries
 #include "stdbool.h"
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 			interpreted = false;
 
 			//  Initialize Buffers
-			init_buffer(buf_asm_text);
+			init_buffer(start_asm_text);
 
 			//  Set Parser File Pointer
 			yyin = fopen(argv[i], "r");
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
 			write_asm_file(asm_fname);
 
 			//  Free Buffered Memory
-			clear_buffer(buf_asm_text);
+			clear_buffer(start_asm_text);
 
 			//  Delete Assembly File (if not Keep Assembly)
 			if (!keep_assembly) delete_asm_file(asm_fname);
