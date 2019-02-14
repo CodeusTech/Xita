@@ -13,6 +13,8 @@
 #define XCS_ASM_H
 
 #include "header.h"
+
+#include "stdlib.h"
 #include "stdio.h"
 
 /*
