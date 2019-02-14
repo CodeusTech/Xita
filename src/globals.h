@@ -11,6 +11,8 @@
   Table of Contents
   =================
   1.) Assembly Buffers
+  2.) Function Buffers
+  3.) Type Buffers
 */
 
 #ifndef XCS_BUFFERS_H
@@ -70,5 +72,19 @@ int clear_buffer(char** buffer)
   return 0;
 }
 
+/*
+  2.) Function Buffers
+*/
+
+char** ident_functions;
+char** ident_constants;
+
+/*
+  3.) Type Buffers
+*/
+
+char** ident_types;
+char** ident_constructors;
+char** ident_typeclasses;
 
 #endif

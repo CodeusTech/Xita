@@ -22,9 +22,10 @@
 //  Import Grammar Libraries
 #include "../lex.yy.c"
 
-//  Assembly Libraries
-#include "asm/asm.h"
+//  XCS Libraries
 #include "globals.h"
+#include "types/types.h"
+#include "asm/asm.h"
 
 //  Linux Libraries
 #include "stdbool.h"
