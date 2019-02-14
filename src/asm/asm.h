@@ -32,9 +32,16 @@ int write_asm_file(char* filename)
   return 0;
 }
 
+/*
+  Returns:
+    0, if Successful
+    1, if File Remove Fails
+*/
 int delete_asm_file(char* filename)
 {
   remove(filename);
+
+  return 0;
 }
 
 #endif
