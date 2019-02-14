@@ -13,7 +13,7 @@
 	=================
 	1.) Default Compiler Options
 	2.) Handle Compiler Options
-	3.) Begin Parsing
+	3.) Interpreter Mode
 */
 
 //  Import Grammar Libraries
@@ -21,7 +21,9 @@
 
 //  Linux Libraries
 #include "stdbool.h"
+#include "stdio.h"
 
+extern FILE* yyin;
 
 /*
 	1.) Default Compiler Options
@@ -36,13 +38,29 @@ int main(int argc, char** argv)
 		2.) Handle Compiler Options
 	*/
 	
+	for (int i = 1; i < argc; i++)
+	{
 
-	//  Set standard input, if in Interpreter Mode
-	if (interpreted) yyin = stdin;
+		//  Keep Assembly Option
+		if (strcmp(argv[i], "-a") == 0 || strcmp(argv[i], "--keep-assembly") == 0) 
+		{
+			keep_assembly = true;
+		}
+		//  Assume Input File
+		else
+		{
+			interpreted = false;
+			yyin = fopen(argv[i], "r");
+			while(!feof(yyin)) yyparse();
+		}
+	}
+
 
 	/*
-		3.) Begin Parsing
+		3.) Interpreter Mode
 	*/
+	if (interpreted) yyin = stdin;
+
 	while (!feof(yyin)) yyparse();
 
 	return 0;
