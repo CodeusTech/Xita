@@ -164,7 +164,7 @@ exp:
   | exp_funct         { printf("Function Invoked\n");           }
   | exp_const         { printf("Constant Declared\n");          }
   | exp_type          { }
-  | exp_typeclass     { printf("Typeclass Declared\n");         }
+  | exp_typeclass     { }
   | exp_if            { printf("If Statement Invoked\n");       }
   | exp_match         { printf("Match Statement Invoked\n");    }
   | exp_list          { printf("List Declared\n");              }
@@ -316,18 +316,26 @@ exp_const:
 /*
   FUNCTION DECLARATIONS
 */
+let:
+  LET IDENTIFIER { declare_function($2); }
+;
+
 decl_funct:
-    LET IDENTIFIER exp_param OP_ASSIGN exp
-      { declare_function($2); }
-  | LET IDENTIFIER OF IDENTIFIER exp_param OP_ASSIGN exp
-      { declare_function($2); }
+    let exp_param OP_ASSIGN exp
+      {}
+  | let OF IDENTIFIER exp_param OP_ASSIGN exp
+      {}
 ;
 
 /*
   PARAMETER EXPRESSIONS (DECLARATIONS)
 */
+param:
+    IDENTIFIER { declare_parameter($1); }
+;
+
 exp_param:
-    IDENTIFIER exp_param  { declare_parameter($1); }
+    param exp_param  { }
   | {/* INTENTIONALLY LEFT BLANK */}
 ;
 
@@ -399,23 +407,35 @@ ident_construct:
 /*
   TYPE DECLARATIONS
 */
+type:
+    TYPE IDENTIFIER { declare_type($2); }
+;
+
 exp_type:
-    TYPE IDENTIFIER OP_ASSIGN exp_constructor { declare_type($2); }
+    type OP_ASSIGN exp_constructor { }
 ;
 
 /*
   CONSTRUCTOR EXPRESSIONS
 */
+constructor:
+  CONSTRUCTOR  { declare_constructor($1); }
+;
+
 exp_constructor:
-    CONSTRUCTOR BIT_OR exp_constructor  { declare_constructor($1); }
-  | CONSTRUCTOR                         { declare_constructor($1); }
+    constructor BIT_OR exp_constructor  { }
+  | constructor                         { }
 ;
 
 /*
   TYPECLASS DECLARATIONS
 */
+typeclass:
+    TYPECLASS IDENTIFIER { declare_typeclass($2); }
+;
+
 exp_typeclass:
-    TYPECLASS IDENTIFIER REQ exp_prototype
+    typeclass REQ exp_prototype
 ;
 
 /*
