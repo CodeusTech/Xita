@@ -14,6 +14,7 @@
 
 //  Type Headers
 #include "constructor.h"
+#include "lists.h"
 #include "typeclass.h"
 
 //  Global Variables

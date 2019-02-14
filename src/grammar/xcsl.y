@@ -171,7 +171,7 @@ exp:
   | exp_typeclass     { }
   | exp_if            { }
   | exp_match         { }
-  | exp_list          { printf("List Declared\n");              }
+  | exp_list          { }
   | exp OP_TUP exp    { printf("Tuple Operator Invoked\n");     }
   | IDENTIFIER        { printf("Found Identifier: %s\n", $1);   }
 ;
@@ -258,8 +258,12 @@ exp_string:
 /*
   LIST EXPRESSIONS
 */
+list:
+    OP_LIST_L {  }
+;
+
 exp_list:
-    OP_LIST_L param_list OP_LIST_R
+    OP_LIST_L param_list OP_LIST_R { printf("have been added to list\n"); }
 ;
 
 /*
@@ -267,7 +271,8 @@ exp_list:
 */
 param_list:
     param_list OP_COMMA param_list
-  | exp
+  | STRING                        { add_to_list($1); }
+  | EXP  {/* TODO */}
 ;
 
 /*
