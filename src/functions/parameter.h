@@ -27,6 +27,15 @@ int declare_parameter (char* name)
 }
 
 
+/*  Loads Argument into Function Call
+
+*/
+int load_argument()
+{
+  printf("Argument Loaded\n");
+
+  return 0;
+}
 
 
 #endif

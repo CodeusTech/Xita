@@ -17,20 +17,8 @@ extern char** ident_functions;
 //  Function Headers
 #include "constant.h"
 #include "parameter.h"
+#include "operations.h"
 
-//  Global Variables
-extern char** ident_functions;
-
-
-/*  Declares a Function
-  Returns:
-    0, if Successful
-*/
-int declare_function (char* name)
-{
-  printf("Function %s Declared\n", name);\
-  return 0;
-}
 
 
 

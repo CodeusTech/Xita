@@ -25,6 +25,7 @@
 */
 
 //  XCS Libraries
+#include "src/ident.h"
 #include "src/regex.h"
 #include "src/bytecode/bytecode.h"
 #include "src/conditions/conditions.h"
@@ -165,7 +166,7 @@ exp:
   | exp_ask           { }
   | exp_regex         { }
   | decl_funct        { }
-  | exp_funct         { printf("Function Invoked\n");           }
+  | exp_funct         { }
   | exp_const         { }
   | exp_type          { }
   | exp_typeclass     { }
@@ -173,7 +174,7 @@ exp:
   | exp_match         { }
   | exp_list          { }
   | exp OP_TUP exp    { add_to_tuple(); }
-  | IDENTIFIER        { printf("Found Identifier: %s\n", $1);   }
+  | IDENTIFIER        { resolve_identifier($1); }
 ;
 
 /*
@@ -371,13 +372,18 @@ exp_param:
 /*
   FUNCTION EXPRESSIONS (INVOCATIONS)
 */
+
 exp_funct:
-    IDENTIFIER param_arg
+    IDENTIFIER param_arg  { invoke_function($1); }
 ;
 
 /*
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
+arg:
+    exp { load_argument(); }
+;
+
 param_arg:
     exp param_arg  {/* Accept arbitrary number of arguments */}
   | {/*INTENTIONALLY LEFT BLANK*/}
