@@ -12,6 +12,7 @@
 #ifndef TYPES_TYPECLASS_H
 #define TYPES_TYPECLASS_H
 
+extern char** ident_typeclasses;
 
 
 

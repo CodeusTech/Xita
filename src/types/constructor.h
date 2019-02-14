@@ -12,8 +12,14 @@
 #ifndef TYPES_CONSTRUCTOR_H
 #define TYPES_CONSTRUCTOR_H
 
+extern char** ident_constructors;
 
 
+int declare_constructor (char* name)
+{
+  printf("Constructor %s Declared\n", name);
+  return 0;
+}
 
 
 #endif

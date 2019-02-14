@@ -78,6 +78,7 @@ int clear_buffer(char** buffer)
 
 char** ident_functions;
 char** ident_constants;
+char** ident_parameters;
 
 /*
   3.) Type Buffers

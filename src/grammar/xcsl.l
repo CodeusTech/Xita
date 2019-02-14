@@ -206,5 +206,5 @@ extern int yylex();
 \'[a-zA-Z0-9]\'   { yylval.val_char =  yytext[1]; return CHAR; }    //  CHARACTER PRIMITIVE
 \"(\\.|[^"\\])*\"  { yylval.val_string = strdup(yytext); return STRING; }  //  STRING PRIMITIVE
 
-[A-Z][a-zA-Z0-9_]*\'?   { return CONSTRUCTOR; }
+[A-Z][a-zA-Z0-9_]*\'?   { yylval.val_ident = strdup(yytext); return CONSTRUCTOR; }
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }

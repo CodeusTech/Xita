@@ -24,6 +24,11 @@
   A.) Tether Module Expressions 
 */
 
+//  XCS Libraries
+#include "src/types/types.h"
+#include "src/functions/functions.h"
+
+//  Linux Libraries
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -55,7 +60,7 @@ void yyerror(const char* s);
 %token<val_real> REAL
 %token<val_char> CHAR
 %token<val_string> STRING
-%token<val_ident> IDENTIFIER
+%token<val_ident> IDENTIFIER CONSTRUCTOR
 %token TRUE FALSE
 
 //  Syntactic Operators
@@ -99,9 +104,6 @@ void yyerror(const char* s);
 
 // Booleans
 %token BOOL_T
-
-//  Constructors/Identifiers
-%token CONSTRUCTOR
 
 //  Special Operations
 %token BUILD RUN            //  Bytecode Operations
@@ -158,10 +160,10 @@ exp:
   | exp_send          { printf("Expression Sent\n");            }
   | exp_receive       { printf("Expression Received\n");        }
   | exp_regex         { printf("Regular Expression Invoked\n"); }
-  | decl_funct        { printf("Function Declared\n");          }
+  | decl_funct        { }
   | exp_funct         { printf("Function Invoked\n");           }
   | exp_const         { printf("Constant Declared\n");          }
-  | exp_type          { printf("Type Declared\n");              }
+  | exp_type          { }
   | exp_typeclass     { printf("Typeclass Declared\n");         }
   | exp_if            { printf("If Statement Invoked\n");       }
   | exp_match         { printf("Match Statement Invoked\n");    }
@@ -316,14 +318,16 @@ exp_const:
 */
 decl_funct:
     LET IDENTIFIER exp_param OP_ASSIGN exp
+      { declare_function($2); }
   | LET IDENTIFIER OF IDENTIFIER exp_param OP_ASSIGN exp
+      { declare_function($2); }
 ;
 
 /*
   PARAMETER EXPRESSIONS (DECLARATIONS)
 */
 exp_param:
-    IDENTIFIER exp_param  {/* Accept arbitrary number of parameters */}
+    IDENTIFIER exp_param  { declare_parameter($1); }
   | {/* INTENTIONALLY LEFT BLANK */}
 ;
 
@@ -396,15 +400,15 @@ ident_construct:
   TYPE DECLARATIONS
 */
 exp_type:
-    TYPE IDENTIFIER OP_ASSIGN exp_constructor
+    TYPE IDENTIFIER OP_ASSIGN exp_constructor { declare_type($2); }
 ;
 
 /*
   CONSTRUCTOR EXPRESSIONS
 */
 exp_constructor:
-    CONSTRUCTOR BIT_OR exp_constructor  {/* Nonterminal Constructors */}
-  | CONSTRUCTOR                         {/* Terminal Cosntructor     */}
+    CONSTRUCTOR BIT_OR exp_constructor  { declare_constructor($1); }
+  | CONSTRUCTOR                         { declare_constructor($1); }
 ;
 
 /*

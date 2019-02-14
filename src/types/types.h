@@ -12,12 +12,18 @@
 #ifndef XCS_TYPES_H
 #define XCS_TYPES_H
 
+//  Type Headers
+#include "constructor.h"
+#include "typeclass.h"
 
+//  Global Variables
 extern char** ident_types;
-extern char** ident_constructors;
-extern char** ident_typeclasses;
 
 
+int declare_type (char* name)
+{
+  printf("Type %s Declared\n", name);
+}
 
 
 
