@@ -167,7 +167,7 @@ exp:
   | exp_type          { }
   | exp_typeclass     { }
   | exp_if            { }
-  | exp_match         { printf("Match Statement Invoked\n");    }
+  | exp_match         { }
   | exp_list          { printf("List Declared\n");              }
   | exp OP_TUP exp    { printf("Tuple Operator Invoked\n");     }
   | IDENTIFIER        { printf("Found Identifier: %s\n", $1);   }
@@ -293,17 +293,29 @@ exp_if:
 /*
   MATCH ... WITH ... EXPRESSIONS
 */
+match:
+    MATCH IDENTIFIER { match_statement(); }
+;
+
+with:
+    WITH  { with_statement(); }
+;
+
 exp_match:
-    MATCH IDENTIFIER WITH exp_with
+    match with exp_with { conclude_match(); }
 ;
 
 exp_with:
-    ident_construct param_match ARROW_R exp OP_COMMA exp_with  {  }
-  | ident_construct param_match ARROW_R exp                    {  }
+    param_match param_with ARROW_R exp OP_COMMA exp_with  {  }
+  | param_match param_with ARROW_R exp                    {  }
 ;
 
-param_match: 
-  IDENTIFIER param_match
+param_match:
+    ident_construct 
+;
+
+param_with: 
+  IDENTIFIER param_with
   | {/* INTENTIONALLY LEFT BLANK */}
 ;
 

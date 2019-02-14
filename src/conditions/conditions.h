@@ -13,6 +13,7 @@
 #define XCS_CONDITIONS_H
 
 #include "if.h"
+#include "match.h"
 
 
 
