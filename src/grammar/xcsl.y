@@ -172,7 +172,7 @@ exp:
   | exp_if            { }
   | exp_match         { }
   | exp_list          { }
-  | exp OP_TUP exp    { printf("Tuple Operator Invoked\n");     }
+  | exp OP_TUP exp    { add_to_tuple(); }
   | IDENTIFIER        { printf("Found Identifier: %s\n", $1);   }
 ;
 
@@ -272,7 +272,6 @@ exp_list:
 param_list:
     param_list OP_COMMA param_list
   | STRING                        { add_to_list($1); }
-  | EXP  {/* TODO */}
 ;
 
 /*
