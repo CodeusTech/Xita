@@ -166,7 +166,7 @@ exp:
   | exp_regex         { }
   | decl_funct        { }
   | exp_funct         { printf("Function Invoked\n");           }
-  | exp_const         { printf("Constant Declared\n");          }
+  | exp_const         { }
   | exp_type          { }
   | exp_typeclass     { }
   | exp_if            { }
@@ -329,8 +329,12 @@ param_with:
 /*
   CONSTANT EXPRESSIONS
 */
+const:
+    CONST IDENTIFIER OF ident_type { declare_constant($2); }
+;
+
 exp_const:
-    CONST IDENTIFIER OF ident_type OP_ASSIGN exp
+    const OP_ASSIGN exp
 ;
 
 /*

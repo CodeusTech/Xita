@@ -15,7 +15,12 @@
 extern char** ident_constants;
 
 
+int declare_constant(char* constant)
+{
+  printf("Constant Declared: %s\n", constant);
 
+  return 0;
+}
 
 
 
