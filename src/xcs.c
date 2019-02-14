@@ -2,7 +2,7 @@
   xcs.c (AArch64)
   Cody Fagley
   Authored on   January 28, 2019
-  Last Modfieid January 28, 2019
+  Last Modfieid February 13, 2019
 */
 
 /*
@@ -16,8 +16,14 @@
 	3.) Interpreter Mode
 */
 
+#ifndef XCS_C
+#define XCS_C
+
 //  Import Grammar Libraries
 #include "../lex.yy.c"
+
+//  Assembly Libraries
+#include "asm/asm.h"
 
 //  Linux Libraries
 #include "stdbool.h"
@@ -46,12 +52,25 @@ int main(int argc, char** argv)
 		{
 			keep_assembly = true;
 		}
+
 		//  Assume Input File
 		else
 		{
 			interpreted = false;
+
+			//  Set Parser File Pointer
 			yyin = fopen(argv[i], "r");
 			while(!feof(yyin)) yyparse();
+
+			//  Create Assembly File
+			char* asm_fname = strdup(argv[i]);
+			strcat(asm_fname, ".s");
+			write_asm_file(asm_fname);
+
+			
+
+			//  Delete Assembly File (if not Keep Assembly)
+			if (!keep_assembly) delete_asm_file(asm_fname);
 		}
 	}
 
@@ -65,3 +84,5 @@ int main(int argc, char** argv)
 
 	return 0;
 }
+
+#endif
