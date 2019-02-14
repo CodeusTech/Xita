@@ -6,7 +6,7 @@
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
 CCOMP=gcc
-CFLAGS=-std=gnu99
+CFLAGS=-std=gnu99 -lm
 
 #  Build and Install Cross Compiler
 install: build tidy

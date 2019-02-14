@@ -25,6 +25,7 @@
 */
 
 //  XCS Libraries
+#include "src/bytecode/bytecode.h"
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
 #include "src/types/types.h"
@@ -154,8 +155,8 @@ exp:
   | exp_char          {/* For Testing */}
   | exp_string        {/* For Testing */}
   | exp_boolean       {/* For Testing */}
-  | exp_byte_build    { printf("Bytecode Built\n");             }
-  | exp_byte_run      { printf("Bytecode/Module Executed\n");   }
+  | exp_byte_build    { }
+  | exp_byte_run      { }
   | exp_tether        { printf("Processes Tethered\n");         }
   | exp_ask           { printf("Process Requested\n");          }
   | exp_send          { printf("Expression Sent\n");            }
@@ -489,15 +490,14 @@ exp_number:
   BUILD EXECUTABLE BYTECODE STRING
 */
 exp_byte_build:
-    BUILD IDENTIFIER { printf("Building %s...\n", $2); }
+    BUILD IDENTIFIER { build_bytestring($2); }
 ;
 
 /*
   RUN EXECUTABLE BYTECODE STRING
 */
 exp_byte_run:
-    RUN INT    { printf("Running %d...\n", $2); }
-  | RUN STRING { printf("Running %s...\n", $2); }
+    RUN STRING { run_bytestring($2); }
 ;
 
 /*
