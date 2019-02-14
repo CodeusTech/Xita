@@ -161,7 +161,7 @@ exp:
   | exp_tether        { }
   | exp_send          { }
   | exp_receive       { }
-  | exp_ask           { printf("Process Requested\n");          }
+  | exp_ask           { }
   | exp_regex         { printf("Regular Expression Invoked\n"); }
   | decl_funct        { }
   | exp_funct         { printf("Function Invoked\n");           }
@@ -561,14 +561,18 @@ teth_sep:
   TETHER EXPRESSIONS
 */
 tether:
-    exp_offer                     { printf("Service Offered\n"); }
+    exp_offer                     { }
 ;
 
 /*
   OFFERING EXPRESSIONS/PARAMETERS
 */
+offer:
+    OFFER IDENTIFIER { ipc_offer($2); }
+;
+
 exp_offer:
-    OFFER IDENTIFIER param_offer OP_ASSIGN exp
+    offer param_offer OP_ASSIGN exp
 ;
 
 param_offer:
@@ -580,7 +584,7 @@ param_offer:
   ASK EXPRESSIONS/PARAMETERS
 */
 exp_ask:
-    ASK CONSTRUCTOR IDENTIFIER arg_ask
+    ASK CONSTRUCTOR IDENTIFIER arg_ask { ipc_ask($2, $3); }
 ;
 
 arg_ask:

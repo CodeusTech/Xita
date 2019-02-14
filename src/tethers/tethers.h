@@ -12,8 +12,11 @@
 #ifndef XCS_TETHERS_H
 #define XCS_TETHERS_H
 
+//  Internal Tether Headers
 #include "parameter.h"
 #include "ipc.h"
+#include "module.h"
+
 
 int create_process_tether()
 {
@@ -21,10 +24,6 @@ int create_process_tether()
   
   return 0;
 }
-
-
-
-
 
 
 #endif
