@@ -25,6 +25,7 @@
 */
 
 //  XCS Libraries
+#include "src/regex.h"
 #include "src/bytecode/bytecode.h"
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
@@ -162,7 +163,7 @@ exp:
   | exp_send          { }
   | exp_receive       { }
   | exp_ask           { }
-  | exp_regex         { printf("Regular Expression Invoked\n"); }
+  | exp_regex         { }
   | decl_funct        { }
   | exp_funct         { printf("Function Invoked\n");           }
   | exp_const         { printf("Constant Declared\n");          }
@@ -525,7 +526,7 @@ param_tether:
   REGULAR EXPRESSIONS
 */
 exp_regex:
-    REGEX STRING  {/* Process Regular Expression */}
+    REGEX STRING  { regular_expression($2); }
 ;
 
 
