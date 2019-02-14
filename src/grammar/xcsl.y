@@ -25,8 +25,9 @@
 */
 
 //  XCS Libraries
-#include "src/types/types.h"
+#include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
+#include "src/types/types.h"
 
 //  Linux Libraries
 #include <stdio.h>
@@ -165,7 +166,7 @@ exp:
   | exp_const         { printf("Constant Declared\n");          }
   | exp_type          { }
   | exp_typeclass     { }
-  | exp_if            { printf("If Statement Invoked\n");       }
+  | exp_if            { }
   | exp_match         { printf("Match Statement Invoked\n");    }
   | exp_list          { printf("List Declared\n");              }
   | exp OP_TUP exp    { printf("Tuple Operator Invoked\n");     }
@@ -273,16 +274,20 @@ param_list:
 /*
   IF ... THEN ... ELSE ... EXPRESSIONS
 */
+if:
+  IF exp_boolean { if_statement(); }
+;
+
+then:
+  THEN exp { then_statement(); }
+;
+
+else:
+  ELSE exp { else_statement(); }
+;
+
 exp_if:
-    IF exp_boolean exp_then   {  }
-;
-
-exp_then: 
-    THEN exp exp_else
-;
-
-exp_else:
-    ELSE exp
+    if then else {  }
 ;
 
 /*
