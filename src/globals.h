@@ -25,6 +25,11 @@ char**  curr_asm_text;
 int count_asm_text;
 int index_asm_text;
 
+char** start_asm_bss;
+char**  curr_asm_bss;
+int count_asm_bss;
+int index_asm_bss;
+
 
 /*
   TODO:  
