@@ -28,6 +28,7 @@
 #include "src/bytecode/bytecode.h"
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
+#include "src/tethers/tethers.h"
 #include "src/types/types.h"
 
 //  Linux Libraries
@@ -157,10 +158,10 @@ exp:
   | exp_boolean       {/* For Testing */}
   | exp_byte_build    { }
   | exp_byte_run      { }
-  | exp_tether        { printf("Processes Tethered\n");         }
+  | exp_tether        { }
+  | exp_send          { }
+  | exp_receive       { }
   | exp_ask           { printf("Process Requested\n");          }
-  | exp_send          { printf("Expression Sent\n");            }
-  | exp_receive       { printf("Expression Received\n");        }
   | exp_regex         { printf("Regular Expression Invoked\n"); }
   | decl_funct        { }
   | exp_funct         { printf("Function Invoked\n");           }
@@ -503,15 +504,20 @@ exp_byte_run:
 /*
   TETHER EXPRESSIONS
 */
+
 exp_tether:
-    TETHER param_tether {/* FILE NAME ARGUMENTS */}
+    TETHER param_tether { create_process_tether(); }
 ;
 
 /*
   TETHER PARAMETERS
 */
+pteth:
+    IDENTIFIER { add_tether_parameter($1); }
+;
+
 param_tether:
-    IDENTIFIER param_tether {/*  */}
+    pteth param_tether {  }
   |                   {/* INTENTIONALLY LEFT BLANK */}
 ;
 
@@ -527,11 +533,11 @@ exp_regex:
   INTERPROCESS COMMUNICATION
 */
 exp_send:
-    SEND exp_string exp  {/* Send Expression using Key String */}
+    SEND STRING exp  { ipc_send($2); }
 ;
 
 exp_receive:
-    RECEIVE exp_string   {/* Receive Expression using Key String */}
+    RECEIVE STRING   { ipc_receive($2); }
 ;
 
 /*
