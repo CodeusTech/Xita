@@ -30,8 +30,8 @@
 
 */
 
-#ifndef PRIMITIVES_INT_H
-#define PRIMITIVES_INT_H
+#ifndef PRIMITIVES_INTEXP_H
+#define PRIMITIVES_INTEXP_H
 
 /*
   1.) Integer Literals

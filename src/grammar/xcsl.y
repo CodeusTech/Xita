@@ -239,20 +239,18 @@ exp_integer:
   2.b) Boolean Expressions
 */
 exp_boolean:
-    exp_integer OP_EQ  exp_integer
-  | exp_integer OP_NEQ exp_integer
-  | exp_integer OP_GT  exp_integer
-  | exp_integer OP_GTE exp_integer
-  | exp_integer OP_LT  exp_integer
-  | exp_integer OP_LTE exp_integer
-  | exp_integer BOOL_AND exp_integer
-  | exp_integer BOOL_OR  exp_integer
-  | exp_integer BOOL_XOR exp_integer
-  | exp_boolean BOOL_AND exp_boolean
-  | exp_boolean BOOL_OR  exp_boolean
-  | exp_boolean BOOL_XOR exp_boolean
+    exp_boolean OP_EQ  exp_boolean    { boolean_eq();  }
+  | exp_boolean OP_NEQ exp_boolean    { boolean_neq(); }
+  | exp_boolean OP_GT  exp_boolean    { boolean_gt();  }
+  | exp_boolean OP_GTE exp_boolean    { boolean_gte(); }
+  | exp_boolean OP_LT  exp_boolean    { boolean_lt();  }
+  | exp_boolean OP_LTE exp_boolean    { boolean_lte(); }
+  | exp_boolean BOOL_AND exp_boolean  { boolean_and(); }
+  | exp_boolean BOOL_OR  exp_boolean  { boolean_or();  }
+  | exp_boolean BOOL_XOR exp_boolean  { boolean_xor(); }
   | TRUE   {/* Push '1' into Register Stack */}
   | FALSE  {/* Push '0' into Register Stack */}
+  | exp_integer
 ;
 
 /*

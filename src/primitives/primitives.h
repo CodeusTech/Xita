@@ -12,7 +12,8 @@
 #ifndef XCS_PRIMITIVES_H
 #define XCS_PRIMITIVES_H
 
-#include "int.h"
+#include "intexp.h"
+#include "boolexp.h"
 
 
 
