@@ -372,7 +372,7 @@ exp_match:
 
 exp_with:
     param_match param_with ARROW_R exp OP_COMMA exp_with  {  }
-  | param_match param_with ARROW_R exp                    {  }
+  | param_match param_with ARROW_R exp                  {  }
 ;
 
 param_match:
