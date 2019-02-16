@@ -538,17 +538,24 @@ exp_typeclass:
 /*
   PROTOTYPE EXPRESSIONS
 */
+prototype:
+  IDENTIFIER  { proto_declare($1); }
+;
+
+proto_comma:
+  OP_COMMA { printf("\n"); }
+
 exp_prototype:
-    exp_prototype OP_COMMA exp_prototype  {/* Arbitrary Number of Function Prototypes */}
-  | IDENTIFIER param_prototype            { proto_declare($1); }
+    prototype param_prototype proto_comma exp_prototype { }
+  | prototype param_prototype            { printf("\n"); }
 ;
 
 /*
   PROTOTYPE PARAMETERS
 */
 param_prototype:
-    IDENTIFIER param_prototype  {/* Prototype Parameters */}
-  |                             {/* INTENTIONALLY LEFT BLANK */}
+    param_prototype param_prototype 
+  | IDENTIFIER      { proto_param($1); }
 ;
 
 /*

@@ -23,12 +23,16 @@
 */
 int proto_declare(char* str)
 {
-  printf("Prototype %s Declared\n", str);
+  printf("Prototype %s Declared, and requires parameters: ", str);
 
   return 0;
 }
 
 
+int proto_param(char* str)
+{
+  printf("%s ", str);
+}
 
 
 #endif
