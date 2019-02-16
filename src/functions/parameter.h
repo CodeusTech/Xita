@@ -28,7 +28,8 @@ int declare_parameter (char* name)
 
 
 /*  Loads Argument into Function Call
-
+  Returns:
+    0, if Successful
 */
 int load_argument()
 {

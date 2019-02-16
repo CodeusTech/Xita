@@ -11,17 +11,46 @@
 
   Table of Contents
   ======================
-  1.) Token Declarations
-  2.) Order of Operations
-  3.) Start of Grammar
-  4.) XCSL Expressions
-  5.) Primitive Expressions
-  6.) Conditional Expressions
-  7.) Functional Expressions
-  8.) Datatype Expressions
-  9.) Special Operations
+  A.) Token Declarations
+  B.) Order of Operations
+  C.) Start of Grammar
   
-  A.) Tether Module Expressions 
+  D.) Source Modules
+  ----------------------
+  1.) XCSL Expressions
+  2.) Primitive Expressions
+    2.a) Integer Expressions
+    2.b) Boolean Expressions
+    2.c) Real Expressions
+    2.d) Character Expressions
+    2.e) String Expressions
+    2.f) List Expressions
+  3.) Conditional Expressions
+    3.a) if ... then ... else ...
+    3.b) match ... with ...
+    3.c) ... is ...
+  4.) Functional Expressions
+    4.a) Constants
+    4.b) Function Declarations/Invocations
+    4.c) Parameters/Arguments
+  5.) Datatype Expressions
+    5.a) Types
+    5.b) Constructors
+    5.c) Typeclass/Prototypes
+    5.d) Primitive Typeclasses
+  6.) Special Operations
+    6.a) Build/Run
+    6.b) Process Tethers
+    6.c) Send/Receive
+    6.d) Regular Expressions
+  
+  E.) Tether Modules
+  ----------------------
+  1.) Tether Module Structure
+  2.) Tether Expressions
+  3.) Ask/Offer
+    3.a) Offer Statements
+    3.b) Ask Statements
 */
 
 //  XCS Libraries
@@ -48,7 +77,7 @@ void yyerror(const char* s);
 %}
 
 /*
-  1.) Token Declarations
+  A.) Token Declarations
 */
 
 //  Primitive Data Types
@@ -120,7 +149,7 @@ void yyerror(const char* s);
 %token TETHER_H OFFER ASK
 
 /*
-  2.) Order of Operations
+  B.) Order of Operations
 */
 %left OP_TUP
 %left OP_ADD OP_SUB
@@ -129,7 +158,7 @@ void yyerror(const char* s);
 
 
 /*
-  3.)  Start of Grammar
+  C.) Start of Grammar
 */
 %start xcs
 %%
@@ -138,6 +167,10 @@ xcs:
     xcs_source  {/* Source Module Structure */}
   | xcs_tether  {/* Tether Module Structure */}
 ;
+
+/*
+  D.) Source Modules
+*/
 
 xcs_source:
     src             { printf("Finished Parsing Source Module.\n"); }
@@ -150,7 +183,7 @@ src:
 ;
 
 /*
-  4.) XCSL Expressions
+  1.) XCSL Expressions
 */
 exp:
     exp_integer       {/* For Testing */}
@@ -178,11 +211,11 @@ exp:
 ;
 
 /*
-  5.) Primitive Expressions
+  2.) Primitive Expressions
 */
 
 /*
-  INTEGER EXPRESSIONS
+  2.a) Integer Expressions
 */
 exp_integer:
     exp_integer OP_ADD exp_integer 
@@ -196,20 +229,12 @@ exp_integer:
   | exp_integer BIT_SHR exp_integer
   | exp_integer BIT_XOR exp_integer
   | INT        {/* Push int into Register Stack */}
-  | U8_C  INT  {/* Push int into Register Stack */}
-  | I8_C  INT  {/* Push int into Register Stack */}
-  | U16_C INT  {/* Push int into Register Stack */}
-  | I16_C INT  {/* Push int into Register Stack */}
-  | U32_C INT  {/* Push int into Register Stack */}
-  | I32_C INT  {/* Push int into Register Stack */}
-  | U64_C INT  {/* Push int into Register Stack */}
-  | I64_C INT  {/* Push int into Register Stack */}
   | RNG        { printf("Random Number Generated\n"); }
   | IDENTIFIER {/* Push ident into Register Stack */}
 ;
 
 /*
-  BOOLEAN EXPRESSIONS
+  2.b) Boolean Expressions
 */
 exp_boolean:
     exp_integer OP_EQ  exp_integer
@@ -229,7 +254,7 @@ exp_boolean:
 ;
 
 /*
-  REAL EXPRESSIONS
+  2.c) Real Expressions
 */
 exp_real:
     exp_number OP_ADD exp_number 
@@ -242,7 +267,7 @@ exp_real:
 ;
 
 /*
-  CHARACTER EXPRESSIONS
+  2.d) Character Expressions
 */
 exp_char:
     CHAR        {/* Push Character onto Register Stack */}
@@ -250,14 +275,14 @@ exp_char:
 ;
 
 /*
-  STRING EXPRESSIONS
+  2.e) String Expressions
 */
 exp_string:
     STRING  {/* Push pointer to string onto Register Stack */}
 ;
 
 /*
-  LIST EXPRESSIONS
+  2.f) List Expressions
 */
 list:
     OP_LIST_L {  }
@@ -276,11 +301,11 @@ param_list:
 ;
 
 /*
-  6.) Conditional Expressions
+  3.) Conditional Expressions
 */
 
 /*
-  IF ... THEN ... ELSE ... EXPRESSIONS
+  3.a) if ... then ... else ...
 */
 if:
   IF exp_boolean { if_statement(); }
@@ -299,7 +324,7 @@ exp_if:
 ;
 
 /*
-  MATCH ... WITH ... EXPRESSIONS
+  3.b) match ... with ...
 */
 match:
     MATCH IDENTIFIER { match_statement(); }
@@ -328,11 +353,20 @@ param_with:
 ;
 
 /*
-  7.) Functional Expressions
+  3.c) ... is ...
+*/
+
+is_exp:
+    exp IS ident_construct
+  | exp IS ident_type
+;
+
+/*
+  4.) Functional Expressions
 */
 
 /*
-  CONSTANT EXPRESSIONS
+  4.a) Constants
 */
 const:
     CONST IDENTIFIER OF ident_type { declare_constant($2); }
@@ -343,18 +377,32 @@ exp_const:
 ;
 
 /*
-  FUNCTION DECLARATIONS
+  4.b) Function Declarations/Invocations
 */
 let:
   LET IDENTIFIER { declare_function($2); }
 ;
 
+/*
+  FUNCTION DECLARATIONS
+*/
 decl_funct:
     let exp_param OP_ASSIGN exp
       {}
   | let OF IDENTIFIER exp_param OP_ASSIGN exp
       {}
 ;
+
+/*
+  FUNCTION EXPRESSIONS (INVOCATIONS)
+*/
+exp_funct:
+    IDENTIFIER param_arg  { invoke_function($1); }
+;
+
+/*
+  4.c) Parameters/Arguments
+*/
 
 /*
   PARAMETER EXPRESSIONS (DECLARATIONS)
@@ -366,15 +414,6 @@ param:
 exp_param:
     param exp_param  { }
   | {/* INTENTIONALLY LEFT BLANK */}
-;
-
-
-/*
-  FUNCTION EXPRESSIONS (INVOCATIONS)
-*/
-
-exp_funct:
-    IDENTIFIER param_arg  { invoke_function($1); }
 ;
 
 /*
@@ -390,7 +429,11 @@ param_arg:
 ;
 
 /*
-  8.) Datatype Expressions
+  5.) Datatype Expressions
+*/
+
+/*
+    5.a) Types
 */
 
 /*
@@ -416,11 +459,26 @@ ident_type:
 ;
 
 /*
+  TYPE DECLARATIONS
+*/
+type:
+    TYPE IDENTIFIER { declare_type($2); }
+;
+
+exp_type:
+    type OP_ASSIGN exp_constructor { }
+;
+
+/*
+  5.b) Constructors
+*/
+
+/*
   CONSTRUCTOR IDENTIFIERS
 */
 ident_construct:
     INT
-  | U8_C
+  | U8_C        
   | I8_C
   | U16_C
   | I16_C
@@ -439,27 +497,23 @@ ident_construct:
 ;
 
 /*
-  TYPE DECLARATIONS
-*/
-type:
-    TYPE IDENTIFIER { declare_type($2); }
-;
-
-exp_type:
-    type OP_ASSIGN exp_constructor { }
-;
-
-/*
-  CONSTRUCTOR EXPRESSIONS
+  CONSTRUCTOR DECLARATIONS
 */
 constructor:
   CONSTRUCTOR  { declare_constructor($1); }
 ;
 
+/*
+  CONSTRUCTOR EXPRESSIONS
+*/
 exp_constructor:
     constructor BIT_OR exp_constructor  { }
   | constructor                         { }
 ;
+
+/*
+  5.c) Typeclass/Prototypes
+*/
 
 /*
   TYPECLASS DECLARATIONS
@@ -489,7 +543,7 @@ param_prototype:
 ;
 
 /*
-  TYPECLASSES IDENTIFIERS
+  5.d) Primitive Typeclasses 
 */
 exp_number:
     exp_real
@@ -499,7 +553,11 @@ exp_number:
 
 
 /*
-  9.) Special Operations
+  6.) Special Operations
+*/
+
+/*
+  6.a) Build/Run
 */
 
 /*
@@ -515,6 +573,10 @@ exp_byte_build:
 exp_byte_run:
     RUN STRING { run_bytestring($2); }
 ;
+
+/*
+  6.b) Process Tethers
+*/
 
 /*
   TETHER EXPRESSIONS
@@ -537,15 +599,7 @@ param_tether:
 ;
 
 /*
-  REGULAR EXPRESSIONS
-*/
-exp_regex:
-    REGEX STRING  { regular_expression($2); }
-;
-
-
-/*
-  INTERPROCESS COMMUNICATION
+  6.c) Send/Receive
 */
 exp_send:
     SEND STRING exp  { ipc_send($2); }
@@ -556,11 +610,19 @@ exp_receive:
 ;
 
 /*
-  A.) Tether Module Expressions 
+  6.d) Regular Expressions
+*/
+exp_regex:
+    REGEX STRING  { regular_expression($2); }
+;
+
+
+/*
+  E.) Tether Modules 
 */
 
 /*
-  TETHER MODULE STRUCTURE
+  1.) Tether Module Structure
 */
 xcs_tether:
     TETHER_H teth_sep           { printf("Finished Parsing Tether Module.\n"); }
@@ -573,14 +635,18 @@ teth_sep:
 ;
 
 /*
-  TETHER EXPRESSIONS
+  2.) Tether Expressions
 */
 tether:
     exp_offer                     { }
 ;
 
 /*
-  OFFERING EXPRESSIONS/PARAMETERS
+  3.) Ask/Offer
+*/
+
+/*
+  3.a) Offer Statements
 */
 offer:
     OFFER IDENTIFIER { ipc_offer($2); }
@@ -596,7 +662,7 @@ param_offer:
 ;
 
 /*
-  ASK EXPRESSIONS/PARAMETERS
+  3.b) Ask Statements
 */
 exp_ask:
     ASK CONSTRUCTOR IDENTIFIER arg_ask { ipc_ask($2, $3); }
