@@ -132,7 +132,7 @@ void yyerror(const char* s);
 %token IS OF REQ
 
 //  Static Memory Manipulation
-%token MEM_READ MEM_SET
+%token MEM_READ MEM_SET THIS
 
 // Integers
 %token INT_T RNG
@@ -203,7 +203,8 @@ src:
   1.) XCSL Expressions
 */
 exp:
-    exp_integer       {/* For Testing */}
+    PAR_LEFT exp PAR_RIGHT
+  | exp_integer       {/* For Testing */}
   | exp_boolean       {/* For Testing */}
   | exp_real          {/* For Testing */}
   | exp_char          {/* For Testing */}
@@ -238,7 +239,8 @@ exp:
   2.a) Integer Expressions
 */
 exp_integer:
-    exp_integer OP_ADD exp_integer    { integer_addition(); }
+    PAR_LEFT exp_integer PAR_RIGHT
+  | exp_integer OP_ADD exp_integer    { integer_addition(); }
   | exp_integer OP_SUB exp_integer    { integer_subtraction(); }
   | exp_integer OP_MUL exp_integer    { integer_multiplication(); }
   | exp_integer OP_DIV exp_integer    { integer_division(); }
@@ -597,7 +599,8 @@ read:
 ;
 
 exp_memread:
-  read IN exp { }
+    read IN exp { }
+  | exp_integer MEM_READ THIS
 ;
 
 /*
