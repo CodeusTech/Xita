@@ -275,10 +275,18 @@ exp_boolean:
   2.c) Real Expressions
 */
 exp_real:
-    exp_number OP_ADD exp_number  { real_addition();       }
-  | exp_number OP_SUB exp_number  { real_subtraction();    }
-  | exp_number OP_MUL exp_number  { real_multiplication(); }
-  | exp_number OP_DIV exp_number  { real_division();       }
+    exp_real OP_ADD exp_real     { real_addition();       }
+  | exp_real OP_SUB exp_real     { real_subtraction();    }
+  | exp_real OP_MUL exp_real     { real_multiplication(); }
+  | exp_real OP_DIV exp_real     { real_division();       }
+  | exp_real OP_ADD exp_integer  { real_addition();       }
+  | exp_real OP_SUB exp_integer  { real_subtraction();    }
+  | exp_real OP_MUL exp_integer  { real_multiplication(); }
+  | exp_real OP_DIV exp_integer  { real_division();       }
+  | exp_integer OP_ADD exp_real  { real_addition();       }
+  | exp_integer OP_SUB exp_real  { real_subtraction();    }
+  | exp_integer OP_MUL exp_real  { real_multiplication(); }
+  | exp_integer OP_DIV exp_real  { real_division();       }
   | REAL           {/* Push real into SSE stack */}
   | FLOAT_C  REAL  {/* Push float into SSE stack */}
   | DOUBLE_C REAL  {/* Push double into SSE stack */}
@@ -572,14 +580,6 @@ exp_prototype:
 param_prototype:
     param_prototype param_prototype 
   | IDENTIFIER      { proto_param($1); }
-;
-
-/*
-  5.d) Primitive Typeclasses 
-*/
-exp_number:
-    exp_real
-  | exp_integer
 ;
     
 
