@@ -420,8 +420,8 @@ let:
   FUNCTION DECLARATIONS
 */
 decl_funct:
-    let exp_param OP_ASSIGN exp
-      {}
+    let exp_param OP_ASSIGN exp        {}
+  | let exp_param OP_ASSIGN exp IN exp {  }
 ;
 
 /*
@@ -455,7 +455,7 @@ arg:
 ;
 
 param_arg:
-    exp param_arg  {/* Accept arbitrary number of arguments */}
+    arg param_arg  {/* Accept arbitrary number of arguments */}
   | {/*INTENTIONALLY LEFT BLANK*/}
 ;
 
