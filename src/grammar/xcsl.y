@@ -59,6 +59,7 @@
 #include "src/bytecode/bytecode.h"
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
+#include "src/primitives/primitives.h"
 #include "src/tethers/tethers.h"
 #include "src/types/types.h"
 
@@ -219,11 +220,11 @@ exp:
   2.a) Integer Expressions
 */
 exp_integer:
-    exp_integer OP_ADD exp_integer 
-  | exp_integer OP_SUB exp_integer
-  | exp_integer OP_MUL exp_integer
-  | exp_integer OP_DIV exp_integer
-  | exp_integer OP_MOD exp_integer
+    exp_integer OP_ADD exp_integer    { integer_addition(); }
+  | exp_integer OP_SUB exp_integer    { integer_subtraction(); }
+  | exp_integer OP_MUL exp_integer    { integer_multiplication(); }
+  | exp_integer OP_DIV exp_integer    { integer_division(); }
+  | exp_integer OP_MOD exp_integer    { integer_modulus(); }
   | exp_integer BIT_AND exp_integer
   | exp_integer BIT_OR exp_integer
   | exp_integer BIT_SHL exp_integer
