@@ -15,6 +15,7 @@
 //  Type Headers
 #include "constructor.h"
 #include "lists.h"
+#include "prototype.h"
 #include "tuples.h"
 #include "typeclass.h"
 

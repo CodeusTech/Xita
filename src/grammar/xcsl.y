@@ -540,7 +540,7 @@ exp_typeclass:
 */
 exp_prototype:
     exp_prototype OP_COMMA exp_prototype  {/* Arbitrary Number of Function Prototypes */}
-  | IDENTIFIER param_prototype            {/* Each Function must be implemented by all members of the typeclass */}
+  | IDENTIFIER param_prototype            { proto_declare($1); }
 ;
 
 /*
