@@ -3,7 +3,7 @@
   xcsl.y  (AArch64)
   Cody Fagley
   Authored on   January 29, 2019
-  Last Modified February 10, 2019
+  Last Modified February 16, 2019
 */
 
 /*
@@ -38,11 +38,17 @@
     5.b) Constructors
     5.c) Typeclass/Prototypes
     5.d) Primitive Typeclasses
-  6.) Special Operations
-    6.a) Build/Run
-    6.b) Process Tethers
-    6.c) Send/Receive
-    6.d) Regular Expressions
+  6.) Direct Memory Access (DMA)
+    6.a) Read Expression from Memory
+    6.b) Write Expression to Memory
+  7.) Process Operations
+    7.a) Build/Run
+  8.) Interprocess Communication
+    8.a) Process Tethers
+    8.b) Send/Receive
+  9.) Special Operations
+    9.a) Regular Expressions
+
   
   E.) Tether Modules
   ----------------------
@@ -60,6 +66,7 @@
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
 #include "src/primitives/primitives.h"
+#include "src/memory/memory.h"
 #include "src/tethers/tethers.h"
 #include "src/types/types.h"
 
@@ -131,6 +138,9 @@ void yyerror(const char* s);
 %token U32_T U32_C I32_T I32_C
 %token U64_T U64_C I64_T I64_C
 
+// Booleans
+%token BOOL_T BOOL_C
+
 // Real Numbers
 %token REAL_T
 %token FLOAT_T FLOAT_C DOUBLE_T DOUBLE_C
@@ -138,10 +148,10 @@ void yyerror(const char* s);
 // Characters/Strings
 %token CHAR_T CHAR_C
 %token STRING_T STRING_C
-%token BYTE_STRING  // DEPRECATED
+%token BYTE_STRING  /* DEPRECATED */
 
-// Booleans
-%token BOOL_T
+// Lists
+%token LIST_T LIST_C
 
 //  Special Operations
 %token BUILD RUN            //  Bytecode Operations
@@ -191,10 +201,21 @@ src:
 */
 exp:
     exp_integer       {/* For Testing */}
+  | exp_boolean       {/* For Testing */}
   | exp_real          {/* For Testing */}
   | exp_char          {/* For Testing */}
   | exp_string        {/* For Testing */}
-  | exp_boolean       {/* For Testing */}
+  | exp_list          { }
+  | exp_if            { }
+  | exp_match         { }
+  | exp_is            { }
+  | decl_const        { }
+  | decl_funct        { }
+  | exp_funct         { }
+  | exp_type          { }
+  | exp_typeclass     { }
+  | exp_memread       { }
+  | exp_memwrite      { }
   | exp_byte_build    { }
   | exp_byte_run      { }
   | exp_tether        { }
@@ -202,15 +223,6 @@ exp:
   | exp_receive       { }
   | exp_ask           { }
   | exp_regex         { }
-  | decl_funct        { }
-  | exp_funct         { }
-  | exp_const         { }
-  | exp_type          { }
-  | exp_typeclass     { }
-  | exp_if            { }
-  | exp_match         { }
-  | exp_is            { }
-  | exp_list          { }
   | exp OP_TUP exp    { add_to_tuple(); }
   | IDENTIFIER        { resolve_identifier($1); }
 ;
@@ -381,7 +393,7 @@ const:
     CONST IDENTIFIER OF ident_type { declare_constant($2); }
 ;
 
-exp_const:
+decl_const:
     const OP_ASSIGN exp
 ;
 
@@ -389,7 +401,8 @@ exp_const:
   4.b) Function Declarations/Invocations
 */
 let:
-  LET IDENTIFIER { declare_function($2); }
+    LET IDENTIFIER OF exp_type  { declare_function($2); }
+  | LET IDENTIFIER              { declare_function($2); }
 ;
 
 /*
@@ -397,8 +410,6 @@ let:
 */
 decl_funct:
     let exp_param OP_ASSIGN exp
-      {}
-  | let OF IDENTIFIER exp_param OP_ASSIGN exp
       {}
 ;
 
@@ -464,6 +475,7 @@ ident_type:
   | CHAR_T
   | STRING_T
   | BOOL_T
+  | LIST_T ident_type
   | IDENTIFIER
 ;
 
@@ -544,6 +556,7 @@ prototype:
 
 proto_comma:
   OP_COMMA { printf("\n"); }
+;
 
 exp_prototype:
     prototype param_prototype proto_comma exp_prototype { }
@@ -569,11 +582,34 @@ exp_number:
 
 
 /*
-  6.) Special Operations
+  6) Direct Memory Access (DMA)
 */
 
 /*
-  6.a) Build/Run
+  6.a) Read Expression from Memory
+*/
+read:
+  exp_integer MEM_READ IDENTIFIER { memory_read_exp($3); }
+;
+
+exp_memread:
+  read IN exp { }
+;
+
+/*
+  6.b) Write Expression to Memory
+*/
+exp_memwrite:
+    exp_integer MEM_SET exp { memory_write_exp(); }
+;
+
+
+/*
+  7.) Process Operations
+*/
+
+/*
+  7.a) Build/Run
 */
 
 /*
@@ -590,8 +626,13 @@ exp_byte_run:
     RUN STRING { run_bytestring($2); }
 ;
 
+
 /*
-  6.b) Process Tethers
+  8.) Interprocess Communication
+*/
+
+/*
+  8.a) Process Tethers
 */
 
 /*
@@ -615,7 +656,7 @@ param_tether:
 ;
 
 /*
-  6.c) Send/Receive
+  8.b) Send/Receive
 */
 exp_send:
     SEND STRING exp  { ipc_send($2); }
@@ -625,12 +666,19 @@ exp_receive:
     RECEIVE STRING   { ipc_receive($2); }
 ;
 
+
 /*
-  6.d) Regular Expressions
+  9.) Special Operations
+*/
+
+/*
+  9.a) Regular Expressions
 */
 exp_regex:
     REGEX STRING  { regular_expression($2); }
 ;
+
+
 
 
 /*

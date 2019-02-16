@@ -59,6 +59,13 @@ extern int yylex();
 "i64" { return I64_T; }   //  64-Bit SIGNED INTEGER TYPE
 "I64" { return I64_C; }   //  64-Bit SIGNED INTEGER CONSTRUCTOR
 
+"RNG" { return RNG; } //  RANDOM NUMBER GENERATOR
+
+"bool" { return BOOL_T; }   //  BOOLEAN TYPE
+"Bool" { return BOOL_C; }   //  BOOLEAN CONSTRUCTOR
+"True" { return TRUE; }     //  BOOLEAN PRIMITIVE
+"False" { return FALSE; }   //  BOOLEAN PRIMITIVE
+
 "real" { return REAL_T; }       //  INFERRED REAL NUMBER TYPE
 "float" { return FLOAT_T; }     //  FLOATING POINT TYPE
 "Float" { return FLOAT_C; }     //  FLOATING POINT CONSTRUCTOR
@@ -70,12 +77,8 @@ extern int yylex();
 "string" { return STRING_T; }  //  STRING TYPE
 "String" { return STRING_C; }  //  STRING CONSTRUCTOR
 
-"bool" { return BOOL_T; }
-"True" { return TRUE; }     //  BOOLEAN PRIMITIVE
-"False" { return FALSE; }   //  BOOLEAN PRIMITIVE
-
-"RNG" { return RNG; } //  RANDOM NUMBER GENERATOR
-
+"list" { return LIST_T; } //  LIST TYPE
+"List" { return LIST_C; } //  LIST CONSTRUCTOR
 
 %{
 /*
