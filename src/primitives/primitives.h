@@ -16,7 +16,8 @@
 #include "boolexp.h"
 #include "realexp.h"
 #include "charexp.h"
-
+#include "strexp.h"
+#include "listexp.h"
 
 
 #endif

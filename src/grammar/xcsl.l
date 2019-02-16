@@ -99,6 +99,11 @@ extern int yylex();
 "<-"    { return ARROW_L; }   //  LEFT FACING ARROW
 "->"    { return ARROW_R; }   //  RIGHT FACING ARROW
 
+"++" { return OP_APPEND; }   //  APPEND LISTS
+":"  { return OP_LIST_CON; } //  CONSTRUCT LISTS
+"hd" { return LIST_HEAD; }   //  HEAD OF LIST
+"tl" { return LIST_TAIL; }   //  TAIL OF LIST
+
 "+" { return OP_ADD; } //  ADDITION OPERATOR
 "-" { return OP_SUB; } //  SUBTRACTION OPERATOR  
 "*" { return OP_MUL; } //  MULTIPLICATION OPERATOR

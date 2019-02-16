@@ -28,6 +28,14 @@
   1.) Character Literals
 */
 
+int literal_char(char c)
+{
+  // NOTE: CURRENTLY INCORRECT
+  //        Does not correctly handle escaped characters
+  printf("Character Literal: %c\n", c);
+
+  return 0;
+}
 
 /*
   2.) Character From ASCII Integer

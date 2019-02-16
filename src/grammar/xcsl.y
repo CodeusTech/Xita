@@ -105,7 +105,10 @@ void yyerror(const char* s);
 %token BOOL_OR BOOL_AND BOOL_XOR                // BOOLEAN COMPARISON
 %token ARROW_L ARROW_R
 %token OP_SEP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
-%token OP_LIST_L OP_LIST_R
+
+//  List Operators/Keywords
+%token OP_LIST_L OP_LIST_R LIST_C OP_APPEND OP_LIST_CON
+%token LIST_HEAD LIST_TAIL
 
 //  Conditional Keywords
 %token IF THEN ELSE
@@ -270,7 +273,7 @@ exp_real:
   2.d) Character Expressions
 */
 exp_char:
-    CHAR        {/* Push Character onto Register Stack */}
+    CHAR        { literal_char($1); }
   | CHAR_C INT  { char_from_int($2); }
 ;
 
@@ -278,7 +281,8 @@ exp_char:
   2.e) String Expressions
 */
 exp_string:
-    STRING  {/* Push pointer to string onto Register Stack */}
+    exp_string OP_APPEND exp_string { string_append(); }
+  | STRING  {/* Push pointer to string onto Register Stack */}
 ;
 
 /*
@@ -289,7 +293,11 @@ list:
 ;
 
 exp_list:
-    OP_LIST_L param_list OP_LIST_R { printf("have been added to list\n"); }
+    list param_list OP_LIST_R       { }
+  | exp_list OP_APPEND exp_list     { list_append();    }
+  | exp OP_LIST_CON exp_list        { list_construct(); }
+  | LIST_TAIL exp_list              { list_tail();      }
+
 ;
 
 /*
@@ -298,6 +306,7 @@ exp_list:
 param_list:
     param_list OP_COMMA param_list
   | STRING                        { add_to_list($1); }
+  | exp
 ;
 
 /*
