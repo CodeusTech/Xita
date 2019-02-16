@@ -499,6 +499,7 @@ type:
 
 exp_type:
     type OP_ASSIGN exp_constructor { }
+  | type OP_ASSIGN ident_type {}
 ;
 
 /*
