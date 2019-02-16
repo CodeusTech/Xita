@@ -225,14 +225,14 @@ exp_integer:
   | exp_integer OP_MUL exp_integer    { integer_multiplication(); }
   | exp_integer OP_DIV exp_integer    { integer_division(); }
   | exp_integer OP_MOD exp_integer    { integer_modulus(); }
-  | exp_integer BIT_AND exp_integer
-  | exp_integer BIT_OR exp_integer
-  | exp_integer BIT_SHL exp_integer
-  | exp_integer BIT_SHR exp_integer
-  | exp_integer BIT_XOR exp_integer
+  | exp_integer BIT_AND exp_integer   { bitwise_and(); }
+  | exp_integer BIT_OR exp_integer    { bitwise_or(); }
+  | exp_integer BIT_SHL exp_integer   { bitwise_shl(); }
+  | exp_integer BIT_SHR exp_integer   { bitwise_shr(); }
+  | exp_integer BIT_XOR exp_integer   { bitwise_xor(); }
   | INT        {/* Push int into Register Stack */}
   | RNG        { printf("Random Number Generated\n"); }
-  | IDENTIFIER {/* Push ident into Register Stack */}
+  | IDENTIFIER {/* Treat Identifier as Integer */}
 ;
 
 /*
