@@ -205,6 +205,7 @@ exp:
   | exp_typeclass     { }
   | exp_if            { }
   | exp_match         { }
+  | exp_is            { }
   | exp_list          { }
   | exp OP_TUP exp    { add_to_tuple(); }
   | IDENTIFIER        { resolve_identifier($1); }
@@ -356,9 +357,9 @@ param_with:
   3.c) ... is ...
 */
 
-is_exp:
-    exp IS ident_construct
-  | exp IS ident_type
+exp_is:
+    exp IS ident_construct  { is_construct(); }
+  | exp IS ident_type       { is_type();      }
 ;
 
 /*
@@ -679,7 +680,7 @@ arg_ask:
   GENERIC ERROR MESSAGE
 */
 void yyerror(const char* s) {
-	fprintf(stderr, "Parse error in line %d: %s\n", yylineno, s);
+	fprintf(stderr, "\nParse error in line %d: %s\n\n", yylineno, s);
 	exit(1);
 }
 
