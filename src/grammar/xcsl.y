@@ -257,10 +257,10 @@ exp_boolean:
   2.c) Real Expressions
 */
 exp_real:
-    exp_number OP_ADD exp_number 
-  | exp_number OP_SUB exp_number
-  | exp_number OP_MUL exp_number
-  | exp_number OP_DIV exp_number
+    exp_number OP_ADD exp_number  { real_addition();       }
+  | exp_number OP_SUB exp_number  { real_subtraction();    }
+  | exp_number OP_MUL exp_number  { real_multiplication(); }
+  | exp_number OP_DIV exp_number  { real_division();       }
   | REAL           {/* Push real into SSE stack */}
   | FLOAT_C  REAL  {/* Push float into SSE stack */}
   | DOUBLE_C REAL  {/* Push double into SSE stack */}
