@@ -105,6 +105,9 @@ void yyerror(const char* s);
 %token<val_ident> IDENTIFIER CONSTRUCTOR
 %token TRUE FALSE
 
+//  Comments
+%token COMMENT
+
 //  Syntactic Operators
 %token OP_ADD OP_SUB OP_MUL OP_DIV OP_MOD       // INTEGER ARITHMETIC
 %token OP_GTE OP_GT OP_EQ OP_NEQ OP_LTE OP_LT   // INTEGER COMPARISON

@@ -30,6 +30,7 @@ extern int yylex();
 %}
 %option noyywrap
 %option yylineno
+%x COMMENT
 %%
 [ \t\n] ;           // Eliminate Whitespace
 
@@ -200,7 +201,18 @@ extern int yylex();
 
 %{
 /*
-  B.) Constructors/Identifiers
+  B.) Comments
+*/
+%}
+
+"(*"                  BEGIN(COMMENT);
+<COMMENT>[^\*]*        /* eat anything that's not a '*' */ 
+<COMMENT>"*)"         BEGIN(INITIAL);
+
+
+%{
+/*
+  C.) Constructors/Identifiers
 */
 %}
 
