@@ -271,7 +271,7 @@ exp_real:
 */
 exp_char:
     CHAR        {/* Push Character onto Register Stack */}
-  | CHAR_C INT  {/* Convert Integer to Character using ASCII Code */}
+  | CHAR_C INT  { char_from_int($2); }
 ;
 
 /*
