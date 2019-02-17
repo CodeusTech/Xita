@@ -12,7 +12,10 @@
 #ifndef XCS_ASM_H
 #define XCS_ASM_H
 
+#include "bss.h"
+#include "data.h"
 #include "header.h"
+#include "text.h"
 
 #include "stdlib.h"
 #include "stdio.h"
