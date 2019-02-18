@@ -162,7 +162,7 @@ void yyerror(const char* s);
 %token TETHER SEND RECEIVE  //  Interprocess Communication
 
 //  Module Operations
-%token LOAD
+%token OPEN
 %token TETHER_H OFFER ASK
 
 /*
@@ -196,7 +196,7 @@ xcs_source:
 src:
     src OP_SEP src
   | exp
-  | LOAD STRING     { printf("Module %s Loaded\n", $2); }
+  | OPEN STRING     { printf("Module %s Opened\n", $2); }
 ;
 
 /*
@@ -720,7 +720,8 @@ tether:
   3.a) Offer Statements
 */
 offer:
-    OFFER IDENTIFIER { ipc_offer($2); }
+    OFFER IDENTIFIER      { ipc_offer($2); }
+  | OFFER INT IDENTIFIER  { ipc_offer($3); }
 ;
 
 exp_offer:

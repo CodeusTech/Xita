@@ -188,7 +188,7 @@ extern int yylex();
 
 "regex"   { return REGEX; }
 
-"load"    { return LOAD; }
+"open"    { return OPEN; }
 
 %{
 /*
