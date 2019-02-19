@@ -721,8 +721,8 @@ tether:
   3.a) Offer Statements
 */
 offer:
-    OFFER IDENTIFIER      { ipc_offer($2); }
-  | OFFER INT IDENTIFIER  { ipc_offer($3); }
+    OFFER IDENTIFIER                { ipc_offer($2); }
+  | OFFER IDENTIFIER OF ident_type  { ipc_offer($2); }
 ;
 
 exp_offer:
