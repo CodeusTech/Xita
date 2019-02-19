@@ -195,8 +195,8 @@ xcs_source:
 
 src:
     src OP_SEP src
-  | exp
   | OPEN STRING     { printf("Module %s Opened\n", $2); }
+  | exp
 ;
 
 /*
@@ -702,6 +702,7 @@ xcs_tether:
 teth_sep:
     teth_sep OP_SEP teth_sep
   | tether
+  | OPEN STRING       { printf("Module %s Opened\n", $2); }
   | exp
 ;
 
