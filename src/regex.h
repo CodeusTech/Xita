@@ -14,6 +14,9 @@
 #define XCS_REGEX_H
 
 
+/*
+  
+*/
 int regular_expression(char* pattern)
 {
   printf("Regular Expression Evaluated: %s\n", pattern);

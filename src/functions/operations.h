@@ -7,6 +7,12 @@
 
 /*
   Contains Backend Function Operations
+
+  Table of Contents
+  =================
+  1.) Declare Function
+  2.) Invoke Function
+  3.) Find Function
 */
 
 #ifndef FUNCTIONS_OPERATIONS_H
@@ -18,7 +24,8 @@ extern char** ident_functions;
 
 
 
-/*  Declares a Function
+/* 1.) Declare Function
+
   Returns:
     0, if Successful
 */
@@ -29,9 +36,28 @@ int declare_function (char* name)
 }
 
 
+/* 2.) Invoke Function
+
+  Returns:
+    0, if Successful
+*/
 int invoke_function (char* name)
 {
   printf("Function %s Invoked\n", name);
+
+  return 0;
+}
+
+
+/* 3.) Find Function
+
+  Returns:
+    0, if identifier is not a Function
+    i, if identifier is a function, where i is index in function buffer
+*/
+int find_function (char* ident)
+{
+  printf("Function Found: %s\n", ident);
 
   return 0;
 }
