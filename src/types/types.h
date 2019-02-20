@@ -15,18 +15,10 @@
 //  Type Headers
 #include "constructor.h"
 #include "lists.h"
+#include "operations.h"
 #include "prototype.h"
 #include "tuples.h"
 #include "typeclass.h"
-
-//  Global Variables
-extern char** ident_types;
-
-
-int declare_type (char* name)
-{
-  printf("Type %s Declared\n", name);
-}
 
 
 
