@@ -6,7 +6,14 @@
 */
 
 /*
-  Contains AArch64 `.text` Buffer Functionality
+  .text Section Contains Executable Code
+
+  Table of Contents
+  =================
+  1.) Structure
+    1.a) Generate Text
+  2.) Operations
+    2.a) Add Command
 */
 
 #ifndef ASM_TEXT_H
@@ -16,11 +23,29 @@ extern char** curr_asm_text;
 extern int index_asm_text;
 extern int count_asm_text;
 
+/*
+  1.) Structure
+*/
+
+/* 1.a) Generate Text
+
+  Returns:
+    0, if Successful
+*/
+int generate_text()
+{
+
+  return 0;
+}
 
 /*
+  2.) Operations
+*/
+
+/* 2.a) Add Command
   
 */
-int add_text(char* command)
+int add_command(char* command)
 {
   if (index_asm_text == 255)
   {
