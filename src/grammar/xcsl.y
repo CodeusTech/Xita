@@ -565,7 +565,7 @@ exp_typeclass:
   PROTOTYPE EXPRESSIONS
 */
 prototype:
-  IDENTIFIER  { proto_declare($1); }
+  IDENTIFIER  { declare_proto($1); }
 ;
 
 proto_comma:

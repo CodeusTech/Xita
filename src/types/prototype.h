@@ -7,21 +7,23 @@
 
 /*
   Contains backend functionality for typeclass prototypes
+
+  Table of Contents
+  =================
+  1.) Declare Prototype
+  2.) Declare Prototype Parameter
 */
 
 #ifndef TYPES_PROTOTYPE_H
 #define TYPES_PROTOTYPE_H
 
 
-/*
-  1.) Prototype Declaration
-*/
+/* 1.) Declare Prototype
 
-/*
   Returns:
     0, if Successful
 */
-int proto_declare(char* str)
+int declare_proto(char* str)
 {
   printf("Prototype %s Declared, and requires parameters: ", str);
 
@@ -29,10 +31,30 @@ int proto_declare(char* str)
 }
 
 
+/* 2.) Declare Prototype Parameter
+
+  Returns:
+    0, if Successful
+
+*/
 int proto_param(char* str)
 {
   printf("%s ", str);
+
+  return 0;
 }
 
+/* 3.) Find Prototype
+
+  Returns:
+    0, if ident is not a Prototype
+    i, if ident is a prototype, where 'i' is the index in buffer
+*/
+int find_proto(char* ident)
+{
+  printf("Found Prototype: %s\n", ident);
+
+  return 0;
+}
 
 #endif
