@@ -28,6 +28,8 @@
 
 #include "functions/functions.h"
 
+#include "stdbool.h"
+
 /*
   1.) Resolve Identifier
 

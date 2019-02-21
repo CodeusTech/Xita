@@ -65,8 +65,9 @@
 #include "src/bytecode/bytecode.h"
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
-#include "src/primitives/primitives.h"
 #include "src/memory/memory.h"
+#include "src/modules/modules.h"
+#include "src/primitives/primitives.h"
 #include "src/tethers/tethers.h"
 #include "src/types/types.h"
 
@@ -162,7 +163,7 @@ void yyerror(const char* s);
 %token TETHER SEND RECEIVE  //  Interprocess Communication
 
 //  Module Operations
-%token OPEN
+%token OPEN TETHER_M SOURCE_M HEADER_M
 %token TETHER_H OFFER ASK
 
 /*
@@ -185,6 +186,21 @@ xcs:
   | xcs_tether  {/* Tether Module Structure */}
 ;
 
+open_source:
+  OPEN SOURCE_M STRING { open_source($3); };
+
+open_tether:
+  OPEN TETHER_M STRING { open_tether($3); };
+
+open_header:
+  OPEN HEADER_M STRING { open_header($3); };
+
+open:
+    open_source { close_source(); }
+  | open_tether { close_tether(); }
+  | open_header { close_header(); }
+;
+
 /*
   D.) Source Modules
 */
@@ -195,7 +211,7 @@ xcs_source:
 
 src:
     src OP_SEP src
-  | OPEN STRING     { printf("Module %s Opened\n", $2); }
+  | open     { }
   | exp
 ;
 
@@ -654,7 +670,7 @@ exp_tether:
   TETHER PARAMETERS
 */
 pteth:
-    IDENTIFIER { add_tether_parameter($1); }
+    IDENTIFIER { declare_tether_parameter($1); }
 ;
 
 param_tether:
@@ -702,7 +718,7 @@ xcs_tether:
 teth_sep:
     teth_sep OP_SEP teth_sep
   | tether
-  | OPEN STRING       { printf("Module %s Opened\n", $2); }
+  | open    {}
   | exp
 ;
 

@@ -24,6 +24,8 @@
 #ifndef ASM_DATA_H
 #define ASM_DATA_H
 
+#include "stdbool.h"
+
 /*
   1.) Structure
 */

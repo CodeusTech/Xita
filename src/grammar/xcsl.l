@@ -189,6 +189,9 @@ extern int yylex();
 "regex"   { return REGEX; }
 
 "open"    { return OPEN; }
+"Tether"  { return TETHER_M; }
+"Source"  { return SOURCE_M; }
+"Header"  { return HEADER_M; }
 
 %{
 /*
