@@ -215,9 +215,7 @@ extern int yylex();
 <COMMENT>\*            /* do nothing */
 <COMMENT>"*)"         BEGIN(INITIAL);
 
-"--"                  BEGIN(COMMENT);
-<COMMENT>[.]*        /* eat anything that's not a '\n' */ 
-<COMMENT>"\n"         BEGIN(INITIAL);
+--[^\n]*\n            {  }
 
 
 %{
