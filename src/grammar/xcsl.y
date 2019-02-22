@@ -131,7 +131,7 @@ void yyerror(const char* s);
 //  Datatype Keywords
 %token TYPE TYPECLASS
 %token IS OF REQ
-%token OP_REC_L OP_REC_R
+%token OP_REC_L OP_REC_R OP_ELEMENT
 
 //  Static Memory Manipulation
 %token MEM_READ MEM_SET THIS
@@ -221,12 +221,6 @@ src:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
-  | exp_integer       {/* For Testing */}
-  | exp_boolean       {/* For Testing */}
-  | exp_real          {/* For Testing */}
-  | exp_char          {/* For Testing */}
-  | exp_string        {/* For Testing */}
-  | exp_list          { }
   | exp_if            { }
   | exp_match         { }
   | exp_is            { }
@@ -235,6 +229,7 @@ exp:
   | exp_funct         { }
   | decl_type         { }
   | decl_typeclass    { }
+  | IDENTIFIER OP_ELEMENT IDENTIFIER {printf("Element %s within %s accessed\n", $3, $1);}
   | exp_memread       { }
   | exp_memwrite      { }
   | exp_byte_build    { }
@@ -243,6 +238,12 @@ exp:
   | exp_send          { }
   | exp_receive       { }
   | exp_ask           { }
+  | exp_integer       {/* For Testing */}
+  | exp_boolean       {/* For Testing */}
+  | exp_real          {/* For Testing */}
+  | exp_char          {/* For Testing */}
+  | exp_string        {/* For Testing */}
+  | exp_list          { }
   | exp_regex         { }
   | exp OP_TUP exp    { add_to_tuple(); }
   | ident_construct exp {}
@@ -497,6 +498,7 @@ param_arg:
 record:
     record OP_COMMA record
   | IDENTIFIER OF ident_type
+;
 
 /*
   TYPE IDENTIFIERS
@@ -518,8 +520,9 @@ ident_type:
   | STRING_T
   | BOOL_T
   | LIST_T ident_type
-  | IDENTIFIER
+  | ident_type OP_TUP ident_type
   | OP_REC_L record OP_REC_R
+  | IDENTIFIER
 ;
 
 /*

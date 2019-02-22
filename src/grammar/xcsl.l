@@ -239,3 +239,5 @@ extern int yylex();
 
 [A-Z][a-zA-Z0-9_]*\'?   { yylval.val_ident = strdup(yytext); return CONSTRUCTOR; }
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }
+
+"." { return OP_ELEMENT; } //  ACCESS ELEMENT OPERATOR
