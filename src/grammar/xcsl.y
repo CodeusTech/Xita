@@ -36,8 +36,9 @@
   5.) Datatype Expressions
     5.a) Types
     5.b) Constructors
-    5.c) Typeclass/Prototypes
-    5.d) Primitive Typeclasses
+    5.c) Records
+    5.d) Typeclass/Prototypes
+    5.e) Primitive Typeclasses
   6.) Direct Memory Access (DMA)
     6.a) Read Expression from Memory
     6.b) Write Expression to Memory
@@ -65,6 +66,7 @@
 #include "src/bytecode/bytecode.h"
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
+#include "src/gpio/gpio.h"
 #include "src/memory/memory.h"
 #include "src/modules/modules.h"
 #include "src/primitives/primitives.h"
@@ -493,14 +495,6 @@ param_arg:
 */
 
 /*
-  TYPE RECORDS
-*/
-record:
-    record OP_COMMA record
-  | IDENTIFIER OF ident_type
-;
-
-/*
   TYPE IDENTIFIERS
 */
 ident_type:
@@ -581,7 +575,24 @@ exp_constructor:
 ;
 
 /*
-  5.c) Typeclass/Prototypes
+  5.c) Records
+*/
+
+/*
+  TYPE RECORDS
+*/
+record:
+    record OP_COMMA record
+  | IDENTIFIER OF ident_type
+;
+
+exp_record:
+    IDENTIFIER OP_ELEMENT exp_record  {}
+  | IDENTIFIER {}
+
+
+/*
+  5.d) Typeclass/Prototypes
 */
 
 /*
@@ -620,6 +631,9 @@ param_prototype:
 ;
     
 
+/*
+  5.e) Primitive Typeclasses
+*/
 
 /*
   6) Direct Memory Access (DMA)

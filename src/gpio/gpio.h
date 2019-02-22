@@ -13,7 +13,9 @@
 #define XCS_GPIO_H
 
 
-
+#include "constants.h"
+#include "rng.h"
+#include "rtc.h"
 
 
 #endif
