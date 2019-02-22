@@ -11,6 +11,7 @@ CFLAGS=-std=gnu99 -lm
 #  Build and Install Cross Compiler
 install: build tidy
 	sudo cp _build/xcs-aarch64 /usr/bin/xcs-aarch64
+	sudo rm -rf _build
 
 #  Build XCSL Cross Compiler
 build:  grammar src/xcs.c

@@ -131,6 +131,7 @@ void yyerror(const char* s);
 //  Datatype Keywords
 %token TYPE TYPECLASS
 %token IS OF REQ
+%token OP_REC_L OP_REC_R
 
 //  Static Memory Manipulation
 %token MEM_READ MEM_SET THIS
@@ -206,7 +207,7 @@ open:
 */
 
 xcs_source:
-    src             { printf("Finished Parsing Source Module.\n"); }
+    src         { printf("Finished Parsing Source Module.\n"); }
 ;
 
 src:
@@ -232,8 +233,8 @@ exp:
   | decl_const        { }
   | decl_funct        { }
   | exp_funct         { }
-  | exp_type          { }
-  | exp_typeclass     { }
+  | decl_type         { }
+  | decl_typeclass    { }
   | exp_memread       { }
   | exp_memwrite      { }
   | exp_byte_build    { }
@@ -244,7 +245,7 @@ exp:
   | exp_ask           { }
   | exp_regex         { }
   | exp OP_TUP exp    { add_to_tuple(); }
-  | IDENTIFIER        { resolve_identifier($1); }
+  | ident_construct exp {}
 ;
 
 /*
@@ -430,7 +431,7 @@ decl_const:
   4.b) Function Declarations/Invocations
 */
 let:
-    LET IDENTIFIER OF exp_type  { declare_function($2); }
+    LET IDENTIFIER OF ident_type  { declare_function($2); }
   | LET IDENTIFIER              { declare_function($2); }
   | LET PAR_LEFT OP_ADD PAR_RIGHT     {  }
   | LET PAR_LEFT OP_SUB PAR_RIGHT     {  }
@@ -491,6 +492,13 @@ param_arg:
 */
 
 /*
+  TYPE RECORDS
+*/
+record:
+    record OP_COMMA record
+  | IDENTIFIER OF ident_type
+
+/*
   TYPE IDENTIFIERS
 */
 ident_type:
@@ -511,6 +519,7 @@ ident_type:
   | BOOL_T
   | LIST_T ident_type
   | IDENTIFIER
+  | OP_REC_L record OP_REC_R
 ;
 
 /*
@@ -520,7 +529,7 @@ type:
     TYPE IDENTIFIER { declare_type($2); }
 ;
 
-exp_type:
+decl_type:
     type OP_ASSIGN exp_constructor { }
   | type OP_ASSIGN ident_type {}
 ;
@@ -563,8 +572,9 @@ constructor:
   CONSTRUCTOR EXPRESSIONS
 */
 exp_constructor:
-    constructor BIT_OR exp_constructor  { }
-  | constructor                         { }
+    exp_constructor BIT_OR exp_constructor  { }
+  | constructor OF ident_type               { }
+  | constructor                             { }
 ;
 
 /*
@@ -578,7 +588,7 @@ typeclass:
     TYPECLASS IDENTIFIER { declare_typeclass($2); }
 ;
 
-exp_typeclass:
+decl_typeclass:
     typeclass REQ exp_prototype
 ;
 

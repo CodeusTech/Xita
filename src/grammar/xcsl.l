@@ -131,6 +131,9 @@ extern int yylex();
 "["  { return OP_LIST_L; }  //  BEGINNING OF LIST
 "]"  { return OP_LIST_R; }  //  END OF LIST
 
+"{"  { return OP_REC_L; }
+"}"  { return OP_REC_R; }
+
 %{
 /*
   3.) Conditional Keywords
