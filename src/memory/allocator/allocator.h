@@ -14,7 +14,6 @@
 #define MEMORY_ALLOCATOR_H
 
 
-#include "avl_tree.h"
 #include "config.h"
 
 
