@@ -14,10 +14,6 @@
     1.a) Interprocess Message
     1.b) Process Structure
   2.) Standard Operations
-    2.a) Create Process
-    2.b) Kill Process
-    2.c) Block Process
-    2.d) Unblock Process
 */
 
 #ifndef PROCESS_STDPROC_H
@@ -59,39 +55,5 @@ typedef struct Process_t
   2.) Standard Operations
 */
 
-/* 2.a) Create Process
-
-  Returns:
-    0, if Sucessful
-*/
-int create_process ()
-{
-  // STUB STUB STUB
-
-  return 0;
-}
-
-/* 2.b) Kill Process
-
-  Returns:
-    0, if Successful
-*/
-int kill_process (int pid)
-{
-  // STUB STUB STUB
-
-  return 0;
-}
-
-
-/*
-  3.) Scheduling
-*/
-
-/* 3.a) Block Process
-
-  Returns:
-    0, if Successful
-*/
 
 #endif

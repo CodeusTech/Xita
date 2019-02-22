@@ -13,6 +13,8 @@
   1.) Structures
     1.a) Process Scheduler
   2.) Operations
+    2.a) Add (Queue) Process
+    2.b) Kill Process
     2.a) Block Process
     2.b) Unblock Process
 */
