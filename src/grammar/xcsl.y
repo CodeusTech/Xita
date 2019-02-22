@@ -671,7 +671,7 @@ exp_memwrite:
   BUILD EXECUTABLE BYTECODE STRING
 */
 exp_byte_build:
-    BUILD IDENTIFIER { build_bytestring($2); }
+    BUILD IDENTIFIER { build_header($2); }
 ;
 
 /*
