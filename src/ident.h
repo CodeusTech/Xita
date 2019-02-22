@@ -17,21 +17,24 @@
 
   Table of Contents
   =================
-  1.) Resolve Identifier
+  1.) Identifier Resolution
     1.a) Check for Parameter
     1.b) Check for Function
     1.c) Check for Constant
+  2.) Type Inferrence
+  3.) Type Checking
 */
 
 #ifndef XCS_IDENT_H
 #define XCS_IDENT_H
 
 #include "functions/functions.h"
+#include "types/types.h"
 
 #include "stdbool.h"
 
 /*
-  1.) Resolve Identifier
+  1.) Identifier Resolution
 
   Returns:
     0, if unable to resolve ident
@@ -62,6 +65,29 @@ int resolve_identifier(char* ident)
   return 0;
 }
 
+/* 2.) Type Inferrence
+
+  Returns:
+    0, if UNSUCCESSFUL
+    t, if Successful, where 't' is the type code
+*/
+int infer_type(char* ident)
+{
+
+  return 0;
+}
+
+
+/* 3.) Type Checking
+
+  Returns:
+    0, if Successful (SUBJECT TO CHANGE)
+*/
+int check_type(char* ident, unsigned int type)
+{
+
+  return 0;
+}
 
 
 #endif

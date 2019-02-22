@@ -10,17 +10,34 @@
 
   Table of Contents
   =================
-  1.) Declare Constructor
-  2.) Invoke Constructor
-  3.) Find Constructor
+  1.) Structures
+    1.a) Compiler Buffers
+  2.) Operations
+    2.a) Declare Constructor
+    2.b) Invoke Constructor
+    2.c) Find Constructor
+    2.d) Get Constructor Size
 */
 
 #ifndef TYPES_CONSTRUCTOR_H
 #define TYPES_CONSTRUCTOR_H
 
-extern char** ident_constructors;
+/*
+  1.) Structures
+*/
 
-/* 1.) Declare Constructor
+/*
+  1.a) Compiler Buffers
+*/
+extern char** ident_constructors;
+extern int* size_constructors;
+
+
+/*
+  2.) Operations
+*/
+
+/* 2.a) Declare Constructor
 
   Returns:
     0, if Successful
@@ -33,7 +50,7 @@ int declare_constructor (char* name)
 }
 
 
-/* 2.) Invoke Constructor
+/* 2.b) Invoke Constructor
 
   Returns:
     0, if Successful
@@ -46,7 +63,7 @@ int invoke_constructor (char* name)
 }
 
 
-/* 3.) Find Constructor
+/* 2.c) Find Constructor
 
   Returns:
     0, if identifier is not a Constructor
@@ -59,5 +76,17 @@ int find_constructor (char* ident)
   return 0;
 }
 
+
+/* 2.d) Get Constructor Size
+
+  Returns:
+    0, if UNSUCCESSFUL
+    s, if Successful, where 's' is size, in bytes, of Data Constructor
+*/
+int get_constructor_size()
+{
+
+  return 0;
+}
 
 #endif
