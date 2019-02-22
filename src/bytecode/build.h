@@ -7,13 +7,19 @@
 
 /*
   Contains functionality, specifically used for building bytecode
+
+  Table of Contents
+  =================
+  1.) Build Bytestring
 */
 
 #ifndef BYTECODE_BUILD_H
 #define BYTECODE_BUILD_H
 
 
-
+/*
+  1.) Build Bytestring
+*/
 int build_bytestring(char* name)
 {
   printf("Building %s...\n", name);

@@ -432,6 +432,11 @@ decl_const:
 let:
     LET IDENTIFIER OF exp_type  { declare_function($2); }
   | LET IDENTIFIER              { declare_function($2); }
+  | LET PAR_LEFT OP_ADD PAR_RIGHT     {  }
+  | LET PAR_LEFT OP_SUB PAR_RIGHT     {  }
+  | LET PAR_LEFT OP_MUL PAR_RIGHT     {  }
+  | LET PAR_LEFT OP_DIV PAR_RIGHT     {  }
+  | LET PAR_LEFT OP_APPEND PAR_RIGHT  {  }
 ;
 
 /*
