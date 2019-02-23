@@ -16,6 +16,15 @@
   2.) Argument Operations
     2.a) Get/Set Argument Count
     2.b) Get/Set Argument Types
+  3.) Metadata: Types
+    3.a) Get/Set Total Type Bytes
+    3.b) Get/Set Type Size
+  4.) Metadata: Constants
+    4.a) Get/Set Total Constant Bytes
+    4.b) Get/Set Constant Size
+  5.) Metadata: Executables
+    5.a) Get/Set Total Executable Bytes
+    5.b) Get/Set Executable Size
 */
 
 #ifndef BYTECODE_HEADER_H
@@ -103,7 +112,7 @@ int get_argt(int index)
   return 0;
 }
 
-/* Set Argument Types
+/* Set Argument Type
 
   Returns:
     0, if Successful
@@ -116,5 +125,174 @@ int set_argt(int index)
 }
 
 
+/*
+  3.) Metadata: Types
+*/
+
+/*
+  3.a) Get/Set Total Type Bytes
+*/
+
+/* Get Total Type Bytes
+
+  Returns:
+    t, where 't' is number of bytes for all types
+*/
+int get_type_bytes()
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Total Type Bytes
+  
+  Returns:
+    0, if Successful
+*/
+int set_type_bytes(int bytes)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/*
+  3.b) Get/Set Type Size
+*/
+
+/* Get Type Size
+
+  Returns:
+    s, where 's' is the size of given Type ID
+*/
+int get_type_size(int tid)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Type Size
+
+  Returns:
+    0, if Successful
+*/
+int set_type_size(int tid, int sz)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+
+/*
+  4.) Metadata: Constants
+*/
+
+/*
+  4.a) Get/Set Total Constant Bytes
+*/
+
+/* Get Total Constant Bytes
+
+  Returns:
+    c, where 'c' is number of bytes for all constants
+*/
+int get_const_bytes()
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Total Constant Bytes
+  
+  Returns:
+    0, if Successful
+*/
+int set_const_bytes(int bytes)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/*
+  4.b) Get/Set Constant Size
+*/
+
+/* Get Constant Size
+
+  Returns:
+    s, where 's' is the size of given Constant ID
+*/
+int get_const_size(int cid)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Constant Size
+
+  Returns:
+    0, if Successful
+*/
+int set_const_size(int cid, int sz)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+
+/*
+  5.) Metadata: Executables
+*/
+
+/*
+  5.a) Get/Set Total Executable Bytes
+*/
+
+/* Get Total Executable Bytes
+
+  Returns:
+    e, where 'e' is the number of bytes for all executables
+*/
+int get_exec_bytes()
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Total Executable Bytes
+
+  Returns:
+    0, if Successful
+*/
+int set_exec_bytes()
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/*
+  5.b) Get/Set Executable Size
+*/
+
+/* Get Executable Size
+
+  Returns:
+    s, where 's' the size of a given executable
+*/
+unsigned int get_exec_size(int eid)
+{
+  // STUB STUB STUB
+
+  return 0;
+}
 
 #endif
