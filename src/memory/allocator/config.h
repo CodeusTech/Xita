@@ -12,7 +12,7 @@
 #ifndef ALLOCATOR_CONFIG_H
 #define ALLOCATOR_CONFIG_H
 
-
+#include "../../utils/avl_tree.h"
 
 
 

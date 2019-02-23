@@ -119,9 +119,9 @@ int get_bit(BitVector bv, int n)
 /* 3.a) Create Clear Bit Vector
 
   Returns:
-    0, if Successful
+    p, where 'p' is pointer to new Bit Vector
 */
-BitVector bv_clear(unsigned long size) ()
+/*BitVector*/ int bv_clear(unsigned long size)
 {
   // STUB STUB STUB
 
