@@ -76,7 +76,7 @@ int read_header()
   Returns:
     c, where 'c' is number of arguments
 */
-int get_argc()
+unsigned int get_argc()
 {
   //  STUB STUB STUB
 
@@ -88,7 +88,7 @@ int get_argc()
   Returns:
     0, if Successful
 */
-int set_argc()
+unsigned int set_argc()
 {
   //  STUB STUB STUB
 
@@ -138,7 +138,7 @@ int set_argt(int index)
   Returns:
     t, where 't' is number of bytes for all types
 */
-int get_type_bytes()
+unsigned int get_type_bytes()
 {
   //  STUB STUB STUB
 
@@ -150,7 +150,7 @@ int get_type_bytes()
   Returns:
     0, if Successful
 */
-int set_type_bytes(int bytes)
+int set_type_bytes(unsigned int bytes)
 {
   //  STUB STUB STUB
 
@@ -166,7 +166,7 @@ int set_type_bytes(int bytes)
   Returns:
     s, where 's' is the size of given Type ID
 */
-int get_type_size(int tid)
+unsigned int get_type_size(int tid)
 {
   //  STUB STUB STUB
 
@@ -178,7 +178,7 @@ int get_type_size(int tid)
   Returns:
     0, if Successful
 */
-int set_type_size(int tid, int sz)
+int set_type_size(int tid, unsigned int sz)
 {
   //  STUB STUB STUB
 
@@ -199,7 +199,7 @@ int set_type_size(int tid, int sz)
   Returns:
     c, where 'c' is number of bytes for all constants
 */
-int get_const_bytes()
+unsigned int get_const_bytes()
 {
   //  STUB STUB STUB
 
@@ -211,7 +211,7 @@ int get_const_bytes()
   Returns:
     0, if Successful
 */
-int set_const_bytes(int bytes)
+int set_const_bytes(unsigned int bytes)
 {
   //  STUB STUB STUB
 
@@ -227,7 +227,7 @@ int set_const_bytes(int bytes)
   Returns:
     s, where 's' is the size of given Constant ID
 */
-int get_const_size(int cid)
+unsigned int get_const_size(int cid)
 {
   //  STUB STUB STUB
 
@@ -239,7 +239,7 @@ int get_const_size(int cid)
   Returns:
     0, if Successful
 */
-int set_const_size(int cid, int sz)
+int set_const_size(int cid, unsigned int sz)
 {
   //  STUB STUB STUB
 
@@ -260,7 +260,7 @@ int set_const_size(int cid, int sz)
   Returns:
     e, where 'e' is the number of bytes for all executables
 */
-int get_exec_bytes()
+unsigned int get_exec_bytes()
 {
   //  STUB STUB STUB
 
@@ -272,7 +272,7 @@ int get_exec_bytes()
   Returns:
     0, if Successful
 */
-int set_exec_bytes()
+int set_exec_bytes(unsigned int bytes)
 {
   //  STUB STUB STUB
 
@@ -290,7 +290,19 @@ int set_exec_bytes()
 */
 unsigned int get_exec_size(int eid)
 {
-  // STUB STUB STUB
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Executable Size
+
+  Returns:
+    0, if Successful
+*/
+int set_exec_size(int eid, unsigned int sz)
+{
+  //  STUB STUB STUB
 
   return 0;
 }
