@@ -60,7 +60,7 @@ extern int yylex();
 "i64" { return I64_T; }   //  64-Bit SIGNED INTEGER TYPE
 "I64" { return I64_C; }   //  64-Bit SIGNED INTEGER CONSTRUCTOR
 
-"RNG" { return RNG; } //  RANDOM NUMBER GENERATOR
+"rng" { return RNG; } //  RANDOM NUMBER GENERATOR
 
 "bool" { return BOOL_T; }   //  BOOLEAN TYPE
 "Bool" { return BOOL_C; }   //  BOOLEAN CONSTRUCTOR

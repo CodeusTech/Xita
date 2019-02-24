@@ -19,8 +19,12 @@
     2.a) Get/Set Constant Type
     2.b) Get/Set Constant Value
   3.) Declarations: Executables
-    3.a) Entry Function
-
+    3.a) Get/Set Number of Functions
+    3.b) Get/Set Number of Parameters
+    3.c) Get/Set Executable Types
+    3.d) Get/Set Parameter Types
+    3.e) Get/Set Executable Data Size
+    3.f) Get/Set Executable Data
 */
 
 #ifndef BYTECODE_BODY_H
@@ -210,7 +214,176 @@ int set_constant_value(unsigned int constid, void* value)
 */
 
 /*
-
+  3.a) Get/Set Number of Functions
 */
+
+/* Get Number of Functions
+
+  Returns:
+    n, where 'n' is Number of Expected Functions
+*/
+unsigned int get_num_functions()
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Number of Functions
+
+  Returns:
+    0, if Successful
+*/
+int set_num_functions()
+{
+  //  STUB STUB STUB STUB
+
+  return 0;
+}
+
+/*
+  3.b) Get/Set Number of Parameters
+*/
+
+/* Get Number of Parameters
+
+  Returns:
+    n, where 'n' is Number of Parameter for a function
+*/
+int get_num_parameters(unsigned int fid)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Number of Parameters
+
+  Returns:
+    0, if Successful
+*/
+int set_num_parameters(unsigned int fid, unsigned int n)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+
+/*
+  3.c) Get/Set Executable Types
+*/
+
+/* Get Executable Types
+
+  Returns:
+    tid, where tid is the Type ID for a given Function ID
+*/
+unsigned int get_exec_type(unsigned int fid)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Executable Types
+
+  Returns:
+    0, if Successful
+*/
+int set_exec_type(unsigned int fid, unsigned int tid)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+
+/*
+  3.d) Get/Set Parameter Types
+*/
+
+/* Get Parameter Types
+
+  Returns:
+    tid, where tid is the Type ID for a given Parameter
+*/
+unsigned int get_param_type(unsigned int fid, unsigned int pid)
+{
+  //  STUB STUB STUB
+
+  return 0;  
+}
+
+/* Set Parameter Types
+
+  Returns:
+    0, if Successful
+*/
+int set_param_type(unsigned int fid, unsigned int pid, unsigned int tid)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+
+/*
+  3.e) Get/Set Executable Data Size
+*/
+
+/* Get Executable Data Size
+
+  Returns:
+    s, where 's' is size, in bytes, of the executable data
+*/
+unsigned int get_exec_datasize(unsigned int fid)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+/* Set Executable Data Size
+
+  Returns:
+    0, if Successful
+*/
+int set_exec_datasize(unsigned int fid, unsigned int sz)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
+
+/*
+  3.f) Get/Set Executable Data
+*/
+
+/* Get Executable Data
+
+  Returns:
+    p, Pointer to Executable Data
+*/
+char* get_exec_data(unsigned int fid)
+{
+  //  STUB STUB STUB
+
+  return (char*) 0;
+}
+
+/* Set Executable Data
+
+  Returns:
+    0, if Successful
+*/
+int set_exec_data(unsigned int fid, char* data)
+{
+  //  STUB STUB STUB
+
+  return 0;
+}
+
 
 #endif

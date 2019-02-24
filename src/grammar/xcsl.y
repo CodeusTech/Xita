@@ -62,7 +62,6 @@
 
 //  XCS Libraries
 #include "src/ident.h"
-#include "src/regex.h"
 #include "src/bytecode/bytecode.h"
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
@@ -72,6 +71,7 @@
 #include "src/primitives/primitives.h"
 #include "src/tethers/tethers.h"
 #include "src/types/types.h"
+#include "src/utils/regex.h"
 
 //  Linux Libraries
 #include <stdio.h>

@@ -43,8 +43,9 @@
   Returns:
     0, if Successful
 */
-int build_header()
+int build_header(char* name)
 {
+  printf("Building %s...\n", name);
   //  STUB STUB STUB
 
   return 0;

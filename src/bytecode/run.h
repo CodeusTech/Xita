@@ -12,13 +12,13 @@
 #ifndef BYTECODE_RUN_H
 #define BYTECODE_RUN_H
 
-#include "string.h"
+#include "header.h"
+#include "body.h"
 
 int run_bytestring(char* byte)
 {
   printf("Running Bytecode Program: %s\n", byte);
 }
-
 
 
 #endif
