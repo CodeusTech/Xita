@@ -18,7 +18,7 @@
     2.b) Get/Set Argument Types
   3.) Metadata: Types
     3.a) Get/Set Total Type Bytes
-    3.b) Get/Set Type Size
+    3.b) Get/Set Each Type Total Bytes
   4.) Metadata: Constants
     4.a) Get/Set Total Constant Bytes
     4.b) Get/Set Constant Size
@@ -158,7 +158,7 @@ int set_type_bytes(unsigned int bytes)
 }
 
 /*
-  3.b) Get/Set Type Size
+  3.b) Get/Set Each Type Total Bytes
 */
 
 /* Get Type Size
