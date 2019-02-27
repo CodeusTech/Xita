@@ -31,6 +31,7 @@ extern int yylex();
 %option noyywrap
 %option yylineno
 %x COMMENT
+%x DOC_COMMENT
 %%
 [ \t\n] ;           // Eliminate Whitespace
 
@@ -216,15 +217,14 @@ extern int yylex();
 */
 %}
 
-"(!*"                 BEGIN(DOC_COMMENT);
-<DOC_COMMENT>[^\*]*   /* eat anything that's not a '*)' */ 
-<DOC_COMMENT>\*       /* do nothing */
+"(*!"                 BEGIN(DOC_COMMENT);
 <DOC_COMMENT>"*)"     BEGIN(INITIAL);
+<DOC_COMMENT>[^\n]*   { yylval.val_doc = strdup(yytext); return DOC; }
+<DOC_COMMENT>\n       { return DOC_NEWLINE; } 
 
 "(*"                  BEGIN(COMMENT);
-<COMMENT>[^\*]*        /* eat anything that's not a '*)' */ 
-<COMMENT>\*            /* do nothing */
 <COMMENT>"*)"         BEGIN(INITIAL);
+<COMMENT>[^\*]*   
 
 --[^\n]*\n            {  }
 

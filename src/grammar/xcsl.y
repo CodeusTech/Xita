@@ -98,6 +98,7 @@ void yyerror(const char* s);
   char val_char;
   char* val_string;
   char* val_ident;
+  char* val_doc;
 }
 
 //  Primitive Tokens
@@ -106,10 +107,11 @@ void yyerror(const char* s);
 %token<val_char> CHAR
 %token<val_string> STRING
 %token<val_ident> IDENTIFIER CONSTRUCTOR
+%token<val_doc> DOC
 %token TRUE FALSE
 
 //  Comments
-%token COMMENT
+%token COMMENT DOC_NEWLINE
 
 //  Syntactic Operators
 %token OP_ADD OP_SUB OP_MUL OP_DIV OP_MOD       // INTEGER ARITHMETIC
@@ -120,7 +122,7 @@ void yyerror(const char* s);
 %token OP_SEP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
 
 //  List Operators/Keywords
-%token OP_LIST_L OP_LIST_R LIST_C OP_APPEND OP_LIST_CON
+%token OP_LIST_L OP_LIST_R LIST_C LIST_T OP_APPEND OP_LIST_CON
 %token LIST_HEAD LIST_TAIL
 
 //  Conditional Keywords
@@ -157,9 +159,6 @@ void yyerror(const char* s);
 %token STRING_T STRING_C
 %token BYTE_STRING  /* DEPRECATED */
 
-// Lists
-%token LIST_T LIST_C
-
 //  Special Operations
 %token BUILD RUN            //  Bytecode Operations
 %token REGEX                //  Regular Expressions
@@ -186,9 +185,15 @@ void yyerror(const char* s);
 */
 %start xcs
 %%
+mod_doc:
+    DOC { printf("%s", $1); }
+  | DOC_NEWLINE { printf("\n"); }
+  
+;
 
 xcs:
-    xcs_source  {/* Source Module Structure */}
+    mod_doc xcs { }
+  | xcs_source  {/* Source Module Structure */}
   | xcs_tether  {/* Tether Module Structure */}
 ;
 
