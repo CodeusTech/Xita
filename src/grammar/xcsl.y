@@ -223,6 +223,13 @@ src:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
+  | exp_integer       {/* For Testing */}
+  | exp_boolean       {/* For Testing */}
+  | exp_real          {/* For Testing */}
+  | exp_char          {/* For Testing */}
+  | exp_string        {/* For Testing */}
+  | exp_list          { }
+  | exp_regex         { }
   | exp_if            { }
   | exp_match         { }
   | exp_is            { }
@@ -240,13 +247,6 @@ exp:
   | exp_send          { }
   | exp_receive       { }
   | exp_ask           { }
-  | exp_integer       {/* For Testing */}
-  | exp_boolean       {/* For Testing */}
-  | exp_real          {/* For Testing */}
-  | exp_char          {/* For Testing */}
-  | exp_string        {/* For Testing */}
-  | exp_list          { }
-  | exp_regex         { }
   | exp OP_TUP exp    { add_to_tuple(); }
   | ident_construct exp {}
 ;
