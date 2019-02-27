@@ -166,8 +166,11 @@ void yyerror(const char* s);
 %token TETHER SEND RECEIVE  //  Interprocess Communication
 
 //  Module Operations
-%token OPEN TETHER_M SOURCE_M HEADER_M
-%token TETHER_H OFFER ASK
+%token OPEN SOURCE_M HEADER_M TETHER_M
+%token SOURCE_H HEADER_H TETHER_H 
+
+//  Tether Module-Specific Operations
+%token OFFER ASK
 
 /*
   B.) Order of Operations

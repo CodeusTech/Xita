@@ -35,6 +35,11 @@ extern int yylex();
 [ \t\n] ;           // Eliminate Whitespace
 
 
+"!SOURCE\n" { return SOURCE_H; }  // SOURCE PREAMBLE
+"!HEADER\n" { return HEADER_H; }  // HEADER PREAMBLE
+"!TETHER\n" { return TETHER_H; }  // TETHER PREAMBLE
+
+
 %{
 /*
   1.) Primitive Types/Constructors
@@ -202,8 +207,6 @@ extern int yylex();
 */  
 %}
 
-"!TETHER\n" { return TETHER_H; }
-
 "offer" { return OFFER; }
 "ask"   { return ASK;   }
 
@@ -212,6 +215,11 @@ extern int yylex();
   B.) Comments
 */
 %}
+
+"(!*"                 BEGIN(DOC_COMMENT);
+<DOC_COMMENT>[^\*]*   /* eat anything that's not a '*)' */ 
+<DOC_COMMENT>\*       /* do nothing */
+<DOC_COMMENT>"*)"     BEGIN(INITIAL);
 
 "(*"                  BEGIN(COMMENT);
 <COMMENT>[^\*]*        /* eat anything that's not a '*)' */ 
