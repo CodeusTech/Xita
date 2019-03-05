@@ -63,6 +63,7 @@
 //  XCS Libraries
 #include "src/ident.h"
 #include "src/bytecode/bytecode.h"
+#include "src/comments/comments.h"
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
 #include "src/gpio/gpio.h"
@@ -111,7 +112,7 @@ void yyerror(const char* s);
 %token TRUE FALSE
 
 //  Comments
-%token COMMENT DOC_NEWLINE
+%token COMMENT DOC_NEWLINE REFERENCE
 
 //  Syntactic Operators
 %token OP_ADD OP_SUB OP_MUL OP_DIV OP_MOD       // INTEGER ARITHMETIC
@@ -179,16 +180,14 @@ void yyerror(const char* s);
 %left OP_MUL OP_DIV OP_MOD
 %left OP_SEQ
 
-
 /*
   C.) Start of Grammar
 */
 %start xcs
 %%
 mod_doc:
-    DOC { printf("%s", $1); }
-  | DOC_NEWLINE { printf("\n"); }
-  
+    DOC { decl_ref_comment(); }
+  | DOC_NEWLINE { }
 ;
 
 xcs:
@@ -257,6 +256,7 @@ exp:
   | exp_ask           { }
   | exp OP_TUP exp    { add_to_tuple(); }
   | ident_construct exp {}
+  | REFERENCE IDENTIFIER  { exp_ref_comment(); }
 ;
 
 /*

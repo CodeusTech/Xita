@@ -11,12 +11,13 @@
 
   Table of Contents
   =================
-  1.) Primitive Data Types
-  2.) Syntactic Operators
-  3.) Conditional Keywords
-  4.) Functional Keywords
-  5.) Datatype Keywords
-  6.) Special Operations
+  1.) Comments
+  2.) Primitive Types/Constructors
+  3.) Syntactic Operators
+  4.) Conditional Keywords
+  5.) Functional Keywords
+  6.) Datatype Keywords
+  7.) Special Operations
 
   A.) Tether Modules 
   B.) Constructors/Identifiers
@@ -43,7 +44,26 @@ extern int yylex();
 
 %{
 /*
-  1.) Primitive Types/Constructors
+  1.) Comments
+*/
+%}
+
+"(!*"                 BEGIN(DOC_COMMENT);
+<DOC_COMMENT>"*)"     BEGIN(INITIAL);
+<DOC_COMMENT>[^\n]*   { yylval.val_doc = strdup(yytext); return DOC; }
+<DOC_COMMENT>\n       { return DOC_NEWLINE; } 
+
+"!ref" { return REFERENCE; } // For Use with Doc Comments
+
+"(*"                  BEGIN(COMMENT);
+<COMMENT>"*)"         BEGIN(INITIAL);
+<COMMENT>[^\*]*   
+
+--[^\n]*\n            {  }
+
+%{
+/*
+  2.) Primitive Types/Constructors
 */
 %}
 
@@ -89,7 +109,7 @@ extern int yylex();
 
 %{
 /*
-  2.) Syntactic Operators
+  3.) Syntactic Operators
 */
 %}
 
@@ -142,7 +162,7 @@ extern int yylex();
 
 %{
 /*
-  3.) Conditional Keywords
+  4.) Conditional Keywords
 */
 %}
 
@@ -155,7 +175,7 @@ extern int yylex();
 
 %{
 /*
-  4.) Functional Keywords
+  5.) Functional Keywords
 */
 %}
 
@@ -167,7 +187,7 @@ extern int yylex();
 
 %{
 /*
-  5.) Datatype Keywords
+  6.) Datatype Keywords
 */  
 %}
 
@@ -184,7 +204,7 @@ extern int yylex();
 
 %{
 /*
-  6.) Special Operations
+  7.) Special Operations
 */  
 %}
 
@@ -210,23 +230,6 @@ extern int yylex();
 
 "offer" { return OFFER; }
 "ask"   { return ASK;   }
-
-%{
-/*
-  B.) Comments
-*/
-%}
-
-"(*!"                 BEGIN(DOC_COMMENT);
-<DOC_COMMENT>"*)"     BEGIN(INITIAL);
-<DOC_COMMENT>[^\n]*   { yylval.val_doc = strdup(yytext); return DOC; }
-<DOC_COMMENT>\n       { return DOC_NEWLINE; } 
-
-"(*"                  BEGIN(COMMENT);
-<COMMENT>"*)"         BEGIN(INITIAL);
-<COMMENT>[^\*]*   
-
---[^\n]*\n            {  }
 
 
 %{
