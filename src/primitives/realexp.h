@@ -17,18 +17,79 @@
   Table of Contents
   =================
   1.) Real Literals
+    1.a) Pop Real
+    1.b) Push Real Literal
+    1.c) Push Real Identifier
   2.) Real Arithmetic
     2.a) Real Addition
-
-
+    2.b) Real Subtraction
+    2.c) Real Multiplication
+    2.d) Real Division
 */
 
 #ifndef PRIMITIVES_REALEXP_H
 #define PRIMITIVES_REALEXP_H
 
+#include "typecodes.h"
+#include "../types/types.h"
+
 /*
   1.) Real Literals
 */
+
+/* 1.a) Pop Real
+
+  Returns:
+    0, if Successful
+*/
+int pop_real()
+{
+  //  STUB STUB STUB
+  printf("Real Number Popped\n");
+
+  return 0;
+}
+
+/* 1.b) Push Real Literal
+
+  Returns:
+    0, if Successful
+*/
+int push_real_lit(double lit)
+{
+  //  STUB STUB STUB
+  printf("Real Literal Pushed: %f\n", lit)
+
+  return 0;
+}
+
+/* 1.c) Push Real Identifier
+
+  Returns:
+    0, if Successful
+*/
+int push_real_ident(char* ident)
+{
+  //  STUB STUB STUB
+  printf("Real Identifier Pushed to Stack: %s\n", ident);
+
+  switch(find_type(ident))
+  {
+    case TYPE_REAL:
+      //  Push Real Number
+      break;
+    case TYPE_FLOAT:
+      //  Push Floating Point
+      break;
+    case TYPE_DOUBLE:
+      //  Push Double Precision
+      break;
+    default:
+      //  Not a Real Number, Report Error
+  }
+
+  return 0;
+}
 
 
 /*
@@ -58,7 +119,8 @@ int real_subtraction()
 
   return 0;
 }
-/* 2.a) Real Multiplication
+
+/* 2.c) Real Multiplication
 
   Returns:
     0, if Successful
@@ -69,7 +131,8 @@ int real_multiplication()
 
   return 0;
 }
-/* 2.a) Real Division
+
+/* 2.d) Real Division
 
   Returns:
     0, if Successful

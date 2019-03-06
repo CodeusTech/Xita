@@ -278,8 +278,8 @@ exp_integer:
   | exp_integer BIT_SHL exp_integer   { bitwise_shl(); }
   | exp_integer BIT_SHR exp_integer   { bitwise_shr(); }
   | exp_integer BIT_XOR exp_integer   { bitwise_xor(); }
-  | INT        { push_int_lit($1); }
   | RNG        { rng(); }
+  | INT        { push_int_lit($1);   }
   | IDENTIFIER { push_int_ident($1); }
 ;
 
@@ -296,9 +296,9 @@ exp_boolean:
   | exp_boolean BOOL_AND exp_boolean  { boolean_and(); }
   | exp_boolean BOOL_OR  exp_boolean  { boolean_or();  }
   | exp_boolean BOOL_XOR exp_boolean  { boolean_xor(); }
-  | TRUE   {/* Push '1' into Register Stack */}
-  | FALSE  {/* Push '0' into Register Stack */}
-  | exp_integer
+  | TRUE   { push_int_lit(1); }
+  | FALSE  { push_int_lit(0); }
+  | exp_integer {/* INTENTIONALLY LEFT BLANK */}
 ;
 
 /*
@@ -317,9 +317,8 @@ exp_real:
   | exp_integer OP_SUB exp_real  { real_subtraction();    }
   | exp_integer OP_MUL exp_real  { real_multiplication(); }
   | exp_integer OP_DIV exp_real  { real_division();       }
-  | REAL           {/* Push real into SSE stack */}
-  | FLOAT_C  REAL  {/* Push float into SSE stack */}
-  | DOUBLE_C REAL  {/* Push double into SSE stack */}
+  | REAL           { push_real_lit($1);   }
+  | IDENTIFIER     { push_real_ident($1); }
 ;
 
 /*
