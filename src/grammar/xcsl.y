@@ -278,9 +278,9 @@ exp_integer:
   | exp_integer BIT_SHL exp_integer   { bitwise_shl(); }
   | exp_integer BIT_SHR exp_integer   { bitwise_shr(); }
   | exp_integer BIT_XOR exp_integer   { bitwise_xor(); }
-  | INT        {/* Push int into Register Stack */}
-  | RNG        { printf("Random Number Generated\n"); }
-  | IDENTIFIER {/* Treat Identifier as Integer */}
+  | INT        { push_int_lit($1); }
+  | RNG        { rng(); }
+  | IDENTIFIER { push_int_ident($1); }
 ;
 
 /*

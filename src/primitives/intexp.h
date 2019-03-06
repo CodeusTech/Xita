@@ -17,6 +17,8 @@
   Table of Contents
   =================
   1.) Integer Literals
+    1.a) Pop Integer
+    1.b) Push Integer Literal
   2.) Integer Arithmetic
     2.a) Integer Addition
     2.b) Integer Subtraction
@@ -36,6 +38,45 @@
 /*
   1.) Integer Literals
 */
+
+/* 1.a) Pop Integer Literal
+
+  Returns:
+    0, if Successful
+*/
+int pop_int()
+{
+  //  STUB STUB STUB
+  printf("Integer Popped from Register Stack\n");
+
+  return 0;
+}
+
+/* 1.b) Push Integer Literal
+
+  Returns:
+    0, if Successful
+*/
+int push_int_lit(int literal)
+{
+  //  STUB STUB STUB
+  printf("Integer Literal Pushed to Register Stack: %d\n", literal);
+
+  return 0;
+}
+
+/* 1.c) Push Integer Identifier
+
+  Returns:
+    0, if Successful
+*/
+int push_int_ident(char* ident)
+{
+  //  STUB STUB STUB
+  printf("Integer Identifier Pushed to Register Stack: %s\n", ident);
+
+  return 0;
+}
 
 
 /*

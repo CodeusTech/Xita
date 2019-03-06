@@ -52,6 +52,7 @@ int invoke_type (char* ident)
 
   Returns:
     0, if ident is not a Type
+    1, if ident is of Arbitrary Type
     i, if ident is a Type, where 'i' is index in Types Buffer
 */
 int find_type (char* ident)
