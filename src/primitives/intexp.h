@@ -19,6 +19,7 @@
   1.) Integer Literals
     1.a) Pop Integer
     1.b) Push Integer Literal
+    1.c) Push Integer Identifier
   2.) Integer Arithmetic
     2.a) Integer Addition
     2.b) Integer Subtraction
@@ -28,18 +29,22 @@
   3.) Bitwise Arithmetic
     3.a) Bitwise Shift Left
     3.b) Bitwise Shift Right
-    
-
+    3.c) Bitwise And
+    3.d) Bitwise Or
+    3.e) Bitwise Xor
 */
 
 #ifndef PRIMITIVES_INTEXP_H
 #define PRIMITIVES_INTEXP_H
 
+#include "typecodes"
+#include "../types/types.h"
+
 /*
   1.) Integer Literals
 */
 
-/* 1.a) Pop Integer Literal
+/* 1.a) Pop Integer
 
   Returns:
     0, if Successful
@@ -69,11 +74,45 @@ int push_int_lit(int literal)
 
   Returns:
     0, if Successful
+    1, if Identifier is not an Integer
 */
 int push_int_ident(char* ident)
 {
   //  STUB STUB STUB
   printf("Integer Identifier Pushed to Register Stack: %s\n", ident);
+
+  switch (find_type(ident))
+  {
+    case TYPE_INTEGER:
+      //  Handle Integer
+      break;
+    case TYPE_U8:
+      //  Handle U8
+      break;
+    case TYPE_I8:
+      //  Handle I8
+      break;
+    case TYPE_U16:
+      //  Handle U16
+      break;
+    case TYPE_I16:
+      //  Handle I16
+      break;
+    case TYPE_U32:
+      //  Handle U32
+      break;
+    case TYPE_I32:
+      //  Handle I32
+      break;
+    case TYPE_U64:
+      //  Handle U64
+      break;
+    case TYPE_I64:
+      //  Handle I64
+      break;
+    default:
+      //  Not an Integer -- Throw Error
+  }
 
   return 0;
 }
