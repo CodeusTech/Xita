@@ -37,46 +37,47 @@
 /* 1.a) Pop Character
 
   Returns:
-    1, if Successful
+    0, if Successful
 */
 int pop_char()
 {
   // STUB STUB STUB
   printf("Character Popped");
 
-  return 1;
+  return 0;
 }
 
 /* 1.b) Push Character Literal
 
   Returns:
-    1, if Successful
+    0, if Successful
 */
 int push_char_lit(char lit)
 {
   //  STUB STUB STUB
   printf("Character Literal Pushed: %c\n", lit);
 
-  return 1;
+  return 0;
 }
 
 /* 1.c) Push Character Integer
 
   Returns:
-    1, if Successful
+    0, if Successful
 */
 int push_char_int(unsigned int lit)
 {
   //  STUB STUB STUB
   printf("Character Integer Pushed: %d\n", lit);
 
-  return 1;
+  return 0;
 }
 
 /* 1.d) Push Character Identifier
 
   Returns:
-    1, if Successful
+    0, if Successful
+    1, if Identifier is not a Character
 */
 int push_char_ident(char* ident)
 {
@@ -84,9 +85,9 @@ int push_char_ident(char* ident)
   printf("Character Identifier Pushed: %s\n", ident);
 
   if (find_type(ident) == TYPE_CHAR) {/* Handle Character */ }
-  else {/* Not a Character, Throw Error */}
+  else {return 1;/*TODO: Replace with yyerror()*/}
 
-  return 1;
+  return 0;
 }
 
 
@@ -98,7 +99,7 @@ int char_from_int(int i)
 {
   printf("Character: %c, derived from int: %d.\n", (char) i, i);
 
-  return 1;
+  return 0;
 }
 
 

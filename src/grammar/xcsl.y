@@ -808,6 +808,9 @@ arg_ask:
 */
 void yyerror(const char* s) {
 	fprintf(stderr, "\nParse error in line %d: %s\n\n", yylineno, s);
-	exit(1);
+
+  //  TODO: DEALLOCATE ALL BUFFERS
+  
+	exit(0);
 }
 

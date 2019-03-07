@@ -39,34 +39,34 @@
 /* 1.a) Pop String
 
   Returns:
-    1, if Successful
+    0, if Successful
 */
 int pop_string()
 {
   //  STUB STUB STUB
   printf("String Popped from Register Stack\n");
 
-  return 1;
+  return 0;
 }
 
 /* 1.b) Push String Literal
 
   Returns:
-    1, if Successful
+    0, if Successful
 */
 int push_string_lit(char* str)
 {
   //  STUB STUB STUB
   printf("String Literal Pushed onto Register Stack: %s\n", str);
 
-  return 1;
+  return 0;
 }
 
 /* 1.c) Push String Identifier
 
   Returns:
-    0, if Identifier is not a String
-    1, if Successful
+    0, if Successful
+    1, if Identifier is not a String
 */
 int push_string_ident(char* ident)
 {
@@ -74,9 +74,9 @@ int push_string_ident(char* ident)
   printf("String Identifier Pushed onto Reg Stack: %s\n", ident);
 
   if (find_type(ident) == TYPE_STRING) {/* Handle String */}
-  else return 0;
+  else return 1;
 
-  return 1;
+  return 0;
 }
 
 
@@ -87,13 +87,13 @@ int push_string_ident(char* ident)
 /* 2.a) Append Strings
 
   Returns:
-    1, if Successful
+    0, if Successful
 */
 int string_append()
 {
   printf("Strings have been appended\n");
 
-  return 1;
+  return 0;
 }
 
 
