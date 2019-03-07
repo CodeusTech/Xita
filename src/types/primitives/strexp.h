@@ -32,6 +32,9 @@
 #include "typecodes.h"
 #include "../types.h"
 
+#include "../../grammar/status.h"
+extern unsigned int grammar_status;
+
 /*
   1.) String Literals
 */
@@ -74,7 +77,12 @@ int push_string_ident(char* ident)
   printf("String Identifier Pushed onto Reg Stack: %s\n", ident);
 
   if (find_type(ident) == TYPE_STRING) {/* Handle String */}
-  else return 1;
+  else
+  {
+    grammar_status = GRAMMAR_ERROR_TYPECHECK;
+
+    return 1;
+  }
 
   return 0;
 }

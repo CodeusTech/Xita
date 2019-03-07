@@ -67,6 +67,7 @@
 #include "src/conditions/conditions.h"
 #include "src/functions/functions.h"
 #include "src/gpio/gpio.h"
+#include "src/grammar/status.h"
 #include "src/memory/memory.h"
 #include "src/modules/modules.h"
 #include "src/tethers/tethers.h"
@@ -83,7 +84,8 @@ extern int yyparse();
 extern FILE* yyin;
 extern int yylineno;
 
-void yyerror(const char* s);
+void yyerror(const char* error);
+unsigned int grammar_status = GRAMMAR_RUNNING;
 
 
 %}
@@ -806,11 +808,11 @@ arg_ask:
 /*
   GENERIC ERROR MESSAGE
 */
-void yyerror(const char* s) {
-	fprintf(stderr, "\nParse error in line %d: %s\n\n", yylineno, s);
+void yyerror(const char* error) {
+	fprintf(stderr, "\nParse error in line %d: %s\n\n", yylineno, error);
 
   //  TODO: DEALLOCATE ALL BUFFERS
   
-	exit(0);
+	exit(grammar_status);
 }
 

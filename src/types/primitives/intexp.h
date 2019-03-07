@@ -40,6 +40,9 @@
 #include "typecodes.h"
 #include "../types.h"
 
+#include "../../grammar/status.h"
+extern unsigned int grammar_status;
+
 /*
   1.) Integer Literals
 */
@@ -113,6 +116,7 @@ int push_int_ident(char* ident)
     default:
       //  Not an Integer -- Throw Error
       //  TODO: Replace with yyerror()
+      grammar_status = GRAMMAR_ERROR_TYPECHECK;
       return 1;
   }
 

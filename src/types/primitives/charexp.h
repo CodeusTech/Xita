@@ -30,6 +30,9 @@
 #include "typecodes.h"
 #include "../types.h"
 
+#include "../../grammar/status.h"
+extern unsigned int grammar_status;
+
 /*
   1.) Character Literals
 */
@@ -85,7 +88,12 @@ int push_char_ident(char* ident)
   printf("Character Identifier Pushed: %s\n", ident);
 
   if (find_type(ident) == TYPE_CHAR) {/* Handle Character */ }
-  else {return 1;/*TODO: Replace with yyerror()*/}
+  else 
+  {
+    /*TODO: Replace with yyerror()*/
+    grammar_status = GRAMMAR_ERROR_TYPECHECK;
+    return 1;
+  }
 
   return 0;
 }

@@ -33,6 +33,9 @@
 #include "typecodes.h"
 #include "../types.h"
 
+#include "../../grammar/status.h"
+extern unsigned int grammar_status;
+
 /*
   1.) Real Literals
 */
@@ -87,6 +90,8 @@ int push_real_ident(char* ident)
       break;
     default:
       //  Not a Real Number, Report Error
+      grammar_status = GRAMMAR_ERROR_TYPECHECK;
+      //  TODO: Return with yyerror() 
       return 1;
   }
 
