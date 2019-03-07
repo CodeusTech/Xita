@@ -61,18 +61,15 @@
 */
 
 //  XCS Libraries
-#include "src/ident.h"
 #include "src/bytecode/bytecode.h"
 #include "src/comments/comments.h"
 #include "src/conditions/conditions.h"
-#include "src/functions/functions.h"
 #include "src/gpio/gpio.h"
 #include "src/grammar/status.h"
+#include "src/ident/ident.h"
 #include "src/memory/memory.h"
 #include "src/modules/modules.h"
 #include "src/tethers/tethers.h"
-#include "src/types/types.h"
-#include "src/types/primitives/primitives.h"
 #include "src/utils/regex.h"
 
 //  Linux Libraries

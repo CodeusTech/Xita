@@ -24,7 +24,6 @@
 
 //  XCS Libraries
 #include "globals.h"
-#include "types/types.h"
 #include "asm/asm.h"
 
 //  Linux Libraries
