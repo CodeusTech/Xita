@@ -44,11 +44,10 @@
     6.b) Write Expression to Memory
   7.) Process Operations
     7.a) Build/Run
-  8.) Interprocess Communication
-    8.a) Process Tethers
-    8.b) Send/Receive
-  9.) Special Operations
-    9.a) Regular Expressions
+    7.b) Process Tethers
+    7.c) Send/Receive
+  8.) Special Operations
+    8.a) Regular Expressions
 
   
   E.) Tether Modules
@@ -174,9 +173,11 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 /*
   B.) Order of Operations
 */
+%left REAL INT
 %left OP_TUP
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
+%left PAR_LEFT PAR_RIGHT
 %left OP_SEQ
 
 /*
@@ -235,6 +236,12 @@ exp:
   | exp_char          {/* For Testing */}
   | exp_string        {/* For Testing */}
   | exp_list          { }
+  | exp OP_ADD exp    { infer_addition(); }
+  | exp OP_SUB exp    { infer_subtraction(); }
+  | exp OP_MUL exp    { infer_multiplication(); }
+  | exp OP_DIV exp    { infer_division(); }
+  | exp OP_MOD exp    { infer_modulus(); }
+  | IDENTIFIER { printf("Type Inferred: %s\n", $1); }
   | exp_regex         { }
   | exp_if            { }
   | exp_match         { }
@@ -267,11 +274,6 @@ exp:
 */
 exp_integer:
     PAR_LEFT exp_integer PAR_RIGHT
-  | exp_integer OP_ADD exp_integer    { integer_addition(); }
-  | exp_integer OP_SUB exp_integer    { integer_subtraction(); }
-  | exp_integer OP_MUL exp_integer    { integer_multiplication(); }
-  | exp_integer OP_DIV exp_integer    { integer_division(); }
-  | exp_integer OP_MOD exp_integer    { integer_modulus(); }
   | exp_integer BIT_AND exp_integer   { bitwise_and(); }
   | exp_integer BIT_OR exp_integer    { bitwise_or(); }
   | exp_integer BIT_SHL exp_integer   { bitwise_shl(); }
@@ -279,7 +281,6 @@ exp_integer:
   | exp_integer BIT_XOR exp_integer   { bitwise_xor(); }
   | RNG        { rng(); }
   | INT        { push_int_lit($1);   }
-  | IDENTIFIER { push_int_ident($1); }
 ;
 
 /*
@@ -304,20 +305,9 @@ exp_boolean:
   2.c) Real Expressions
 */
 exp_real:
-    exp_real OP_ADD exp_real     { real_addition();       }
-  | exp_real OP_SUB exp_real     { real_subtraction();    }
-  | exp_real OP_MUL exp_real     { real_multiplication(); }
-  | exp_real OP_DIV exp_real     { real_division();       }
-  | exp_real OP_ADD exp_integer  { real_addition();       }
-  | exp_real OP_SUB exp_integer  { real_subtraction();    }
-  | exp_real OP_MUL exp_integer  { real_multiplication(); }
-  | exp_real OP_DIV exp_integer  { real_division();       }
-  | exp_integer OP_ADD exp_real  { real_addition();       }
-  | exp_integer OP_SUB exp_real  { real_subtraction();    }
-  | exp_integer OP_MUL exp_real  { real_multiplication(); }
-  | exp_integer OP_DIV exp_real  { real_division();       }
-  | REAL           { push_real_lit($1);   }
-  | IDENTIFIER     { push_real_ident($1); }
+    FLOAT_C REAL  { push_real_lit($2); }
+  | DOUBLE_C REAL { push_real_lit($2); }
+  | REAL          { push_real_lit($1); }
 ;
 
 /*
@@ -642,7 +632,7 @@ param_prototype:
 */
 
 /*
-  6) Direct Memory Access (DMA)
+  7) Direct Memory Access (DMA)
 */
 
 /*
@@ -687,13 +677,8 @@ exp_byte_run:
     RUN STRING { run_bytestring($2); }
 ;
 
-
 /*
-  8.) Interprocess Communication
-*/
-
-/*
-  8.a) Process Tethers
+  7.b) Process Tethers
 */
 
 /*
@@ -717,7 +702,7 @@ param_tether:
 ;
 
 /*
-  8.b) Send/Receive
+  7.c) Send/Receive
 */
 exp_send:
     SEND STRING exp  { ipc_send($2); }
@@ -729,11 +714,11 @@ exp_receive:
 
 
 /*
-  9.) Special Operations
+  8.) Special Operations
 */
 
 /*
-  9.a) Regular Expressions
+  8.a) Regular Expressions
 */
 exp_regex:
     REGEX STRING  { regular_expression($2); }

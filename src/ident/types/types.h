@@ -17,6 +17,10 @@
 #ifndef IDENT_TYPES_H
 #define IDENT_TYPES_H
 
+//  Type Inferrence
+#include "inferrence/inferrence.h"
+
+
 //  Type Headers
 #include "constructor.h"
 #include "lists.h"
