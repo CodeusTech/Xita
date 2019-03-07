@@ -325,8 +325,8 @@ exp_real:
   2.d) Character Expressions
 */
 exp_char:
-    CHAR        { literal_char($1); }
-  | CHAR_C INT  { char_from_int($2); }
+    CHAR        { push_char_lit($1); }
+  | CHAR_C INT  { push_char_int($2); }
 ;
 
 /*

@@ -40,33 +40,34 @@
 /* 1.a) Pop Real
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int pop_real()
 {
   //  STUB STUB STUB
   printf("Real Number Popped\n");
 
-  return 0;
+  return 1;
 }
 
 /* 1.b) Push Real Literal
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int push_real_lit(double lit)
 {
   //  STUB STUB STUB
-  printf("Real Literal Pushed: %f\n", lit)
+  printf("Real Literal Pushed: %f\n", lit);
 
-  return 0;
+  return 1;
 }
 
 /* 1.c) Push Real Identifier
 
   Returns:
-    0, if Successful
+    0, if Identifier is not a Real Number
+    1, if Successful
 */
 int push_real_ident(char* ident)
 {
@@ -86,9 +87,10 @@ int push_real_ident(char* ident)
       break;
     default:
       //  Not a Real Number, Report Error
+      return 0;
   }
 
-  return 0;
+  return 1;
 }
 
 
@@ -99,49 +101,49 @@ int push_real_ident(char* ident)
 /* 2.a) Real Addition
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int real_addition()
 {
   printf("Perform Real Addition\n");
 
-  return 0;
+  return 1;
 }
 
 /* 2.b) Real Subtraction
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int real_subtraction()
 {
   printf("Perform Real Subtraction\n");
 
-  return 0;
+  return 1;
 }
 
 /* 2.c) Real Multiplication
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int real_multiplication()
 {
   printf("Perform Real Multiplication\n");
 
-  return 0;
+  return 1;
 }
 
 /* 2.d) Real Division
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int real_division()
 {
   printf("Perform Real Division\n");
 
-  return 0;
+  return 1;
 }
 
 

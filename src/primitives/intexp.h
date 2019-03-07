@@ -37,7 +37,7 @@
 #ifndef PRIMITIVES_INTEXP_H
 #define PRIMITIVES_INTEXP_H
 
-#include "typecodes"
+#include "typecodes.h"
 #include "../types/types.h"
 
 /*
@@ -47,34 +47,34 @@
 /* 1.a) Pop Integer
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int pop_int()
 {
   //  STUB STUB STUB
   printf("Integer Popped from Register Stack\n");
 
-  return 0;
+  return 1;
 }
 
 /* 1.b) Push Integer Literal
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int push_int_lit(int literal)
 {
   //  STUB STUB STUB
   printf("Integer Literal Pushed to Register Stack: %d\n", literal);
 
-  return 0;
+  return 1;
 }
 
 /* 1.c) Push Integer Identifier
 
   Returns:
-    0, if Successful
-    1, if Identifier is not an Integer
+    0, if Identifier is not an Integer
+    1, if Successful
 */
 int push_int_ident(char* ident)
 {
@@ -112,9 +112,10 @@ int push_int_ident(char* ident)
       break;
     default:
       //  Not an Integer -- Throw Error
+      return 0;
   }
 
-  return 0;
+  return 1;
 }
 
 
@@ -126,39 +127,39 @@ int push_int_ident(char* ident)
   Adds TOP to NEXT register; TOP is deactivated
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int integer_addition()
 {
   printf("Added top two registers on REGISTER STACK\n");
 
-  return 0;
+  return 1;
 }
 
 /* 2.b) Integer Subtraction
   Subtracts TOP from NEXT register; TOP is deactivated
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int integer_subtraction()
 {
   printf("Subtracted top two registers on REGISTER STACK\n");
 
-  return 0;
+  return 1;
 }
 
 /* 2.c) Integer Multiplication
   Multiplies TOP and NEXT register; TOP is deactivated
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int integer_multiplication()
 {
   printf("Multiplied top two registers on REGISTER STACK\n");
 
-  return 0;
+  return 1;
 }
 
 /* 2.d) Integer Division
@@ -178,13 +179,13 @@ int integer_division()
   Divides TOP from NEXT register; NEXT holds remainder; TOP is deactivated
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int integer_modulus()
 {
   printf("Modulus'd top two registers on REGISTER STACK\n");
 
-  return 0;
+  return 1;
 }
 
 /*
@@ -195,65 +196,65 @@ int integer_modulus()
   Shifts NEXT register's bits left by TOP places
 
   Returns:
-    0, if Succcessful
+    1, if Succcessful
 */
 int bitwise_shl()
 {
   printf("Bitwise Shift Left\n");
 
-  return 0;
+  return 1;
 }
 
 /* 3.b) Bitwise Shift Right
   Shifts NEXT register's bits right by TOP places
 
   Returns:
-    0, if Succcessful
+    1, if Succcessful
 */
 int bitwise_shr()
 {
   printf("Bitwise Shift Right\n");
 
-  return 0;
+  return 1;
 }
 
 /* 3.c) Bitwise And
   Performs bitwise and from TOP to NEXT; NEXT stores result
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int bitwise_and()
 {
   printf("Bitwise And\n");
 
-  return 0;
+  return 1;
 }
 
 /* 3.d) Bitwise Or
   Performs bitwise or from TOP to NEXT; NEXT stores result
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int bitwise_or()
 {
   printf("Bitwise Or\n");
 
-  return 0;
+  return 1;
 }
 
 /* 3.e) Bitwise Xor
   Performs bitwise exclusive or from TOP to NEXT; NEXT stores result
 
   Returns:
-    0, if Successful
+    1, if Successful
 */
 int bitwise_xor()
 {
   printf("Bitwise Exclusive Or\n");
 
-  return 0;
+  return 1;
 }
 
 #endif
