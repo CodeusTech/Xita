@@ -9,8 +9,8 @@
   Contains public interface for primitive data types
 */
 
-#ifndef XCS_PRIMITIVES_H
-#define XCS_PRIMITIVES_H
+#ifndef TYPES_PRIMITIVES_H
+#define TYPES_PRIMITIVES_H
 
 #include "intexp.h"
 #include "boolexp.h"

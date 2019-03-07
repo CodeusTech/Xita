@@ -28,7 +28,7 @@
 #define PRIMITIVES_CHAREXP_H
 
 #include "typecodes.h"
-#include "../types/types.h"
+#include "../types.h"
 
 /*
   1.) Character Literals

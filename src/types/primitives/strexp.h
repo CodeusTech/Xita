@@ -30,7 +30,7 @@
 #define PRIMITIVES_STREXP_H
 
 #include "typecodes.h"
-#include "../types/types.h"
+#include "../types.h"
 
 /*
   1.) String Literals

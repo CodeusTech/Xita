@@ -38,7 +38,7 @@
 #define PRIMITIVES_INTEXP_H
 
 #include "typecodes.h"
-#include "../types/types.h"
+#include "../types.h"
 
 /*
   1.) Integer Literals

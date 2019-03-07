@@ -69,9 +69,9 @@
 #include "src/gpio/gpio.h"
 #include "src/memory/memory.h"
 #include "src/modules/modules.h"
-#include "src/primitives/primitives.h"
 #include "src/tethers/tethers.h"
 #include "src/types/types.h"
+#include "src/types/primitives/primitives.h"
 #include "src/utils/regex.h"
 
 //  Linux Libraries

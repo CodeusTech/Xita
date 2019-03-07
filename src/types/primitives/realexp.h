@@ -31,7 +31,7 @@
 #define PRIMITIVES_REALEXP_H
 
 #include "typecodes.h"
-#include "../types/types.h"
+#include "../types.h"
 
 /*
   1.) Real Literals
