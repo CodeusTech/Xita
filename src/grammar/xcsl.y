@@ -69,7 +69,7 @@
 #include "src/ident/ident.h"
 #include "src/memory/memory.h"
 #include "src/modules/modules.h"
-#include "src/tethers/tethers.h"
+#include "src/process/process.h"
 #include "src/utils/regex.h"
 
 //  Linux Libraries

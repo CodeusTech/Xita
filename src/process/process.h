@@ -12,8 +12,8 @@
 #ifndef XCS_PROCESS_H
 #define XCS_PROCESS_H
 
-#include "stdproc.h"
-#include "scheduler.h"
+#include "scheduler/scheduler.h"
+#include "tethers/tethers.h"
 
 
 #endif

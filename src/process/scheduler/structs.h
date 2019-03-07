@@ -13,11 +13,12 @@
   1.) Structures
     1.a) Interprocess Message
     1.b) Process Structure
+    1.c) Process Scheduler
   2.) Standard Operations
 */
 
-#ifndef PROCESS_STDPROC_H
-#define PROCESS_STDPROC_H
+#ifndef SCHEDULER_STRUCTS_H
+#define SCHEDULER_STRUCTS_H
 
 
 /*
@@ -36,7 +37,6 @@ typedef struct Message_t
   int to_pid;   // Receiving Process ID
 } Message;
 
-
 /* 1.b) Process Structure
 
 */
@@ -49,6 +49,20 @@ typedef struct Process_t
   Message* output;  //  Process Output Queue
   Message* Error;   //  Process Error Queue
 } Process;
+
+/* 1.c) Process Scheduler
+
+*/
+typedef struct Scheduler_t
+{
+  Process* queue0;  // First Priority  (System Interrupts) (Clocks/Event Timers)
+  Process* queue1;  // Second Priority (User Interrupts) (System - Instant of Execution)
+  Process* queue2;  // Third Priority  (Source - Instant of Execution)
+  Process* queue3;  // Fourth Priority
+  Process* queue4;  // Fifith Priority (Source - After x Seconds)
+  int* blocked; // Inactive Processes (Blocked)
+  int* t_mod;   // Active Tether Modules
+} Scheduler;
 
 
 /*
