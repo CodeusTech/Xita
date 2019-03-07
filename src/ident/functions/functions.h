@@ -9,8 +9,8 @@
   Contains Operations for Functions
 */
 
-#ifndef XCS_FUNCTIONS_H
-#define XCS_FUNCTIONS_H
+#ifndef IDENT_FUNCTIONS_H
+#define IDENT_FUNCTIONS_H
 
 extern char** ident_functions;
 

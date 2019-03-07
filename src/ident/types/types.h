@@ -14,8 +14,8 @@
     1.a) Get Constructor Size
 */
 
-#ifndef XCS_TYPES_H
-#define XCS_TYPES_H
+#ifndef IDENT_TYPES_H
+#define IDENT_TYPES_H
 
 //  Type Headers
 #include "constructor.h"
