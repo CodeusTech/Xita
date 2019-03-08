@@ -68,6 +68,7 @@
 #include "src/ident/ident.h"
 #include "src/memory/memory.h"
 #include "src/modules/modules.h"
+#include "src/operator/operator.h"
 #include "src/process/process.h"
 #include "src/utils/regex.h"
 
@@ -404,7 +405,7 @@ exp_match:
 
 exp_with:
     param_match param_with ARROW_R exp OP_COMMA exp_with  {  }
-  | param_match param_with ARROW_R exp                  {  }
+  | param_match param_with ARROW_R exp                    {  }
 ;
 
 param_match:
@@ -444,13 +445,29 @@ decl_const:
   4.b) Function Declarations/Invocations
 */
 let:
-    LET IDENTIFIER OF ident_type  { declare_function($2); }
-  | LET IDENTIFIER              { declare_function($2); }
-  | LET PAR_LEFT OP_ADD PAR_RIGHT     {  }
-  | LET PAR_LEFT OP_SUB PAR_RIGHT     {  }
-  | LET PAR_LEFT OP_MUL PAR_RIGHT     {  }
-  | LET PAR_LEFT OP_DIV PAR_RIGHT     {  }
-  | LET PAR_LEFT OP_APPEND PAR_RIGHT  {  }
+    LET IDENTIFIER OF ident_type      { declare_function($2); }
+  | LET IDENTIFIER                    { declare_function($2); }
+  | LET PAR_LEFT OP_ADD PAR_RIGHT     { override_add(); }
+  | LET PAR_LEFT OP_SUB PAR_RIGHT     { override_sub(); }
+  | LET PAR_LEFT OP_MUL PAR_RIGHT     { override_mul(); }
+  | LET PAR_LEFT OP_DIV PAR_RIGHT     { override_div(); }
+  | LET PAR_LEFT OP_MOD PAR_RIGHT     { override_mod(); }
+  | LET PAR_LEFT BOOL_AND PAR_RIGHT   { override_bool_and(); }
+  | LET PAR_LEFT BOOL_OR  PAR_RIGHT   { override_bool_or(); }
+  | LET PAR_LEFT BOOL_XOR PAR_RIGHT   { override_bool_xor(); }
+  | LET PAR_LEFT BIT_AND PAR_RIGHT    { override_bit_and(); }
+  | LET PAR_LEFT BIT_OR  PAR_RIGHT    { override_bit_or(); }
+  | LET PAR_LEFT BIT_XOR PAR_RIGHT    { override_bit_xor(); }
+  | LET PAR_LEFT BIT_SHL PAR_RIGHT    { override_bit_shl(); }
+  | LET PAR_LEFT BIT_SHR PAR_RIGHT    { override_bit_shr(); }
+  | LET PAR_LEFT OP_LT  PAR_RIGHT     { override_lt(); }
+  | LET PAR_LEFT OP_LTE PAR_RIGHT     { override_lte(); }
+  | LET PAR_LEFT OP_GT  PAR_RIGHT     { override_gt(); }
+  | LET PAR_LEFT OP_GTE PAR_RIGHT     { override_gte(); }
+  | LET PAR_LEFT OP_EQ  PAR_RIGHT     { override_eq(); }
+  | LET PAR_LEFT OP_NEQ PAR_RIGHT     { override_neq(); }
+  | LET PAR_LEFT OP_APPEND PAR_RIGHT  { override_append(); }
+  | LET PAR_LEFT OP_LIST_CON PAR_RIGHT{ override_list_con(); }
 ;
 
 /*
