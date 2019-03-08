@@ -386,16 +386,20 @@ exp_if:
 /*
   3.b) match ... with ...
 */
+match1:
+    MATCH { match_statement(); };
 match:
-    MATCH IDENTIFIER { match_statement(); }
+    match1 exp { }
 ;
 
+with1:
+    WITH { with_statement(); } ;
 with:
-    WITH  { with_statement(); }
+    with1 exp_with { }
 ;
 
 exp_match:
-    match with exp_with { conclude_match(); }
+    match with { conclude_match(); }
 ;
 
 exp_with:
