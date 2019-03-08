@@ -25,6 +25,7 @@
 //  XCS Libraries
 #include "globals.h"
 #include "asm/asm.h"
+#include "operator/validation.h"
 
 //  Linux Libraries
 #include "stdbool.h"

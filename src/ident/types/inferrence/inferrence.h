@@ -1,5 +1,5 @@
 /*
-  inferrence.h
+  inferrence.h (Types)
   Cody Fagley
   Authored on   March 7, 2019
   Last Modified March 7, 2019
