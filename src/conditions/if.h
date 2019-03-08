@@ -29,7 +29,7 @@ int then_statement()
 
 int else_statement()
 {
-  printf("else ... Statement Invoked\n");
+  printf("else ... ");
 
   return 0;
 }

@@ -3,7 +3,7 @@
   xcsl.y  (AArch64)
   Cody Fagley
   Authored on    January 29, 2019
-  Last Modified February 22, 2019
+  Last Modified    March  7, 2019
 */
 
 /*
@@ -256,27 +256,27 @@ exp:
   | exp_real            {/* For Testing */}
   | exp_char            {/* For Testing */}
   | exp_string          {/* For Testing */}
-  | exp_list          { }
-  | IDENTIFIER        { printf("Type Inferred: %s\n", $1); }
-  | exp_regex         { }
-  | exp_if            { }
-  | exp_match         { }
-  | exp_is            { }
-  | decl_const        { }
-  | decl_funct        { }
-  | exp_funct         { }
-  | decl_type         { }
-  | decl_typeclass    { }
+  | exp_list            { }
+  | IDENTIFIER          { printf("Type Inferred: %s\n", $1); }
+  | exp_regex           { }
+  | exp_if              { }
+  | exp_match           { }
+  | exp_is              { }
+  | decl_const          { }
+  | decl_funct          { }
+  | exp_funct           { }
+  | decl_type           { }
+  | decl_typeclass      { }
   | IDENTIFIER OP_ELEMENT IDENTIFIER {printf("Element %s within %s accessed\n", $3, $1);}
-  | exp_memread       { }
-  | exp_memwrite      { }
-  | exp_byte_build    { }
-  | exp_byte_run      { }
-  | exp_tether        { }
-  | exp_send          { }
-  | exp_receive       { }
-  | exp_ask           { }
-  | exp OP_TUP exp    { add_to_tuple(); }
+  | exp_memread         { }
+  | exp_memwrite        { }
+  | exp_byte_build      { }
+  | exp_byte_run        { }
+  | exp_tether          { }
+  | exp_send            { }
+  | exp_receive         { }
+  | exp_ask             { }
+  | exp OP_TUP exp      { add_to_tuple(); }
   | ident_construct exp {}
   | REFERENCE IDENTIFIER  { exp_ref_comment(); }
 ;
@@ -355,17 +355,29 @@ param_list:
 /*
   3.a) if ... then ... else ...
 */
+//  IF ...
+//  HELPER FUNCTION
+if1:
+  IF { if_statement(); };
+// CALLABLE FUNCTION
 if:
-  IF exp_boolean { if_statement(); }
-;
+  if1 exp;
 
+//  THEN ...
+//  HELPER FUNCTION
+then1:
+  THEN { then_statement(); };
+// CALLABLE FUNCTION
 then:
-  THEN exp { then_statement(); }
-;
+  then1 exp;
 
+//  ELSE ...
+//  HELPER FUNCTION
+else1:
+  ELSE {else_statement();};
+// CALLABLE FUNCTION
 else:
-  ELSE exp { else_statement(); }
-;
+  else1 exp;
 
 exp_if:
     if then else {  }
