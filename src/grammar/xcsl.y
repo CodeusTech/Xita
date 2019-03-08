@@ -230,18 +230,34 @@ src:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
-  | exp_integer       {/* For Testing */}
-  | exp_boolean       {/* For Testing */}
-  | exp_real          {/* For Testing */}
-  | exp_char          {/* For Testing */}
-  | exp_string        {/* For Testing */}
+  | exp OP_ADD exp      { infer_addition(); }
+  | exp OP_SUB exp      { infer_subtraction(); }
+  | exp OP_MUL exp      { infer_multiplication(); }
+  | exp OP_DIV exp      { infer_division(); }
+  | exp OP_MOD exp      { infer_modulus(); }
+  | exp BOOL_AND exp    { infer_bool_and(); }
+  | exp BOOL_OR exp     { infer_bool_or();  }
+  | exp BOOL_XOR exp    { infer_bool_xor(); }
+  | exp BIT_AND exp     { infer_bit_and(); }
+  | exp BIT_OR exp      { infer_bit_or(); }
+  | exp BIT_XOR exp     { infer_bit_xor(); }
+  | exp BIT_SHL exp     { infer_bit_shl(); }
+  | exp BIT_SHR exp     { infer_bit_shr(); }
+  | exp OP_LT exp       { infer_bool_lt(); }
+  | exp OP_LTE exp      { infer_bool_lte(); }
+  | exp OP_GT exp       { infer_bool_gt(); }
+  | exp OP_GTE exp      { infer_bool_gte(); }
+  | exp OP_EQ exp       { infer_bool_eq(); }
+  | exp OP_NEQ exp      { infer_bool_neq(); }
+  | exp OP_APPEND exp   { infer_append(); }
+  | exp OP_LIST_CON exp { infer_list_con(); }
+  | exp_integer         {/* For Testing */}
+  | exp_boolean         {/* For Testing */}
+  | exp_real            {/* For Testing */}
+  | exp_char            {/* For Testing */}
+  | exp_string          {/* For Testing */}
   | exp_list          { }
-  | exp OP_ADD exp    { infer_addition(); }
-  | exp OP_SUB exp    { infer_subtraction(); }
-  | exp OP_MUL exp    { infer_multiplication(); }
-  | exp OP_DIV exp    { infer_division(); }
-  | exp OP_MOD exp    { infer_modulus(); }
-  | IDENTIFIER { printf("Type Inferred: %s\n", $1); }
+  | IDENTIFIER        { printf("Type Inferred: %s\n", $1); }
   | exp_regex         { }
   | exp_if            { }
   | exp_match         { }
@@ -273,13 +289,7 @@ exp:
   2.a) Integer Expressions
 */
 exp_integer:
-    PAR_LEFT exp_integer PAR_RIGHT
-  | exp_integer BIT_AND exp_integer   { bitwise_and(); }
-  | exp_integer BIT_OR exp_integer    { bitwise_or(); }
-  | exp_integer BIT_SHL exp_integer   { bitwise_shl(); }
-  | exp_integer BIT_SHR exp_integer   { bitwise_shr(); }
-  | exp_integer BIT_XOR exp_integer   { bitwise_xor(); }
-  | RNG        { rng(); }
+    RNG        { rng(); }
   | INT        { push_int_lit($1);   }
 ;
 
@@ -287,18 +297,8 @@ exp_integer:
   2.b) Boolean Expressions
 */
 exp_boolean:
-    exp_boolean OP_EQ  exp_boolean    { boolean_eq();  }
-  | exp_boolean OP_NEQ exp_boolean    { boolean_neq(); }
-  | exp_boolean OP_GT  exp_boolean    { boolean_gt();  }
-  | exp_boolean OP_GTE exp_boolean    { boolean_gte(); }
-  | exp_boolean OP_LT  exp_boolean    { boolean_lt();  }
-  | exp_boolean OP_LTE exp_boolean    { boolean_lte(); }
-  | exp_boolean BOOL_AND exp_boolean  { boolean_and(); }
-  | exp_boolean BOOL_OR  exp_boolean  { boolean_or();  }
-  | exp_boolean BOOL_XOR exp_boolean  { boolean_xor(); }
-  | TRUE   { push_int_lit(1); }
+    TRUE   { push_int_lit(1); }
   | FALSE  { push_int_lit(0); }
-  | exp_integer {/* INTENTIONALLY LEFT BLANK */}
 ;
 
 /*
@@ -335,8 +335,6 @@ list:
 
 exp_list:
     list param_list OP_LIST_R       { }
-  | exp_list OP_APPEND exp_list     { list_append();    }
-  | exp OP_LIST_CON exp_list        { list_construct(); }
   | LIST_TAIL exp_list              { list_tail();      }
 
 ;

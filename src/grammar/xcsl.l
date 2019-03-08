@@ -143,6 +143,7 @@ extern int yylex();
 "<=" { return OP_LTE; } // LESS THAN OR EQUAL TO
 ">=" { return OP_GTE; } // GREATER THAN OR EQUAL TO
 "==" { return OP_EQ;  } // EXACTLY EQUAL TO
+"!=" { return OP_NEQ; }
 "<"  { return OP_LT;  } // LESS THAN
 ">"  { return OP_GT;  } // GREATER THAN
 
