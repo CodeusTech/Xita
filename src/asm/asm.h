@@ -12,11 +12,14 @@
 #ifndef XCS_ASM_H
 #define XCS_ASM_H
 
+//  XCS Libraries
 #include "bss.h"
 #include "data.h"
 #include "header.h"
 #include "text.h"
+#include "init.h"
 
+//  Linux Libraries
 #include "stdlib.h"
 #include "stdio.h"
 

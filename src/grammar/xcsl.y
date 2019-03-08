@@ -262,10 +262,10 @@ exp:
   | exp_regex           { }
   | exp_if              { }
   | exp_match           { }
-  | exp_is              { }
   | decl_const          { }
   | decl_funct          { }
   | exp_funct           { }
+  | exp_is              { }
   | decl_type           { }
   | decl_typeclass      { }
   | IDENTIFIER OP_ELEMENT IDENTIFIER {printf("Element %s within %s accessed\n", $3, $1);}
@@ -513,6 +513,7 @@ param_arg:
   | {/*INTENTIONALLY LEFT BLANK*/}
 ;
 
+
 /*
   5.) Datatype Expressions
 */
@@ -616,7 +617,7 @@ record:
 exp_record:
     IDENTIFIER OP_ELEMENT exp_record  {}
   | IDENTIFIER {}
-
+;
 
 /*
   5.d) Typeclass/Prototypes

@@ -1,12 +1,12 @@
 /*
-  validation.h
+  init.h (Operators)
   Cody Fagley
   Authored on   March 7, 2019
   Last Modified March 7, 2019
 */
 
 /*
-  Contains Functionality for Type Checking LHS/RHS Operands
+  Operator Initialization
 
   Table of Contents
   =================
@@ -46,15 +46,7 @@
 /*
   1.) Definitions/Structures
 */
-
-/* 
-  1.a) Operand Pairs
-*/
-typedef struct operands_t
-{
-  unsigned int lhs; // Left-Hand Side  Type Code
-  unsigned int rhs; // Right-Hand Side Type Code
-} operands;
+#include "../globals/structs.h"
 
 /*
   2.) Standard Operands
@@ -64,7 +56,7 @@ typedef struct operands_t
   2.a) Addition
 */
 
-operands* operands_add;
+extern operands* operands_add;
 
 /*  Initialize Addition Operands
   
@@ -82,7 +74,7 @@ int init_operands_add()
   2.b) Subtraction
 */
 
-operands* operands_sub;
+extern operands* operands_sub;
 
 /*  Initialize Subtraction Operands
   
@@ -100,7 +92,7 @@ int init_operands_sub()
   2.c) Multiplication
 */
 
-operands* operands_mul;
+extern operands* operands_mul;
 
 /*  Initialize Multiplication Operands
   
@@ -118,7 +110,7 @@ int init_operands_mul()
   2.d) Division
 */
 
-operands* operands_div;
+extern operands* operands_div;
 
 /*  Initialize Division Operands
   
@@ -136,7 +128,7 @@ int init_operands_div()
   2.e) Modulus
 */
 
-operands* operands_mod;
+extern operands* operands_mod;
 
 /*  Initialize Modulus Operands
   
@@ -159,7 +151,7 @@ int init_operands_mod()
   3.a) Bitwise AND
 */
 
-operands* operands_bit_and;
+extern operands* operands_bit_and;
 
 /*  Initialize Bitwise AND Operands
   
@@ -177,7 +169,7 @@ int init_operands_bit_and()
   3.b) Bitwise OR
 */
 
-operands* operands_bit_or;
+extern operands* operands_bit_or;
 
 /*  Initialize Bitwise OR Operands
   
@@ -195,7 +187,7 @@ int init_operands_bit_or()
   3.c) Bitwise XOR
 */
 
-operands* operands_bit_xor;
+extern operands* operands_bit_xor;
 
 /*  Initialize Bitwise XOR Operands
   
@@ -213,7 +205,7 @@ int init_operands_bit_xor()
   3.d) Bitwise SHL
 */
 
-operands* operands_bit_shl;
+extern operands* operands_bit_shl;
 
 /*  Initialize Bitwise SHL Operands
   
@@ -231,7 +223,7 @@ int init_operands_bit_shl()
   3.e) Bitwise SHR
 */
 
-operands* operands_bit_shr;
+extern operands* operands_bit_shr;
 
 /*  Initialize Bitwise SHR Operands
   
@@ -249,7 +241,7 @@ int init_operands_bit_shr()
   3.f) Boolean AND
 */
 
-operands* operands_bool_and;
+extern operands* operands_bool_and;
 
 /*  Initialize Boolean AND Operands
   
@@ -267,7 +259,7 @@ int init_operands_bool_and()
   3.g) Boolean OR
 */
 
-operands* operands_bool_or;
+extern operands* operands_bool_or;
 
 /*  Initialize Boolean OR Operands
   
@@ -285,7 +277,7 @@ int init_operands_bool_or()
   3.h) Boolean XOR
 */
 
-operands* operands_bool_xor;
+extern operands* operands_bool_xor;
 
 /*  Initialize Boolean XOR Operands
   
@@ -308,7 +300,7 @@ int init_operands_bool_xor()
   4.a) Less Than
 */
 
-operands* operands_lt;
+extern operands* operands_lt;
 
 /* Initialize Less Than Operands
 
@@ -326,7 +318,7 @@ int init_operands_lt()
   4.b) Less Than or Equal To
 */
 
-operands* operands_lte;
+extern operands* operands_lte;
 
 /* Initialize Less Than or Equal To Operands
 
@@ -344,7 +336,7 @@ int init_operands_lte()
   4.c) Greater Than
 */
 
-operands* operands_gt;
+extern operands* operands_gt;
 
 /* Initialize Greater Than Operands
 
@@ -362,7 +354,7 @@ int init_operands_gt()
   4.d) Greater Than or Equal To
 */
 
-operands* operands_gte;
+extern operands* operands_gte;
 
 /* Initialize Greater Than or Equal To Operands
 
@@ -380,7 +372,7 @@ int init_operands_gte()
   4.e) Equal To
 */
 
-operands* operands_eq;
+extern operands* operands_eq;
 
 /* Initialize Equal To Operands
 
@@ -398,7 +390,7 @@ int init_operands_eq()
   4.f) Not Equal To
 */
 
-operands* operands_neq;
+extern operands* operands_neq;
 
 /* Initialize Not Equal To Operands
 
@@ -421,7 +413,7 @@ int init_operands_neq()
   5.a) Append
 */
 
-operands* operands_append;
+extern operands* operands_append;
 
 /* Initialize Append Operands
 
@@ -439,7 +431,7 @@ int init_operands_append()
   5.b) List Constructor
 */
 
-operands* operands_list_con;
+extern operands* operands_list_con;
 
 /* Initialize Append Operands
 
@@ -489,5 +481,6 @@ int init_operands()
   init_operands_append();
   init_operands_list_con();
 }
+
 
 #endif

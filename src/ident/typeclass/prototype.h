@@ -2,7 +2,7 @@
   prototype.h
   Cody Fagley
   Authored on   February 16, 2019
-  Last Modified February 16, 2019
+  Last Modified    March  8, 2019
 */
 
 /*
@@ -14,8 +14,8 @@
   2.) Declare Prototype Parameter
 */
 
-#ifndef TYPES_PROTOTYPE_H
-#define TYPES_PROTOTYPE_H
+#ifndef TYPECLASS_PROTOTYPE_H
+#define TYPECLASS_PROTOTYPE_H
 
 
 /* 1.) Declare Prototype

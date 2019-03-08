@@ -13,7 +13,7 @@
 #define XCS_OPERATOR_H
 
 #include "override.h"
-/* #include "validation.h" */
+#include "init.h"
 
 
 #endif

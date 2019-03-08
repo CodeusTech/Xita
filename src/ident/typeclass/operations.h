@@ -1,22 +1,22 @@
 /*
-  typeclass.h
+  operations.h (Typeclasses)
   Cody Fagley
-  Authored on   February 13, 2019
-  Last Modified February 13, 2019
+  Authored on   March 8, 2019
+  Last Modified March 8, 2019
 */
 
 /*
-  Contains Backend Typeclass Operations
+  Contains functionality for typeclass identifiers
 
   Table of Contents
   =================
   1.) Declare Typeclass
-  2.) Invoke Typeclass
+  2.) Typeclass Expression
   3.) Find Typeclass
 */
 
-#ifndef TYPES_TYPECLASS_H
-#define TYPES_TYPECLASS_H
+#ifndef TYPECLASS_OPERATIONS_H
+#define TYPECLASS_OPERATIONS_H
 
 //  Global Variables
 extern char** ident_typeclasses;
@@ -35,7 +35,7 @@ int declare_typeclass (char* ident)
 }
 
 
-/* 2.) Invoke Typeclass
+/* 2.) Typeclass Expression
 
   Returns:
     0, if Successful

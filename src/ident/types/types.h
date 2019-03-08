@@ -25,10 +25,8 @@
 #include "constructor.h"
 #include "lists.h"
 #include "operations.h"
-#include "prototype.h"
 #include "records.h"
 #include "tuples.h"
-#include "typeclass.h"
 
 
 
