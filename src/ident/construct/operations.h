@@ -1,12 +1,12 @@
 /*
-  constructor.h
+  operations.h (Constructors)
   Cody Fagley
-  Authored on   February 13, 2019
-  Last Modified February 13, 2019
+  Authored on   March 8, 2019
+  Last Modified March 8, 2019
 */
 
 /*
-  Contains Backend Constructor Infrastructure
+  Contains Backend Functionality for dealing with Constructor Identifiers
 
   Table of Contents
   =================
@@ -19,8 +19,8 @@
     2.d) Get Constructor Size
 */
 
-#ifndef TYPES_CONSTRUCTOR_H
-#define TYPES_CONSTRUCTOR_H
+#ifndef CONSTRUCT_OPERATIONS_H
+#define CONSTRUCT_OPERATIONS_H
 
 /*
   1.) Structures
@@ -42,22 +42,22 @@ extern int* size_constructors;
   Returns:
     0, if Successful
 */
-int declare_constructor (char* name)
+int decl_constructor (char* ident)
 {
-  printf("Constructor %s Declared\n", name);
+  printf("Constructor Declared: %s \n", ident);
 
   return 0;
 }
 
 
-/* 2.b) Invoke Constructor
+/* 2.b) Constructor Expression
 
   Returns:
     0, if Successful
 */
-int invoke_constructor (char* name)
+int exp_constructor (char* ident)
 {
-  printf("Constructor Invoked: %s\n", name);
+  printf("Constructor Evaluated: %s\n", ident);
 
   return 0;
 }
@@ -88,5 +88,8 @@ int get_constructor_size()
 
   return 0;
 }
+
+
+
 
 #endif

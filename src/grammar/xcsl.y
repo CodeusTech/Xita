@@ -268,6 +268,7 @@ exp:
   | exp_is              { }
   | decl_type           { }
   | decl_typeclass      { }
+  | exp_construct       {  }
   | IDENTIFIER OP_ELEMENT IDENTIFIER {printf("Element %s within %s accessed\n", $3, $1);}
   | exp_memread         { }
   | exp_memwrite        { }
@@ -278,7 +279,6 @@ exp:
   | exp_receive         { }
   | exp_ask             { }
   | exp OP_TUP exp      { add_to_tuple(); }
-  | ident_construct exp {}
   | REFERENCE IDENTIFIER  { exp_ref_comment(); }
 ;
 
@@ -409,7 +409,7 @@ exp_with:
 ;
 
 param_match:
-    ident_construct 
+    exp_construct 
 ;
 
 param_with: 
@@ -422,8 +422,8 @@ param_with:
 */
 
 exp_is:
-    exp IS ident_construct  { is_construct(); }
-  | exp IS ident_type       { is_type();      }
+    exp IS exp_construct  { is_construct(); }
+  | exp IS exp_type       { is_type();      }
 ;
 
 /*
@@ -434,7 +434,7 @@ exp_is:
   4.a) Constants
 */
 const:
-    CONST IDENTIFIER OF ident_type { declare_constant($2); }
+    CONST IDENTIFIER OF exp_type { declare_constant($2); }
 ;
 
 decl_const:
@@ -445,7 +445,7 @@ decl_const:
   4.b) Function Declarations/Invocations
 */
 let:
-    LET IDENTIFIER OF ident_type      { declare_function($2); }
+    LET IDENTIFIER OF exp_type        { declare_function($2); }
   | LET IDENTIFIER                    { declare_function($2); }
   | LET PAR_LEFT OP_ADD PAR_RIGHT     { override_add(); }
   | LET PAR_LEFT OP_SUB PAR_RIGHT     { override_sub(); }
@@ -525,7 +525,7 @@ param_arg:
 /*
   TYPE IDENTIFIERS
 */
-ident_type:
+exp_type:
     INT_T
   | U8_T
   | I8_T
@@ -541,8 +541,8 @@ ident_type:
   | CHAR_T
   | STRING_T
   | BOOL_T
-  | LIST_T ident_type
-  | ident_type OP_TUP ident_type
+  | LIST_T exp_type
+  | exp_type OP_TUP exp_type
   | OP_REC_L record OP_REC_R
   | IDENTIFIER
 ;
@@ -550,13 +550,13 @@ ident_type:
 /*
   TYPE DECLARATIONS
 */
-type:
+type2:
     TYPE IDENTIFIER { declare_type($2); }
 ;
 
 decl_type:
-    type OP_ASSIGN exp_constructor { }
-  | type OP_ASSIGN ident_type {}
+    type2 OP_ASSIGN decl_construct { }
+  | type2 OP_ASSIGN exp_type {}
 ;
 
 /*
@@ -566,40 +566,30 @@ decl_type:
 /*
   CONSTRUCTOR IDENTIFIERS
 */
-ident_construct:
+exp_construct:
     INT
-  | U8_C        
-  | I8_C
-  | U16_C
-  | I16_C
-  | U32_C
-  | I32_C
-  | U64_C
-  | I64_C
+  | U8_C exp
+  | I8_C exp
+  | U16_C exp
+  | I16_C exp
+  | U32_C exp
+  | I32_C exp
+  | U64_C exp
+  | I64_C exp
   | REAL
-  | FLOAT_C
-  | DOUBLE_C
-  | CHAR_C
+  | FLOAT_C exp
+  | DOUBLE_C exp
+  | CHAR_C exp
   | TRUE
   | FALSE
-  | STRING_C
-  | CONSTRUCTOR
+//| STRING_C exp
+  | CONSTRUCTOR exp {exp_constructor($1);}
+  | CONSTRUCTOR     {exp_constructor($1);}
 ;
 
-/*
-  CONSTRUCTOR DECLARATIONS
-*/
-constructor:
-  CONSTRUCTOR  { declare_constructor($1); }
-;
-
-/*
-  CONSTRUCTOR EXPRESSIONS
-*/
-exp_constructor:
-    exp_constructor BIT_OR exp_constructor  { }
-  | constructor OF ident_type               { }
-  | constructor                             { }
+decl_construct:
+    CONSTRUCTOR OF exp_type { decl_constructor($1); }
+  | CONSTRUCTOR             { decl_constructor($1); }
 ;
 
 /*
@@ -611,7 +601,7 @@ exp_constructor:
 */
 record:
     record OP_COMMA record
-  | IDENTIFIER OF ident_type
+  | IDENTIFIER OF exp_type
 ;
 
 exp_record:
@@ -792,8 +782,8 @@ tether:
   3.a) Offer Statements
 */
 offer:
-    OFFER IDENTIFIER                { ipc_offer($2); }
-  | OFFER IDENTIFIER OF ident_type  { ipc_offer($2); }
+    OFFER IDENTIFIER              { ipc_offer($2); }
+  | OFFER IDENTIFIER OF exp_type  { ipc_offer($2); }
 ;
 
 exp_offer:
