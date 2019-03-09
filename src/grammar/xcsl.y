@@ -474,8 +474,8 @@ let:
   FUNCTION DECLARATIONS
 */
 decl_funct:
-    let exp_param OP_ASSIGN exp        {}
-  | let exp_param OP_ASSIGN exp IN exp {  }
+    let exp_param OP_ASSIGN exp IN exp {  }
+  | let exp_param OP_ASSIGN exp        {}
 ;
 
 /*
@@ -661,19 +661,19 @@ param_prototype:
   6.a) Read Expression from Memory
 */
 read:
-  exp_integer MEM_READ IDENTIFIER { memory_read_exp($3); }
+  exp MEM_READ IDENTIFIER { memory_read_exp($3); }
 ;
 
 exp_memread:
     read IN exp { }
-  | exp_integer MEM_READ THIS
+  | exp MEM_READ THIS
 ;
 
 /*
   6.b) Write Expression to Memory
 */
 exp_memwrite:
-    exp_integer MEM_SET exp { memory_write_exp(); }
+    exp MEM_SET exp { memory_write_exp(); }
 ;
 
 
