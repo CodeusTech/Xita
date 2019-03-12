@@ -85,32 +85,3 @@ int close_header()
   return 0;
 }
 
-
-/*
-  4.) Tether Modules
-*/
-
-/* 4.a) Open Tether Module
-
-  Returns:
-    0, if Successful
-*/
-int open_tether(char* name)
-{
-  printf("Tether Module Opened: %s\n", name);
-
-  return 0;
-}
-
-/* 4.b) Close Tether Module
-
-  Returns:
-    0, if Successful
-*/
-int close_tether()
-{
-  printf("Tether Module Closed\n");
-
-  return 0;
-}
-
