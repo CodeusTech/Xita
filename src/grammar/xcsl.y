@@ -641,7 +641,28 @@ decl_typeclass:
   PROTOTYPE EXPRESSIONS
 */
 prototype:
-  IDENTIFIER  { declare_proto($1); }
+    IDENTIFIER  { declare_proto($1); }
+  | OP_ADD_O    { declare_proto("(+)"); }
+  | OP_SUB_O    { declare_proto("(-)"); }
+  | OP_MUL_O    { declare_proto("(*)"); }
+  | OP_DIV_O    { declare_proto("(/)"); }
+  | OP_MOD_O    { declare_proto("(%)"); }
+  | BOOL_AND_O   { declare_proto("(&&)"); }
+  | BOOL_OR_O    { declare_proto("(||)"); }
+  | BOOL_XOR_O   { declare_proto("(^^)"); }
+  | BIT_AND_O    { declare_proto("(&)"); }
+  | BIT_OR_O     { declare_proto("(|)"); }
+  | BIT_XOR_O    { declare_proto("(^)"); }
+  | BIT_SHL_O    { declare_proto("(<<)"); }
+  | BIT_SHR_O    { declare_proto("(>>)"); }
+  | OP_LT_O      { declare_proto("(<)"); }
+  | OP_LTE_O     { declare_proto("(<=)"); }
+  | OP_GT_O      { declare_proto("(>)"); }
+  | OP_GTE_O     { declare_proto("(>=)"); }
+  | OP_EQ_O      { declare_proto("(==)"); }
+  | OP_NEQ_O     { declare_proto("(!=)"); }
+  | OP_APPEND_O  { declare_proto("(++)"); }
+  | OP_LIST_CON_O{ declare_proto("(:)"); }
 ;
 
 proto_comma:
@@ -674,7 +695,8 @@ param_prototype:
   6.a) Read Expression from Memory
 */
 read:
-  exp MEM_READ IDENTIFIER { memory_read_exp($3); }
+    exp MEM_READ IDENTIFIER OF exp_type { memory_read_exp($3); }
+  | exp MEM_READ IDENTIFIER { memory_read_exp($3); }
 ;
 
 exp_memread:
