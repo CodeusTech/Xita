@@ -70,6 +70,7 @@
 #include "src/modules/modules.h"
 #include "src/operator/operator.h"
 #include "src/process/process.h"
+#include "src/utils/clear.h"
 #include "src/utils/regex.h"
 
 //  Linux Libraries
@@ -112,6 +113,15 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 
 //  Comments
 %token COMMENT DOC_NEWLINE REFERENCE
+
+//  Override Operators
+%token OP_ADD_O OP_SUB_O OP_MUL_O OP_DIV_O OP_MOD_O  // INTEGER ARITHMETIC
+%token OP_GTE_O OP_GT_O OP_EQ_O OP_NEQ_O OP_LTE_O OP_LT_O // INTEGER COMPARISON
+%token BIT_AND_O BIT_OR_O BIT_XOR_O BIT_SHR_O BIT_SHL_O // BITWISE MANIPULATION
+%token BOOL_OR_O BOOL_AND_O BOOL_XOR_O                  // BOOLEAN COMPARISON
+%token ARROW_L_O ARROW_R_O
+%token OP_APPEND_O OP_LIST_CON_O
+%token MEM_READ_O MEM_SET_O
 
 //  Syntactic Operators
 %token OP_ADD OP_SUB OP_MUL OP_DIV OP_MOD       // INTEGER ARITHMETIC
@@ -163,6 +173,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %token BUILD RUN            //  Bytecode Operations
 %token REGEX                //  Regular Expressions
 %token TETHER SEND RECEIVE  //  Interprocess Communication
+%token CLEAR                //  Clear Terminal
 
 //  Module Operations
 %token OPEN SOURCE_M HEADER_M TETHER_M
@@ -258,16 +269,16 @@ exp:
   | exp_char            {/* For Testing */}
   | exp_string          {/* For Testing */}
   | exp_list            { }
-  | IDENTIFIER          { printf("Type Inferred: %s\n", $1); }
   | exp_regex           { }
   | exp_if              { }
+  | exp_is              { }
   | exp_match           { }
   | decl_const          { }
   | decl_funct          { }
-  | exp_funct           { }
-  | exp_is              { }
   | decl_type           { }
   | decl_typeclass      { }
+  | exp_funct           { }
+  | IDENTIFIER          { printf("Type Inferred: %s\n", $1); }
   | exp_construct       {  }
   | IDENTIFIER OP_ELEMENT IDENTIFIER {printf("Element %s within %s accessed\n", $3, $1);}
   | exp_memread         { }
@@ -280,6 +291,7 @@ exp:
   | exp_ask             { }
   | exp OP_TUP exp      { add_to_tuple(); }
   | REFERENCE IDENTIFIER  { exp_ref_comment(); }
+  | CLEAR               { clear_terminal(); }
 ;
 
 /*
@@ -447,27 +459,27 @@ decl_const:
 let:
     LET IDENTIFIER OF exp_type        { declare_function($2); }
   | LET IDENTIFIER                    { declare_function($2); }
-  | LET PAR_LEFT OP_ADD PAR_RIGHT     { override_add(); }
-  | LET PAR_LEFT OP_SUB PAR_RIGHT     { override_sub(); }
-  | LET PAR_LEFT OP_MUL PAR_RIGHT     { override_mul(); }
-  | LET PAR_LEFT OP_DIV PAR_RIGHT     { override_div(); }
-  | LET PAR_LEFT OP_MOD PAR_RIGHT     { override_mod(); }
-  | LET PAR_LEFT BOOL_AND PAR_RIGHT   { override_bool_and(); }
-  | LET PAR_LEFT BOOL_OR  PAR_RIGHT   { override_bool_or(); }
-  | LET PAR_LEFT BOOL_XOR PAR_RIGHT   { override_bool_xor(); }
-  | LET PAR_LEFT BIT_AND PAR_RIGHT    { override_bit_and(); }
-  | LET PAR_LEFT BIT_OR  PAR_RIGHT    { override_bit_or(); }
-  | LET PAR_LEFT BIT_XOR PAR_RIGHT    { override_bit_xor(); }
-  | LET PAR_LEFT BIT_SHL PAR_RIGHT    { override_bit_shl(); }
-  | LET PAR_LEFT BIT_SHR PAR_RIGHT    { override_bit_shr(); }
-  | LET PAR_LEFT OP_LT  PAR_RIGHT     { override_lt(); }
-  | LET PAR_LEFT OP_LTE PAR_RIGHT     { override_lte(); }
-  | LET PAR_LEFT OP_GT  PAR_RIGHT     { override_gt(); }
-  | LET PAR_LEFT OP_GTE PAR_RIGHT     { override_gte(); }
-  | LET PAR_LEFT OP_EQ  PAR_RIGHT     { override_eq(); }
-  | LET PAR_LEFT OP_NEQ PAR_RIGHT     { override_neq(); }
-  | LET PAR_LEFT OP_APPEND PAR_RIGHT  { override_append(); }
-  | LET PAR_LEFT OP_LIST_CON PAR_RIGHT{ override_list_con(); }
+  | LET OP_ADD_O     { override_add(); }
+  | LET OP_SUB_O     { override_sub(); }
+  | LET OP_MUL_O     { override_mul(); }
+  | LET OP_DIV_O     { override_div(); }
+  | LET OP_MOD_O     { override_mod(); }
+  | LET BOOL_AND_O   { override_bool_and(); }
+  | LET BOOL_OR_O    { override_bool_or(); }
+  | LET BOOL_XOR_O   { override_bool_xor(); }
+  | LET BIT_AND_O    { override_bit_and(); }
+  | LET BIT_OR_O     { override_bit_or(); }
+  | LET BIT_XOR_O    { override_bit_xor(); }
+  | LET BIT_SHL_O    { override_bit_shl(); }
+  | LET BIT_SHR_O    { override_bit_shr(); }
+  | LET OP_LT_O      { override_lt(); }
+  | LET OP_LTE_O     { override_lte(); }
+  | LET OP_GT_O      { override_gt(); }
+  | LET OP_GTE_O     { override_gte(); }
+  | LET OP_EQ_O      { override_eq(); }
+  | LET OP_NEQ_O     { override_neq(); }
+  | LET OP_APPEND_O  { override_append(); }
+  | LET OP_LIST_CON_O{ override_list_con(); }
 ;
 
 /*
@@ -588,7 +600,8 @@ exp_construct:
 ;
 
 decl_construct:
-    CONSTRUCTOR OF exp_type { decl_constructor($1); }
+  | decl_construct BIT_OR decl_construct
+  | CONSTRUCTOR OF exp_type { decl_constructor($1); }
   | CONSTRUCTOR             { decl_constructor($1); }
 ;
 
@@ -745,8 +758,6 @@ exp_receive:
 exp_regex:
     REGEX STRING  { regular_expression($2); }
 ;
-
-
 
 
 /*

@@ -22,6 +22,10 @@
     4.b) Close Tether Module
 */
 
+#ifndef XCS_MODULES_H
+#define XCS_MODULES_H
+
+#include "tether.h"
 
 /*
   1.) Resolve Module Type
@@ -85,3 +89,5 @@ int close_header()
   return 0;
 }
 
+
+#endif

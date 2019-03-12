@@ -25,7 +25,7 @@
 */
 int rng()
 {
-  printf("Random Integer Generated");
+  printf("Random Integer Generated\n");
 
   return 0;
 }
