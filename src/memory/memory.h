@@ -14,7 +14,6 @@
 
 
 #include "alloc.h"
-#include "config.h"
 #include "static.h"
 
 

@@ -12,11 +12,13 @@
   =================
   2.) Operator Structures
     2.a) Operand Pairs
+  3.) Memory Allocator Structures
 */
 
 #ifndef GLOBALS_STRUCTS_H
 #define GLOBALS_STRUCTS_H
 
+#include "../memory/memory.h"
 
 /*
   2.) Operator Structures
@@ -30,5 +32,11 @@ typedef struct operands_t
   unsigned int lhs; // Left-Hand Side  Type Code
   unsigned int rhs; // Right-Hand Side Type Code
 } operands;
+
+
+/*
+  3.) Memory Allocator Structures
+*/
+MemoryBlock* ActiveMemory;
 
 #endif
