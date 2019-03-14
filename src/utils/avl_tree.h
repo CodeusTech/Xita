@@ -138,11 +138,22 @@ Tree* tree_new(unsigned int size, void* data)
   Returns:
     p, where p is a pointer to a tree post-rotation (right)
 */
-Tree* tree_shr(Tree* tree)
+Tree* tree_rotate_right(Tree* tree)
 {
-  // STUB STUB STUB
+  //  Gather Necessary Branches
+  Tree* left = get_left(tree);
+  Tree* left_prime = get_right(left);
 
-  return tree;
+  //  Perform Rotation Right
+  left->right = tree;
+  tree->left = left_prime;
+
+  //  Reset Tree Heights
+  tree->height = max(get_height(tree->left), get_height(tree->right)) + 1;
+  left->height = max(get_height(left->left), get_height(left->right0)) + 1;
+
+  //  Return New Root Node (left)
+  return left;
 }
 
 /* 3.c) Rotate Left
@@ -150,11 +161,21 @@ Tree* tree_shr(Tree* tree)
   Returns:
     p, where p is a pointer to a tree post-rotation (left)
 */
-Tree* tree_shl(Tree* tree)
+Tree* tree_rotate_left(Tree* tree)
 {
-  // STUB STUB STUB
+  //  Gather Necessary Branches
+  Tree* right = get_right(tree);
+  Tree* right_prime = get_left(right);
 
-  return tree;
+  //  Perform Rotation Left
+  right->left = tree;
+  tree->right = right_prime;
+
+  //  Resent Tree Heights
+  tree->height = max(get_height(tree->left), get_height(tree->right)) + 1;
+  right->height = max(get_height(right->left), get_height(right->right)) + 1;
+
+  return right;
 }
 
 /* 3.d) Insert Node
@@ -250,6 +271,12 @@ Tree avl_find_str(Tree tree, char* val )
   return tree;
 }
 
+
+/*
+  5.) Misc. Utilities
+*/
+// A utility function to get maximum of two integers 
+int max(unsigned int a, unsigned int b) { return (a > b)? a : b; } 
 
 
 #endif
