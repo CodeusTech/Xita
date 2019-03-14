@@ -28,42 +28,6 @@
 #define PROC_PROCESS_H
 
 
-/*
-  1.) Structures
-*/
-
-/* 1.a) IPC Message
-
-  * Contains all metadata required for an interprocess message.
-  * In other words, this is the format used when 
-      process A sends a message to process B.
-*/
-typedef struct Message_t
-{
-  char* key;    // Key String
-  long data;    // Data Payload
-  int status;   // Message Status
-  int from_pid; // Sending Process ID
-  int to_pid;   // Receiving Process ID
-} Message;
-
-/* 1.b) Process Structure
-
-*/
-typedef struct Process_t
-{
-  int pid;          //  Process ID
-  int stat;         //  Process Status
-  int* teth;        //  Active Process Tethers
-  Message* input;   //  Process Input Queue
-  Message* output;  //  Process Output Queue
-  Message* Error;   //  Process Error Queue
-} Process;
-
-
-/*
-  2.) Process Functions
-*/
 
 
 #endif

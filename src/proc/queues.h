@@ -20,18 +20,6 @@
 
 
 
-/* 1.c) Process Queue
-
-*/
-typedef struct ProcessQueue_t
-{
-  Process* front;
-  Process* back;
-  unsigned long front_len;
-  unsigned long back_len;
-} ProcessQueue;
-
-
 
 
 
