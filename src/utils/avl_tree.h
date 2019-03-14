@@ -8,6 +8,12 @@
 /*
   Contains Structures/Operations for Self-Balancing AVL Trees
 
+
+  Reference/Documentation
+  =======================
+  https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+
+
   Table of Contents
   =================
   1.) Structures
@@ -18,8 +24,11 @@
     2.c) Get Left Tree
     2.d) Get Right Tree
   3.) Tree Operations
-    3.a) Insert Node
-    3.b) Remove Node
+    3.a) New Tree
+    3.b) Rotate Right
+    3.c) Rotate Left
+    3.d) Insert Node
+    3.e) Remove Node
   4.) Find Value in Tree
     4.a) Find Integer Value
     4.b) Find Double Value
@@ -40,7 +49,14 @@
 /* 1.a) AVL Node
 
 */
-typedef int node;
+typedef struct avl_node
+{
+  struct avl_node* left;
+  struct avl_node* right;
+  int height;
+  unsigned int size;
+  void* data;
+} Tree;
 
 
 /*
@@ -52,25 +68,19 @@ typedef int node;
   Returns:
     p?, where 'p?' is pointer/data of some type
 */
-void* get_data(node tree)
-{
-  //  STUB STUB STUB
-
-  return 0;
-}
+void* get_data(Tree tree) { return tree.data; };
 
 /* 2.b) Get Height
  
   Returns:
-    0, if node is a leaf
+    0, if tree is a leaf
     h, where 'h' is longest distance to leaf
 */
-unsigned int get_height(node tree)
+unsigned int get_height(Tree* tree) 
 {
-  // STUB STUB STUB
-
-  return 0;
-}
+  if (tree == NULL) return 0;
+  else              return tree->height; 
+};
 
 /* 2.c) Get Left Tree
 
@@ -78,11 +88,10 @@ unsigned int get_height(node tree)
     0, if left tree is a Leaf
     p, where p is a pointer to left tree
 */
-node get_left(node tree)
+Tree* get_left(Tree* tree)
 {
-  //  STUB STUB STUB
-
-  return tree;
+  if (tree == NULL) return NULL;
+  else              return tree->left;
 }
 
 /* 2.d) Get Right Tree
@@ -91,35 +100,81 @@ node get_left(node tree)
     0, if right tree is a Leaf
     p, where p is a pointer to right tree
 */
-node get_right(node tree)
+Tree* get_right(Tree* tree)
 {
-  //  STUB STUB STUB
-
-  return tree;
+  if (tree == NULL) return NULL;
+  else              return tree->right;
 }
+
 
 /*
   3.) Tree Operations
 */
 
-/* 3.a) Insert Node
+/* 3.a) New Tree
+
+  Returns:
+    p(s), where p is a pointer to a new tree of size s
+*/
+Tree* tree_new(unsigned int size, void* data)
+{
+  //  Allocate Memory
+  Tree* tree = (Tree*) malloc (sizeof(Tree));
+
+  //  Set Initial Values
+  tree->left = NULL;
+  tree->right = NULL;
+  tree->height = 1;
+  tree->size = size;
+
+  //  Set Data Pointer (Assumes parameter data has already been allocated)
+  tree->data = data;
+
+  return tree;
+}
+
+/* 3.b) Rotate Right
+
+  Returns:
+    p, where p is a pointer to a tree post-rotation (right)
+*/
+Tree* tree_shr(Tree* tree)
+{
+  // STUB STUB STUB
+
+  return tree;
+}
+
+/* 3.c) Rotate Left
+
+  Returns:
+    p, where p is a pointer to a tree post-rotation (left)
+*/
+Tree* tree_shl(Tree* tree)
+{
+  // STUB STUB STUB
+
+  return tree;
+}
+
+/* 3.d) Insert Node
   
   Returns:
     p, where p is a pointer to tree with inserted node
 */
-node avl_insert(node tree, node insert_me)
+Tree* tree_insert(Tree* tree, Tree* node)
 {
   //  STUB STUB STUB
 
   return tree;
 }
 
-/* 3.b) Remove Node
+/* 3.e) Remove Node
   Returns:
     0, If Node Successfully Removed (and is now a leaf)
     p, where 'p' is a pointer to tree with removed node
 */
-node avl_remove(node tree, node remove_me)
+Tree avl_remove(Tree tree, Tree node)
 {
   //  STUB STUB STUB
 
@@ -134,9 +189,9 @@ node avl_remove(node tree, node remove_me)
 
   Returns:
     0, if Value isn't Found
-    p, where 'p' is pointer to node with Value
+    p, where 'p' is pointer to Tree with Value
 */
-node avl_find_int(node tree, int val )
+Tree avl_find_int(Tree tree, int val )
 {
   //  STUB STUB STUB
 
@@ -147,9 +202,9 @@ node avl_find_int(node tree, int val )
 
   Returns:
     0, if Value isn't Found
-    p, where 'p' is pointer to node with Value
+    p, where 'p' is pointer to Tree with Value
 */
-node avl_find_double(node tree, double val )
+Tree avl_find_double(Tree tree, double val )
 {
   //  STUB STUB STUB
 
@@ -160,9 +215,9 @@ node avl_find_double(node tree, double val )
 
   Returns:
     0, if Value isn't Found
-    p, where 'p' is pointer to node with Value
+    p, where 'p' is pointer to Tree with Value
 */
-node avl_find_bool(node tree, bool val )
+Tree avl_find_bool(Tree tree, bool val )
 {
   //  STUB STUB STUB
 
@@ -173,9 +228,9 @@ node avl_find_bool(node tree, bool val )
 
   Returns:
     0, if Value isn't Found
-    p, where 'p' is pointer to node with Value
+    p, where 'p' is pointer to Tree with Value
 */
-node avl_find_char(node tree, char val )
+Tree avl_find_char(Tree tree, char val )
 {
   //  STUB STUB STUB
 
@@ -186,9 +241,9 @@ node avl_find_char(node tree, char val )
 
   Returns:
     0, if Value isn't Found
-    p, where 'p' is pointer to node with Value
+    p, where 'p' is pointer to Tree with Value
 */
-node avl_find_str(node tree, char* val )
+Tree avl_find_str(Tree tree, char* val )
 {
   //  STUB STUB STUB
 

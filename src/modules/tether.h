@@ -22,6 +22,11 @@
 #define MODULES_TETHER_H
 
 
+//  Linux Libraries
+#include "stdio.h"
+
+extern FILE* yyin;
+
 /*
   1.) Tether Modules
 */

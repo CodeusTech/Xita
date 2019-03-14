@@ -13,8 +13,9 @@
 #define XCS_MEMORY_H
 
 
+#include "alloc.h"
+#include "config.h"
 #include "static.h"
-#include "allocator/allocator.h"
 
 
 

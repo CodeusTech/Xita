@@ -34,6 +34,7 @@ extern int yylex();
 %option yylineno
 %x COMMENT
 %x DOC_COMMENT
+%x STR
 %%
 [ \t\n] ;           // Eliminate Whitespace
 
@@ -298,7 +299,10 @@ extern int yylex();
 [0-9]+\.[0-9]*    { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE
 \'\\[a-zA-Z0-9]\' { yylval.val_char = yytext[2]; return CHAR; }     //  ESCAPED CHARACTER
 \'[a-zA-Z0-9]\'   { yylval.val_char =  yytext[1]; return CHAR; }    //  CHARACTER PRIMITIVE
-\"(\\.|[^"\\])*\"  { yylval.val_string = strdup(yytext); return STRING; }  //  STRING PRIMITIVE
+
+\"              BEGIN(STR);
+<STR>([^"])* { yylval.val_string = strdup(yytext); return STRING; }  //  STRING PRIMITIVE
+<STR>\"         BEGIN(INITIAL);
 
 [A-Z][a-zA-Z0-9_]*\'?   { yylval.val_ident = strdup(yytext); return CONSTRUCTOR; }
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }
