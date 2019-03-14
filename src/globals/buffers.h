@@ -83,9 +83,16 @@ char** ident_parameters;
 */
 
 char** ident_types;
-char** ident_constructors;
 char** ident_typeclasses;
 
+
+/*
+  5.) Constructors
+*/
+
+char** ident_construct;
+unsigned int* size_construct;
+unsigned int count_construct;
 
 
 #endif

@@ -11,7 +11,7 @@
   Table of Contents
   =================
   1.) Declare Type
-  2.) Invoke Type
+  2.) Type Expression
   3.) Find Type
 */
 
