@@ -27,9 +27,9 @@
 
 /* 1.a) IPC Message
 
-  * Contains all metadata required for an interprocess message.
-  * In other words, this is the format used when 
-      process A sends a message to process B.
+ * Contains all metadata required for an interprocess message.
+ * In other words, this is the format used when 
+    process A sends a message to process B.
 */
 typedef struct Message_t
 {
@@ -46,10 +46,9 @@ typedef struct Message_t
 */
 typedef struct MessageChannel_t
 {
-  unsigned int front_len; //  Length of Front Queue
-  unsigned int back_len;  //  Length of Back Queue
-  Message* front; //  Front Message Queue
-  Message* back;  //  Back Message Queue
+  int front, back;    // Queue Indices
+  unsigned int size;  // Total Size
+  Message* queue;     // Front Message Queue
 } MessageChannel;
 
 

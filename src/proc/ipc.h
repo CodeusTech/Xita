@@ -112,23 +112,34 @@ unsigned int msg_get_rec(Message* msg)
   2.) Message Channels
 */
 
-/* 2.a) Queue Length
+/* 2.a) New Message Channel
 
   Returns:
-    0, if Channel is Empty
-    len, otherwise
+    p, Pointer to new Message Channel
 */
-unsigned int msgchan_qlen(MessageChannel* mc)
-{ return mc->front_len + mc->back_len; }
+MessageChannel* mc_new(unsigned int s)
+{
+  //  Allocate XCS Memory
+  MessageChannel* mc;
 
-/* 2.b) Get Front Queue
+  mc->front = -1;
+  mc->back  = -1;
+  mc->size  =  s;
+  mc->queue = NULL; //  TODO: Requires Dynamic Allocation
+
+  return mc;
+}
+
+/* 2.b) Enqueue Message
 
   Returns:
-
+    p, Pointer to new Message Channel with Message enqueued
 */
+MessageChannel* mc_add(MessageChannel* mc, Message msg)
+{
 
-/* 2.c) Get Back Queue
 
-*/
+  return mc;
+}
 
 #endif
