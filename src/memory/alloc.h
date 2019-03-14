@@ -219,10 +219,26 @@ MemoryBlock* mem_rotate_left(MemoryBlock* mem)
   Returns:
     0, if Successful
 */
-int xcs_alloc(unsigned int size, void* data)
+int xcs_alloc()
 {
-  //  Allocate Memory
+  /*
+    TOP holds size (in bytes) to Allocate
+  */
 
+  //  Error Check Size
+
+  /*
+    Generate Random Number using GPIO
+  */
+  xcs_is_alloc(); // Check if already allocated
+
+
+  /*
+    End of Call:
+      TOP holds Allocated Memory Block
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -233,19 +249,38 @@ int xcs_alloc(unsigned int size, void* data)
 */
 int xcs_free()
 {
-  //  Free Memory
+  /*
+    Top Register Holds an Allocated Memory Address
+  */
 
+  //  Error Check
+
+  /*
+    End of Call:
+      Deallocate TOP and Decrement Register Stack
+  */
   return 0;
 }
 
 /* 4.c) Check if Allocated
 
   Returns:
-    0, if Address is Unallocated
-    TBD, if Allocated
+    0, if Successful
 */
 int xcs_is_alloc()
 {
+  /*
+    TOP  holds memory address, addr
+    NEXT holds size s (in bytes)
+  */
+
+  //  Error Check
+
+  /*
+    Top Register holds:
+      0, if Address is Allocated
+      addr, 
+  */
 
   return 0;
 }
