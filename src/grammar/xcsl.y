@@ -69,7 +69,7 @@
 #include "src/memory/memory.h"
 #include "src/modules/modules.h"
 #include "src/operator/operator.h"
-#include "src/process/process.h"
+#include "src/proc/proc.h"
 #include "src/utils/clear.h"
 #include "src/utils/regex.h"
 

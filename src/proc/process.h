@@ -1,24 +1,31 @@
 /*
-  stdproc.h
-  Cody Fagley
+  process.h
+  Cody Fagley 
   Authored on   February 22, 2019
   Last Modified February 22, 2019
 */
 
 /*
-  Contains Standard Definitions for use in Process-Related Headers
+  Contains Public Interface for XCS Process Definitions/Operations
 
   Table of Contents
   =================
   1.) Structures
     1.a) Interprocess Message
     1.b) Process Structure
-    1.c) Process Scheduler
-  2.) Standard Operations
+    1.c) Process Queue
+    1.d) Process Scheduler
+  2.) Process Functions
+    2.a) Get Process ID
+    2.b) Get Process Status
+    2.c) Get Active Process Tethers
+    2.d) Get Input Queue
+    2.e) Get Output Queue
+    2.f) Get Error Queue
 */
 
-#ifndef SCHEDULER_STRUCTS_H
-#define SCHEDULER_STRUCTS_H
+#ifndef PROC_PROCESS_H
+#define PROC_PROCESS_H
 
 
 /*
@@ -27,6 +34,9 @@
 
 /* 1.a) IPC Message
 
+  * Contains all metadata required for an interprocess message.
+  * In other words, this is the format used when 
+      process A sends a message to process B.
 */
 typedef struct Message_t
 {
@@ -50,23 +60,9 @@ typedef struct Process_t
   Message* Error;   //  Process Error Queue
 } Process;
 
-/* 1.c) Process Scheduler
-
-*/
-typedef struct Scheduler_t
-{
-  Process* queue0;  // First Priority  (System Interrupts) (Clocks/Event Timers)
-  Process* queue1;  // Second Priority (User Interrupts) (System - Instant of Execution)
-  Process* queue2;  // Third Priority  (Source - Instant of Execution)
-  Process* queue3;  // Fourth Priority
-  Process* queue4;  // Fifith Priority (Source - After x Seconds)
-  int* blocked; // Inactive Processes (Blocked)
-  int* t_mod;   // Active Tether Modules
-} Scheduler;
-
 
 /*
-  2.) Standard Operations
+  2.) Process Functions
 */
 
 
