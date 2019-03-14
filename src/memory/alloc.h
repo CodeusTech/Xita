@@ -28,6 +28,7 @@
   4.) Memory Allocation
     4.a) Allocate Memory
     4.b) Free Memory
+    4.c) Check if Allocated
 */
 
 #ifndef MEMORY_ALLOC_H
@@ -225,7 +226,6 @@ int xcs_alloc(unsigned int size, void* data)
   return 0;
 }
 
-
 /* 4.b) Free Memory
 
   Returns:
@@ -238,7 +238,17 @@ int xcs_free()
   return 0;
 }
 
+/* 4.c) Check if Allocated
 
+  Returns:
+    0, if Address is Unallocated
+    TBD, if Allocated
+*/
+int xcs_is_alloc()
+{
+
+  return 0;
+}
 
 
 #endif
