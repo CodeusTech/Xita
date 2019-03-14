@@ -15,8 +15,8 @@
   3.) Find Type
 */
 
-#ifndef TYPES_OPERATIONS_H
-#define TYPES_OPERATIONS_H
+#ifndef COMPLEX_OPERATIONS_H
+#define COMPLEX_OPERATIONS_H
 
 //  Global Variables
 extern char** ident_types;
@@ -27,7 +27,7 @@ extern char** ident_types;
   Returns:
     0, if Successful
 */
-int declare_type (char* ident)
+int decl_type (char* ident)
 {
   printf("Type %s Declared\n", ident);
 
@@ -35,14 +35,14 @@ int declare_type (char* ident)
 }
 
 
-/* 2.) Invoke Type
+/* 2.) Type Expression
 
   Returns:
     0, if Successful
 */
-int invoke_type (char* ident)
+int exp_type (char* ident)
 {
-  printf("Type Invoked: %s\n", ident);
+  printf("Type Expression: %s\n", ident);
 
   return 0;
 }

@@ -26,9 +26,9 @@
     3.b) Rotate Right
     3.c) Rotate Left
   4.) Memory Allocation
-    4.a) Allocate Memory
-    4.b) Free Memory
-    4.c) Check if Allocated
+    4.a) Check if Allocated
+    4.b) Allocate Memory
+    4.c) Free Memory
 */
 
 #ifndef MEMORY_ALLOC_H
@@ -212,7 +212,30 @@ MemoryBlock* mem_rotate_left(MemoryBlock* mem)
   4.) Memory Allocation
 */
 
-/* 4.a) Allocate Memory
+/* 4.a) Check if Allocated
+
+  Returns:
+    0, if Successful
+*/
+int xcs_is_alloc()
+{
+  /*
+    TOP  holds memory address, addr
+    NEXT holds size s (in bytes)
+  */
+
+  //  Error Check
+
+  /*
+    Top Register holds:
+      0, if Address is Allocated
+      addr, 
+  */
+
+  return 0;
+}
+
+/* 4.b) Allocate Memory
 
   'xcs_alloc' essentially performs AVL Insert on Active Memory Tree
 
@@ -242,7 +265,7 @@ int xcs_alloc()
   return 0;
 }
 
-/* 4.b) Free Memory
+/* 4.c) Free Memory
 
   Returns:
     0, if Successful
@@ -259,29 +282,6 @@ int xcs_free()
     End of Call:
       Deallocate TOP and Decrement Register Stack
   */
-  return 0;
-}
-
-/* 4.c) Check if Allocated
-
-  Returns:
-    0, if Successful
-*/
-int xcs_is_alloc()
-{
-  /*
-    TOP  holds memory address, addr
-    NEXT holds size s (in bytes)
-  */
-
-  //  Error Check
-
-  /*
-    Top Register holds:
-      0, if Address is Allocated
-      addr, 
-  */
-
   return 0;
 }
 

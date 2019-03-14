@@ -358,7 +358,6 @@ exp_list:
 */
 param_list:
     param_list OP_COMMA param_list
-  | STRING                        { add_to_list($1); }
   | exp
 ;
 
@@ -564,7 +563,7 @@ exp_type:
   TYPE DECLARATIONS
 */
 type2:
-    TYPE IDENTIFIER { declare_type($2); }
+    TYPE IDENTIFIER { decl_type($2); }
 ;
 
 decl_type:
