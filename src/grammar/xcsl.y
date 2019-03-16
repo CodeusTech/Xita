@@ -372,29 +372,29 @@ param_list:
 //  IF ...
 //  HELPER FUNCTION
 if1:
-  IF { if_statement(); };
+  IF      { decl_if(); };
 // CALLABLE FUNCTION
 if:
-  if1 exp;
+  if1 exp { exp_if(); };
 
 //  THEN ...
 //  HELPER FUNCTION
 then1:
-  THEN { then_statement(); };
+  THEN      { decl_then(); };
 // CALLABLE FUNCTION
 then:
-  then1 exp;
+  then1 exp { exp_then(); };
 
 //  ELSE ...
 //  HELPER FUNCTION
 else1:
-  ELSE {else_statement();};
+  ELSE      { decl_else(); };
 // CALLABLE FUNCTION
 else:
-  else1 exp;
+  else1 exp { exp_else(); };
 
 exp_if:
-    if then else {  }
+    if then else { exp_if_then_else(); }
 ;
 
 /*
@@ -458,29 +458,29 @@ decl_const:
   4.b) Function Declarations/Invocations
 */
 let:
-    LET IDENTIFIER OF exp_type        { decl_function($2); }
-  | LET IDENTIFIER                    { decl_function($2); }
-  | LET OP_ADD_O     { override_add(); }
-  | LET OP_SUB_O     { override_sub(); }
-  | LET OP_MUL_O     { override_mul(); }
-  | LET OP_DIV_O     { override_div(); }
-  | LET OP_MOD_O     { override_mod(); }
-  | LET BOOL_AND_O   { override_bool_and(); }
-  | LET BOOL_OR_O    { override_bool_or(); }
-  | LET BOOL_XOR_O   { override_bool_xor(); }
-  | LET BIT_AND_O    { override_bit_and(); }
-  | LET BIT_OR_O     { override_bit_or(); }
-  | LET BIT_XOR_O    { override_bit_xor(); }
-  | LET BIT_SHL_O    { override_bit_shl(); }
-  | LET BIT_SHR_O    { override_bit_shr(); }
-  | LET OP_LT_O      { override_lt(); }
-  | LET OP_LTE_O     { override_lte(); }
-  | LET OP_GT_O      { override_gt(); }
-  | LET OP_GTE_O     { override_gte(); }
-  | LET OP_EQ_O      { override_eq(); }
-  | LET OP_NEQ_O     { override_neq(); }
-  | LET OP_APPEND_O  { override_append(); }
-  | LET OP_LIST_CON_O{ override_list_con(); }
+    LET IDENTIFIER OF exp_type  { decl_function($2); }
+  | LET IDENTIFIER              { decl_function($2); }
+  | LET OP_ADD_O                { override_add(); }
+  | LET OP_SUB_O                { override_sub(); }
+  | LET OP_MUL_O                { override_mul(); }
+  | LET OP_DIV_O                { override_div(); }
+  | LET OP_MOD_O                { override_mod(); }
+  | LET BOOL_AND_O              { override_bool_and(); }
+  | LET BOOL_OR_O               { override_bool_or(); }
+  | LET BOOL_XOR_O              { override_bool_xor(); }
+  | LET BIT_AND_O               { override_bit_and(); }
+  | LET BIT_OR_O                { override_bit_or(); }
+  | LET BIT_XOR_O               { override_bit_xor(); }
+  | LET BIT_SHL_O               { override_bit_shl(); }
+  | LET BIT_SHR_O               { override_bit_shr(); }
+  | LET OP_LT_O                 { override_lt(); }
+  | LET OP_LTE_O                { override_lte(); }
+  | LET OP_GT_O                 { override_gt(); }
+  | LET OP_GTE_O                { override_gte(); }
+  | LET OP_EQ_O                 { override_eq(); }
+  | LET OP_NEQ_O                { override_neq(); }
+  | LET OP_APPEND_O             { override_append(); }
+  | LET OP_LIST_CON_O           { override_list_con(); }
 ;
 
 /*

@@ -11,12 +11,21 @@
   Table of Contents
   =================
   1.) Assembly Buffers
+    1.a) .text Buffers
+    1.b) .bss Buffers
+    1.c) Name Mangling
   2.) Register Stack
     2.a) Standard Register Stack
     2.b) Extended Register Stack
     2.c) Context Scopes
   3.) Function Buffers
+    3.a) Functions
+    3.b) Parameters
+    3.c) Constants
   4.) Type Buffers
+    4.a) Type Data
+    4.b) Constructors
+    4.c) Typeclasses
   5.) Constructors
   6.) Operator Buffers
     6.a) Operand Pairs
@@ -32,15 +41,20 @@
   1.) Assembly Buffers
 */
 
+//  1.a) .text Buffers
 char** start_asm_text;
 char**  curr_asm_text;
 int count_asm_text;
 int index_asm_text;
 
+//  1.b) .bss Buffers
 char** start_asm_bss;
 char**  curr_asm_bss;
 int count_asm_bss;
 int index_asm_bss;
+
+// 1.c) Name Mangling
+unsigned int mangle = 0;
 
 
 /*
@@ -57,35 +71,52 @@ unsigned int rse_next = 1;  //  Next Extended Register Stack
 unsigned long** rse_types;  //  Register Stack Types (Extended)
 
 //  2.c) Context Scopes
-
 Scope scope_curr = 0;  //  Function/Register Stack Scope
 Scope scope_next = 1;  //  Next Function Scope
 Scope* scope_parents;  //  Parent (Return) Scope 
+
+
 
 /*
   3.) Function Buffers
 */
 
-char** ident_functions;   //  Function Identifiers
-char** ident_constants;   //  Constant Identifiers
-char** ident_parameters;  //  Parameter Identifiers
+//  3.a) Functions
+char** ident_funct;         //  Function Identifiers
+unsigned int* type_funct;   //  Return Type of Functions
+unsigned int* rtn_funct;    //  Number of Function Returns
+
+//  3.b) Parameters
+char*** param_funct;        //  Function Parameter Identifiers
+unsigned int* pnum_funct;   //  Number of Parameters for Function
+unsigned int** ptype_funct; //  Function Parameter Types
+
+//  3.c) Constants
+char** ident_const;       //  Constant Identifiers
+unsigned int* type_const; //  Constant Type Codes
+
 
 
 /*
   4.) Type Buffers
 */
 
-char** ident_types;       //  Type Identifiers
+//  4.a) Type Data
+unsigned int* types;  //  Type Codes
+char** ident_types;   //  Type Identifiers
+char*** param_types;  //  Type Parameters
+
+//  4.b) Constructors
+char** ident_construct;       //  Constructor Identifiers
+char*** ident_elem;           //  Element Identifiers
+char** etype_construct;       //  Types of Elements for Constructor
+unsigned int* enum_construct; //  Number of Elements for Constructor
+
+//  4.c) Typeclasses 
 char** ident_typeclasses; //  Typeclass Identifiers
 
-
-/*
-  5.) Constructors
-*/
-
-char** ident_construct;         //  Constructor Identifiers
-unsigned int* size_construct;   //  Constructor Data Sizes
-unsigned int* count_construct;  //  Number of Constructors (for type)
+char** ident_prototypes;  //  Prototype Identifiers
+char*** param_prototypes; //  Prototype Parameters
 
 
 /*
