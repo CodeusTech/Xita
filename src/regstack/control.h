@@ -6,11 +6,12 @@
 */
 
 /*
-  Contains functionality for managing register stack status
+  Contains Control/Status Operations for Managing the Register Stack
 */
 
 #ifndef REGSTACK_CONTROL_H
 #define REGSTACK_CONTROL_H
+
 
 
 

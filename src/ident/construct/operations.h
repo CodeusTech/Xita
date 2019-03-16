@@ -54,6 +54,15 @@ int decl_constructor (char* ident)
 {
   printf("Constructor Declared: %s \n", ident);
 
+  /*
+    Add ident to Constructor Identifier Buffers
+  */
+
+  /*
+    Add size of the constructor
+  */
+  //  Get Size of last Encountered 
+
   return 0;
 }
 

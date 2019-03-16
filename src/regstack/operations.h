@@ -10,14 +10,94 @@
 
   Table of Contents
   =================
-  1.) Push to Register Stack
-  2.) Pop from Register Stack
-  3.) 
+  1.) Static Operations
+    1.a) Create New Register Stack
+    1.b) Push to Register Stack
+    1.c) Pop from Register Stack
+  2.) Accessor Operations
+    2.a) Access Top Element
+    2.b) Access Second Element (from Top)
 */
 
 #ifndef REGSTACK_OPERATIONS_H
 #define REGSTACK_OPERATIONS_H
 
+#include "math.h"
+
+extern unsigned int curr_reg;
+
+/*
+  1.) Static Operations
+*/
+
+/* 1.a) Create New Register Stack
+
+*/
+unsigned char* rs_new()
+{
+  //  Allocate Register Stack Memory
+  unsigned char* rs = (unsigned char*) malloc(30);
+  
+  //  Random Order Variables
+  unsigned long activeRegs = 0;
+  curr_reg = 0;
+  int chk;
+
+  // TODO: Make More Efficient
+  for (int i = 0; i < 31; i++)
+  {
+    chk = rand() % 31;
+    if (activeRegs & (int) (pow(2,chk))) i--;
+    else
+    {
+      rs[i] = chk;
+      activeRegs |= (int) pow(2,chk);
+    }
+  }
+
+  return rs;
+}
+
+/* 1.b) Push to Register Stack
+
+*/
+unsigned int rs_push()
+{
+  // TODO:  Error Check
+  return curr_reg++;
+}
+
+/* 1.c) Pop from Register Stack
+
+*/
+unsigned int rs_pop()
+{
+  //  TODO: Error Check
+  return --curr_reg;
+}
+
+
+/*
+  2.) Accessor Operations
+*/
+
+/* 2.a) Access Top Element
+
+*/
+unsigned int rs_top()
+{ 
+  //  TODO: Error Check
+  return curr_reg; 
+}
+
+/* 2.b) Access Second Element (from Top)
+
+*/
+unsigned int rs_second()
+{
+  //  TODO: Error Check
+  return (curr_reg - 1);
+}
 
 
 
