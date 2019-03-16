@@ -73,7 +73,7 @@ unsigned int rs_push()
 unsigned int rs_pop()
 {
   //  TODO: Error Check
-  return --curr_reg;
+  return curr_reg--;
 }
 
 

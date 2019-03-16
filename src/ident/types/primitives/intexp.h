@@ -37,10 +37,14 @@
 #ifndef PRIMITIVES_INTEXP_H
 #define PRIMITIVES_INTEXP_H
 
+//  XCS Libraries
 #include "typecodes.h"
 #include "../types.h"
-
 #include "../../../grammar/status.h"
+#include "../../../regstack/regstack.h"
+
+
+
 extern unsigned int grammar_status;
 
 /*
@@ -56,6 +60,7 @@ int pop_int()
 {
   //  STUB STUB STUB
   printf("Integer Popped from Register Stack\n");
+  rs_pop();
 
   return 0;
 }
@@ -69,6 +74,7 @@ int push_int_lit(int literal)
 {
   //  STUB STUB STUB
   printf("Integer Literal Pushed to Register Stack: %d\n", literal);
+  unsigned int reg = rs_push();
 
   return 0;
 }
@@ -83,6 +89,8 @@ int push_int_ident(char* ident)
 {
   //  STUB STUB STUB
   printf("Integer Identifier Pushed to Register Stack: %s\n", ident);
+  unsigned int reg = rs_push();
+  
 
   switch (find_type(ident))
   {
@@ -138,6 +146,18 @@ int integer_addition()
 {
   printf("Added top two registers on REGISTER STACK\n");
 
+  /*
+    Error Check for Type Definition:
+    (num) -> (num) -> (num)
+  */
+
+  //  Perform Addition
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Addition, Pop Entry from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -150,6 +170,18 @@ int integer_addition()
 int integer_subtraction()
 {
   printf("Subtracted top two registers on REGISTER STACK\n");
+
+  /*
+    Error Check for Type Definition:
+    (num) -> (num) -> (num)
+  */
+
+  //  Perform Subtraction
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Subtraction, Pop Entry from Register Stack
+  rs_pop();
 
   return 0;
 }
@@ -164,6 +196,18 @@ int integer_multiplication()
 {
   printf("Multiplied top two registers on REGISTER STACK\n");
 
+  /*
+    Error Check for Type Definition:
+    (num) -> (num) -> (num)
+  */
+
+  //  Perform Multiplication
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Multiplication, Pop Entry from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -177,6 +221,18 @@ int integer_division()
 {
   printf("Divided top two registers on REGISTER STACK\n");
 
+  /*
+    Error Check for Type Definition:
+    (num) -> (num) -> (num)
+  */
+
+  //  Perform Division
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Division, Pop Entry from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -189,6 +245,18 @@ int integer_division()
 int integer_modulus()
 {
   printf("Modulus'd top two registers on REGISTER STACK\n");
+
+  /*
+    Error Check for Type Definition:
+    (int) -> (int) -> (int)
+  */
+
+  //  Perform Modulus
+  ADR rhs = rs_top();     //  Must be Integer Type
+  ADR lhs = rs_second();  //  Must be Integer Type
+
+  //  After Modulus, Pop Entry from Register Stack
+  rs_pop();
 
   return 0;
 }
@@ -207,6 +275,18 @@ int bitwise_shl()
 {
   printf("Bitwise Shift Left\n");
 
+  /*
+    Error Check for Type Definition:
+    (int) -> (int) -> (int)
+  */
+
+  //  Perform Bitwise Shift
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Bitwise Shift, Pop Entry from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -219,6 +299,18 @@ int bitwise_shl()
 int bitwise_shr()
 {
   printf("Bitwise Shift Right\n");
+
+  /*
+    Error Check for Type Definition:
+    (int) -> (int) -> (int)
+  */
+
+  //  Perform Bitwise Shift
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Bitwise Shift, Pop Entry from Register Stack
+  rs_pop();
 
   return 0;
 }
@@ -233,6 +325,18 @@ int bitwise_and()
 {
   printf("Bitwise And\n");
 
+  /*
+    Error Check for Type Definition:
+    (int) -> (int) -> (int)
+  */
+
+  //  Perform Bitwise AND
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Bitwise AND, Pop Entry from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -246,6 +350,18 @@ int bitwise_or()
 {
   printf("Bitwise Or\n");
 
+  /*
+    Error Check for Type Definition:
+    (int) -> (int) -> (int)
+  */
+
+  //  Perform Bitwise OR
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Bitwise OR, Pop Entry from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -258,6 +374,18 @@ int bitwise_or()
 int bitwise_xor()
 {
   printf("Bitwise Exclusive Or\n");
+
+  /*
+    Error Check for Type Definition:
+    (int) -> (int) -> (int)
+  */
+
+  //  Perform Bitwise XOR
+  ADR rhs = rs_top();
+  ADR lhs = rs_second();
+
+  //  After Bitwise XOR, Pop Entry from Register Stack
+  rs_pop();
 
   return 0;
 }

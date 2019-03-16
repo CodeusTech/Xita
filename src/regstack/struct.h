@@ -12,10 +12,11 @@
 #ifndef REGSTACK_STRUCT_H
 #define REGSTACK_STRUCT_H
 
+typedef unsigned char ADR;
 
 typedef struct regstack_t
 {
-  char order[30];
+  ADR order[30];
 } RegStack;
 
 
