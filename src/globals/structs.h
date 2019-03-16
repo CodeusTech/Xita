@@ -21,6 +21,17 @@
 #include "../memory/memory.h"
 
 /*
+  1.) Register Stacks
+*/
+
+typedef unsigned char ADR;
+
+typedef struct regstack_t
+{
+  ADR order[30];
+} RegStack;
+
+/*
   2.) Operator Structures
 */
 

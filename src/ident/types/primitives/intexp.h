@@ -42,6 +42,7 @@
 #include "../types.h"
 #include "../../../grammar/status.h"
 #include "../../../regstack/regstack.h"
+#include "../../../globals/structs.h"
 
 
 
@@ -74,7 +75,7 @@ int push_int_lit(int literal)
 {
   //  STUB STUB STUB
   printf("Integer Literal Pushed to Register Stack: %d\n", literal);
-  unsigned int reg = rs_push();
+  ADR reg = rs_push();
 
   return 0;
 }
@@ -89,7 +90,7 @@ int push_int_ident(char* ident)
 {
   //  STUB STUB STUB
   printf("Integer Identifier Pushed to Register Stack: %s\n", ident);
-  unsigned int reg = rs_push();
+  ADR reg = rs_push();
   
 
   switch (find_type(ident))

@@ -25,6 +25,8 @@
 #ifndef PRIMITIVES_LISTEXP_H
 #define PRIMITIVES_LISTEXP_H
 
+//  XCS Libraries
+#include "../../../regstack/regstack.h"
 
 /*
   1.) List Literals
@@ -39,6 +41,11 @@ int list_construct()
 {
   printf("List Constructed: \n");
 
+  //  TODO:  Error Check
+
+  //  Push List Pointer to Register Stack
+  ADR reg = rs_push();
+
   return 0;
 }
 
@@ -51,8 +58,14 @@ int list_tail()
 {
   printf("Returned Tail of List\n");
 
+  //  TODO: Error Check
+
+  //  Push Tail List Pointer to Register Stack
+  ADR reg = rs_push();
+
   return 0;
 }
+
 
 /*
   2.) List Arithmetic
@@ -67,10 +80,18 @@ int list_append()
 {
   printf("Lists Appended");
 
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_pop();
+  ADR sec = rs_pop();
+
+  //  Append Lists Together
+  //  Push Final List onto Register Stack
+  ADR reg = rs_push();
+
   return 0;
 }
-
-
 
 
 /*

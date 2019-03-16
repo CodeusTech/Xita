@@ -11,16 +11,19 @@
   Table of Contents
   =================
   1.) Assembly Buffers
-  2.) Operator Buffers
-    2.a) Operand Pairs
+  2.) Register Stack
   3.) Function Buffers
   4.) Type Buffers
+  5.) Constructors
+  6.) Operator Buffers
+    6.a) Operand Pairs
 */
 
 #ifndef GLOBALS_BUFFERS_H
 #define GLOBALS_BUFFERS_H
 
 #include "structs.h"
+
 
 /*
   1.) Assembly Buffers
@@ -38,7 +41,41 @@ int index_asm_bss;
 
 
 /*
-  2.) Operator Buffers
+  2.) Register Stack
+*/
+
+ADR curr_reg; //  Current Register pointer
+
+
+
+/*
+  3.) Function Buffers
+*/
+
+char** ident_functions;   //  Function Identifiers
+char** ident_constants;   //  Constant Identifiers
+char** ident_parameters;  //  Parameter Identifiers
+
+
+/*
+  4.) Type Buffers
+*/
+
+char** ident_types;
+char** ident_typeclasses;
+
+
+/*
+  5.) Constructors
+*/
+
+char** ident_construct;
+unsigned int* size_construct;
+unsigned int count_construct;
+
+
+/*
+  6.) Operator Buffers
 */
 
 //  Standard Operations
@@ -69,30 +106,6 @@ operands* operands_neq;
 //  List Operations
 operands* operands_append;
 operands* operands_list_con;
-
-/*
-  3.) Function Buffers
-*/
-
-char** ident_functions;
-char** ident_constants;
-char** ident_parameters;
-
-/*
-  4.) Type Buffers
-*/
-
-char** ident_types;
-char** ident_typeclasses;
-
-
-/*
-  5.) Constructors
-*/
-
-char** ident_construct;
-unsigned int* size_construct;
-unsigned int count_construct;
 
 
 #endif

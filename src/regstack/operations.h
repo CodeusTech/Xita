@@ -24,7 +24,7 @@
 
 #include "math.h"
 
-extern unsigned int curr_reg;
+extern unsigned char curr_reg;
 
 /*
   1.) Static Operations
@@ -73,7 +73,7 @@ unsigned int rs_push()
 unsigned int rs_pop()
 {
   //  TODO: Error Check
-  return curr_reg--;
+  return --curr_reg;
 }
 
 
