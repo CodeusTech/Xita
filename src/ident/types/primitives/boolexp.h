@@ -17,7 +17,7 @@
   Table of Contents
   =================
   1.) Boolean Literals
-    1.a) RESERVED
+    1.a) True/False
     1.b) Boolean Negation
   2.) Boolean Comparisons
     2.a) Boolean And
@@ -35,9 +35,50 @@
 #ifndef PRIMITIVES_BOOLEXP_H
 #define PRIMITIVES_BOOLEXP_H
 
+//  XCS Libraries
+#include "../../../regstack/regstack.h"
+
 /*
   1.) Boolean Literals
 */
+
+/*
+  1.a) True/False
+*/
+
+/* Push True to Register Stack
+
+  Returns:
+    0, if Successful
+*/
+int boolean_true()
+{
+  //  TODO: Error Check
+
+  //  Get Next Register on Stack
+  ADR reg = rs_push();
+
+  //  Push 1 to Register Stack
+
+  return 0;
+}
+
+/* Push False to Register Stack
+
+  Returns:
+    0, if Successful
+*/
+int boolean_false()
+{
+  //  TODO: Error Check
+
+  //  Get Next Register on Stack
+  ADR reg = rs_push();
+
+  //  Push 0 to Register Stack
+
+  return 0;
+}
 
 /*
   1.b) Boolean Negation
@@ -57,6 +98,17 @@ int boolean_and()
 {
   printf("Boolean And\n");
 
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_top();
+  ADR sec = rs_second();
+
+  //  Perform Boolean And Check
+
+  //  Pop Right-hand Operand from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -70,6 +122,17 @@ int boolean_or()
 {
   printf("Boolean Or\n");
 
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_top();
+  ADR sec = rs_second();
+
+  //  Perform Boolean And Check
+
+  //  Pop Right-hand Operand from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -82,6 +145,17 @@ int boolean_or()
 int boolean_xor()
 {
   printf("Boolean Exclusive Or\n");
+
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_top();
+  ADR sec = rs_second();
+
+  //  Perform Boolean XOR Check
+
+  //  Pop Right-hand Operand from Register Stack
+  rs_pop();
 
   return 0;
 }
@@ -101,6 +175,17 @@ int boolean_lt()
 {
   printf("Boolean Less Than\n");
 
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_pop();
+  ADR sec = rs_pop();
+
+  //  Perform < Check
+
+  //  Push Result onto Register Stack
+  rs_push();
+
   return 0;
 }
 
@@ -113,6 +198,17 @@ int boolean_lt()
 int boolean_lte()
 {
   printf("Boolean Less Than or Equal To\n");
+
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_pop();
+  ADR sec = rs_pop();
+
+  //  Perform <= Check
+
+  //  Push Result onto Register Stack
+  rs_push();
 
   return 0;
 }
@@ -127,6 +223,17 @@ int boolean_gt()
 {
   printf("Boolean Greater Than\n");
 
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_pop();
+  ADR sec = rs_pop();
+
+  //  Perform > Check
+
+  //  Push Result onto Register Stack
+  rs_push();
+
   return 0;
 }
 
@@ -139,6 +246,17 @@ int boolean_gt()
 int boolean_gte()
 {
   printf("Boolean Greater Than or Equal To\n");
+
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_pop();
+  ADR sec = rs_pop();
+
+  //  Perform >= Check
+
+  //  Push Result onto Register Stack
+  rs_push();
 
   return 0;
 }
@@ -153,6 +271,17 @@ int boolean_eq()
 {
   printf("Boolean Equivalence\n");
 
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_pop();
+  ADR sec = rs_pop();
+
+  //  Perform == Check
+
+  //  Push Result onto Register Stack
+  rs_push();
+
   return 0;
 }
 
@@ -165,6 +294,17 @@ int boolean_eq()
 int boolean_neq()
 {
   printf("Boolean Unequivalence\n");
+
+  //  TODO: Error Check
+
+  //  Get Register Codes
+  ADR top = rs_pop();
+  ADR sec = rs_pop();
+
+  //  Perform != Check
+
+  //  Push Result onto Register Stack
+  rs_push();
 
   return 0;
 }

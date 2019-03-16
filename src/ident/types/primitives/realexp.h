@@ -30,10 +30,12 @@
 #ifndef PRIMITIVES_REALEXP_H
 #define PRIMITIVES_REALEXP_H
 
+//  XCS Libraries
 #include "typecodes.h"
 #include "../types.h"
-
 #include "../../../grammar/status.h"
+#include "../../../regstack/regstack.h"
+
 extern unsigned int grammar_status;
 
 /*
@@ -50,6 +52,8 @@ int pop_real()
   //  STUB STUB STUB
   printf("Real Number Popped\n");
 
+  //  TODO: Error Check
+
   return 0;
 }
 
@@ -62,6 +66,9 @@ int push_real_lit(double lit)
 {
   //  STUB STUB STUB
   printf("Real Literal Pushed: %f\n", lit);
+
+  //  TODO: Error Check
+
 
   return 0;
 }

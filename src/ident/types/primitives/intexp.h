@@ -148,7 +148,7 @@ int integer_addition()
 
   /*
     Error Check for Type Definition:
-    (num) -> (num) -> (num)
+    (int) -> (int) -> (int)
   */
 
   //  Perform Addition
@@ -173,7 +173,7 @@ int integer_subtraction()
 
   /*
     Error Check for Type Definition:
-    (num) -> (num) -> (num)
+    (int) -> (int) -> (int)
   */
 
   //  Perform Subtraction
@@ -198,7 +198,7 @@ int integer_multiplication()
 
   /*
     Error Check for Type Definition:
-    (num) -> (num) -> (num)
+    (int) -> (int) -> (int)
   */
 
   //  Perform Multiplication
@@ -223,7 +223,7 @@ int integer_division()
 
   /*
     Error Check for Type Definition:
-    (num) -> (num) -> (num)
+    (int) -> (int) -> (int)
   */
 
   //  Perform Division
