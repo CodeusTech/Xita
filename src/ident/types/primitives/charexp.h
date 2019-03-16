@@ -47,6 +47,11 @@ int pop_char()
   // STUB STUB STUB
   printf("Character Popped");
 
+  //  TODO:  Error Check
+
+  //  Pop from Register Stack
+  rs_pop();
+
   return 0;
 }
 
@@ -60,6 +65,11 @@ int push_char_lit(char lit)
   //  STUB STUB STUB
   printf("Character Literal Pushed: %c\n", lit);
 
+  //  TODO:  Error Check
+
+  //  Push to Register Stack
+  ADR reg = rs_push();
+
   return 0;
 }
 
@@ -72,6 +82,11 @@ int push_char_int(unsigned int lit)
 {
   //  STUB STUB STUB
   printf("Character Integer Pushed: %d\n", lit);
+
+  //  TODO: Error Check
+
+  //  Push to Register Stack
+  ADR reg = rs_push();
 
   return 0;
 }
@@ -87,15 +102,21 @@ int push_char_ident(char* ident)
   //  STUB STUB STUB
   printf("Character Identifier Pushed: %s\n", ident);
 
-  if (find_type(ident) == TYPE_CHAR) {/* Handle Character */ }
+  if (find_type(ident) == TYPE_CHAR) 
+  {
+    //  TODO: Error Check
+
+    //  Push to Register Stack
+    ADR reg = rs_push(); 
+
+    return 0;
+  }
   else 
   {
     /*TODO: Replace with yyerror()*/
     grammar_status = GRAMMAR_ERROR_TYPECHECK;
     return 1;
   }
-
-  return 0;
 }
 
 
@@ -106,6 +127,13 @@ int push_char_ident(char* ident)
 int char_from_int(int i)
 {
   printf("Character: %c, derived from int: %d.\n", (char) i, i);
+
+  //  TODO: Error Check
+
+  //  Push to Register Stack
+  ADR reg = rs_push();
+  
+  return 0;
 
   return 0;
 }
