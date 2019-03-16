@@ -33,10 +33,10 @@ extern unsigned char curr_reg;
 /* 1.a) Create New Register Stack
 
 */
-unsigned char* rs_new()
+ADR* rs_new()
 {
   //  Allocate Register Stack Memory
-  unsigned char* rs = (unsigned char*) malloc(30);
+  ADR* rs = (ADR*) malloc(30);
   
   //  Random Order Variables
   unsigned long activeRegs = 0;
@@ -44,9 +44,9 @@ unsigned char* rs_new()
   int chk;
 
   // TODO: Make More Efficient
-  for (int i = 0; i < 31; i++)
+  for (int i = 0; i < 30; i++)
   {
-    chk = rand() % 31;
+    chk = rand() % 30;
     if (activeRegs & (int) (pow(2,chk))) i--;
     else
     {

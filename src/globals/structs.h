@@ -25,6 +25,7 @@
 */
 
 typedef unsigned char ADR;
+typedef unsigned int Scope;
 
 typedef struct regstack_t
 {

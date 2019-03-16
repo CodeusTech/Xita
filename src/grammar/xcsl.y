@@ -229,7 +229,7 @@ open:
 */
 
 xcs_source:
-    src         { printf("Finished Parsing Source Module.\n"); }
+    src         { source_end(); }
 ;
 
 src:
@@ -458,8 +458,8 @@ decl_const:
   4.b) Function Declarations/Invocations
 */
 let:
-    LET IDENTIFIER OF exp_type        { declare_function($2); }
-  | LET IDENTIFIER                    { declare_function($2); }
+    LET IDENTIFIER OF exp_type        { decl_function($2); }
+  | LET IDENTIFIER                    { decl_function($2); }
   | LET OP_ADD_O     { override_add(); }
   | LET OP_SUB_O     { override_sub(); }
   | LET OP_MUL_O     { override_mul(); }
@@ -487,15 +487,15 @@ let:
   FUNCTION DECLARATIONS
 */
 decl_funct:
-    let exp_param OP_ASSIGN exp IN exp {  }
-  | let exp_param OP_ASSIGN exp        {}
+    let exp_param OP_ASSIGN exp IN exp { decl2_function(); }
+  | let exp_param OP_ASSIGN exp        { decl2_function(); }
 ;
 
 /*
   FUNCTION EXPRESSIONS (INVOCATIONS)
 */
 exp_funct:
-    IDENTIFIER param_arg  { invoke_function($1); }
+    IDENTIFIER param_arg  { exp_function($1); }
 ;
 
 /*
@@ -850,6 +850,8 @@ void yyerror(const char* error) {
 
   //  TODO: DEALLOCATE ALL BUFFERS
   
+  rs_end();
+
 	exit(grammar_status);
 }
 

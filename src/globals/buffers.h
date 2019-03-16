@@ -12,6 +12,9 @@
   =================
   1.) Assembly Buffers
   2.) Register Stack
+    2.a) Standard Register Stack
+    2.b) Extended Register Stack
+    2.c) Context Scopes
   3.) Function Buffers
   4.) Type Buffers
   5.) Constructors
@@ -44,9 +47,20 @@ int index_asm_bss;
   2.) Register Stack
 */
 
-ADR curr_reg; //  Current Register pointer
+//  2.a) Standard Register Stack
+ADR curr_reg;             //  Current Register pointer
+ADR** rs;                 //  Register Stack Orders
+unsigned int** rs_types;  //  Register Stack Types
 
+//  2.b) Extended Register Stack
+unsigned int rse_next = 1;  //  Next Extended Register Stack
+unsigned long** rse_types;  //  Register Stack Types (Extended)
 
+//  2.c) Context Scopes
+
+Scope scope_curr = 0;  //  Function/Register Stack Scope
+Scope scope_next = 1;  //  Next Function Scope
+Scope* scope_parents;  //  Parent (Return) Scope 
 
 /*
   3.) Function Buffers
@@ -61,17 +75,17 @@ char** ident_parameters;  //  Parameter Identifiers
   4.) Type Buffers
 */
 
-char** ident_types;
-char** ident_typeclasses;
+char** ident_types;       //  Type Identifiers
+char** ident_typeclasses; //  Typeclass Identifiers
 
 
 /*
   5.) Constructors
 */
 
-char** ident_construct;
-unsigned int* size_construct;
-unsigned int count_construct;
+char** ident_construct;         //  Constructor Identifiers
+unsigned int* size_construct;   //  Constructor Data Sizes
+unsigned int* count_construct;  //  Number of Constructors (for type)
 
 
 /*

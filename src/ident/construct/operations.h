@@ -38,7 +38,7 @@
 */
 extern char** ident_construct;
 extern unsigned int* size_construct;
-extern unsigned int count_construct;
+extern unsigned int* count_construct;
 
 
 /*

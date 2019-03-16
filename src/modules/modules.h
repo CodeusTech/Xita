@@ -25,6 +25,7 @@
 #ifndef XCS_MODULES_H
 #define XCS_MODULES_H
 
+#include "source.h"
 #include "tether.h"
 
 /*

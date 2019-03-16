@@ -11,13 +11,15 @@
   Table of Contents
   =================
   1.) Declare Function
-  2.) Invoke Function
+  2.) Function Expressions
   3.) Find Function
 */
 
 #ifndef FUNCTIONS_OPERATIONS_H
 #define FUNCTIONS_OPERATIONS_H
 
+//  XCS Libraries
+#include "../../utils/scope.h"
 
 //  Global Variables
 extern char** ident_functions;
@@ -29,19 +31,47 @@ extern char** ident_functions;
   Returns:
     0, if Successful
 */
-int declare_function (char* name)
+int decl_function (char* name)
 {
   printf("Function %s Declared\n", name);
+
+  //  Store Current Context Scope as Parent
+  //  TODO: ...
+
+  //  Get New Function Context Scope
+  //Scope s = get_scope_next();
+
+  //  Generate Register Stack for Scope
+  
+
   return 0;
 }
 
-
-/* 2.) Invoke Function
+/* End Declare Function
 
   Returns:
     0, if Successful
 */
-int invoke_function (char* name)
+int decl2_function ()
+{
+  /* TODO:
+    If Function has Parameters,
+      Move Return Values into bottom of register stack
+  */
+
+
+  //  Return to Parent Context Scope
+
+  return 0;
+}
+
+
+/* 2.) Function Expressions
+
+  Returns:
+    0, if Successful
+*/
+int exp_function (char* name)
 {
   printf("Function %s Invoked\n", name);
 

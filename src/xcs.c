@@ -41,6 +41,7 @@ bool keep_assembly 	= false;
 //  Driver File
 int main(int argc, char** argv) 
 {
+
 	/*
 		2.) Handle Compiler Options
 	*/
@@ -61,6 +62,7 @@ int main(int argc, char** argv)
 
 			//  Initialize Buffers
 			init_asm_text();
+			rs_init();
 
 			//  Set Parser File Pointer
 			yyin = fopen(argv[i], "r");
@@ -78,6 +80,8 @@ int main(int argc, char** argv)
 
 			//  Delete Assembly File (if not Keep Assembly)
 			if (!keep_assembly) delete_asm_file(asm_fname);
+
+			return 0;
 		}
 	}
 
@@ -86,6 +90,7 @@ int main(int argc, char** argv)
 		3.) Interpreter Mode
 	*/
 	if (interpreted) yyin = stdin;
+	rs_init();
 
 	while (!feof(yyin)) yyparse();
 

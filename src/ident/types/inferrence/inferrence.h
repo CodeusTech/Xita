@@ -13,5 +13,6 @@
 #define TYPES_INFERRENCE_H
 
 #include "operator.h"
+#include "rstype.h"
 
 #endif
