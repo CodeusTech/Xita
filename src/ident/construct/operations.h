@@ -16,7 +16,6 @@
     2.a) Declare Constructor
     2.b) Constructor Expression
     2.c) Find Constructor
-    2.d) Get Constructor Size
 */
 
 #ifndef CONSTRUCT_OPERATIONS_H
@@ -38,6 +37,7 @@
 */
 extern char** ident_construct;
 extern unsigned int* size_construct;
+extern unsigned int count_types;
 extern unsigned int* count_construct;
 
 
@@ -77,18 +77,21 @@ int construct_find (char* ident)
 {
   printf("Found Constructor: %s\n", ident);
 
-  for (int i = 0; i < count_construct; i++)
+  for (int i = 0; i < count_types; i++)
   {
-    /*
-      Search Buffer for Constructor Match with 'ident'
+    for (int j = 0; j < count_construct[i]; j++)
+    {
+      /*
+        Search Buffer for Constructor Match with 'ident'
 
-      If a match is found, report (i + 18) 
-      
-      NOTE: (1-17 are primitive codes)
-    */
-    if (true) return i + 18;
+        If a match is found, report (i + 18) 
+        
+        NOTE: (1-17 are primitive codes)
+      */
+      if (true) return j + 18;
+    }
   }
-
+  
   return 0;
 }
 
@@ -108,25 +111,6 @@ int exp_constructor (char* ident)
 
   return 0;
 }
-
-
-/* 2.d) Get Constructor Size
-
-  Returns:
-    0, if UNSUCCESSFUL
-    s, if Successful, where 's' is size, in bytes, of Data Constructor
-*/
-unsigned int construct_size (char* ident)
-{
-  //  Find Key Number for Identifier
-  unsigned int rtn = construct_find(ident);
-  if (!rtn) return 0;
-
-  //  Error Check
-
-  return size_construct[rtn];
-}
-
 
 
 

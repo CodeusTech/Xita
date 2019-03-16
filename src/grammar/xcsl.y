@@ -401,16 +401,14 @@ exp_if:
   3.b) match ... with ...
 */
 match1:
-    MATCH { match_statement(); };
+    MATCH { decl_match(); };
 match:
-    match1 exp { }
-;
+    match1 exp { exp_match(); };
 
 with1:
-    WITH { with_statement(); } ;
+    WITH { decl_with(); } ;
 with:
-    with1 exp_with { }
-;
+    with1 exp_with { exp_with();};
 
 exp_match:
     match with { conclude_match(); }

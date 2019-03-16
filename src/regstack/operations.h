@@ -61,7 +61,7 @@ ADR* rs_new()
 /* 1.b) Push to Register Stack
 
 */
-unsigned int rs_push()
+ADR rs_push()
 {
   // TODO:  Error Check
   return curr_reg++;
@@ -70,7 +70,7 @@ unsigned int rs_push()
 /* 1.c) Pop from Register Stack
 
 */
-unsigned int rs_pop()
+ADR rs_pop()
 {
   //  TODO: Error Check
   return --curr_reg;

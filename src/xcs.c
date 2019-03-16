@@ -19,16 +19,18 @@
 #ifndef XCS_C
 #define XCS_C
 
-//  Import Grammar Libraries
-#include "../lex.yy.c"
+//  Linux Libraries
+#include "stdbool.h"
+#include "stdio.h"
+#include "string.h"
+#include "stdlib.h"
 
 //  XCS Libraries
 #include "globals/globals.h"
 #include "asm/asm.h"
 
-//  Linux Libraries
-#include "stdbool.h"
-#include "stdio.h"
+//  Import Grammar Libraries
+#include "../lex.yy.c"
 
 extern FILE* yyin;
 

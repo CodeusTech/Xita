@@ -102,12 +102,14 @@ unsigned int* type_const; //  Constant Type Codes
 */
 
 //  4.a) Type Data
-unsigned int* types;  //  Type Codes
-char** ident_types;   //  Type Identifiers
-char*** param_types;  //  Type Parameters
+unsigned int* types;      //  Type Codes
+unsigned int count_types; //  Number of Types
+char** ident_types;       //  Type Identifiers
+char*** param_types;      //  Type Parameters
 
 //  4.b) Constructors
 char** ident_construct;       //  Constructor Identifiers
+unsigned int* count_construct;//  Number of Constructors for Function
 char*** ident_elem;           //  Element Identifiers
 char** etype_construct;       //  Types of Elements for Constructor
 unsigned int* enum_construct; //  Number of Elements for Constructor

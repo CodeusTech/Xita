@@ -26,6 +26,7 @@
 #define CONDITIONS_IF_H
 
 #include "../asm/asm.h"
+#include "../regstack/regstack.h"
 
 extern unsigned int mangle;
 

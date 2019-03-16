@@ -35,7 +35,7 @@ int rs_init()
   //   Initialize Register Stack Buffers, and 1st Reg Stack
   rs = (ADR**) malloc(4096 * sizeof(ADR*));
   rs[0] = (ADR*) malloc(31 * sizeof(ADR));
-  rs[0][31] = NULL;  // Indicates Extended Space isn't used
+  rs[0][31] = (ADR) 0;  // Indicates Extended Space isn't used
 
   //  Initialize Register Stack Types Buffer
   rs_types = (unsigned int**) malloc(4096 * sizeof(unsigned int*));
@@ -59,7 +59,7 @@ int rs_end()
   printf("rs_finish() Called...\n");
   for (int i = 0; i < scope_next; i++)
   {
-    if (rs[i][31] == NULL) 
+    if (rs[i][31] == (ADR) 0) 
     {
       free(rs[i]);
       free(rs_types[i]);
