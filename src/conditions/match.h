@@ -125,8 +125,8 @@ int decl_case()
 
   /*
     For Each Case Argument:
-      * Check Constructor
-      * Check Literal
+      * Check Type
+      * Check Constructor/Literal
   */
 
   return 0;
