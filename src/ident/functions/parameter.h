@@ -41,7 +41,7 @@ extern char*** param_funct;
   Returns:
     0, if Successful
 */
-int decl_parameter (char* name)
+ErrorCode decl_parameter (char* name)
 {
   printf("Parameter %s Declared\n", name);
   //  STUB STUB STUB
@@ -65,7 +65,7 @@ int decl_parameter (char* name)
   Returns:
     0, if Successful
 */
-int exp_parameter(char* name)
+ErrorCode exp_parameter(char* name)
 {
   printf("Parameter %s Invoked\n", name);
   //  STUB STUB STUB
@@ -117,7 +117,7 @@ ADR find_parameter(char* ident)
   Returns:
     0, if Successful
 */
-int load_argument(Scope scope)
+ErrorCode load_argument(Scope scope)
 {
   printf("Argument Loaded\n");
   //  STUB STUB STUB
@@ -145,7 +145,7 @@ int load_argument(Scope scope)
   Returns:
     0, if Successful
 */
-int load_argument_rec()
+ErrorCode load_argument_rec()
 {
   printf("Recursive Argument Loaded\n");
 

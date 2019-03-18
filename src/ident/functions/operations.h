@@ -33,7 +33,7 @@ extern char** ident_functions;
   Returns:
     0, if Successful
 */
-int decl_function (char* ident)
+ErrorCode decl_function (char* ident)
 {
   //  STUB STUB STUB
   printf("Function %s Declared\n", ident);
@@ -62,7 +62,7 @@ int decl_function (char* ident)
   Returns:
     0, if Successful
 */
-int decl2_function ()
+ErrorCode decl2_function ()
 {
   // STUB STUB STUB
 
@@ -88,7 +88,7 @@ int decl2_function ()
   Returns:
     0, if Successful
 */
-int exp_function (char* name)
+ErrorCode exp_function (char* name)
 {
   //  STUB STUB STUB
   printf("Function %s Invoked\n", name);
@@ -117,9 +117,9 @@ int exp_function (char* name)
 
   Returns:
     0, if ident is not a Declared Function
-    i, if ident is a function, where i is index in function buffer
+    s, where 's' is the matching function's Context Scope ID
 */
-int find_function (char* ident)
+Scope find_function (char* ident)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);
@@ -140,7 +140,7 @@ int find_function (char* ident)
     0, if ident is not a Declared Function
     i, if ident is a function, where i is index in function buffer
 */
-int find_pfunction (char* ident, TypeID* ptypes)
+Scope find_pfunction (char* ident, TypeID* ptypes)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);

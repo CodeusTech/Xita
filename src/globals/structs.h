@@ -10,7 +10,9 @@
 
   Table of Contents
   =================
-  1.) Register Stacks
+  1.) Infrastructure
+  2.) Register Stacks
+  3.) Functions
   4.) Data Types
   6.) Memory Allocator Structures
   7.) Operator Structures
@@ -22,8 +24,16 @@
 
 #include "../memory/memory.h"
 
+
 /*
-  1.) Register Stacks
+  1.) Infrastructure
+*/
+
+typedef int ErrorCode;
+
+
+/*
+  2.) Register Stacks
 */
 
 typedef unsigned char ADR;

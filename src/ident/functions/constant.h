@@ -26,7 +26,7 @@ extern char** ident_constants;
   Returns:
     0, if Successful
 */
-int decl_constant(char* constant)
+ErrorCode decl_constant(char* constant)
 {
   //  STUB STUB STUB
   printf("Constant Declared: %s\n", constant);
@@ -48,7 +48,7 @@ int decl_constant(char* constant)
   Returns:
     0, if Successful
 */
-int exp_constant(char* constant)
+ErrorCode exp_constant(char* constant)
 {
   //  STUB STUB STUB
   printf("Constant Invoked: %s\n", constant);
