@@ -23,10 +23,18 @@
   Returns:
     0, if Successful
 */
-int declare_proto(char* str)
+ErrorCode decl_proto(Identifier ident)
 {
-  printf("Prototype %s Declared, and requires parameters: ", str);
+  //  STUB STUB STUB
+  printf("Prototype %s Declared, and requires parameters: ", ident);
 
+  /*
+    TODO:
+     * Error Check
+     * Add ident to Prototype Buffer
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -37,10 +45,18 @@ int declare_proto(char* str)
     0, if Successful
 
 */
-int proto_param(char* str)
+ErrorCode param_proto(Identifier ident)
 {
-  printf("%s ", str);
+  //  STUB STUB STUB
+  printf("%s ", ident);
 
+  /*
+    TODO:
+     * Error Check
+     * Add ident to Prototype Parameter Buffer
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -50,11 +66,23 @@ int proto_param(char* str)
     0, if ident is not a Prototype
     i, if ident is a prototype, where 'i' is the index in buffer
 */
-int find_proto(char* ident)
+PrototypeID find_proto(Identifier ident)
 {
+  //  STUB STUB STUB
   printf("Found Prototype: %s\n", ident);
 
+  /*
+    TODO:
+     * Error Check
+     * Get Implementation Typeclass
+     * Find Prototype Identifier by Typeclass
+      + If Found, Return ID Number
+      + If Not Found, Return 0
+  */
+
+  //  Return Failure
   return 0;
 }
 
 #endif
+

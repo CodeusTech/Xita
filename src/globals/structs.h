@@ -56,13 +56,19 @@ typedef struct regstack_t
 */
 
 typedef unsigned long ConstantID;
+typedef unsigned long FunctionID;
 
 
 /*
   4.) Data Types
 */
 
+//  4.a) Types
 typedef unsigned long TypeID;
+
+//  4.b) Typeclasses
+typedef unsigned long TypeclassID;
+typedef unsigned int PrototypeID;
 
 /*
   6.) Memory Allocator Structures

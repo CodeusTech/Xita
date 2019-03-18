@@ -19,7 +19,7 @@
 #define TYPECLASS_OPERATIONS_H
 
 //  Global Variables
-extern char** ident_typeclasses;
+extern Identifier* ident_typeclasses;
 
 
 /* 1.) Declare Typeclass
@@ -27,10 +27,19 @@ extern char** ident_typeclasses;
   Returns:
     0, if Successful
 */
-int declare_typeclass (char* ident)
+ErrorCode decl_typeclass (Identifier ident)
 {
-  printf("Typeclass %s Declared\n", ident);\
+  //  STUB STUB STUB
+  printf("Typeclass %s Declared\n", ident);
 
+  /*
+    TODO:
+     * Error Check
+     * Add ident to Typeclass Buffers
+     * Add Prototype Metadata to Buffers
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -40,10 +49,19 @@ int declare_typeclass (char* ident)
   Returns:
     0, if Successful
 */
-int invoke_typeclass (char* ident)
+ErrorCode exp_typeclass (Identifier ident)
 {
+  //  STUB STUB STUB
   printf("Typeclass Invoked: %s\n", ident);
 
+  /*
+    TODO:
+     * Error Check
+     * PLANNING/ARCHITECTURE REQUIRED
+     * DO NOT PROCEED
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -54,12 +72,23 @@ int invoke_typeclass (char* ident)
     0, if ident is not a Typeclass
     i, if ident is a Typeclass, where 'i' is the index in buffer
 */
-int find_typeclass (char* ident)
+TypeclassID find_typeclass (Identifier ident)
 {
+  //  STUB STUB STUB
   printf("Typeclass Found: %s\n", ident);
 
+  /*
+    TODO:
+     * Error Check
+     * Search through Typeclass Buffers
+      + If match is found, return ID
+      + If no match found, return 0
+  */
+
+  //  Return Success
   return 0;
 }
 
 
 #endif
+
