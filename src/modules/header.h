@@ -10,40 +10,17 @@
 
   Table of Contents
   =================
-  1.) Store Current Module Metadata
-  2.) Parse Header Module
-  3.) Restore Module Context
-  4.) Import Header (Submodule)
+  1.) Parse Header Module
+  2.) Import Header (Submodule)
 */
 
 #ifndef MODULES_HEADER_H
 #define MODULES_HEADER_H
 
+#include "operations.h"
 
 
-/* 1.) Store Current Module Metadata
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode mod_store_metadata()
-{
-  //  STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-     * Save Current Meta Data
-      + Store Input Stream
-      + Store Parser Line Number
-      + Store any other data regarding Parser State
-  */
-
-  return 0;
-}
-
-
-/* 2.) Parse Header Module
+/* 1.) Parse Header Module
 
   Returns:
     0, if Successful
@@ -55,6 +32,10 @@ ErrorCode mod_parse_header()
   /*
     TODO:
      * Error Check
+  */
+
+  /*
+    TODO:
      * Shift to New Header Context
       + Change Input Stream
       + Reset Line Number to 0
@@ -65,35 +46,12 @@ ErrorCode mod_parse_header()
 }
 
 
-/* 3.) Restore Module Context
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode mod_restore_module()
-{
-  //  STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-     * After Header Parse Finishes...
-      + Restore Input Stream
-      + Restore Line Number
-      + Restore all other metadata
-  */
-
-  //  Return Success
-  return 0;
-}
-
-
-/* 4.) Import Header (Submodule)
+/* 2.) Import Header (Submodule)
 
   Returns:
    0, if Successful
 */
-ErrorCode mod_header()
+ErrorCode open_header()
 {
   //  STUB STUB STUB
 
@@ -104,13 +62,13 @@ ErrorCode mod_header()
   */
 
   //  Store Current Metadata
-  mod_store_metadata();
+  mod_store_context();
 
   //  Parse New Header Module
   mod_parse_header();
 
   //  Restore Current Context
-  mod_restore_module();
+  mod_restore_context();
 
   //  Return Success
   return 0;
