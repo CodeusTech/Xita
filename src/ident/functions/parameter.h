@@ -18,7 +18,7 @@
   =================
   1.) Parameter Operations
     1.a) Declare Parameter
-    1.b) Invoke Parameter
+    1.b) Parameter Expression
     1.c) Find Parameter
   2.) Argument Operations
     2.a) Load Argument (Standard)
@@ -29,7 +29,7 @@
 #define FUNCTIONS_PARAMETER_H
 
 //  Global Variables
-extern char** ident_parameters;
+extern char*** param_funct;
 
 
 /*
@@ -41,21 +41,44 @@ extern char** ident_parameters;
   Returns:
     0, if Successful
 */
-int declare_parameter (char* name)
+int decl_parameter (char* name)
 {
   printf("Parameter %s Declared\n", name);
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+  */
+
+  //  Push Parameter to Register Stack
+  ADR reg = rs_push();
+  pnum_funct[scope_curr]++;
+
+  //  TODO: Add Parameter Type to Backend Buffers
 
   return 0;
 }
 
-/* 1.b) Invoke Parameter
+/* 1.b) Parameter Expression
 
   Returns:
     0, if Successful
 */
-int invoke_parameter(char* name)
+int exp_parameter(char* name)
 {
   printf("Parameter %s Invoked\n", name);
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+  */
+
+  //  Push Parameter to Register Stack
+  ADR reg = rs_push();
+
+  //  TODO: Copy contents of Parameter to 'reg'
 
   return 0;
 }
@@ -66,9 +89,20 @@ int invoke_parameter(char* name)
     0, if identifier is not a Parameter
     i, if identifier is Parameter, where 'i' is index in Parameter Buffer
 */
-int find_parameter()
+int find_parameter(Scope scope)
 {
   printf("Parameter Found: %s\n");
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+     * Search thru backend buffers
+      - If Parameter is found, 
+        + Return Buffer Index
+      - If Not Found,
+        + Return 0
+  */
 
   return 0;
 }
@@ -83,9 +117,28 @@ int find_parameter()
   Returns:
     0, if Successful
 */
-int load_argument()
+int load_argument(Scope scope)
 {
   printf("Argument Loaded\n");
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+  */
+
+  //  Find Parameter ID for given function context scope
+  ADR reg = find_parameter(scope);
+
+  /*
+    TODO:
+     * If not immediately found,
+      + Recursively search through parent context scopes
+     * If reg is already currently active,
+      + Push current contents of reg onto data stack
+      + UNLESS, reg contents are getting moved to reg for function call
+     * Load Expression into reg
+  */
 
   return 0;
 }
@@ -98,6 +151,17 @@ int load_argument()
 int load_argument_rec()
 {
   printf("Recursive Argument Loaded\n");
+
+  /*
+    TODO:
+     * Error Check
+  */
+
+  /*
+    TODO:
+     * PLANNING/ARCHITECTURE REQUIRED
+     * DO NOT PROCEEED
+  */
 
   return 0;
 }

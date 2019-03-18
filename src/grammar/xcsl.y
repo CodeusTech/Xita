@@ -503,7 +503,7 @@ exp_funct:
   PARAMETER EXPRESSIONS (DECLARATIONS)
 */
 param:
-    IDENTIFIER { declare_parameter($1); }
+    IDENTIFIER { decl_parameter($1); }
 ;
 
 exp_param:
