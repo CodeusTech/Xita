@@ -36,10 +36,20 @@ extern FILE* yyin;
   Returns:
     0, if Successful
 */
-int open_tether(char* name)
+ErrorCode open_tether(Identifier mod)
 {
-  printf("Tether Module Opened: %s\n", name);
+  //  STUB STUB STUB
+  printf("Tether Module Opened: %s\n", mod);
 
+  /*
+    TODO:
+     * Error Check
+     * Check if File Exists
+     * Allow Use of Tether Module Declarations
+      + Module Context Shift
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -48,10 +58,19 @@ int open_tether(char* name)
   Returns:
     0, if Successful
 */
-int close_tether()
+ErrorCode close_tether(Identifier mod)
 {
-  printf("Tether Module Closed\n");
+  //  STUB STUB STUB
+  printf("Tether Module Closed: %s\n", mod);
 
+  /*
+    TODO:
+     * Error Check
+     * Check if File Exists
+     * Disable Tether Protocol (Coming Soon)
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -65,10 +84,20 @@ int close_tether()
   Returns:
     0, if Successful
 */
-int activate_tether(char* ident)
+ErrorCode activate_tether(Identifier ident)
 {
+  //  STUB STUB STUB
   printf("Tether Module Activated: %s\n", ident);
 
+  /*
+    TODO:
+     * Error Check
+     * Check if File Exists
+     * Trigger XCSE Activation
+      + More Coming Soon
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -77,9 +106,23 @@ int activate_tether(char* ident)
   Returns:
     0, if Successful
 */
-int deactivate_tether(char* ident)
+ErrorCode deactivate_tether(Identifier ident)
 {
+  //  STUB STUB STUB
   printf("Tether Module Deactivated: %s\n", ident);
+
+  /*
+    TODO:
+     * Error Check
+     * Check if Module is Activated
+     * Trigger XCSE Deactivation
+      + More Comining Soon
+  */
+
+  // Return Success
+  return 0;
 }
 
+
 #endif
+
