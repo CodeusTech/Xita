@@ -23,9 +23,6 @@
 #ifndef GLOBALS_STRUCTS_H
 #define GLOBALS_STRUCTS_H
 
-#include "../memory/memory.h"
-
-
 /*
   1.) Infrastructure
 */
@@ -70,6 +67,18 @@ typedef unsigned long TypeID;
 /*
   6.) Memory Allocator Structures
 */
+
+
+typedef struct mem_block
+{
+  struct mem_block* left;
+  struct mem_block* right;
+  unsigned int height;
+  unsigned long addr;
+  unsigned long size;
+  void* data;
+} MemoryBlock;
+
 MemoryBlock* ActiveMemory;
 
 

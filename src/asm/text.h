@@ -23,6 +23,7 @@
 extern char** curr_asm_text;
 extern int index_asm_text;
 extern int count_asm_text;
+extern Scope scope_next;
 
 /*
   1.) Structure

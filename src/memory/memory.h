@@ -13,9 +13,9 @@
 #define XCS_MEMORY_H
 
 
-#include "alloc.h"
 #include "static.h"
-
+#include "tree_ops.h"
+#include "alloc.h"
 
 
 #endif
