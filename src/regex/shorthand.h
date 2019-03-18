@@ -9,8 +9,8 @@
   Contains Functionality for Handling Regular Expression Shorthand Patterns
 */
 
-#ifndef REGEXP_SHORTHAND_H
-#define REGEXP_SHORTHAND_H
+#ifndef REGEX_SHORTHAND_H
+#define REGEX_SHORTHAND_H
 
 
 /*

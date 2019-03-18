@@ -7,6 +7,10 @@
 
 /*
   Contains Backend Functionality for Regular Expression Patterns
+
+  Table of Contents
+  =================
+  
 */
 
 #ifndef REGEXP_PATTERNS_H

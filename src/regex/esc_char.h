@@ -9,8 +9,8 @@
   Contains Functionality for Handling Escaped Characters
 */
 
-#ifndef REGEXP_ESC_CHAR_H
-#define REGEXP_ESC_CHAR_H
+#ifndef REGEX_ESC_CHAR_H
+#define REGEX_ESC_CHAR_H
 
 
 /*

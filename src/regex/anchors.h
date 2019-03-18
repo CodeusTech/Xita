@@ -9,8 +9,8 @@
   Contains Functionality for Handling Regular Expression Anchor Patterns
 */
 
-#ifndef REGEXP_ANCHORS_H
-#define REGEXP_ANCHORS_H
+#ifndef REGEX_ANCHORS_H
+#define REGEX_ANCHORS_H
 
 
 /*

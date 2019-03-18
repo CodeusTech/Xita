@@ -15,8 +15,8 @@
   3.) Between m and n -  ({m,n})
 */
 
-#ifndef REGEXP_QUANTIFIERS
-#define REGEXP_QUANTIFIERS
+#ifndef REGEX_QUANTIFIERS
+#define REGEX_QUANTIFIERS
 
 
 

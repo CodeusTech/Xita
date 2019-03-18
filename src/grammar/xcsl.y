@@ -70,7 +70,7 @@
 #include "src/modules/modules.h"
 #include "src/operator/operator.h"
 #include "src/proc/proc.h"
-#include "src/regexp/regexp.h"
+#include "src/regex/regex.h"
 #include "src/regstack/regstack.h"
 #include "src/utils/clear.h"
 
