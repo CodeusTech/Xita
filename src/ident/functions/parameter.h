@@ -89,9 +89,9 @@ int exp_parameter(char* name)
     0, if identifier is not a Parameter
     i, if identifier is Parameter, where 'i' is index in Parameter Buffer
 */
-int find_parameter(Scope scope)
+ADR find_parameter(char* ident)
 {
-  printf("Parameter Found: %s\n");
+  printf("Parameter Found: %s\n", ident);
   //  STUB STUB STUB
 
   /*
@@ -126,9 +126,6 @@ int load_argument(Scope scope)
     TODO:
      * Error Check
   */
-
-  //  Find Parameter ID for given function context scope
-  ADR reg = find_parameter(scope);
 
   /*
     TODO:

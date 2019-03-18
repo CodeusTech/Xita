@@ -515,7 +515,7 @@ exp_param:
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg:
-    exp { load_argument(); }
+    exp { load_argument(scope_curr); }
 ;
 
 param_arg:
