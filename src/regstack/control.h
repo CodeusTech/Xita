@@ -10,8 +10,9 @@
 
   Table of Contents
   =================
-  1.) Initialize Register Stack
-  2.) Finalize Register Stack
+  1.) Initialize Function's Register Stack
+  2.) Initialize Register Stack Backend Infrastructure
+  3.) Finalize Register Stack
 */
 
 #ifndef REGSTACK_CONTROL_H
@@ -24,7 +25,33 @@ extern unsigned int rse_next;
 extern unsigned long** rse_types;
 
 
-/* 1.) Initialize Register Stack
+/* 1.) Initialize Function's Register Stack
+
+  Returns:
+    0, if Successful
+*/
+int rs_stack_init(Scope scope)
+{
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+  */
+
+  rs[scope]     = (ADR*) malloc(31 * sizeof(ADR));
+  rs[scope][31] = (ADR) 0;  // Indicates Extended Space isn't used
+
+  rs_types[scope]   = (unsigned int*) malloc(30 * sizeof(unsigned int));
+
+  if  (scope == 0) rse_types[scope]  = NULL;
+  else rse_types[scope] = (unsigned long*) malloc(255 * sizeof(unsigned long));
+
+  return 0;
+}
+
+
+/* 2.) Initialize Register Stack
 
   Returns:
     0, if Successful
@@ -34,12 +61,9 @@ int rs_init()
   printf("rs_init() Called...\n");
   //   Initialize Register Stack Buffers, and 1st Reg Stack
   rs = (ADR**) malloc(4096 * sizeof(ADR*));
-  rs[0] = (ADR*) malloc(31 * sizeof(ADR));
-  rs[0][31] = (ADR) 0;  // Indicates Extended Space isn't used
 
   //  Initialize Register Stack Types Buffer
   rs_types = (unsigned int**) malloc(4096 * sizeof(unsigned int*));
-  rs_types[0] = (unsigned int*) malloc(30 * sizeof(unsigned int));
 
   //  Initialize Register Stack Types Buffer (Extended)
   rse_types = (unsigned long**) malloc(4096 * sizeof(unsigned long*));
@@ -49,7 +73,7 @@ int rs_init()
 }
 
 
-/* 2.) Finalize Register Stack
+/* 3.) Finalize Register Stack
 
   Returns:
     0, if Successful
@@ -59,16 +83,18 @@ int rs_end()
   printf("rs_finish() Called...\n");
   for (int i = 0; i < scope_next; i++)
   {
+    //  Entry Function Context Scope
     if (rs[i][31] == (ADR) 0) 
     {
       free(rs[i]);
       free(rs_types[i]);
     }
-    //  Else Free Extended Space As Well
+    //  Subfunction Context Scopes
     else 
     {
       free (rs[i]);
       free (rs_types[i]);
+      free (rse_types[i]);
     }
   }
 

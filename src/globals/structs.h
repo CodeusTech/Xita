@@ -10,9 +10,11 @@
 
   Table of Contents
   =================
-  2.) Operator Structures
-    2.a) Operand Pairs
-  3.) Memory Allocator Structures
+  1.) Register Stacks
+  4.) Data Types
+  6.) Memory Allocator Structures
+  7.) Operator Structures
+    7.a) Operand Pairs
 */
 
 #ifndef GLOBALS_STRUCTS_H
@@ -32,23 +34,31 @@ typedef struct regstack_t
   ADR order[30];
 } RegStack;
 
+
 /*
-  2.) Operator Structures
+  4.) Data Types
+*/
+
+typedef unsigned long TypeID;
+
+/*
+  6.) Memory Allocator Structures
+*/
+MemoryBlock* ActiveMemory;
+
+
+
+/*
+  7.) Operator Structures
 */
 
 /*
-  2.a) Operand Pairs
+  7.a) Operand Pairs
 */
 typedef struct operands_t
 {
   unsigned int lhs; // Left-Hand Side  Type Code
   unsigned int rhs; // Right-Hand Side Type Code
 } operands;
-
-
-/*
-  3.) Memory Allocator Structures
-*/
-MemoryBlock* ActiveMemory;
 
 #endif
