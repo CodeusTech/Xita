@@ -14,6 +14,7 @@
     1.a) Generate Text
   2.) Operations
     2.a) Add Command
+    2.b) Read Command
 */
 
 #ifndef ASM_TEXT_H
@@ -32,9 +33,18 @@ extern int count_asm_text;
   Returns:
     0, if Successful
 */
-int generate_text()
+ErrorCode generate_text()
 {
+  //  Stub Stub Stub
 
+  /*
+    TODO:
+     * Error Check
+     * Write .text Section Header to Assembly File
+     * Write Entire .text Section Buffer to Assembly File
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -44,13 +54,15 @@ int generate_text()
 
 /* 2.a) Add Command
   
+    Returns:
+      0, if Successful
 */
-int add_command(char* command)
+ErrorCode add_command(Command command)
 {
   if (index_asm_text == 255)
   {
-    curr_asm_text[255] = (char**) malloc(256 * sizeof(char*));
-    curr_asm_text = (char**) curr_asm_text[255];
+    curr_asm_text[255] = (Command*) malloc(256 * sizeof(Command));
+    curr_asm_text = (Command*) curr_asm_text[255];
 
     index_asm_text = 0;
   }
@@ -61,5 +73,28 @@ int add_command(char* command)
 
   return 0;
 }
+
+/* 2.b) Read Command
+
+  Returns: 
+    0, if Successful
+*/
+ErrorCode read_command()
+{
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+     * Choose ONE, Up to Implementor:
+      + Read Out all Commands to Assembly File
+      + Return a Single Command
+  */
+
+  //  Return Success
+  return 0;
+}
+
+
 
 #endif

@@ -29,9 +29,19 @@
   Returns:
     0, if Successful
 */
-int generate_bss()
+ErrorCode generate_bss()
 {
+  //  STUB STUB STUB
+  printf(".bss Section Generated\n");
 
+  /*
+    TODO:
+     * Error Check
+     * Produce Section Header and Write to Assembly File
+     * Write Out Entire BSS Buffer
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -45,10 +55,17 @@ int generate_bss()
   Returns:
     0, if Successful
 */
-int add_to_bss(char* ident, unsigned int num_bytes)
+ErrorCode add_to_bss(Identifier ident, TypeID tid)
 {
-  //  STUB STUB STUB STUB
+  //  STUB STUB STUB
 
+  /*
+    TODO:
+     * Error Check
+     * Store Data into .bss Section
+  */
+
+  // Return Success
   return 0;
 }
 

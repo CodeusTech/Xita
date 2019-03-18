@@ -35,9 +35,18 @@
   Returns:
     0, if Successful
 */
-int generate_data()
+ErrorCode generate_data()
 {
+  //  STUB STUB STUB
 
+  /*
+    TODO: 
+     * Error Check
+     * Print .data Section Header
+     * Write Out Entire .data Section Buffer
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -51,10 +60,17 @@ Adds Integer Constant to .data Section
   Returns:
     0, if Successful
 */
-int add_int_to_data(char* ident, int value)
+ErrorCode add_int_to_data(Identifier ident, int value)
 {
   //  STUB STUB STUB STUB
 
+  /*
+    TODO:
+     * Error Check
+     * Print Integer Constant to .data Section
+  */
+
+  // Return Success
   return 0;
 }
 
@@ -64,10 +80,17 @@ Adds Real Constant to .data Section
   Returns:
     0, if Successful
 */
-int add_real_to_data(char* ident, double value)
+ErrorCode add_real_to_data(Identifier ident, double value)
 {
   //  STUB STUB STUB STUB
   
+  /*
+    TODO:
+     * Error Check
+     * Print Real Constant to .data Section
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -76,10 +99,17 @@ int add_real_to_data(char* ident, double value)
   Returns:
     0, if Successful
 */
-int add_bool_to_data(char* ident, bool value)
+ErrorCode add_bool_to_data(Identifier ident, bool value)
 {
   //  STUB STUB STUB STUB
 
+  /*
+    TODO:
+     * Error Check
+     * Print Boolean Constant to .data Section
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -88,9 +118,17 @@ int add_bool_to_data(char* ident, bool value)
   Returns:
     0, if Successful
 */
-int add_char_to_data(char* ident, bool value)
+ErrorCode add_char_to_data(Identifier ident, bool value)
 {
   //  STUB STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+     * Print Character Constant to .data Section
+  */
+
+  //  Return Success
 
   return 0;
 }
@@ -100,9 +138,17 @@ int add_char_to_data(char* ident, bool value)
   Returns:
     0, if Successful
 */
-int add_string_to_data(char* ident, char* str)
+ErrorCode add_string_to_data(Identifier ident, char* str)
 {
   //  STUB STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+     * Print String Constant to .data Section
+  */
+
+  //  Return Success
 
   return 0;
 }
@@ -113,9 +159,17 @@ NOTE: Constant Lists are only available in Linux-to-XCS Cross Compiler
   Returns:
     0, if Successful
 */
-int add_list_to_data(char* ident, long value)
+ErrorCode add_list_to_data(Identifier ident, long value)
 {
   //  STUB STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+     * Print List Constant to .data Section
+  */
+
+  //  Return Success
 
   return 0;
 }

@@ -11,6 +11,7 @@
   Table of Contents
   =================
   1.) Infrastructure
+    1.a) Assembly Infrastructure
   2.) Register Stacks
   3.) Functions
   4.) Data Types
@@ -31,6 +32,14 @@
 
 typedef int ErrorCode;
 
+typedef char* Identifier;
+typedef char* Constructor;
+
+/*
+  1.a) Assmebly Infrastructure
+*/
+
+typedef char* Command;
 
 /*
   2.) Register Stacks
