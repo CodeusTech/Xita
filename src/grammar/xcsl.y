@@ -444,7 +444,7 @@ exp_is:
   4.a) Constants
 */
 const:
-    CONST IDENTIFIER OF exp_type { declare_constant($2); }
+    CONST IDENTIFIER OF exp_type { decl_constant($2); }
 ;
 
 decl_const:

@@ -36,6 +36,13 @@ typedef struct regstack_t
 
 
 /*
+  3.) Functions
+*/
+
+typedef unsigned long ConstantID;
+
+
+/*
   4.) Data Types
 */
 

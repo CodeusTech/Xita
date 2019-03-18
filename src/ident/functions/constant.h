@@ -11,7 +11,7 @@
   Table of Contents
   =================
   1.) Declare Constant
-  2.) Invoke Constant
+  2.) Constant Expressions
   3.) Find Constant
 */
 
@@ -26,22 +26,46 @@ extern char** ident_constants;
   Returns:
     0, if Successful
 */
-int declare_constant(char* constant)
+int decl_constant(char* constant)
 {
+  //  STUB STUB STUB
   printf("Constant Declared: %s\n", constant);
+
+  /*
+    TODO:
+     * Error Check
+     * Statically Determine Constant Value
+      + If cannot statically determine, Report Error
+     * Record Constant into .bss Section
+  */
 
   return 0;
 }
 
 
-/* 2.) Invoke Constant
+/* 2.) Constant Expressions
 
   Returns:
     0, if Successful
 */
-int invoke_constant(char* constant)
+int exp_constant(char* constant)
 {
+  //  STUB STUB STUB
   printf("Constant Invoked: %s\n", constant);
+
+  /*
+    TODO:
+     * Error Check
+  */
+
+  //  Push to Register Stack
+  ADR reg = rs_push();
+
+  /*
+    TODO:
+      * Push Constant Type into Buffer Type Stack
+      * Set Value of reg to Constant Value
+  */
 
   return 0;
 }
@@ -53,14 +77,22 @@ int invoke_constant(char* constant)
     0, if identifier is not constant
     i, if identifier is a constant, where 'i' is buffer index
 */
-int find_constant(char* ident)
+ConstantID find_constant(char* ident)
 {
+  //  STUB STUB STUB
   printf("Ident is (not) a constant: %s\n", ident);
+
+  /*
+    TODO:
+     * Error Check
+     * Search Through Buffer of Constants for ident
+      + If ident matches, return ID value
+      + If No Ident matches, return 0
+  */
 
   return 0;
 }
 
 
-
-
 #endif
+
