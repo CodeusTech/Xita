@@ -21,9 +21,8 @@
 #define XCS_PROC_H
 
 #include "operations.h"
-#include "process.h"
-#include "queues.h"
-#include "scheduler.h"
+#include "process/process.h"
+#include "sched/sched.h"
 #include "tethers/tethers.h"
 
 

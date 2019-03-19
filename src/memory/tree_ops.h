@@ -33,7 +33,7 @@
 
 
 
-extern MemoryBlock* ActiveMemory;
+extern MemoryNode* ActiveMemory;
 
 
 /*
@@ -45,7 +45,7 @@ extern MemoryBlock* ActiveMemory;
   Returns:
     Left Memory Branch
 */
-MemoryBlock* mem_left(MemoryBlock* node)
+MemoryNode* mem_left(MemoryNode* node)
 {
   if (node == NULL) return NULL;
   else              return node->left;
@@ -56,7 +56,7 @@ MemoryBlock* mem_left(MemoryBlock* node)
   Returns:
     Left Memory Branch
 */
-MemoryBlock* mem_right(MemoryBlock* node)
+MemoryNode* mem_right(MemoryNode* node)
 {
   if (node == NULL) return NULL;
   else              return node->right;
@@ -67,7 +67,7 @@ MemoryBlock* mem_right(MemoryBlock* node)
   Returns:
     Height of Branch
 */
-unsigned int mem_height(MemoryBlock* node)
+unsigned int mem_height(MemoryNode* node)
 {
   if (node == NULL) return 0;
   else              return node->height;
@@ -78,7 +78,7 @@ unsigned int mem_height(MemoryBlock* node)
   Returns:
     Starting Address for Active Memory Block
 */
-unsigned long mem_addr(MemoryBlock* node)
+unsigned long mem_addr(MemoryNode* node)
 {
   if (node == NULL) return 0;
   else              return node->addr;
@@ -89,7 +89,7 @@ unsigned long mem_addr(MemoryBlock* node)
   Returns:
     Size of Data Element (in Bytes)
 */
-unsigned long mem_size(MemoryBlock* node)
+unsigned long mem_size(MemoryNode* node)
 {
   if (node == NULL) return 0;
   else              return node->size;
@@ -98,7 +98,7 @@ unsigned long mem_size(MemoryBlock* node)
 /* 1.h) Get Data Payload
 
 */
-void* mem_data(MemoryBlock* node)
+void* mem_data(MemoryNode* node)
 {
   if (node == NULL) return NULL;
   else              return node->data;
@@ -127,10 +127,10 @@ unsigned long max(unsigned long a, unsigned long b) { return (a > b)? a : b; }
     Pointer to new Memory Block Node
 */
 
-MemoryBlock* mem_new(unsigned long size, void* data)
+MemoryNode* mem_new(unsigned long size, void* data)
 {
   //  Allocate Memory
-  MemoryBlock* mem = (MemoryBlock*) malloc (sizeof(MemoryBlock));
+  MemoryNode* mem = (MemoryNode*) malloc (sizeof(MemoryNode));
 
   //  Set Initial Values
   mem->left = NULL;
@@ -150,11 +150,11 @@ MemoryBlock* mem_new(unsigned long size, void* data)
   Returns:
     p, where p is a pointer to a tree post-rotation (right)
 */
-MemoryBlock* mem_rotate_right(MemoryBlock* mem)
+MemoryNode* mem_rotate_right(MemoryNode* mem)
 {
   //  Gather Necessary Branches
-  MemoryBlock* left = mem_left(mem);
-  MemoryBlock* left_prime = mem_right(left);
+  MemoryNode* left = mem_left(mem);
+  MemoryNode* left_prime = mem_right(left);
 
   //  Perform Rotation Right
   left->right = mem;
@@ -173,11 +173,11 @@ MemoryBlock* mem_rotate_right(MemoryBlock* mem)
   Returns:
     p, where p is a pointer to a tree post-rotation (left)
 */
-MemoryBlock* mem_rotate_left(MemoryBlock* mem)
+MemoryNode* mem_rotate_left(MemoryNode* mem)
 {
   //  Gather Necessary Branches
-  MemoryBlock* right = mem_right(mem);
-  MemoryBlock* right_prime = mem_left(right);
+  MemoryNode* right = mem_right(mem);
+  MemoryNode* right_prime = mem_left(right);
 
   //  Perform Rotation Left
   right->left = mem;

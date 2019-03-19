@@ -219,9 +219,9 @@ open_header:
   OPEN HEADER_M STRING { open_header($3); };
 
 open:
-    open_source { close_source(); }
-  | open_tether { close_tether(); }
-  | open_header { close_header(); }
+    open_source {  }
+  | open_tether {  }
+  | open_header {  }
 ;
 
 /*

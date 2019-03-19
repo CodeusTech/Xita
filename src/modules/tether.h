@@ -58,10 +58,10 @@ ErrorCode open_tether(Identifier mod)
   Returns:
     0, if Successful
 */
-ErrorCode close_tether(Identifier mod)
+ErrorCode close_tether()
 {
   //  STUB STUB STUB
-  printf("Tether Module Closed: %s\n", mod);
+  printf("Tether Module Closed\n");
 
   /*
     TODO:

@@ -51,9 +51,10 @@ ErrorCode mod_parse_header()
   Returns:
    0, if Successful
 */
-ErrorCode open_header()
+ErrorCode open_header(Identifier ident)
 {
   //  STUB STUB STUB
+  printf("Header Opened: %s\n", ident);
 
   /*
     TODO:
