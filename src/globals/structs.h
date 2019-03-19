@@ -188,10 +188,9 @@ typedef struct Process_t
 */
 typedef struct ProcessQueue_t
 {
-  unsigned long front_len;  //  Length of Front Queue
-  unsigned long back_len;   //  Length of Back Queue
-  Process* front; //  Front Process Queue
-  Process* back;  //  Back Process Queue
+  long front, back;
+  unsigned int size;
+  Process* queue;
 } ProcessQueue;
 
 

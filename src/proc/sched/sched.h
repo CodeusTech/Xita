@@ -13,7 +13,8 @@
 #define PROC_SCHED_H
 
 
-
+#include "queues.h"
+#include "operations.h"
 
 
 #endif

@@ -10,8 +10,8 @@
 
   Table of Contents
   =================
-  1.) Enqueue Process
-  2.) 
+  1.) Process Queue Accessors
+    1.a) Enqueue Process
 */
 
 #ifndef SCHED_QUEUES_H
@@ -19,10 +19,54 @@
 
 
 /*
-  1.) Enqueue Process
+  1.) Process Queue Accessors
 */
 
+/* 1.a) Enqueue Process
 
+  Returns:
+    0, if Successful
+*/
+ErrorCode proc_enqueue()
+{
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+  */
+
+  //  Construct New Process Structure
+  proc_new();
+
+  /*
+    TODO: 
+     * TOP Contains Pointer to New Process Structure
+     * Add Process to Queue
+  */
+
+  //  Return Success
+  return 0;
+}
+
+/* 1.b) Dequeue Process
+
+  Returns:
+    0, if Successful
+*/
+ErrorCode proc_dequeue()
+{
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+     * Remove Front Entry from Queue
+  */
+
+  //  Return Success
+  return 0;
+}
 
 
 #endif

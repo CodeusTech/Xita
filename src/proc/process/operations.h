@@ -17,6 +17,8 @@
     1.d) Input Queue
     1.e) Output Queue
     1.f) Error Queue
+  2.) Process Constructors
+    2.a) New Process
 */
 
 #ifndef PROCESS_OPERATIONS_H
@@ -151,6 +153,50 @@ MessageChannel* proc_get_output(ProcessID pid)
       + If Empty, return 0
   */
 
+  return 0;
+}
+
+
+/*
+  2.) Process Constructors
+*/
+
+/* 2.a) New Process
+
+  Returns:
+    0, if Successful
+*/
+ErrorCode proc_new()
+{
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+  */
+
+  //  Get Register
+  ADR reg = rs_push();
+
+  //  Push Size of Process Block (in bytes)
+  //  TODO: This
+
+  //  Allocate XCS Memory Block
+  xcs_alloc();
+  
+  /*
+    TODO:
+     * Construct New Process Structure
+      + Process ID
+      + Process Name
+      + Process Status
+      + Active Tethers
+      + Input Queue Pointer
+      + Output Queue Pointer
+      + Error Queue Pointer
+  */
+
+  //  Return Success
   return 0;
 }
 

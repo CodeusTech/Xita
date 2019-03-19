@@ -20,8 +20,8 @@
     2.b) Receive Message
 */
 
-#ifndef PROC_OPERATIONS_H
-#define PROC_OPERATIONS_H
+#ifndef SCHED_OPERATIONS_H
+#define SCHED_OPERATIONS_H
 
 /*
   1.) Process Scheduling

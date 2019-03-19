@@ -17,15 +17,7 @@
 #ifndef PROC_PROCESS_H
 #define PROC_PROCESS_H
 
-
-/*
-  1.) New XCS Process
-*/
-
-
-/*
-  2.) Write Process
-*/
+#include "operations.h"
 
 
 #endif
