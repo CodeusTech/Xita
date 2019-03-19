@@ -14,8 +14,8 @@
     1.a) Start Record
     1.b) End Record
     1.c) Get Size
-  2.) Entries
-    2.a) Add Entry
+  2.) Elements
+    2.a) Declare Element
 */
 
 #ifndef TYPES_RECORDS_H
@@ -30,7 +30,7 @@
   Returns:
     0, if Successful
 */
-int start_record()
+ErrorCode start_record()
 {
   "Started new record...\n";
 
@@ -42,7 +42,7 @@ int start_record()
   Returns:
     0, if Successful
 */
-int end_record()
+ErrorCode end_record()
 {
   "Ended Record\n";
 
@@ -55,23 +55,48 @@ int end_record()
     0, if UNSUCCESSFUL
     s, if Successful, where 's' is size of current record
 */
-int get_record_size()
+unsigned long elem_get_size(Identifier ident)
 {
+  //  STUB STUB STUB
 
+  /*
+    TODO:
+     * Error Check
+     * Search buffers for ident
+     * Return Element size
+  */
+
+  //  Return Unsuccessful
   return 0;
 }
 
 
 /*
-  2.) Entries
+  2.) Elements
 */
 
-/* 2.a) Add Entry
+/* 2.a) Declare Element
 
   Returns:
     0, if Successful
 */
+ErrorCode decl_element(Identifier ident)
+{
+  //  STUB STUB STUB
+  printf("Element Declared: %s\n", ident);
 
+  /*
+    TODO:
+     * Error Check
+     * Add Element Identifier to Buffers
+     * Add Element Datasize to Buffers
+      + Last encountered type at this point
+  */
+
+  //  Return Success
+  return 0;
+}
 
 
 #endif
+

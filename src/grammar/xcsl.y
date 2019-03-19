@@ -601,6 +601,7 @@ decl_construct:
   | decl_construct BIT_OR decl_construct
   | CONSTRUCTOR OF exp_type { decl_constructor($1); }
   | CONSTRUCTOR             { decl_constructor($1); }
+  | exp_type                {  }
 ;
 
 /*
@@ -612,7 +613,7 @@ decl_construct:
 */
 record:
     record OP_COMMA record
-  | IDENTIFIER OF exp_type
+  | IDENTIFIER OF exp_type    { decl_element($1); }
 ;
 
 exp_record:

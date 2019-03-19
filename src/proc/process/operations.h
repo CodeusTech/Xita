@@ -141,7 +141,7 @@ MessageChannel* proc_get_output(ProcessID pid)
     0, if No Messages in Error Queue
     else, linked list of Error Messages
 */
-MessageChannel* proc_get_output(ProcessID pid)
+MessageChannel* proc_get_error(ProcessID pid)
 {
   //  STUB STUB STUB
 
