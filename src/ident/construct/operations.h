@@ -35,7 +35,7 @@
 /*
   1.a) Compiler Buffers
 */
-extern char** ident_construct;
+extern Constructor* ident_construct;
 extern unsigned int* size_construct;
 extern unsigned int count_types;
 extern unsigned int* count_construct;
@@ -50,30 +50,55 @@ extern unsigned int* count_construct;
   Returns:
     0, if Successful
 */
-int decl_constructor (char* ident)
+ErrorCode decl_constructor (Constructor ident)
 {
+  //  STUB STUB STUB
   printf("Constructor Declared: %s \n", ident);
 
   /*
-    Add ident to Constructor Identifier Buffers
+    TODO:
+     * Error Check
+     * Add ident to Buffers
+     * Add type to Buffers
   */
 
-  /*
-    Add size of the constructor
-  */
-  //  Get Size of last Encountered 
-
+  //  Return Success
   return 0;
 }
 
+/* 2.b) Constructor Expression
+
+  Returns:
+    0, if Successful
+    1, if Constructor not Found
+*/
+ErrorCode exp_constructor (Constructor ident)
+{
+  //  STUB STUB STUB
+  printf("Constructor Invoked: %s\n", ident);
+
+  /*
+    TODO:
+     * Error Check
+     * Push Constructor Expression
+      + Push TypeID 
+  */
+
+  //  Check if Constructor is Declared
+  int con_id = construct_find(ident);
+  if (!con_id) return 1;
+
+
+  return 0;
+}
 
 /* 2.c) Find Constructor
 
   Returns:
     0, if identifier is not a Constructor
-    i, if identifier is a constructor, where 'i' is the index in buffer
+    else, returns Constructor ID
 */
-int construct_find (char* ident)
+ConstructorID construct_find (Constructor ident)
 {
   printf("Found Constructor: %s\n", ident);
 
@@ -94,24 +119,6 @@ int construct_find (char* ident)
   
   return 0;
 }
-
-
-/* 2.b) Constructor Expression
-
-  Returns:
-    0, if Successful
-    1, if Constructor not Found
-*/
-int exp_constructor (char* ident)
-{
-  //  Check if Constructor is Declared
-  int con_id = construct_find(ident);
-  if (!con_id) return 1;
-
-
-  return 0;
-}
-
 
 
 #endif
