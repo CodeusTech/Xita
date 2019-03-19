@@ -75,6 +75,8 @@ typedef unsigned int ParameterID;
 
 //  4.a) Types
 typedef unsigned long TypeID;
+typedef unsigned long ConstructorID;
+typedef unsigned int ElementID;
 
 //  4.b) Typeclasses
 typedef unsigned long TypeclassID;

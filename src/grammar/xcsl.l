@@ -116,6 +116,7 @@ extern int yylex();
 */
 %}
 
+
 "(&&)" { return BOOL_AND_O; } // BOOLEAN AND
 "(||)" { return BOOL_OR_O;  } // BOOLEAN OR
 "(^^)" { return BOOL_XOR_O; } // BOOLEAN XOR
@@ -196,6 +197,7 @@ extern int yylex();
 ";;" { return OP_SEP; }    //  SEPERATOR OPERATOR
 ";"  { return OP_TUP; }    //  TUPPLE OPERATOR
 ","  { return OP_COMMA; }  //  COMMA OPERATOR
+"."   { return OP_ELEMENT; } //  ACCESS ELEMENT OPERATOR
 
 "["  { return OP_LIST_L; }  //  BEGINNING OF LIST
 "]"  { return OP_LIST_R; }  //  END OF LIST
@@ -306,5 +308,3 @@ extern int yylex();
 
 [A-Z][a-zA-Z0-9_]*\'?   { yylval.val_ident = strdup(yytext); return CONSTRUCTOR; }
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }
-
-"." { return OP_ELEMENT; } //  ACCESS ELEMENT OPERATOR

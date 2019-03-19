@@ -53,7 +53,7 @@ ErrorCode decl_parameter (char* name)
 
   //  Push Parameter to Register Stack
   ADR reg = rs_push();
-  pnum_funct[scope_curr]++;
+  //pnum_funct[scope_curr]++;
 
   //  TODO: Add Parameter Type to Backend Buffers
 

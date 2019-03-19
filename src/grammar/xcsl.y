@@ -281,7 +281,7 @@ exp:
   | exp_funct           { }
   | IDENTIFIER          { printf("Type Inferred: %s\n", $1); }
   | exp_construct       {  }
-  | IDENTIFIER OP_ELEMENT IDENTIFIER {printf("Element %s within %s accessed\n", $3, $1);}
+  | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
   | exp_memread         { }
   | exp_memwrite        { }
   | exp_byte_build      { }
@@ -617,8 +617,8 @@ record:
 ;
 
 exp_record:
-    IDENTIFIER OP_ELEMENT exp_record  {}
-  | IDENTIFIER {}
+    exp OP_ELEMENT exp_record  {}
+  | IDENTIFIER {  }
 ;
 
 /*
