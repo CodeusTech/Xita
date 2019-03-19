@@ -618,7 +618,7 @@ record:
 
 exp_record:
     exp OP_ELEMENT exp_record  {}
-  | IDENTIFIER {  }
+  | IDENTIFIER { exp_element($1); }
 ;
 
 /*

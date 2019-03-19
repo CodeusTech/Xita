@@ -10,7 +10,9 @@
 
   Table of Contents
   =================
-  1.) Declare Function
+  1.) Function Initialization
+    1.a) Declare Function
+    1.b) Undeclare Function
   2.) Function Expressions
   3.) Find Function ID
     3.a) Find Function /wo Parameters
@@ -27,8 +29,11 @@
 extern Identifier* ident_functions;
 
 
+/*
+  1.) Function Initialization
+*/
 
-/* 1.) Declare Function
+/* 1.a) Declare Function
 
   Returns:
     0, if Successful
@@ -80,6 +85,28 @@ ErrorCode decl2_function ()
   sprintf(comm, "  bx lr\n\0");
   // add_command(comm);
 
+  return 0;
+}
+
+/* 1.c) Undeclare Function
+
+  Returns:
+    0, if Successful
+*/
+ErrorCode undecl_function()
+{
+  //  STUB STUB STUB
+
+  /*
+    TODO:
+     * Error Check
+     * Reset Scope and Associated Metadata
+      + Identifier Buffers
+      + Type Buffers
+      + etc.
+  */
+
+  //  Return Success
   return 0;
 }
 

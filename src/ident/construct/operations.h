@@ -14,8 +14,8 @@
     1.a) Compiler Buffers
   2.) Operations
     2.a) Declare Constructor
-    2.b) Constructor Expression
-    2.c) Find Constructor
+    2.b) Find Constructor
+    2.c) Constructor Expression
 */
 
 #ifndef CONSTRUCT_OPERATIONS_H
@@ -66,33 +66,7 @@ ErrorCode decl_constructor (Constructor ident)
   return 0;
 }
 
-/* 2.b) Constructor Expression
-
-  Returns:
-    0, if Successful
-    1, if Constructor not Found
-*/
-ErrorCode exp_constructor (Constructor ident)
-{
-  //  STUB STUB STUB
-  printf("Constructor Invoked: %s\n", ident);
-
-  /*
-    TODO:
-     * Error Check
-     * Push Constructor Expression
-      + Push TypeID 
-  */
-
-  //  Check if Constructor is Declared
-  int con_id = construct_find(ident);
-  if (!con_id) return 1;
-
-
-  return 0;
-}
-
-/* 2.c) Find Constructor
+/* 2.b) Find Constructor
 
   Returns:
     0, if identifier is not a Constructor
@@ -117,6 +91,32 @@ ConstructorID construct_find (Constructor ident)
     }
   }
   
+  return 0;
+}
+
+/* 2.c) Constructor Expression
+
+  Returns:
+    0, if Successful
+    1, if Constructor not Found
+*/
+ErrorCode exp_constructor (Constructor ident)
+{
+  //  STUB STUB STUB
+  printf("Constructor Invoked: %s\n", ident);
+
+  /*
+    TODO:
+     * Error Check
+     * Push Constructor Expression
+      + Push TypeID 
+  */
+
+  //  Check if Constructor is Declared
+  int con_id = construct_find(ident);
+  if (!con_id) return 1;
+
+
   return 0;
 }
 

@@ -97,7 +97,25 @@ ErrorCode decl_element(Identifier ident)
   return 0;
 }
 
+/* 2.b) Element Expression
 
+  Returns:
+    0, if Successful
+*/
+ErrorCode exp_element(Identifier ident)
+{
+  //  STUB STUB STUB
+  printf("Element Accessed: %s\n", ident);
+
+  /*
+    TODO:
+     * Error Check, Type Check, etc.
+     * Copy Element onto Register Stack
+  */
+
+  //  Return Success
+  return 0;
+}
 
 
 #endif
