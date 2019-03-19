@@ -171,11 +171,12 @@ typedef struct MessageChannel_t
 typedef struct Process_t
 {
   ProcessID pid;          //  Process ID
-  int stat;               //  Process Status
+  Identifier name;        //  Process Name
+  ErrorCode stat;         //  Process Status
   ProcessID* teth;        //  Active Process Tethers
-  MessageChannel input;   //  Process Input Queue
-  MessageChannel output;  //  Process Output Queue
-  MessageChannel error;   //  Process Error Queue
+  MessageChannel* input;  //  Process Input Queue
+  MessageChannel* output; //  Process Output Queue
+  MessageChannel* error;  //  Process Error Queue
 } Process;
 
 /*

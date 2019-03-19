@@ -10,17 +10,20 @@
 
   Table of Contents
   =================
-  3.) Queue Functions
-  4.) Scheduling Functions
-  5.) Interprocess Communication
+  1.) Enqueue Process
+  2.) 
 */
 
-#ifndef PROC_QUEUES_H
-#define PROC_QUEUES_H
+#ifndef SCHED_QUEUES_H
+#define SCHED_QUEUES_H
 
 
+/*
+  1.) Enqueue Process
+*/
 
 
 
 
 #endif
+
