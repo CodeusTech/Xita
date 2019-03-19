@@ -2,7 +2,7 @@
   parameter.h
   Cody Fagley
   Authored on   February 13, 2019
-  Last Modified February 13, 2019
+  Last Modified    March 19, 2019
 */
 
 /*
@@ -29,7 +29,7 @@
 #define FUNCTIONS_PARAMETER_H
 
 //  Global Variables
-extern char*** param_funct;
+extern Identifier** param_funct;
 
 
 /*
@@ -41,7 +41,7 @@ extern char*** param_funct;
   Returns:
     0, if Successful
 */
-ErrorCode decl_parameter (char* name)
+ErrorCode decl_parameter (Identifier name)
 {
   printf("Parameter %s Declared\n", name);
   //  STUB STUB STUB
@@ -65,7 +65,7 @@ ErrorCode decl_parameter (char* name)
   Returns:
     0, if Successful
 */
-ErrorCode exp_parameter(char* name)
+ErrorCode exp_parameter(Identifier name)
 {
   printf("Parameter %s Invoked\n", name);
   //  STUB STUB STUB
@@ -89,7 +89,7 @@ ErrorCode exp_parameter(char* name)
     0, if identifier is not a Parameter
     i, if identifier is Parameter, where 'i' is index in Parameter Buffer
 */
-ADR find_parameter(char* ident)
+ParameterID find_parameter(Identifier ident)
 {
   printf("Parameter Found: %s\n", ident);
   //  STUB STUB STUB

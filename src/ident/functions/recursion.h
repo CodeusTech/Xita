@@ -23,7 +23,7 @@
   Returns:
     0, if Successful
 */
-int detect_recursion()
+ErrorCode detect_recursion()
 {
   //  STUB STUB STUB
 
@@ -44,7 +44,7 @@ int detect_recursion()
   Returns:
     0, if Successful
 */
-int decl_function_rec()
+ErrorCode decl_function_rec()
 {
   //  STUB STUB STUB
 

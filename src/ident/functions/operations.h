@@ -2,7 +2,7 @@
   operations.h
   Cody Fagley
   Authored on   February 14, 2019
-  Last Modified February 14, 2019
+  Last Modified    March 19, 2019
 */
 
 /*
@@ -24,7 +24,7 @@
 #include "../../utils/scope.h"
 
 //  Global Variables
-extern char** ident_functions;
+extern Identifier* ident_functions;
 
 
 
@@ -33,7 +33,7 @@ extern char** ident_functions;
   Returns:
     0, if Successful
 */
-ErrorCode decl_function (char* ident)
+ErrorCode decl_function (Identifier ident)
 {
   //  STUB STUB STUB
   printf("Function %s Declared\n", ident);
@@ -89,7 +89,7 @@ ErrorCode decl2_function ()
   Returns:
     0, if Successful
 */
-ErrorCode exp_function (char* name)
+ErrorCode exp_function (Identifier name)
 {
   //  STUB STUB STUB
   printf("Function %s Invoked\n", name);
@@ -120,7 +120,7 @@ ErrorCode exp_function (char* name)
     0, if ident is not a Declared Function
     s, where 's' is the matching function's Context Scope ID
 */
-Scope find_function (char* ident)
+Scope find_function (Identifier ident)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);
@@ -141,7 +141,7 @@ Scope find_function (char* ident)
     0, if ident is not a Declared Function
     i, if ident is a function, where i is index in function buffer
 */
-Scope find_pfunction (char* ident, TypeID* ptypes)
+Scope find_pfunction (Identifier ident, TypeID* ptypes)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);

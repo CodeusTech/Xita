@@ -18,7 +18,7 @@
 #ifndef FUNCTIONS_CONSTANTS_H
 #define FUNCTIONS_CONSTANTS_H
 
-extern char** ident_constants;
+extern Identifier* ident_constants;
 
 
 /* 1.) Declare Constant
@@ -26,7 +26,7 @@ extern char** ident_constants;
   Returns:
     0, if Successful
 */
-ErrorCode decl_constant(char* constant)
+ErrorCode decl_constant(Identifier constant)
 {
   //  STUB STUB STUB
   printf("Constant Declared: %s\n", constant);
@@ -48,7 +48,7 @@ ErrorCode decl_constant(char* constant)
   Returns:
     0, if Successful
 */
-ErrorCode exp_constant(char* constant)
+ErrorCode exp_constant(Identifier constant)
 {
   //  STUB STUB STUB
   printf("Constant Invoked: %s\n", constant);
@@ -77,7 +77,7 @@ ErrorCode exp_constant(char* constant)
     0, if identifier is not constant
     i, if identifier is a constant, where 'i' is buffer index
 */
-ConstantID find_constant(char* ident)
+ConstantID find_constant(Identifier ident)
 {
   //  STUB STUB STUB
   printf("Ident is (not) a constant: %s\n", ident);
