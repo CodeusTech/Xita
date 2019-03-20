@@ -273,8 +273,8 @@ extern int yylex();
 */  
 %}
 
-"offer" { return OFFER; }
-"ask"   { return ASK;   }
+"offer"   { return OFFER;   }
+"request" { return REQUEST; }
 
 %{
 /*

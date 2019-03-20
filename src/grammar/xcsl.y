@@ -54,9 +54,9 @@
   ----------------------
   1.) Tether Module Structure
   2.) Tether Expressions
-  3.) Ask/Offer
+  3.) Request/Offer
     3.a) Offer Statements
-    3.b) Ask Statements
+    3.b) Request Statements
 */
 
 //  XCS Libraries
@@ -181,7 +181,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %token SOURCE_H HEADER_H TETHER_H 
 
 //  Tether Module-Specific Operations
-%token OFFER ASK
+%token OFFER REQUEST
 
 /*
   B.) Order of Operations
@@ -289,7 +289,7 @@ exp:
   | exp_tether          { }
   | exp_send            { }
   | exp_receive         { }
-  | exp_ask             { }
+  | exp_request         { }
   | exp OP_TUP exp      { add_to_tuple(); }
   | REFERENCE IDENTIFIER  { exp_ref_comment(); }
   | CLEAR               { clear_terminal(); }
@@ -760,11 +760,11 @@ param_tether:
   7.c) Send/Receive
 */
 exp_send:
-    SEND STRING exp  { ipc_send($2); }
+    SEND STRING exp  { exp_send($2); }
 ;
 
 exp_receive:
-    RECEIVE STRING   { ipc_receive($2); }
+    RECEIVE STRING   { exp_receive($2); }
 ;
 
 
@@ -806,15 +806,15 @@ tether:
 ;
 
 /*
-  3.) Ask/Offer
+  3.) Request/Offer
 */
 
 /*
   3.a) Offer Statements
 */
 offer:
-    OFFER IDENTIFIER              { ipc_offer($2); }
-  | OFFER IDENTIFIER OF exp_type  { ipc_offer($2); }
+    OFFER IDENTIFIER              { decl_offer($2); }
+  | OFFER IDENTIFIER OF exp_type  { decl_offer($2); }
 ;
 
 exp_offer:
@@ -827,14 +827,14 @@ param_offer:
 ;
 
 /*
-  3.b) Ask Statements
+  3.b) Request Statements
 */
-exp_ask:
-    ASK CONSTRUCTOR IDENTIFIER arg_ask { ipc_ask($2, $3); }
+exp_request:
+    REQUEST IDENTIFIER arg_request { exp_request($2); }
 ;
 
-arg_ask:
-    exp arg_ask
+arg_request:
+    exp arg_request
   |       {/* INTENTIONALLY LEFT BLANK */}
 ;
 
