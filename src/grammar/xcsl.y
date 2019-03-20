@@ -280,7 +280,7 @@ exp:
   | decl_typeclass      { }
   | exp_funct           { }
   | IDENTIFIER          { printf("Type Inferred: %s\n", $1); }
-  | exp_construct       {  }
+  | exp_construct       { }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
   | exp_memread         { }
   | exp_memwrite        { }
@@ -443,7 +443,8 @@ exp_is:
   4.a) Constants
 */
 const:
-    CONST IDENTIFIER OF exp_type { decl_constant($2); }
+    CONST exp_construct          { decl_constant("\0"); }
+  | CONST IDENTIFIER OF exp_type { decl_constant($2); }
 ;
 
 decl_const:

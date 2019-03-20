@@ -59,7 +59,7 @@ ErrorCode exp_constant(Identifier constant)
   */
 
   //  Push to Register Stack
-  ADR reg = rs_push();
+  //ADR reg = rs_push();
 
   /*
     TODO:
