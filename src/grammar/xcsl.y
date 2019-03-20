@@ -293,7 +293,6 @@ exp:
   | exp OP_TUP exp      { add_to_tuple(); }
   | REFERENCE IDENTIFIER  { exp_ref_comment(); }
   | CLEAR               { clear_terminal(); }
-  | 
 ;
 
 /*
@@ -408,14 +407,14 @@ match:
 with1:
     WITH { decl_with(); } ;
 with:
-    with1 exp_with { exp_with();};
+    with1 exp_with { exp_with(); };
 
 exp_match:
     match with { exp_match_with(); };
 
 exp_with:
-    param_match param_with ARROW_R exp OP_COMMA exp_with  {  }
-  | param_match param_with ARROW_R exp                    {  }
+    param_match param_with ARROW_R exp OP_COMMA exp_with  { }
+  | param_match param_with ARROW_R exp                    { }
 ;
 
 param_match:

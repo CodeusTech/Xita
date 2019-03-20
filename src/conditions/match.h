@@ -80,12 +80,10 @@ int decl_with()
 {
   printf("with ... ");
   
-  //  Mangled match in Assembly File
-  char* str = (char*) malloc(20);
-  sprintf(str, "with_%d:", mangle);
-
-  //  Print str to Assembly File
-  add_command(str);
+  /*
+    TODO:
+     * Error Check
+  */
 
   return 0;
 }
@@ -140,12 +138,11 @@ int exp_match_with()
 {
   printf("Statement Invoked\n");
   
-  //  Mangled match in Assembly File
-  char* str = (char*) malloc(20);
-  sprintf(str, "done_%d:", mangle);
-
-  //  Print str to Assembly File
-  add_command(str);
+  /*
+    TODO:
+     * Error Check
+     * 
+  */
 
   mangle++;
 
