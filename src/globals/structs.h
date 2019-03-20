@@ -27,6 +27,7 @@
     9.d) Process Scheduling
       9.d.1) Process Queues
       9.d.2) Process Scheduler
+  10.) Tether Modules
 */
 
 #ifndef GLOBALS_STRUCTS_H
@@ -81,7 +82,6 @@ typedef unsigned int ElementID;
 //  4.b) Typeclasses
 typedef unsigned long TypeclassID;
 typedef unsigned int PrototypeID;
-
 
 /*
   7.) Operator Structures
@@ -210,5 +210,11 @@ typedef struct ProcessScheduler_t
   ProcessID* t_mod;     // Active Tether Modules
 } ProcessScheduler;
 
+
+/*
+  10.) Tether Modules
+*/
+
+typedef unsigned long OfferID;
 
 #endif
