@@ -11,7 +11,7 @@
   Table of Contents
   =================
   1.) Declare Reference
-  2.) Invoke Reference
+  2.) Reference Guide
 */
 
 #ifndef COMMENTS_DOC_H
@@ -31,7 +31,7 @@ int decl_ref_comment()
 }
 
 
-/* 2.) Reference Expression
+/* 2.) Reference Guide
 
   Returns:
     0, if Successful

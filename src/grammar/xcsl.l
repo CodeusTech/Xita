@@ -51,16 +51,16 @@ extern int yylex();
 */
 %}
 
-"(!*"                 BEGIN(DOC_COMMENT);
-<DOC_COMMENT>"*)"     BEGIN(INITIAL);
-<DOC_COMMENT>[^\n]*   { yylval.val_doc = strdup(yytext); return DOC; }
-<DOC_COMMENT>\n       { return DOC_NEWLINE; } 
+"(!*"                     BEGIN(DOC_COMMENT);
+<DOC_COMMENT>"*)"         BEGIN(INITIAL);
+<DOC_COMMENT>"*"+[^*\)]*  { yylval.val_doc = strdup(yytext); return DOC; }
 
 "!ref" { return REFERENCE; } // For Use with Doc Comments
 
 "(*"                  BEGIN(COMMENT);
 <COMMENT>"*)"         BEGIN(INITIAL);
-<COMMENT>[^\*]*   
+<COMMENT>"*"+[^*\)]*   { }
+<COMMENT>[^*]*         { }
 
 --[^\n]*\n            {  }
 

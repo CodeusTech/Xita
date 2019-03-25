@@ -200,7 +200,6 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %%
 mod_doc:
     DOC { decl_ref_comment(); }
-  | DOC_NEWLINE { }
 ;
 
 xcs:
