@@ -760,11 +760,11 @@ param_tether:
   7.c) Send/Receive
 */
 exp_send:
-    SEND STRING exp  { exp_send($2); }
+    SEND IDENTIFIER exp  { exp_send($2); }
 ;
 
 exp_receive:
-    RECEIVE STRING   { exp_receive($2); }
+    RECEIVE IDENTIFIER   { exp_receive($2); }
 ;
 
 
