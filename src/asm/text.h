@@ -2,7 +2,7 @@
   text.h
   Cody Fagley
   Authored on   February 13, 2019
-  Last Modified February 13, 2019
+  Last Modified March 25, 2019
 */
 
 /*
@@ -20,7 +20,7 @@
 #ifndef ASM_TEXT_H
 #define ASM_TEXT_H
 
-extern char** curr_asm_text;
+extern Command* curr_asm_text;
 extern unsigned int index_asm_text;
 extern unsigned int count_asm_text;
 extern Scope scope_next;

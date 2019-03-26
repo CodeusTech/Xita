@@ -30,17 +30,19 @@
   Global Assembly Data
 */
 
+//  .bss metadata
 extern Variable* start_asm_bss;
 extern Variable* curr_asm_bss;
 extern unsigned int count_asm_bss;
 extern unsigned int index_asm_bss;
 
+//  .data metadata
 extern Constant* start_asm_data;
 extern Constant* curr_asm_data;
 extern unsigned int count_asm_data;
 extern unsigned int index_asm_data;
 
-
+//  .text metadata
 extern Command* start_asm_text;
 extern Command*  curr_asm_text;
 extern unsigned int count_asm_text;
