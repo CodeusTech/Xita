@@ -198,12 +198,12 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 */
 %start xcs
 %%
-mod_doc:
-    DOC { decl_ref_comment(); }
+ref_com:
+    DOC { decl_ref_comment($1); }
 ;
 
 xcs:
-    mod_doc xcs { }
+    ref_com xcs { }
   | xcs_source  {/* Source Module Structure */}
   | xcs_tether  {/* Tether Module Structure */}
 ;
@@ -453,6 +453,11 @@ decl_const:
 /*
   4.b) Function Declarations/Invocations
 */
+pre_let:
+    ref_com let
+  | let
+;
+
 let:
     LET IDENTIFIER OF exp_type  { decl_function($2); }
   | LET IDENTIFIER              { decl_function($2); }
@@ -483,8 +488,8 @@ let:
   FUNCTION DECLARATIONS
 */
 decl_funct:
-    let exp_param OP_ASSIGN exp IN exp { decl2_function(); }
-  | let exp_param OP_ASSIGN exp        { decl2_function(); }
+    pre_let exp_param OP_ASSIGN exp IN exp { decl2_function(); }
+  | pre_let exp_param OP_ASSIGN exp        { decl2_function(); }
 ;
 
 /*

@@ -51,18 +51,23 @@ extern int yylex();
 */
 %}
 
-"(!*"                     BEGIN(DOC_COMMENT);
-<DOC_COMMENT>"*)"         BEGIN(INITIAL);
-<DOC_COMMENT>"*"+[^*\)]*  { yylval.val_doc = strdup(yytext); return DOC; }
+"(!*" { 
+  BEGIN(DOC_COMMENT); 
+  yylval.val_doc = (char*) malloc(4096);  //  Max 4096 Characters per Reference Guide
+  yylval.val_doc[0] = '\0';
+}
+<DOC_COMMENT>"*)"        { BEGIN(INITIAL); return DOC; }
+<DOC_COMMENT>"*"+[^*)]*  { strncat(yylval.val_doc, yytext, strlen(yytext)); }
+<DOC_COMMENT>[^*]*       { strncat(yylval.val_doc, yytext, strlen(yytext)); }
 
 "!ref" { return REFERENCE; } // For Use with Doc Comments
 
-"(*"                  BEGIN(COMMENT);
-<COMMENT>"*)"         BEGIN(INITIAL);
-<COMMENT>"*"+[^*\)]*   { }
-<COMMENT>[^*]*         { }
+"(*"                 BEGIN(COMMENT);
+<COMMENT>"*)"        BEGIN(INITIAL);
+<COMMENT>"*"+[^*)]*  { }
+<COMMENT>[^*]*       { }
 
---[^\n]*\n            {  }
+--[^\n]*\n { }
 
 %{
 /*

@@ -14,8 +14,8 @@
   2.) Reference Guide
 */
 
-#ifndef COMMENTS_DOC_H
-#define COMMENTS_DOC_H
+#ifndef COMMENTS_REF_H
+#define COMMENTS_REF_H
 
 
 /* 1) Declare Referece
@@ -23,9 +23,15 @@
   Returns:
     0, if Successful
 */
-int decl_ref_comment()
+int decl_ref_comment(char* ref)
 {
   printf("Reference Guide Declared.\n");
+
+  //  Sanity Check
+  //printf("%s\n", ref);
+
+  //  Prevent Memory Leak
+  free(ref);
 
   return 0;
 }

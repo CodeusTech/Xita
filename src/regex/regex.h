@@ -39,6 +39,4 @@
 #include "esc_char.h"
 #include "patterns.h"
 
-
-
 #endif
