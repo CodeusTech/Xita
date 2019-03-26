@@ -47,6 +47,8 @@ typedef char* Constructor;
 */
 
 typedef char* Command;
+typedef char* Constant;
+typedef char* Variable;
 
 /*
   2.) Register Stacks

@@ -24,12 +24,27 @@
 #ifndef ASM_INIT_H
 #define ASM_INIT_H
 
+#include "../globals/structs.h"
+
+/*
+  Global Assembly Data
+*/
+
+extern Variable* start_asm_bss;
+extern Variable* curr_asm_bss;
+extern unsigned int count_asm_bss;
+extern unsigned int index_asm_bss;
+
+extern Constant* start_asm_data;
+extern Constant* curr_asm_data;
+extern unsigned int count_asm_data;
+extern unsigned int index_asm_data;
 
 
-extern char** start_asm_text;
-extern char**  curr_asm_text;
-extern int count_asm_text;
-extern int index_asm_text;
+extern Command* start_asm_text;
+extern Command*  curr_asm_text;
+extern unsigned int count_asm_text;
+extern unsigned int index_asm_text;
 
 
 /*

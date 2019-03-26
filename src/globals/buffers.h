@@ -44,14 +44,14 @@
 //  1.a) .text Buffers
 char** start_asm_text;
 char**  curr_asm_text;
-int count_asm_text;
-int index_asm_text;
+unsigned int count_asm_text;
+unsigned int index_asm_text;
 
 //  1.b) .bss Buffers
 char** start_asm_bss;
 char**  curr_asm_bss;
-int count_asm_bss;
-int index_asm_bss;
+unsigned int count_asm_bss;
+unsigned int index_asm_bss;
 
 // 1.c) Name Mangling
 unsigned int mangle = 0;

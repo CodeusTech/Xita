@@ -21,8 +21,8 @@
 #define ASM_TEXT_H
 
 extern char** curr_asm_text;
-extern int index_asm_text;
-extern int count_asm_text;
+extern unsigned int index_asm_text;
+extern unsigned int count_asm_text;
 extern Scope scope_next;
 
 /*
