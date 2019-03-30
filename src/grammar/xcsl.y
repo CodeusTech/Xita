@@ -347,8 +347,10 @@ list:
 ;
 
 exp_list:
-    list param_list OP_LIST_R       { }
-  | LIST_TAIL exp_list              { list_tail();      }
+    list param_list OP_LIST_R  { }
+  | exp OP_LIST_CON exp_list   { }
+  | LIST_TAIL exp_list         { list_tail(); }
+  | OP_LIST_L OP_LIST_R        { }
 
 ;
 
@@ -540,7 +542,8 @@ param_arg:
   TYPE IDENTIFIERS
 */
 exp_type:
-    INT_T
+    exp_type exp_type
+  | INT_T
   | U8_T
   | I8_T
   | U16_T
@@ -555,7 +558,7 @@ exp_type:
   | CHAR_T
   | STRING_T
   | BOOL_T
-  | LIST_T exp_type
+  | LIST_T
   | exp_type OP_TUP exp_type
   | OP_REC_L record OP_REC_R
   | IDENTIFIER
@@ -673,8 +676,8 @@ proto_comma:
 ;
 
 exp_prototype:
-    prototype param_prototype proto_comma exp_prototype { }
-  | prototype param_prototype            { printf("\n"); }
+    exp_prototype proto_comma exp_prototype      { }
+  | prototype param_prototype OP_ASSIGN exp_type { printf("\n"); }
 ;
 
 /*
@@ -682,7 +685,7 @@ exp_prototype:
 */
 param_prototype:
     param_prototype param_prototype 
-  | IDENTIFIER      { param_proto($1); }
+  | exp_type      {/* param_proto($1); */}
 ;
     
 
