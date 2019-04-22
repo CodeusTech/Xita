@@ -18,8 +18,8 @@ executable uses XCS ABI, calling conventions, etc.
   * [Uninstall XCSL-AArch64](#uninstall-xcsl)
 * [Usage](#xcsl-terminal-usage)
   * [Live Interpreter](#live-interpreter)
-  * [Cross-Compiler](xcs-cross-compiler)
-  * [Terminal Options](terminal-options)
+  * [Cross-Compiler](#xcs-cross-compiler)
+  * [Terminal Options](#terminal-options)
 
 
 # Prerequisite Installation 
