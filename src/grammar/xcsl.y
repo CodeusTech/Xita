@@ -242,6 +242,9 @@ src:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
+  | exp_if              { }
+  | exp_is              { }
+  | exp_match           { }
   | exp OP_ADD exp      { infer_addition(); }
   | exp OP_SUB exp      { infer_subtraction(); }
   | exp OP_MUL exp      { infer_multiplication(); }
@@ -270,9 +273,6 @@ exp:
   | exp_string          {/* For Testing */}
   | exp_list            { }
   | exp_regex           { }
-  | exp_if              { }
-  | exp_is              { }
-  | exp_match           { }
   | decl_const          { }
   | decl_funct          { }
   | decl_type           { }
@@ -414,18 +414,14 @@ exp_match:
     match with { exp_match_with(); };
 
 exp_with:
-    param_match param_with ARROW_R exp OP_COMMA exp_with  { }
-  | param_match param_with ARROW_R exp                    { }
+    param_match ARROW_R exp OP_COMMA exp_with  { }
+  | param_match ARROW_R exp                    { }
 ;
 
 param_match:
-    exp_construct 
+    exp       {/* Check for Equivalence */}
 ;
 
-param_with: 
-  IDENTIFIER param_with
-  | {/* INTENTIONALLY LEFT BLANK */}
-;
 
 /*
   3.c) ... is ...

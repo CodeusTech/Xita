@@ -45,11 +45,13 @@ int decl_if()
   printf("if ...\n");
 
   //  Print Assembly Header to If Statement
-  char* str = malloc(15); //  Supports 10-figures worth of if statements
+  //char* str = malloc(15); //  Supports 10-figures worth of if statements
   
   //  Add Mangle to Header
-  sprintf(str, "if_%d:\n", mangle);
-  add_command(str);
+  //sprintf(str, "if_%d:\n", mangle);
+  //add_command(str);
+
+
 
   return 0;
 }
@@ -73,7 +75,7 @@ int exp_if()
   //  If False, Jump to else Block
   
   //  Pop TOP
-  rs_pop();
+  //rs_pop();
 
   return 0;
 }
@@ -91,6 +93,7 @@ int exp_if()
 int decl_then()
 {
   printf("then ...\n");
+  /*
 
   //  Print Assembly Header to If Statement
   char* str = malloc(15); //  Supports 10-figures worth of if statements
@@ -100,7 +103,7 @@ int decl_then()
   add_command(str);  
 
   return 0;
-}
+*/}
 
 /* 2.b) Then Expression
 
@@ -109,6 +112,7 @@ int decl_then()
 */
 int exp_then()
 {
+  /*
   //  STUB STUB STUB
   
   //  TODO: Error Check
@@ -119,7 +123,7 @@ int exp_then()
   rs_pop(); 
 
   return 0;
-}
+*/}
 
 
 /*
@@ -134,6 +138,7 @@ int exp_then()
 int decl_else()
 {
   printf("else ...\n");
+  /*
 
   //  Print Assembly Header to If Statement
   char* str = malloc(15); //  Supports 10-figures worth of if statements
@@ -143,7 +148,7 @@ int decl_else()
   add_command(str);  
 
   return 0;
-}
+*/}
 
 /* 3.b) Else Expression
 
@@ -167,6 +172,7 @@ int exp_else()
 */
 int exp_if_then_else()
 {
+  /*
   //  Print Assembly Header to If Statement
   char* str = malloc(15); //  Supports 10-figures worth of if statements
   
@@ -177,7 +183,7 @@ int exp_if_then_else()
   mangle++;
 
   return 0;
-}
+*/}
 
 
 #endif
