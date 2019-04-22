@@ -115,7 +115,7 @@ It includes the following XCSL grammar libraries:
 
 ###  Identifiers
 
-`ident/` is probably the most important subdirectory within `src/`.
+`ident/` is the first **major library** within `src/`.
 It includes all functionality related to user-defined identifiers.  This
 covers everything from constant declarations to type inferrence.
 
@@ -175,6 +175,20 @@ operators to accomodate user-declared data types.  Includes libraries for:
   * Backend functionality for overloading/overriding standard operators 
 
 ###  Processes
+
+`proc/` is a major library within XCS containing several sublibraries, all
+related to active process management.  It contains sublibraries for:
+
+
+* Process Scheduling
+  * Process Definitions/Operations
+  * Process Queues/Blocking
+* Interrupt Handling
+  * Event Timers
+  * Firmware Interrupts
+  * Interrupt Signals
+* Process Tethers
+  * Interprocess Communication
 
 ###  Regular Expressions
 
