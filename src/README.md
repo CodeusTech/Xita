@@ -103,7 +103,34 @@ It includes the following firmware libraries:
 
 ###  Grammar
 
+`grammar/` contains XCSL frontend functionality (e.g. user interface).
+It includes the following XCSL grammar libraries:
+
+* status.h
+  * Contains integer error codes to be used system-wide
+* xcsl.l
+  * Contains lexical tokens used within XCSL grammar
+* xcsl.y
+  * Contains the syntactic structure of the XCS Language
+
 ###  Identifiers
+
+`ident/` is probably the most important subdirectory within `src/`.
+It includes all functionality related to user-defined identifiers.  This
+covers everything from constant declarations to type inferrence.
+
+`ident/` includes the following sub-libraries:
+
+* Constructors
+  * Framework for declaring/resolving type constructors
+* Functions
+  * Framework for declaring/resolving functional expressions
+* Typeclasses
+  * Framework for declaring/resolving typeclass expressions
+* Types
+  * Framework for declaring/resolving data types
+
+For more information see [here](https://github.com/CodeusTech/XCSL-AArch64/src/ident).
 
 ###  Memory
 
