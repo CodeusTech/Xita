@@ -163,6 +163,17 @@ Includes libraries for:
 
 ###  XCS Operators
 
+`operator/` contains functionality for manipulating how standard operators
+can be used.  Most notably, it allows the user to overload standard
+operators to accomodate user-declared data types.  Includes libraries for:
+
+* check.h *(PLANNED)*
+  * Backend type-checking functionality for standard operators
+* init.h
+  * Functionality for initializing valid operands for standard 
+* override.h
+  * Backend functionality for overloading/overriding standard operators 
+
 ###  Processes
 
 ###  Regular Expressions
