@@ -97,15 +97,14 @@ use
 ##### Live Interpreter
 
 ```bash
-$  xcs-aarch64
+$  xcs-aarch64 [OPTIONS]
 ```
 
 ##### XCS Cross-Compiler
 
 ```bash
-$  xcs-aarch64 [file1 file2 ...]
+$  xcs-aarch64 [file1 file2 ...] [OPTIONS]
 ```
-
 
 ##### Terminal Options
 
@@ -115,6 +114,7 @@ See the following list for option syntax and functionality.
 * -k | --keep-assembly
   * Instructs XCSL-AArch64 to keep any procedurally generated ARM Assembly 
   files after compiling to binary.
-
+* -o *fname* | --output-file *fname*
+  * Instructs XCSL-AArch64 to use *fname* for output file names
 
 
