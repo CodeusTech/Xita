@@ -37,28 +37,55 @@ $  sudo apt-get upgrade
 $  sudo apt-get install build-essential flex flexc++ bison bisonc++
 ```
 
-
-## Installation using Terminal
+## XCSL-AArch64 Installation
 
 ##### Clone the Repository
 
 ```bash
 $  cd path/to/projects
-$  git clone https://github.com/CodeusTech/XSL.C.git
+$  git clone https://github.com/CodeusTech/XCSL-AArch64.git
 ```
+**NOTE:** Two-Factor Authentication *must* be enabled.
 
-##### Build and Install XSL
+##### Build and Install XCSL
 
 ```bash
-$  cd XSL.C
+$  cd XCSL-AArch64/
 $  sudo make install
 ```
 
-##### Uninstall XSL
+##### Build XCSL and Do NOT Install
 
 ```bash
+$  cd XCSL-AArch64/
+$  make build
+```
+
+##### Uninstall XCSL
+
+```bash
+$  cd XCSL-AArch64/
 $  sudo make uninstall
 ```
 
+##  XCSL-Usage 
+
+The following usage commands assume XCS-AArch64 is installed on the current
+Linux syetem.  If it is only built (and not installed), you will need to
+use 
+
+```_build/xcs-aarch64```
+
+##### Live Interpreter
+
+```bash
+$  xcs-aarch64
+```
+
+##### XCS Cross-Compiler
+
+```bash
+$  xcs-aarch64 [file1 file2 ...]
+```
 
 
