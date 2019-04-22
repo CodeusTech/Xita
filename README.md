@@ -4,7 +4,24 @@
 Currently, the XCSL cross-compiler works on the Linux platform.  The resulting binary
 executable uses XCS ABI, calling conventions, etc.
 
-## Prerequisite Installation
+# Table of Contents
+
+* [Prerequisites][#prerequisite-installation]
+  * [Arch/Antergos][#arch/antergos]
+  * [Red Hat-Like][#centos/rhel/scientific-linux/fedora]
+  * [Fedora 22+][#fedora-22+]
+  * [Debian-Like][#debian/ubuntu/mint]
+* [Installation][#XCSL-AArch64-Cross-Compiler-Installation]
+  * [Clone Repository][#clone-the-repository]
+  * [Install XCSL-AArch64][#build-and-install-xcsl]
+  * [Build XCSL-AArch64][#build-xcsl-and-do-not-install]
+  * [Uninstall XCSL-AArch64][#uninstall-xcsl]
+* [Usage][#xcsl-terminal-usage]
+  * [Live Interpreter][#live-interpreter]
+  * [Cross-Compiler][xcs-cross-compiler]
+
+
+# Prerequisite Installation
 
 ##### Arch/Antergos
 
@@ -37,7 +54,7 @@ $  sudo apt-get upgrade
 $  sudo apt-get install build-essential flex flexc++ bison bisonc++
 ```
 
-## XCSL-AArch64 Installation
+# XCSL-AArch64 Cross-Compiler Installation
 
 ##### Clone the Repository
 
@@ -68,13 +85,13 @@ $  cd XCSL-AArch64/
 $  sudo make uninstall
 ```
 
-##  XCSL-Usage 
+#  XCSL Terminal Usage 
 
 The following usage commands assume XCS-AArch64 is installed on the current
-Linux syetem.  If it is only built (and not installed), you will need to
+Linux system.  If it is only built (and not installed), you will need to
 use 
 
-```_build/xcs-aarch64```
+```$  _build/xcs-aarch64 [...]```
 
 ##### Live Interpreter
 
