@@ -130,11 +130,36 @@ covers everything from constant declarations to type inferrence.
 * Types
   * Framework for declaring/resolving data types
 
-For more information see [here](https://github.com/CodeusTech/XCSL-AArch64/src/ident).
+For more information see [here](https://github.com/CodeusTech/XCSL-AArch64/tree/master/src/ident).
 
 ###  Memory
 
+`memory/` contains XCS backend functionality for memory manipulation.  The
+vast majority of XCS memory usage is internally manipulated, but syntax is
+provided for static manipulation for firmware authoring.
+
+`memory` contains the following memory libraries:
+
+* alloc.h
+  * Backend framework for internal memory allocation
+* static.h
+  * Semantics framework for static memory operators
+* tree_ops.h
+  * AVL framework tailored for memory allocator
+
 ###  External Modules
+
+`modules/` contains XCS backend functionality for external module usage.
+Includes libraries for:
+
+* header.h
+  * Contains backend functionality for importing submodules (headers)
+* operations.h
+  * Contains interface functionality for external module usage
+* source.h
+  * Contains backend functionality for executing source modules
+* tether.h
+  * Contains backend functionality for tether modules (daemons)
 
 ###  XCS Operators
 
