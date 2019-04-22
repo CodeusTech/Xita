@@ -6,22 +6,22 @@ executable uses XCS ABI, calling conventions, etc.
 
 # Table of Contents
 
-* [Prerequisites][#prerequisite-installation]
-  * [Arch/Antergos][#arch/antergos]
-  * [Red Hat-Like][#centos/rhel/scientific-linux/fedora]
-  * [Fedora 22+][#fedora-22+]
-  * [Debian-Like][#debian/ubuntu/mint]
-* [Installation][#XCSL-AArch64-Cross-Compiler-Installation]
-  * [Clone Repository][#clone-the-repository]
-  * [Install XCSL-AArch64][#build-and-install-xcsl]
-  * [Build XCSL-AArch64][#build-xcsl-and-do-not-install]
-  * [Uninstall XCSL-AArch64][#uninstall-xcsl]
-* [Usage][#xcsl-terminal-usage]
-  * [Live Interpreter][#live-interpreter]
-  * [Cross-Compiler][xcs-cross-compiler]
+* [Prerequisites](#prerequisite-installation)
+  * [Arch/Antergos](#arch/antergos)
+  * [Red Hat-Like](#centos/rhel/scientific-linux/fedora)
+  * [Fedora 22+](#fedora-22+)
+  * [Debian-Like](#debian/ubuntu/mint)
+* [Installation](#XCSL-AArch64-Cross-Compiler-Installation)
+  * [Clone Repository](#clone-the-repository)
+  * [Install XCSL-AArch64](#build-and-install-xcsl)
+  * [Build XCSL-AArch64](#build-xcsl-and-do-not-install)
+  * [Uninstall XCSL-AArch64](#uninstall-xcsl)
+* [Usage](#xcsl-terminal-usage)
+  * [Live Interpreter](#live-interpreter)
+  * [Cross-Compiler](xcs-cross-compiler)
 
 
-# Prerequisite Installation
+# Prerequisite Installation 
 
 ##### Arch/Antergos
 
