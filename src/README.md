@@ -22,6 +22,24 @@
 
 ###  ARM Assembly
 
+`asm/` contains all of infrastructural procedures for formatting ARM Assembly 
+files. 
+
+XCSL-AArch64 procedurally generates and compiles GNU AArch64 assembly code to 
+binary.  `asm/` includes the following sectional generation libraries:
+
+* bss.h
+  *  `.bss section` contains uninitialized data (Variables)
+* data.h
+  *  `.data section` contains initialized data (Constants)
+* header.h
+  *  Prints descriptive assembly comment header
+* init.h
+  *  Initializes assembly generation backend
+* text.h
+  *  `.text section` contains executable source code
+
+
 ###  Bytecode
 
 ###  Comments
