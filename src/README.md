@@ -79,6 +79,14 @@ It includes the following conditional backend libraries:
 
 ###  Globals
 
+`globals/` contains functionality that is required by all components of the
+Linux-to-XCS Cross-Compiler.  It includes the following global libraries:
+
+* buffers.h
+  * Includes *C* Cross-Compiler Buffers for Linux-Side computations
+* structs.h
+  * Includes standard data type/structure definitions for cross-compiler
+
 ###  General Purpose I/O
 
 ###  Grammar
