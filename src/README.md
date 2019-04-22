@@ -48,7 +48,7 @@ libraries:
 
 * body.h
   * Includes definitions for bytecode body sequences
-  * **DEPRECATED**
+  * ***DEPRECATED***
 * build.h
   * Backend framework for generating XCS bytecode
 * header.h
@@ -57,6 +57,13 @@ libraries:
   * Backend framework for executing XCS bytecode
 
 ###  Comments
+
+`comments/` contains backend funcitonality for XCS comments (especially
+*reference guides*).  It includes the following documentary backend libraries:
+
+* ref.h
+  * Includes backend framework for XCS reference guides
+  * **Note:** This serves as the standard for XCS technical manuals
 
 ###  Conditions
 
