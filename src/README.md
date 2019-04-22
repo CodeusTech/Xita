@@ -13,7 +13,7 @@
 * [ident/](#identifiers)
 * [memory/](#memory)
 * [operator/](#xcs-operators)
-* [proc/](#processes)
+* [proc/](#process-management)
 * [regex/](#regular-expressions)
 * [regstack/](#register-stacks)
 * [utils/](#misc.-utilities)
@@ -174,7 +174,7 @@ operators to accomodate user-declared data types.  Includes libraries for:
 * override.h
   * Backend functionality for overloading/overriding standard operators 
 
-###  Processes
+###  Process Management
 
 `proc/` is a major library within XCS containing several sublibraries, all
 related to active process management.  It contains sublibraries for:
@@ -215,7 +215,32 @@ Included within `regex/` is:
 
 ###  Register Stacks
 
+`regstack/` contains assembly-level functionality for manipulating XCS 
+register stacks.  It contains the following backend libraries:
+
+* codes.h
+  * XCS AArch64 register integer codes
+* control.h
+  * Inteface functionality for register stacks
+* operations.h
+  * Backend functionality for manipulating register stacks
+
 ###  Misc. Utilities
 
+`utils/` contains an assortment of miscellaneous system utilties.  Many of the
+utilities are used throughout the entire cross-compiler.  It includes the 
+following utility libraries:
+
+* bitvector.h
+  * Interface functionality for manipulating arbitrary number of concatenated 
+  bits
+* clear.h
+  * Interface functionality for clearing any content from the terminal
+* scope.h
+  * Interface functionality for local scopes
+
 ###  XCSL-AArch64 Driver
+
+`xcs.c` is the main driver for the XCS Cross-Compiler.  It handles parameters
+passed from Linux shell, including compile-time options.
 
