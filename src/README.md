@@ -8,7 +8,7 @@
 * [comments/](#comments)
 * [conditions/](#conditions)
 * [globals/](#globals)
-* [gpio/](#general-purpose-i/o)
+* [gpio/](#general-purpose-i-o)
 * [grammar/](#grammar)
 * [ident/](#identifiers)
 * [memory/](#memory)
@@ -88,6 +88,18 @@ Linux-to-XCS Cross-Compiler.  It includes the following global libraries:
   * Includes standard data type/structure definitions for cross-compiler
 
 ###  General Purpose I/O
+
+`gpio/` contains backend functionality required by general purpose peripherals.
+It includes the following firmware libraries:
+
+* constants.h
+  * Contains constant values (especially memory addresses) for use in all GPIO
+* rng.h
+  * Contains backend firmware for GPIO-based random number generator
+* rtc.h
+  * Contains backend firmware for Real-Time Clock
+* timer.h
+  * Contains backend firmware for Main Event Timer
 
 ###  Grammar
 
