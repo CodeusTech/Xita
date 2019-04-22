@@ -190,7 +190,28 @@ related to active process management.  It contains sublibraries for:
 * Process Tethers
   * Interprocess Communication
 
+For more information see [here](https://github.com/CodeusTech/XCSL-AArch64/tree/master/src/proc).
+
 ###  Regular Expressions
+
+`regex/` contains functionality for Regular Expressions within XCSL.  XCS 
+mostly follows the regular expression format defined by
+[regex.info](https://www.regular-expressions.info/)
+
+Included within `regex/` is:
+
+* anchors.h
+  * Reg. Ex. match expression based on position
+* capture.h
+  * Backend functionality for setting capture boundaries
+* esc_char.h
+  * Backend functionality for handling escaped characters (e.g. \n)
+* patterns.h
+  * Interface functionality for using regular expressions
+* quantifiers.h
+  * Contains functionality for hanlding repetition within regular expressions
+* shorthand.h
+  * Contains backend functionality for regular shorthand expressions (e.g. a-z)
 
 ###  Register Stacks
 
