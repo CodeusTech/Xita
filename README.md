@@ -4,7 +4,7 @@
 Currently, the XCSL cross-compiler works on the Linux platform.  The resulting binary
 executable uses XCS ABI, calling conventions, etc.
 
-### Prerequisite Installation
+## Prerequisite Installation
 
 ##### Arch/Antergos
 
@@ -38,7 +38,7 @@ $  sudo apt-get install build-essential flex flexc++ bison bisonc++
 ```
 
 
-### Installation using Terminal
+## Installation using Terminal
 
 ##### Clone the Repository
 
