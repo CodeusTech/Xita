@@ -58,14 +58,24 @@ libraries:
 
 ###  Comments
 
-`comments/` contains backend funcitonality for XCS comments (especially
+`comments/` contains backend functionality for XCS comments (especially
 *reference guides*).  It includes the following documentary backend libraries:
 
 * ref.h
   * Includes backend framework for XCS reference guides
   * **Note:** This serves as the standard for XCS technical manuals
 
-###  Conditions
+###  Conditional Statements
+
+`conditions/` contains backend functionality for conditional statements.
+It includes the following conditional backend libraries:
+
+* if.h
+  * Includes functionality for handling `if ... then ... else` statements
+* is.h
+  * Includes functionality for handling `... is ...` statements
+* match.h
+  * Includes functionality for handling `match ... with ...` statements
 
 ###  Globals
 
