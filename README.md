@@ -19,6 +19,7 @@ executable uses XCS ABI, calling conventions, etc.
 * [Usage](#xcsl-terminal-usage)
   * [Live Interpreter](#live-interpreter)
   * [Cross-Compiler](xcs-cross-compiler)
+  * [Terminal Options](terminal-options)
 
 
 # Prerequisite Installation 
@@ -104,5 +105,16 @@ $  xcs-aarch64
 ```bash
 $  xcs-aarch64 [file1 file2 ...]
 ```
+
+
+##### Terminal Options
+
+Command-line options can be fed to either the live interpreter or cross-compiler.  
+See the following list for option syntax and functionality.
+
+* -k | --keep-assembly
+  * Instructs XCSL-AArch64 to keep any procedurally generated ARM Assembly 
+  files after compiling to binary.
+
 
 
