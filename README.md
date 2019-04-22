@@ -22,7 +22,7 @@ executable uses XCS ABI, calling conventions, etc.
   * [Terminal Options](#terminal-options)
 
 
-### Prerequisite InstallatioXCSL-AArch64 Source Directoriesn 
+### Prerequisite Installation 
 
 ##### Arch/Antergos
 

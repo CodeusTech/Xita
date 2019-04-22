@@ -3,7 +3,7 @@
 
 ###  Table of Contents
 
-* [assembly/](#arm-assembly)
+* [asm/](#arm-assembly)
 * [bytecode/](#bytecode)
 * [comments/](#comments)
 * [conditions/](#conditions)
