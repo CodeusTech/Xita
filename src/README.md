@@ -42,6 +42,20 @@ binary.  `asm/` includes the following sectional generation libraries:
 
 ###  Bytecode
 
+`bytecode/` contains backend functionality for producing XCS Executable
+Binary sequences (Bytecode).  It includes the following bytecode backend
+libraries:
+
+* body.h
+  * Includes definitions for bytecode body sequences
+  * **DEPRECATED**
+* build.h
+  * Backend framework for generating XCS bytecode
+* header.h
+  * Includes definitions for bytecode metadata
+* run.h
+  * Backend framework for executing XCS bytecode
+
 ###  Comments
 
 ###  Conditions
