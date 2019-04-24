@@ -10,15 +10,15 @@
 
   Table of Contents
   =================
-  1.) Send Message
-  2.) Receive Message
+  1.a) Send Message
+  1.b) Receive Message
 */
 
 #ifndef IPC_OPERATIONS
 #define IPC_OPERATIONS
 
 
-/* 1.) Send Message
+/* 1.a) Send Message
 
   Returns:
     0, if Successful
@@ -39,7 +39,7 @@ ErrorCode ipc_send(ProcessID pid)
   return 0;
 }
 
-/* 2.) Receive Message
+/* 1.b) Receive Message
 
   Returns:
     0, if Successful
@@ -50,6 +50,77 @@ ErrorCode ipc_receive(ProcessID pid)
   printf("Data Received from Process: %d\n", pid);
 
   //  Return Success
+  return 0;
+}
+
+
+/*
+  2.) Persistent Interprocess Communication
+*/
+
+/* 2.a) Declare Offer
+
+  Returns:
+    0, if Successful
+*/
+ErrorCode decl_offer(Identifier ident)
+{
+  //  STUB STUB STUB
+  printf("Service Offered: %s\n", ident);
+
+  /*
+    TODO:
+     * Error Check
+     * Create new Scope Context
+     * Add ident/data to Buffers
+     * Check for Parameters
+      + Add parameters to Buffers
+  */
+
+  //  Return Success
+  return 0;
+}
+
+/* 2.b) Request Expression
+
+  Returns:
+    0, if Successful
+*/
+ErrorCode exp_request(Identifier ident)
+{
+  //  STUB STUB STUB
+  printf("IPC Message Requested: %s\n", ident);
+
+  /*
+    TODO:
+     * Error Check
+     * Push Request to Register Stack
+  */
+
+  //  Return Success
+  return 0;
+}
+
+/* 2.c) Find Offer
+
+  Returns:
+    0, if ident is not an Offer
+    i, if ident is an Offer, where 'i' is Index in Buffer
+*/
+OfferID find_offer(Identifier ident)
+{
+  //  STUB STUB STUB
+  printf("Offer Found: %s\n");
+
+  /*
+    TODO:
+     * Error Check
+     * Search Offer Buffers
+     * If Match is Found,
+      + Return Offer ID Number
+  */
+
+  //  Return Failure
   return 0;
 }
 

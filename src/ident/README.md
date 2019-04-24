@@ -8,42 +8,42 @@ Canonical examples of identifiers are:
 * Functions
 * Types
 
-## Table of Contents
+### Table of Contents
 
 * [construct/](#type-constructors)
 * [functions/](#functional-expressions)
 * [typeclass/](#typeclasses)
 * [types/](#types)
 
-## Type Constructors
+### Type Constructors
 
 * operations.h
-  * Backend funcitonality for handling *constructor* identifiers (e.g. declare, find, etc.)
+  * Backend funcitonality for handling **constructor identifiers** (e.g. declare, find, etc.)
   * *Will likely be reorganized into TYPES soon*
 
-## Functional Expressions
+### Functional Expressions
 
 * constant.h
-  * Backend functionality for handling *constant* identifiers
+  * Backend functionality for handling **constant identifiers**
 * operations.h
-  * Backend functionality for handling *functional* identifiers
+  * Backend functionality for handling **functional identifiers** 
 * parameter.h 
   * Backend functionality for handling functional parameters
 * recursion.h
   * Backend functionality for handling functional recursion
 
-## Typeclasses
+### Typeclasses
 
 * operations.h
-  * Backend functionality for handling *typeclass* identifiers
+  * Backend functionality for handling **typeclass identifiers** 
 * prototype.h
   * Backend functionality for handling typeclass prototypes
 
-## Types
+### Types
 
 * Complex Types
   * operations.h
-    * Backend functionality for handling *type* identifiers
+    * Backend functionality for handling **type identifiers**
   * records.h
     * Backend functionality for handling types consisting of multiple elements
   * tuples.h
@@ -55,17 +55,17 @@ Canonical examples of identifiers are:
     * Backend functionality for dynamically type-checking XCS register stack
 * Primitive Types
   * boolexp.h
-    * Backend functionality for handling *boolean* expressions
+    * Backend functionality for handling **boolean expressions**
   * charexp.h
-    * Backend functionality for handling *character* expressions
+    * Backend functionality for handling **character expressions**
   * intexp.h
-    * Backend functionality for handling *integer* expressions
+    * Backend functionality for handling **integer expressions**
   * listexp.h
-    * Backend functionality for handling *list* expressions
+    * Backend functionality for handling **list expressions**
   * realexp.h
-    * Backend functionality for handling *real* expressions
+    * Backend functionality for handling **real expressions**
   * strexp.h
-    * Backend functionality for handling *string* expressions
+    * Backend functionality for handling **string expressions**
   * typecodes.h
     * List of XCSL Primitive Type IDs
 
