@@ -12,6 +12,7 @@
 * [grammar/](#grammar)
 * [ident/](#identifiers)
 * [memory/](#memory)
+* [modules/](#external-modules)
 * [operator/](#xcs-operators)
 * [proc/](#process-management)
 * [regex/](#regular-expressions)
