@@ -13,7 +13,7 @@
 #define XCS_TETHERS_H
 
 //  Internal Tether Headers
-#include "ipc.h"
+#include "../ipc/ipc.h"
 #include "operations.h"
 #include "parameter.h"
 

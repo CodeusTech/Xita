@@ -763,11 +763,11 @@ param_tether:
   7.c) Send/Receive
 */
 exp_send:
-    SEND IDENTIFIER exp  { exp_send($2); }
+    SEND IDENTIFIER exp  { ipc_send($2); }
 ;
 
 exp_receive:
-    RECEIVE IDENTIFIER   { exp_receive($2); }
+    RECEIVE IDENTIFIER   { ipc_receive($2); }
 ;
 
 

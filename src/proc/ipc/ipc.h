@@ -28,7 +28,7 @@
 #ifndef PROC_IPC_H
 #define PROC_IPC_H
 
-#include "structs.h"
+#include "operations.h"
 
 
 /*
@@ -92,7 +92,7 @@ int msg_get_status(Message* msg)
 unsigned int msg_get_send(Message* msg)
 {
   if (msg == NULL) return 0;
-  return msg->from_pid;
+  //return msg->from_pid;
 }
 
 /* 1.f) Get Recipient
@@ -104,7 +104,7 @@ unsigned int msg_get_send(Message* msg)
 unsigned int msg_get_rec(Message* msg)
 {
   if (msg == NULL) return 0;
-  return msg->to_pid;
+  //return msg->to_pid;
 }
 
 
