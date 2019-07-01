@@ -28,7 +28,7 @@ XCS provides arithmetic operators for reading/writing specific memory addresses.
 -- Read 2 bytes from Address 0x0080
 0x0080 *-> this 2
 
--- Write 2 bytes (value 16) to Address 0x0080
+-- Write 2 bytes (value: 16) to Address 0x0080
 0x0080 <-* 16 2
 ```
 
