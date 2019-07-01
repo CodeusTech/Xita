@@ -23,10 +23,13 @@
   Returns:
     0, if Successful
 */
-ErrorCode ipc_send(ProcessID pid)
+ErrorCode exp_send(Identifier key)
 {
+  //  Identify Sending Process
+  unsigned long pid = 0;
+
   //  Send Data to Process
-  printf("Data Sent to Process: %d\n", pid);
+  printf("Data Sent to Process %lu using Key %s\n", pid, key);
 
   /*
     TODO: 
@@ -44,10 +47,13 @@ ErrorCode ipc_send(ProcessID pid)
   Returns:
     0, if Successful
 */
-ErrorCode ipc_receive(ProcessID pid)
+ErrorCode exp_receive(Identifier key)
 {
+  //  Identify Receiving Process
+  unsigned long pid = 0;
+
   //  Receive Data from Process
-  printf("Data Received from Process: %d\n", pid);
+  printf("Data Received from Process %lu using Key %s\n", pid, key);
 
   //  Return Success
   return 0;
