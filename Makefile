@@ -6,7 +6,8 @@
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
 CCOMP=gcc
-CFLAGS=-std=gnu11 -lm
+CFLAGS=-std=gnu11 -lm -Wall
+SILENT=-Wno-unused-variable
 
 #  Build and Install Cross Compiler
 install: build tidy
@@ -17,7 +18,7 @@ install: build tidy
 build:  grammar src/xcs.c
 	rm -rf _build
 	mkdir _build
-	${CCOMP} ${CFLAGS} src/xcs.c -o _build/xcs-aarch64
+	${CCOMP} ${CFLAGS} ${SILENT} src/xcs.c -o _build/xcs-aarch64
 
 #  Build Grammar
 grammar: src/grammar/xcsl.y src/grammar/xcsl.l 

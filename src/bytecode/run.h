@@ -18,6 +18,8 @@
 int run_bytestring(char* byte)
 {
   printf("Running Bytecode Program: %s\n", byte);
+
+  return 0;
 }
 
 

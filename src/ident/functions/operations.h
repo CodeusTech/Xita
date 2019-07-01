@@ -57,7 +57,7 @@ ErrorCode decl_function (Identifier ident)
   
   //  Print Function Identifier to Assembly File
   char comm[300];
-  sprintf(comm, "%s:\n\0", ident);
+  sprintf(comm, "%s:\n", ident);
   //  add_command(comm);
 
   return 0;
@@ -82,7 +82,7 @@ ErrorCode decl2_function ()
 
   //  Return to Parent Context Scope
   char comm[9];
-  sprintf(comm, "  bx lr\n\0");
+  sprintf(comm, "  bx lr\n");
   // add_command(comm);
 
   return 0;
