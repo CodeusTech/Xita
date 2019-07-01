@@ -32,7 +32,7 @@
 */
 ErrorCode start_record()
 {
-  "Started new record...\n";
+  printf("Started new record...\n");
 
   return 0;
 }
@@ -44,7 +44,7 @@ ErrorCode start_record()
 */
 ErrorCode end_record()
 {
-  "Ended Record\n";
+  printf("Ended Record\n");
 
   return 0;
 }

@@ -101,9 +101,10 @@ int decl_then()
   //  Add Mangle to Header
   sprintf(str, "then_%d:\n", mangle);
   add_command(str);  
+  */
 
   return 0;
-*/}
+}
 
 /* 2.b) Then Expression
 
@@ -120,10 +121,11 @@ int exp_then()
   //  Jump Beyond else Block
  
   // Reset Register Stack for Else Statement
-  rs_pop(); 
+  rs_pop();
+  */ 
 
   return 0;
-*/}
+}
 
 
 /*
@@ -146,9 +148,10 @@ int decl_else()
   //  Add Mangle to Header
   sprintf(str, "else_%d:\n", mangle);
   add_command(str);  
+*/
 
   return 0;
-*/}
+}
 
 /* 3.b) Else Expression
 
@@ -181,9 +184,10 @@ int exp_if_then_else()
   add_command(str);  
 
   mangle++;
+*/
 
   return 0;
-*/}
+}
 
 
 #endif

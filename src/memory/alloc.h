@@ -80,7 +80,7 @@ ErrorCode xcs_alloc()
   reg = rs_push();
 
   //  Return Success
-  return 0;
+  return reg;
 }
 
 /* 1.c) Free Memory
@@ -104,7 +104,7 @@ ErrorCode xcs_free()
     End of Call:
       Deallocate TOP and Decrement Register Stack
   */
-  return 0;
+  return reg;
 }
 
 

@@ -48,15 +48,15 @@ char* get_reg(int i, unsigned char bits)
 }
 
 /* Get  8-Bit Register */
-char* get_reg8 (int i) { get_reg(i,  8); };
+char* get_reg8 (int i) { return get_reg(i,  8); };
 
 /* Get 16-Bit Register */
-char* get_reg16(int i) { get_reg(i, 16); };
+char* get_reg16(int i) { return get_reg(i, 16); };
 
 /* Get 32-Bit Register */
-char* get_reg32(int i) { get_reg(i, 32); };
+char* get_reg32(int i) { return get_reg(i, 32); };
 
 /* Get 64-Bit Register */
-char* get_reg64(int i) { get_reg(i, 64); };
+char* get_reg64(int i) { return get_reg(i, 64); };
 
 #endif
