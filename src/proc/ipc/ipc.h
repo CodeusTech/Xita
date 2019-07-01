@@ -92,7 +92,7 @@ int msg_get_status(Message* msg)
 unsigned int msg_get_send(Message* msg)
 {
   if (msg == NULL) return 0;
-  //return msg->from_pid;
+  return msg->src;
 }
 
 /* 1.f) Get Recipient
@@ -104,7 +104,7 @@ unsigned int msg_get_send(Message* msg)
 unsigned int msg_get_rec(Message* msg)
 {
   if (msg == NULL) return 0;
-  //return msg->to_pid;
+  return msg->dest;
 }
 
 
@@ -120,7 +120,7 @@ unsigned int msg_get_rec(Message* msg)
 MessageChannel* mc_new(unsigned int s)
 {
   //  Allocate XCS Memory
-  MessageChannel* mc;
+  MessageChannel* mc = (MessageChannel*) malloc(sizeof(MessageChannel)*256);
 
   mc->front = -1;
   mc->back  = -1;
@@ -140,6 +140,14 @@ MessageChannel* mc_add(MessageChannel* mc, Message msg)
 
 
   return mc;
+}
+
+
+ErrorCode mc_del(MessageChannel* mc)
+{
+  free(mc);
+
+  return 0;
 }
 
 #endif

@@ -24,7 +24,7 @@ extern unsigned int** rs_types;
   Returns:
     0, if Successful
 */
-int rs_push_type(int typecode)
+ErrorCode rs_push_type(int typecode)
 {
   //  STUB STUB STUB
 
@@ -36,11 +36,13 @@ int rs_push_type(int typecode)
 /*
   2.) Pop Value Type
 */
-int rs_pop_type()
+ErrorCode rs_pop_type()
 {
   //  STUB STUB STUB
 
   //  Remove TOP typecode from RS Types Stack
+
+  return 0;
 }
 
 

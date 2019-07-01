@@ -450,7 +450,7 @@ int init_operands_list_con()
   9.) Initialize XCS Operator LHS/RHS Operands
 */
 
-int init_operands()
+ErrorCode init_operands()
 {
   // Standard Operands
   init_operands_add();
@@ -480,6 +480,8 @@ int init_operands()
   // List Operands
   init_operands_append();
   init_operands_list_con();
+
+  return 0;
 }
 
 

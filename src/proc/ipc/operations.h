@@ -113,10 +113,12 @@ ErrorCode exp_request(Identifier ident)
     0, if ident is not an Offer
     i, if ident is an Offer, where 'i' is Index in Buffer
 */
-OfferID find_offer(Identifier ident)
+OfferID find_offer(Identifier key)
 {
+  ProcessID pid = 0;
+
   //  STUB STUB STUB
-  printf("Offer Found: %s\n");
+  printf("Offer Found: %s\n", key);
 
   /*
     TODO:
