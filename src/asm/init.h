@@ -106,14 +106,13 @@ ErrorCode clear_asm_bss()
 */
 ErrorCode init_asm_data()
 {
-  //  STUB STUB STUB
-  
-  /*
-    TODO:
-     * Error Check
-     * Create Buffers
-     * Allocate Memory
-  */
+  start_asm_data = (char**) malloc(256 * sizeof(char*));
+  curr_asm_data = start_asm_data;
+  count_asm_data = 0;
+  index_asm_data = 0;
+
+  start_asm_data[255] = (char*) 0;
+  curr_asm_data[255]  = (char*) 0;
 
   // Return Success
   return 0;
@@ -126,14 +125,7 @@ ErrorCode init_asm_data()
 */
 ErrorCode clear_asm_data()
 {
-  //  STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-     * Deallocate Buffers
-      - Consider using Recursion
-  */
+  curr_asm_data = start_asm_data;
 
   //  Return Success
   return 0;
@@ -154,6 +146,7 @@ ErrorCode init_asm_text()
   //  Allocate Memory
   start_asm_text = (char**) malloc(256 * sizeof(char*));
   curr_asm_text  = start_asm_text;
+  count_asm_text = 0;
   index_asm_text = 0;
 
   start_asm_text[255] = (char*) 0;
@@ -163,27 +156,6 @@ ErrorCode init_asm_text()
   return 0;
 }
 
-/*  3.b) Clear Text Buffers
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode clear_asm_text()
-{
-  curr_asm_text = start_asm_text;
-
-  //  If not at end of list, recurse next buffer
-  if ( start_asm_text[255] != (char*) 0)
-  {
-    start_asm_text = (char**) start_asm_text[255];
-    clear_asm_text((char**) start_asm_text[255]);
-  }
-
-  //  Free Current Buffer
-  free(curr_asm_text);
-
-  return 0;
-}
 
 
 #endif

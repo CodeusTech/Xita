@@ -35,16 +35,23 @@
   Returns:
     0, if Successful
 */
-ErrorCode generate_data()
+ErrorCode generate_data(FILE* filename)
 {
-  //  STUB STUB STUB
+  //  Print DATA Segment Name into File
+  fprintf(filename, ".data:\n");
 
   /*
     TODO: 
      * Error Check
-     * Print .data Section Header
      * Write Out Entire .data Section Buffer
   */
+
+  //  Pretty up file with new lines
+  fprintf(filename, "\n\n");
+
+
+  //  STUB STUB STUB
+  printf(".data Section Generated\n");
 
   //  Return Success
   return 0;

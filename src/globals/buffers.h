@@ -53,6 +53,12 @@ char**  curr_asm_bss;
 unsigned int count_asm_bss;
 unsigned int index_asm_bss;
 
+//  1.c) .data Buffers
+char** start_asm_data;
+char**  curr_asm_data;
+unsigned int count_asm_data;
+unsigned int index_asm_data;
+
 // 1.c) Name Mangling
 unsigned int mangle = 0;
 

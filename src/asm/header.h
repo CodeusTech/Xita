@@ -20,7 +20,7 @@ FILE* asm_file;
 int header_source(char* mod_name)
 {
   fprintf(asm_file, "//  %s\n", mod_name);
-  fprintf(asm_file, "");
+  fprintf(asm_file, "\n");
   
   //  Return 0, if Successful
   return 0;

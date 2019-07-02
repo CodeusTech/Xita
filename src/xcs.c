@@ -77,9 +77,6 @@ int main(int argc, char** argv)
 			//  Populate Assembly File
 			write_asm_file(asm_fname);
 
-			//  Free Buffered Memory
-			clear_asm_text();
-
 			//  Delete Assembly File (if not Keep Assembly)
 			if (!keep_assembly) delete_asm_file(asm_fname);
 

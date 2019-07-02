@@ -34,9 +34,10 @@ extern Scope scope_next;
   Returns:
     0, if Successful
 */
-ErrorCode generate_text()
+ErrorCode generate_text(FILE* filename)
 {
   //  Stub Stub Stub
+  printf(".text Section Generated\n");
 
   /*
     TODO:
@@ -44,6 +45,29 @@ ErrorCode generate_text()
      * Write .text Section Header to Assembly File
      * Write Entire .text Section Buffer to Assembly File
   */
+
+  //  Print TEXT Segment Name into File
+  fprintf(filename, ".text:\n");
+  
+  curr_asm_text = start_asm_text;
+
+  /* Print TEXT Buffer Contents to File */
+  for (int i = 0; i < count_asm_text; i++)
+  {
+    if (i == 255) 
+    {
+      curr_asm_text = (char**) start_asm_text[i];
+      free(start_asm_text);
+      i = 0;
+      count_asm_text -= 255;
+    }
+    fprintf(filename, "  %s", curr_asm_text[i]);
+    free(curr_asm_text[i]);
+  }
+
+
+  //  Pretty up file with new lines
+  fprintf(filename, "\n\n");
 
   //  Return Success
   return 0;

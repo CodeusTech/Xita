@@ -29,7 +29,7 @@
   Returns:
     0, if Successful
 */
-ErrorCode generate_bss()
+ErrorCode generate_bss(FILE* filename)
 {
   //  STUB STUB STUB
   printf(".bss Section Generated\n");
@@ -40,6 +40,13 @@ ErrorCode generate_bss()
      * Produce Section Header and Write to Assembly File
      * Write Out Entire BSS Buffer
   */
+
+  //  Print TEXT Segment Name into File
+  fprintf(filename, ".bss:\n");
+
+
+  //  Pretty up file with new lines
+  fprintf(filename, "\n\n");
 
   //  Return Success
   return 0;
