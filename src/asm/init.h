@@ -60,37 +60,15 @@ extern unsigned int index_asm_text;
 */
 ErrorCode init_asm_bss()
 {
-  //  STUB STUB STUB
-  printf("BSS Buffers Initialized\n");
+  start_asm_bss = (char**) malloc(256 * sizeof(char*));
+  curr_asm_bss = start_asm_bss;
+  count_asm_bss = 0;
+  index_asm_bss = 0;
 
-  /*
-    TODO:
-     * Error Check
-     * Create Buffers
-     * Allocate Memory
-  */
+  start_asm_bss[255] = (char*) 0;
+  curr_asm_bss[255]  = (char*) 0;
 
-  return 0;
-}
-
-/* 1.b) Clear BSS Buffers
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode clear_asm_bss()
-{
-  // STUB STUB STUB
-  printf("BSS Buffers Initialized\n");
-
-  /*
-    TODO:
-     * Error Check
-     * Deallocate Buffers 
-      - Consider using Recursion
-  */
-
-  //  Return Success
+  // Return Success
   return 0;
 }
 
@@ -115,19 +93,6 @@ ErrorCode init_asm_data()
   curr_asm_data[255]  = (char*) 0;
 
   // Return Success
-  return 0;
-}
-
-/* 2.b) Clear Data Buffers
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode clear_asm_data()
-{
-  curr_asm_data = start_asm_data;
-
-  //  Return Success
   return 0;
 }
 

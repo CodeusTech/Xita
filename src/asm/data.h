@@ -37,21 +37,30 @@
 */
 ErrorCode generate_data(FILE* filename)
 {
-  //  Print DATA Segment Name into File
-  fprintf(filename, ".data:\n");
+  //  Stub Stub Stub
+  printf(".text Section Generated\n");
 
-  /*
-    TODO: 
-     * Error Check
-     * Write Out Entire .data Section Buffer
-  */
+  //  Print TEXT Segment Name into File
+  fprintf(filename, ".data:\n");
+  
+  curr_asm_data = start_asm_data;
+
+  /* Print TEXT Buffer Contents to File */
+  for (int i = 0; i < count_asm_data; i++)
+  {
+    if (i == 255) 
+    {
+      curr_asm_data = (char**) start_asm_data[i];
+      free(start_asm_data);
+      i = 0;
+      count_asm_data -= 255;
+    }
+    fprintf(filename, "  %s", curr_asm_data[i]);
+    free(curr_asm_data[i]);
+  }
 
   //  Pretty up file with new lines
   fprintf(filename, "\n\n");
-
-
-  //  STUB STUB STUB
-  printf(".data Section Generated\n");
 
   //  Return Success
   return 0;
@@ -67,15 +76,25 @@ Adds Integer Constant to .data Section
   Returns:
     0, if Successful
 */
-ErrorCode add_int_to_data(Identifier ident, int value)
+ErrorCode add_constant_int(Identifier ident, int value)
 {
-  //  STUB STUB STUB STUB
+  if (index_asm_data == 255)
+  {
+    curr_asm_data[255] = (Command*) malloc(256 * sizeof(Command));
+    curr_asm_data = (Command*) curr_asm_data[255];
 
-  /*
-    TODO:
-     * Error Check
-     * Print Integer Constant to .data Section
-  */
+    index_asm_text = 0;
+  }
+
+  char* str = (char*) malloc(256);
+
+  sprintf(str, "%s: .word %d", ident, value);
+    
+  curr_asm_data[index_asm_data] = strdup(str);
+  index_asm_data++;
+  count_asm_data++;
+
+  free(str);
 
   // Return Success
   return 0;

@@ -64,6 +64,8 @@ int main(int argc, char** argv)
 
 			//  Initialize Buffers
 			init_asm_text();
+			init_asm_data();
+			init_asm_bss();
 			rs_init();
 
 			//  Set Parser File Pointer

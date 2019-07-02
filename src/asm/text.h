@@ -39,13 +39,6 @@ ErrorCode generate_text(FILE* filename)
   //  Stub Stub Stub
   printf(".text Section Generated\n");
 
-  /*
-    TODO:
-     * Error Check
-     * Write .text Section Header to Assembly File
-     * Write Entire .text Section Buffer to Assembly File
-  */
-
   //  Print TEXT Segment Name into File
   fprintf(filename, ".text:\n");
   
@@ -64,7 +57,6 @@ ErrorCode generate_text(FILE* filename)
     fprintf(filename, "  %s", curr_asm_text[i]);
     free(curr_asm_text[i]);
   }
-
 
   //  Pretty up file with new lines
   fprintf(filename, "\n\n");
@@ -98,28 +90,5 @@ ErrorCode add_command(Command command)
 
   return 0;
 }
-
-/* 2.b) Read Command
-
-  Returns: 
-    0, if Successful
-*/
-ErrorCode read_command()
-{
-  //  STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-     * Choose ONE, Up to Implementor:
-      + Read Out all Commands to Assembly File
-      + Return a Single Command
-  */
-
-  //  Return Success
-  return 0;
-}
-
-
 
 #endif
