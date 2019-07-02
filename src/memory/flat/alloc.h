@@ -13,6 +13,7 @@
 #define FLAT_ALLOC_H
 
 #include "constants.h"
+#include "globals.h"
 
 //  Allocate Next Slot of Memory
 ErrorCode xcs_alloc()
