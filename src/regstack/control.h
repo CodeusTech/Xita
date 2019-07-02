@@ -18,6 +18,8 @@
 #ifndef REGSTACK_CONTROL_H
 #define REGSTACK_CONTROL_H
 
+#include "operations.h"
+
 extern ADR** rs;  //  Global Register Stack Orders
 extern Scope scope_next;
 extern unsigned int** rs_types;
@@ -61,6 +63,7 @@ int rs_init()
   printf("rs_init() Called...\n");
   //   Initialize Register Stack Buffers, and 1st Reg Stack
   rs = (ADR**) malloc(4096 * sizeof(ADR*));
+  rs[0] = rs_new();
 
   //  Initialize Register Stack Types Buffer
   rs_types = (unsigned int**) malloc(4096 * sizeof(unsigned int*));
@@ -107,7 +110,6 @@ int rs_end()
   free(rs_types);
   free(rse_types);
 
-  printf("Check 2\n");
 
   return 0;
 }
