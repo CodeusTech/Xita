@@ -40,6 +40,7 @@
 #ifndef INFERRENCE_OPERATOR_H
 #define INFERRENCE_OPERATOR_H
 
+#include "../../../primitives/primitives.h"
 
 /*
   1) Standard Operators
@@ -52,8 +53,14 @@
 */
 int infer_addition()
 {
-  //  STUB STUB STUB
-  printf("Perform Addition\n");
+  //  Pop from Register Stack
+  rs_pop();
+
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_types[scope_curr][rs_second()];
+  TypeID rhsT = rs_types[scope_curr][rs_top()];
+
+  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_addition();
 
   return 0;
 }
@@ -65,8 +72,14 @@ int infer_addition()
 */
 int infer_subtraction()
 {
-  //  STUB STUB STUB
-  printf("Perform Subtraction\n");
+  //  Pop from Register Stack
+  rs_pop();
+
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_types[scope_curr][rs_second()];
+  TypeID rhsT = rs_types[scope_curr][rs_top()];
+
+  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_subtraction();
 
   return 0;
 }
@@ -78,8 +91,14 @@ int infer_subtraction()
 */
 int infer_multiplication()
 {
-  //  STUB STUB STUB
-  printf("Perform Multiplication\n");
+  //  Pop from Register Stack
+  rs_pop();
+
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_types[scope_curr][rs_second()];
+  TypeID rhsT = rs_types[scope_curr][rs_top()];
+
+  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_multiplication();
 
   return 0;
 }
@@ -91,8 +110,14 @@ int infer_multiplication()
 */
 int infer_division()
 {
-  //  STUB STUB STUB
-  printf("Perform Division\n");
+  //  Pop from Register Stack
+  rs_pop();
+
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_types[scope_curr][rs_second()];
+  TypeID rhsT = rs_types[scope_curr][rs_top()];
+
+  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_division();
 
   return 0;
 }
@@ -104,8 +129,14 @@ int infer_division()
 */
 int infer_modulus()
 {
-  //  STUB STUB STUB
-  printf("Perform Modulus\n");
+  //  Pop from Register Stack
+  rs_pop();
+
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_types[scope_curr][rs_second()];
+  TypeID rhsT = rs_types[scope_curr][rs_top()];
+
+  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_modulo();
 
   return 0;
 }
@@ -122,8 +153,14 @@ int infer_modulus()
 */
 int infer_bit_and()
 {
-  //  STUB STUB STUB
-  printf("Perform Bitwise AND\n");
+  //  Pop from Register Stack
+  rs_pop();
+
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_types[scope_curr][rs_second()];
+  TypeID rhsT = rs_types[scope_curr][rs_top()];
+
+  if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return bitwise_and();
 
   return 0;
 }
@@ -135,8 +172,14 @@ int infer_bit_and()
 */
 int infer_bit_or()
 {
-  //  STUB STUB STUB
-  printf("Perform Bitwise OR\n");
+  //  Pop from Register Stack
+  rs_pop();
+
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_types[scope_curr][rs_second()];
+  TypeID rhsT = rs_types[scope_curr][rs_top()];
+
+  if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return bitwise_or();
 
   return 0;
 }
@@ -148,8 +191,14 @@ int infer_bit_or()
 */
 int infer_bit_xor()
 {
-  //  STUB STUB STUB
-  printf("Perform Bitwise XOR\n");
+  //  Pop from Register Stack
+  rs_pop();
+
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_types[scope_curr][rs_second()];
+  TypeID rhsT = rs_types[scope_curr][rs_top()];
+
+  if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return bitwise_xor();
 
   return 0;
 }

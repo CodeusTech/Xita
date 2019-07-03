@@ -82,19 +82,12 @@ int pop_int()
 */
 int push_int(int lit)
 {
-  //  STUB STUB STUB
-  printf("Integer Literal Pushed to Register Stack: %d\n", lit);
-
-  //  Put Integer Literal on Top of Register Stack
-  rs[scope_curr][rs_top()] = lit;
-
   //  Map Integer Literal Type to Top of Register Stack
   rs_types[scope_curr][rs_top()] = TYPE_INTEGER;
 
-  printf("check\n");
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mov  %s, %d\n", get_reg(rs_top(), 32), lit);
+  sprintf(str, "mov   %s, #%d\n", get_reg(rs[scope_curr][rs_top()], 32), lit);
 
   //  Add to Queue for File Printing
   add_command(str);
@@ -177,19 +170,15 @@ int push_int_ident(char* ident)
 */
 int integer_addition()
 {
-  printf("Added top two registers on REGISTER STACK\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "add   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  Perform Addition
-  ADR rhs = rs_top();
-  ADR lhs = rs_second();
-
-  //  After Addition, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
 
   return 0;
 }
@@ -202,19 +191,15 @@ int integer_addition()
 */
 int integer_subtraction()
 {
-  printf("Subtracted top two registers on REGISTER STACK\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "sub   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  Perform Subtraction
-  ADR rhs = rs_top();
-  ADR lhs = rs_second();
-
-  //  After Subtraction, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
 
   return 0;
 }
@@ -227,19 +212,15 @@ int integer_subtraction()
 */
 int integer_multiplication()
 {
-  printf("Multiplied top two registers on REGISTER STACK\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "mul   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  Perform Multiplication
-  ADR rhs = rs_top();
-  ADR lhs = rs_second();
-
-  //  After Multiplication, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
 
   return 0;
 }
@@ -252,19 +233,15 @@ int integer_multiplication()
 */
 int integer_division()
 {
-  printf("Divided top two registers on REGISTER STACK\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "sdiv  %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  Perform Division
-  ADR rhs = rs_top();
-  ADR lhs = rs_second();
-
-  //  After Division, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
 
   return 0;
 }
@@ -275,21 +252,17 @@ int integer_division()
   Returns:
     0, if Successful
 */
-int integer_modulus()
+int integer_modulo()
 {
-  printf("Modulus'd top two registers on REGISTER STACK\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "mov   %s, %s mod %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  Perform Modulus
-  ADR rhs = rs_top();     //  Must be Integer Type
-  ADR lhs = rs_second();  //  Must be Integer Type
-
-  //  After Modulus, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
 
   return 0;
 }
@@ -306,6 +279,7 @@ int integer_modulus()
 */
 int bitwise_shl()
 {
+  // STUB STUB STUB
   printf("Bitwise Shift Left\n");
 
   /*
@@ -356,19 +330,15 @@ int bitwise_shr()
 */
 int bitwise_and()
 {
-  printf("Bitwise And\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "and   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  Perform Bitwise AND
-  ADR rhs = rs_top();
-  ADR lhs = rs_second();
-
-  //  After Bitwise AND, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
 
   return 0;
 }
@@ -381,19 +351,15 @@ int bitwise_and()
 */
 int bitwise_or()
 {
-  printf("Bitwise Or\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "orr   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  Perform Bitwise OR
-  ADR rhs = rs_top();
-  ADR lhs = rs_second();
-
-  //  After Bitwise OR, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
 
   return 0;
 }
@@ -406,19 +372,15 @@ int bitwise_or()
 */
 int bitwise_xor()
 {
-  printf("Bitwise Exclusive Or\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "eor   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  Perform Bitwise XOR
-  ADR rhs = rs_top();
-  ADR lhs = rs_second();
-
-  //  After Bitwise XOR, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
 
   return 0;
 }
