@@ -94,7 +94,7 @@ int push_int(int lit)
   printf("check\n");
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mov  %s, %d\n", get_reg(rs_top(), 'W'), lit);
+  sprintf(str, "mov  %s, %d\n", get_reg(rs_top(), 32), lit);
 
   //  Add to Queue for File Printing
   add_command(str);
