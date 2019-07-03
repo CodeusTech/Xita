@@ -12,6 +12,11 @@
 lex.yy.c
 xcsl.tab.c
 
+
 # _build Directory
 _build
+
+
+#  Generated Assembly Test Files
+tests/**/*.s
 
