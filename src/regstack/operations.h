@@ -36,7 +36,8 @@ extern unsigned char curr_reg;
 ADR* rs_new()
 {
   //  Allocate Register Stack Memory
-  ADR* rs = (ADR*) malloc(30);
+  ADR* new_rs = (ADR*) malloc(30);
+  TypeID* types = (TypeID*) malloc(30*sizeof(TypeID));
   
   //  Random Order Variables
   unsigned long activeRegs = 0;
@@ -50,12 +51,12 @@ ADR* rs_new()
     if (activeRegs & (int) (pow(2,chk))) i--;
     else
     {
-      rs[i] = chk;
+      new_rs[i] = chk;
       activeRegs |= (int) pow(2,chk);
     }
   }
 
-  return rs;
+  return new_rs;
 }
 
 /* 1.b) Push to Register Stack

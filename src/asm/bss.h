@@ -82,7 +82,7 @@ ErrorCode add_to_bss(Identifier ident, TypeID tid)
 
   char* str = (char*) malloc(256);
 
-  sprintf(str, "%s, %d", ident, tid);
+  sprintf(str, "%s, %lu", ident, tid);
     
   curr_asm_bss[index_asm_bss] = strdup(str);
   index_asm_bss++;

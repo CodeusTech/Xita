@@ -68,13 +68,13 @@ unsigned int mangle = 0;
 */
 
 //  2.a) Standard Register Stack
-ADR curr_reg;             //  Current Register pointer
-ADR** rs;                 //  Register Stack Orders
-unsigned int** rs_types;  //  Register Stack Types
+ADR curr_reg;       //  Current Register pointer
+ADR** rs;           //  Register Stack Orders
+TypeID** rs_types;  //  Register Stack Types
 
 //  2.b) Extended Register Stack
 unsigned int rse_next = 1;  //  Next Extended Register Stack
-unsigned long** rse_types;  //  Register Stack Types (Extended)
+TypeID** rse_types;  //  Register Stack Types (Extended)
 
 //  2.c) Context Scopes
 Scope scope_curr = 0;  //  Function/Register Stack Scope

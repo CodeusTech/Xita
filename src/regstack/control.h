@@ -22,7 +22,7 @@
 
 extern ADR** rs;  //  Global Register Stack Orders
 extern Scope scope_next;
-extern unsigned int** rs_types;
+extern TypeID** rs_types;
 extern unsigned int rse_next;
 extern unsigned long** rse_types;
 
@@ -34,17 +34,16 @@ extern unsigned long** rse_types;
 */
 int rs_stack_init(Scope scope)
 {
-  //  STUB STUB STUB
-
   /*
     TODO:
      * Error Check
   */
 
+  //  Set Create Register Stack
   rs[scope]     = (ADR*) malloc(31 * sizeof(ADR));
   rs[scope][31] = (ADR) 0;  // Indicates Extended Space isn't used
 
-  rs_types[scope]   = (unsigned int*) malloc(30 * sizeof(unsigned int));
+  rs_types[scope]   = (TypeID*) malloc(30 * sizeof(unsigned int));
 
   if  (scope == 0) rse_types[scope]  = NULL;
   else rse_types[scope] = (unsigned long*) malloc(255 * sizeof(unsigned long));
@@ -66,7 +65,8 @@ int rs_init()
   rs[0] = rs_new();
 
   //  Initialize Register Stack Types Buffer
-  rs_types = (unsigned int**) malloc(4096 * sizeof(unsigned int*));
+  rs_types = (TypeID**) malloc(4096 * sizeof(TypeID*));
+  rs_types[0] = (TypeID*) malloc (30 * sizeof(TypeID));
 
   //  Initialize Register Stack Types Buffer (Extended)
   rse_types = (unsigned long**) malloc(4096 * sizeof(unsigned long*));

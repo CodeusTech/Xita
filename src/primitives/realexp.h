@@ -32,9 +32,9 @@
 
 //  XCS Libraries
 #include "typecodes.h"
-#include "../types.h"
-#include "../../../grammar/status.h"
-#include "../../../regstack/regstack.h"
+#include "../grammar/status.h"
+#include "../regstack/regstack.h"
+#include "../globals/structs.h"
 
 extern unsigned int grammar_status;
 

@@ -19,6 +19,14 @@
   1.) Integer Literals
     1.a) Pop Integer
     1.b) Push Integer Literal
+      1.b.1) Push Unsigned 8-Bit Integer
+      1.b.2) Push Unsigned 16-Bit Integer
+      1.b.3) Push Unsigned 32-Bit Integer
+      1.b.4) Push Unsigned 64-Bit Integer
+      1.b.5) Push Signed 8-Bit Integer
+      1.b.6) Push Signed 16-Bit Integer
+      1.b.7) Push Signed 32-Bit Integer
+      1.b.8) Push Signed 64-Bit Integer
     1.c) Push Integer Identifier
   2.) Integer Arithmetic
     2.a) Integer Addition
@@ -39,11 +47,9 @@
 
 //  XCS Libraries
 #include "typecodes.h"
-#include "../types.h"
-#include "../../../grammar/status.h"
-#include "../../../regstack/regstack.h"
-#include "../../../globals/structs.h"
-
+#include "../grammar/status.h"
+#include "../regstack/regstack.h"
+#include "../globals/structs.h"
 
 
 extern unsigned int grammar_status;
@@ -66,19 +72,45 @@ int pop_int()
   return 0;
 }
 
-/* 1.b) Push Integer Literal
+/* 1.b) Push Integer Literals
+
+  Puts integer [lit] into current scope's register stack
+  Puts integer TypeID into current scope's register stack
 
   Returns:
     0, if Successful
 */
-int push_int_lit(int literal)
+int push_int(int lit)
 {
   //  STUB STUB STUB
-  printf("Integer Literal Pushed to Register Stack: %d\n", literal);
+  printf("Integer Literal Pushed to Register Stack: %d\n", lit);
+
+  //  Put Integer Literal on Top of Register Stack
+  rs[scope_curr][rs_top()] = lit;
+
+  //  Map Integer Literal Type to Top of Register Stack
+  rs_types[scope_curr][rs_top()] = TYPE_INTEGER;
+
+  printf("check\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  sprintf(str, "mov  %s, %d\n", get_reg(rs_top(), 'W'), lit);
+
+  //  Add to Queue for File Printing
+  add_command(str);
+
+  //  Free allocated memory and move to next register on stack
+  free(str);
   ADR reg = rs_push();
 
   return 0;
 }
+
+/* 1.b.1) Push Unsigned 8-Bit Integer
+
+*/
+
+
 
 /* 1.c) Push Integer Identifier
 

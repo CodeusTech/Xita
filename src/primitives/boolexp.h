@@ -36,7 +36,10 @@
 #define PRIMITIVES_BOOLEXP_H
 
 //  XCS Libraries
-#include "../../../regstack/regstack.h"
+#include "typecodes.h"
+#include "../grammar/status.h"
+#include "../regstack/regstack.h"
+#include "../globals/structs.h"
 
 /*
   1.) Boolean Literals

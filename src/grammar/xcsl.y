@@ -69,6 +69,7 @@
 #include "src/memory/memory.h"
 #include "src/modules/modules.h"
 #include "src/operator/operator.h"
+#include "src/primitives/primitives.h"
 #include "src/proc/proc.h"
 #include "src/regex/regex.h"
 #include "src/regstack/regstack.h"
@@ -303,15 +304,15 @@ exp:
 */
 exp_integer:
     RNG        { rng(); }
-  | INT        { push_int_lit($1);   }
+  | INT        { push_int($1);   }
 ;
 
 /*
   2.b) Boolean Expressions
 */
 exp_boolean:
-    TRUE   { push_int_lit(1); }
-  | FALSE  { push_int_lit(0); }
+    TRUE   { push_int(1); }
+  | FALSE  { push_int(0); }
 ;
 
 /*

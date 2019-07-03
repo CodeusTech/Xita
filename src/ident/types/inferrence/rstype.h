@@ -17,7 +17,7 @@
 #ifndef INFERRENCE_RSTYPE_H
 #define INFERRENCE_RSTYPE_H
 
-extern unsigned int** rs_types;
+extern TypeID** rs_types;
 
 /* 1.) Push Value Type
 

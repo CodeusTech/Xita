@@ -28,9 +28,10 @@
 #define PRIMITIVES_CHAREXP_H
 
 #include "typecodes.h"
-#include "../types.h"
+#include "../grammar/status.h"
+#include "../regstack/regstack.h"
+#include "../globals/structs.h"
 
-#include "../../../grammar/status.h"
 extern unsigned int grammar_status;
 
 /*
