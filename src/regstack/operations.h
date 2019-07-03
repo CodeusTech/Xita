@@ -36,8 +36,8 @@ extern unsigned char curr_reg;
 ADR* rs_new()
 {
   //  Allocate Register Stack Memory
-  ADR* new_rs = (ADR*) malloc(30);
-  TypeID* types = (TypeID*) malloc(30*sizeof(TypeID));
+  ADR* new_rs = (ADR*) malloc(26);
+  TypeID* types = (TypeID*) malloc(25*sizeof(TypeID));
   
   //  Random Order Variables
   unsigned long activeRegs = 0;
@@ -45,9 +45,9 @@ ADR* rs_new()
   int chk;
 
   // TODO: Make More Efficient
-  for (int i = 0; i < 30; i++)
+  for (int i = 0; i < 25; i++)
   {
-    chk = rand() % 30;
+    chk = rand() % 25;
     if (activeRegs & (int) (pow(2,chk))) i--;
     else
     {

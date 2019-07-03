@@ -232,10 +232,11 @@ xcs_source:
     src         { source_end(); }
 ;
 
+
 src:
-    src OP_SEP src
+    src OP_SEP src  {}
   | open     { }
-  | exp
+  | exp  {}
 ;
 
 /*

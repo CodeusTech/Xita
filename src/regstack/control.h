@@ -11,8 +11,9 @@
   Table of Contents
   =================
   1.) Initialize Function's Register Stack
-  2.) Initialize Register Stack Backend Infrastructure
-  3.) Finalize Register Stack
+  2.) Serialize Function's Register Stack
+  3.) Initialize Register Stack Backend Infrastructure
+  4.) Finalize Register Stack
 */
 
 #ifndef REGSTACK_CONTROL_H
@@ -40,10 +41,10 @@ int rs_stack_init(Scope scope)
   */
 
   //  Set Create Register Stack
-  rs[scope]     = (ADR*) malloc(31 * sizeof(ADR));
-  rs[scope][31] = (ADR) 0;  // Indicates Extended Space isn't used
+  rs[scope]     = (ADR*) malloc(26 * sizeof(ADR));
+  rs[scope][26] = (ADR) 0;  // Indicates Extended Space isn't used
 
-  rs_types[scope]   = (TypeID*) malloc(30 * sizeof(unsigned int));
+  rs_types[scope]   = (TypeID*) malloc(25 * sizeof(unsigned int));
 
   if  (scope == 0) rse_types[scope]  = NULL;
   else rse_types[scope] = (unsigned long*) malloc(255 * sizeof(unsigned long));
@@ -51,8 +52,41 @@ int rs_stack_init(Scope scope)
   return 0;
 }
 
+/* 2.) Serialize Register Stack
 
-/* 2.) Initialize Register Stack
+  Returns:
+    0, if Successful
+*/
+int rs_serialize()
+{
+  int active = curr_reg;
+  unsigned long long reg1, reg2 = (unsigned long long) 0;
+
+  //  Create Serial Integers
+  for (unsigned long long i = 0; i < active; i++)
+  {
+    ADR reg = rs_pop();
+    printf("%d\n", curr_reg);
+
+    unsigned long long test = (unsigned long long) rs[scope_curr][rs_top()];
+    unsigned long long test2 = ((((unsigned long long) 31) & test) << (i * 5));
+
+    printf("%llu\n", test2);
+
+    reg1 |= test2;
+  }
+
+  char* str = (char*) malloc(50);
+  sprintf(str, "mov   W30, %llu\n", reg1);
+
+  add_command(str);
+
+  free(str);
+
+  return 0;
+}
+
+/* 3.) Initialize Register Stack
 
   Returns:
     0, if Successful
@@ -66,7 +100,7 @@ int rs_init()
 
   //  Initialize Register Stack Types Buffer
   rs_types = (TypeID**) malloc(4096 * sizeof(TypeID*));
-  rs_types[0] = (TypeID*) malloc (30 * sizeof(TypeID));
+  rs_types[0] = (TypeID*) malloc (25 * sizeof(TypeID));
 
   //  Initialize Register Stack Types Buffer (Extended)
   rse_types = (unsigned long**) malloc(4096 * sizeof(unsigned long*));
@@ -76,18 +110,22 @@ int rs_init()
 }
 
 
-/* 3.) Finalize Register Stack
+/* 4.) Finalize Register Stack
 
   Returns:
     0, if Successful
 */
 int rs_end()
 {
-  printf("rs_finish() Called...\n");
+  rs_serialize();
+
+  /*
+    FREE MEMORY BUFFERS
+  */
   for (int i = 0; i < scope_next; i++)
   {
     //  Entry Function Context Scope
-    if (rs[i][31] == (ADR) 0) 
+    if (rs[i][26] == (ADR) 0) 
     {
       free(rs[i]);
       free(rs_types[i]);
