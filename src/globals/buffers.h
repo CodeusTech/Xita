@@ -10,23 +10,26 @@
 
   Table of Contents
   =================
-  1.) Assembly Buffers
-    1.a) .text Buffers
-    1.b) .bss Buffers
-    1.c) Name Mangling
-  2.) Register Stack
-    2.a) Standard Register Stack
-    2.b) Extended Register Stack
-    2.c) Context Scopes
-  3.) Function Buffers
-    3.a) Functions
-    3.b) Parameters
-    3.c) Constants
-  4.) Type Buffers
-    4.a) Type Data
-    4.b) Constructors
-    4.c) Typeclasses
-  5.) Constructors
+  1.) Compiler Buffers
+    1.a) Name Mangling
+    1.b) Last Encountered Value
+    1.c) Last Encountered Type
+  2.) Assembly Buffers
+    2.a) .text Section
+    2.b) .bss Section
+    2.c) .data Section
+  3.) Register Stack
+    3.a) Standard Register Stack
+    3.b) Extended Register Stack
+    3.c) Context Scopes
+  4.) Function Buffers
+    4.a) Functions
+    4.b) Parameters
+    4.c) Constants
+  5.) Type Buffers
+    5.a) Type Data
+    5.b) Constructors
+    5.c) Typeclasses
   6.) Operator Buffers
     6.a) Operand Pairs
 */
@@ -37,46 +40,57 @@
 #include "structs.h"
 
 
+
 /*
-  1.) Assembly Buffers
+  1.) Compiler Buffers
 */
 
-//  1.a) .text Buffers
+// 1.a) Name Mangling
+unsigned int mangle = 0;
+
+// 1.b) Last Encountered Value
+void* last_data;
+
+// 1.c) Last Encountered Type
+TypeID last_type = 0;
+
+/*
+  2.) Assembly Buffers
+*/
+
+//  2.a) .text Buffers
 char** start_asm_text;
 char**  curr_asm_text;
 unsigned int count_asm_text;
 unsigned int index_asm_text;
 
-//  1.b) .bss Buffers
+//  2.b) .bss Buffers
 char** start_asm_bss;
 char**  curr_asm_bss;
 unsigned int count_asm_bss;
 unsigned int index_asm_bss;
 
-//  1.c) .data Buffers
+//  2.c) .data Buffers
 char** start_asm_data;
 char**  curr_asm_data;
 unsigned int count_asm_data;
 unsigned int index_asm_data;
 
-// 1.c) Name Mangling
-unsigned int mangle = 0;
-
 
 /*
-  2.) Register Stack
+  3.) Register Stack
 */
 
-//  2.a) Standard Register Stack
+//  3.a) Standard Register Stack
 ADR curr_reg;       //  Current Register pointer
 ADR** rs;           //  Register Stack Orders
 TypeID** rs_types;  //  Register Stack Types
 
-//  2.b) Extended Register Stack
+//  3.b) Extended Register Stack
 unsigned int rse_next = 1;  //  Next Extended Register Stack
 TypeID** rse_types;  //  Register Stack Types (Extended)
 
-//  2.c) Context Scopes
+//  3.c) Context Scopes
 Scope scope_curr = 0;  //  Function/Register Stack Scope
 Scope scope_next = 1;  //  Next Function Scope
 Scope* scope_parents;  //  Parent (Return) Scope 
@@ -84,43 +98,44 @@ Scope* scope_parents;  //  Parent (Return) Scope
 
 
 /*
-  3.) Function Buffers
+  4.) Function Buffers
 */
 
-//  3.a) Functions
+//  4.a) Functions
 char** ident_funct;         //  Function Identifiers
 unsigned int* type_funct;   //  Return Type of Functions
 unsigned int* rtn_funct;    //  Number of Function Returns
 
-//  3.b) Parameters
+//  4.b) Parameters
 char*** param_funct;        //  Function Parameter Identifiers
 unsigned int* pnum_funct;   //  Number of Parameters for Function
 unsigned int** ptype_funct; //  Function Parameter Types
 
-//  3.c) Constants
+//  4.c) Constants
 char** ident_const;       //  Constant Identifiers
 unsigned int* type_const; //  Constant Type Codes
+unsigned int count_const; //  Number of Constants
 
 
 
 /*
-  4.) Type Buffers
+  5.) Type Buffers
 */
 
-//  4.a) Type Data
+//  5.a) Type Data
 unsigned int* types;      //  Type Codes
 unsigned int count_types; //  Number of Types
 char** ident_types;       //  Type Identifiers
 char*** param_types;      //  Type Parameters
 
-//  4.b) Constructors
+//  5.b) Constructors
 char** ident_construct;       //  Constructor Identifiers
 unsigned int* count_construct;//  Number of Constructors for Function
 char*** ident_elem;           //  Element Identifiers
 char** etype_construct;       //  Types of Elements for Constructor
 unsigned int* enum_construct; //  Number of Elements for Constructor
 
-//  4.c) Typeclasses 
+//  5.c) Typeclasses 
 char** ident_typeclasses; //  Typeclass Identifiers
 
 char** ident_prototypes;  //  Prototype Identifiers

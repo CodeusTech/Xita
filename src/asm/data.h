@@ -108,16 +108,17 @@ ErrorCode add_constant_int(Identifier ident, int value, int bytes)
       return 1;
   }
 
-  sprintf(str, "%s: .%s %d", ident, size, value);
+  sprintf(str, "%s: .%s #%d", ident, size, value);
     
   curr_asm_data[index_asm_data] = strdup(str);
   index_asm_data++;
   count_asm_data++;
 
   free(str);
+  free(size);
 
   // Return Success
-  return SUCCESS;
+  return 0;
 }
 
 /* 2.b) Add Real to Data
@@ -140,31 +141,12 @@ ErrorCode add_real_to_data(Identifier ident, double value)
   return 0;
 }
 
-/* 2.c) Add Boolean to Data
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode add_bool_to_data(Identifier ident, bool value)
-{
-  //  STUB STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-     * Print Boolean Constant to .data Section
-  */
-
-  //  Return Success
-  return 0;
-}
-
 /* 2.d) Add Character to Data
 
   Returns:
     0, if Successful
 */
-ErrorCode add_char_to_data(Identifier ident, bool value)
+ErrorCode add_char_to_data(Identifier ident, char value)
 {
   //  STUB STUB STUB STUB
 
@@ -184,18 +166,29 @@ ErrorCode add_char_to_data(Identifier ident, bool value)
   Returns:
     0, if Successful
 */
-ErrorCode add_string_to_data(Identifier ident, char* str)
+ErrorCode add_constant_str(Identifier ident, char* string)
 {
-  //  STUB STUB STUB STUB
+  if (index_asm_data == 255)
+  {
+    curr_asm_data[255] = (Command*) malloc(256 * sizeof(Command));
+    curr_asm_data = (Command*) curr_asm_data[255];
 
-  /*
-    TODO:
-     * Error Check
-     * Print String Constant to .data Section
-  */
+    index_asm_text = 0;
+  }
+
+  char* str = (char*) malloc(256);
+
+
+
+  sprintf(str, "%s SETS \"%s\"", ident, string);
+    
+  curr_asm_data[index_asm_data] = strdup(str);
+  index_asm_data++;
+  count_asm_data++;
+
+  free(str);
 
   //  Return Success
-
   return 0;
 }
 

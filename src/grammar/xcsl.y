@@ -308,7 +308,7 @@ exp:
 */
 exp_integer:
     RNG        { rng(); }
-  | INT        { push_int($1);   }
+  | INT        { last_data = (int) $1; push_int($1);   }
 ;
 
 /*
@@ -332,8 +332,8 @@ exp_real:
   2.d) Character Expressions
 */
 exp_char:
-    CHAR        { push_char_lit($1); }
-  | CHAR_C INT  { push_char_int($2); }
+    CHAR        { last_data = (char) $1; push_char_lit($1); }
+  | CHAR_C INT  { last_data = (char) $2; push_char_int($2); }
 ;
 
 /*
@@ -341,7 +341,7 @@ exp_char:
 */
 exp_string:
     exp_string OP_APPEND exp_string { string_append(); }
-  | STRING  {/* Push pointer to string onto Register Stack */}
+  | STRING  { last_data = $1; push_int(1); /*Push String to Register Stack*/ }
 ;
 
 /*
@@ -444,13 +444,9 @@ exp_is:
 /*
   4.a) Constants
 */
-const:
-    CONST exp_construct          { decl_constant("\0"); }
-  | CONST IDENTIFIER OF exp_type { decl_constant($2); }
-;
-
 decl_const:
-    const OP_ASSIGN exp
+    CONST IDENTIFIER OF exp_type OP_ASSIGN exp  { decl_constant($2); }
+  | CONST exp_construct {}
 ;
 
 /*
@@ -544,25 +540,25 @@ param_arg:
 */
 exp_type:
     exp_type exp_type
-  | INT_T
-  | U8_T
-  | I8_T
-  | U16_T
-  | I16_T
-  | U32_T
-  | I32_T
-  | U64_T
-  | I64_T
-  | REAL_T
-  | FLOAT_T
-  | DOUBLE_T
-  | CHAR_T
-  | STRING_T
-  | BOOL_T
-  | LIST_T
-  | exp_type OP_TUP exp_type
-  | OP_REC_L record OP_REC_R
-  | IDENTIFIER
+  | INT_T             { last_type = 2;  }
+  | U8_T              { last_type = 3;  }
+  | I8_T              { last_type = 4;  }
+  | U16_T             { last_type = 5;  }
+  | I16_T             { last_type = 6;  }
+  | U32_T             { last_type = 7;  }
+  | I32_T             { last_type = 8;  }
+  | U64_T             { last_type = 9;  }
+  | I64_T             { last_type = 10; }
+  | REAL_T            { last_type = 11; }
+  | FLOAT_T           { last_type = 12; }
+  | DOUBLE_T          { last_type = 13; }
+  | BOOL_T            { last_type = 14; }
+  | CHAR_T            { last_type = 15; }
+  | STRING_T          { last_type = 16; }
+  | LIST_T            { last_type = 17; }
+  | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
+  | OP_REC_L record OP_REC_R { printf("Implement Me\n"); }
+  | IDENTIFIER        { last_type = find_type($1); }
 ;
 
 /*
