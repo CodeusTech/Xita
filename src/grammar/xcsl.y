@@ -210,13 +210,16 @@ xcs:
 ;
 
 open_source:
-  OPEN SOURCE_M STRING { open_source($3); };
+  OPEN SOURCE_M STRING { open_source($3); }
+;
 
 open_tether:
-  OPEN TETHER_M STRING { open_tether($3); };
+  OPEN TETHER_M STRING { open_tether($3); }
+;
 
 open_header:
-  OPEN HEADER_M STRING { open_header($3); };
+  OPEN HEADER_M STRING { open_header($3); }
+;
 
 open:
     open_source {  }
