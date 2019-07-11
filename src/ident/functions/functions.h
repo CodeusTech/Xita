@@ -15,6 +15,7 @@
 
 //  Function Headers
 #include "constant.h"
+#include "declarations.h"
 #include "parameter.h"
 #include "operations.h"
 #include "recursion.h"

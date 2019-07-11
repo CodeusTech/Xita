@@ -18,29 +18,6 @@
 #ifndef FUNCTIONS_CONSTANTS_H
 #define FUNCTIONS_CONSTANTS_H
 
-extern Identifier* ident_constants;
-
-
-/* 1.) Declare Constant
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode decl_constant(Identifier constant)
-{
-  //  STUB STUB STUB
-  printf("Constant Declared: %s\n", constant);
-
-  /*
-    TODO:
-     * Error Check
-     * Statically Determine Constant Value
-      + If cannot statically determine, Report Error
-     * Record Constant into .bss Section
-  */
-
-  return 0;
-}
 
 
 /* 2.) Constant Expressions

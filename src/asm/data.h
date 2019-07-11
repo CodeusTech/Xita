@@ -38,10 +38,10 @@
 ErrorCode generate_data(FILE* filename)
 {
   //  Stub Stub Stub
-  printf(".text Section Generated\n");
+  printf(".data Section Generated\n");
 
   //  Print TEXT Segment Name into File
-  fprintf(filename, ".data:\n");
+  fprintf(filename, ".section .data:\n");
   
   curr_asm_data = start_asm_data;
 
@@ -75,8 +75,9 @@ Adds Integer Constant to .data Section
 
   Returns:
     0, if Successful
+    1, if `bytes` is invalid
 */
-ErrorCode add_constant_int(Identifier ident, int value)
+ErrorCode add_constant_int(Identifier ident, int value, int bytes)
 {
   if (index_asm_data == 255)
   {
@@ -87,8 +88,27 @@ ErrorCode add_constant_int(Identifier ident, int value)
   }
 
   char* str = (char*) malloc(256);
+  char* size = (char*) malloc(10);
+  
+  switch (bytes)
+  {
+    case 1:
+      sprintf(size, "byte");
+      break;
+    case 2:
+      sprintf(size, "hword");
+      break;
+    case 4:
+      sprintf(size, "word");
+      break;
+    case 8:
+      sprintf(size, "dword");
+      break;
+    default:
+      return 1;
+  }
 
-  sprintf(str, "%s: .word %d", ident, value);
+  sprintf(str, "%s: .%s %d", ident, size, value);
     
   curr_asm_data[index_asm_data] = strdup(str);
   index_asm_data++;
@@ -97,7 +117,7 @@ ErrorCode add_constant_int(Identifier ident, int value)
   free(str);
 
   // Return Success
-  return 0;
+  return SUCCESS;
 }
 
 /* 2.b) Add Real to Data
