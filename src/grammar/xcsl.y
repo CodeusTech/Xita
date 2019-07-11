@@ -146,7 +146,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 
 //  Datatype Keywords
 %token TYPE TYPECLASS
-%token IS OF REQ
+%token IS OF REQ IMPL
 %token OP_REC_L OP_REC_R OP_ELEMENT
 
 //  Static Memory Manipulation
@@ -210,13 +210,16 @@ xcs:
 ;
 
 open_source:
-  OPEN SOURCE_M STRING { open_source($3); };
+  OPEN SOURCE_M STRING { open_source($3); }
+;
 
 open_tether:
-  OPEN TETHER_M STRING { open_tether($3); };
+  OPEN TETHER_M STRING { open_tether($3); }
+;
 
 open_header:
-  OPEN HEADER_M STRING { open_header($3); };
+  OPEN HEADER_M STRING { open_header($3); }
+;
 
 open:
     open_source {  }
@@ -565,13 +568,27 @@ exp_type:
 /*
   TYPE DECLARATIONS
 */
-type2:
-    TYPE IDENTIFIER { decl_type($2); }
+dinit_type: 
+  TYPE IDENTIFIER  {/* Declare Identifier as Type and Refresh Buffers */}
 ;
 
 decl_type:
-    type2 OP_ASSIGN decl_construct { }
-  | type2 OP_ASSIGN exp_type {}
+  dinit_type param_type OP_ASSIGN decl_construct implements
+;
+
+implements:
+    IMPL l_typeclass
+  | 
+;
+
+l_typeclass:
+    IDENTIFIER OP_COMMA l_typeclass  {printf("Typeclass %s Implemented\n", $1);}
+  | IDENTIFIER                       {printf("Typeclass %s Implemented\n", $1);}
+;
+
+param_type:
+    IDENTIFIER param_type     {printf("Type Parameter '%s' Encountered\n", $1); }
+  | {/* Intentionally Left Blank */}
 ;
 
 /*
@@ -639,7 +656,12 @@ typeclass:
 
 decl_typeclass:
     typeclass REQ exp_prototype
+; 
+
+exp_typeclass:
+    IDENTIFIER
 ;
+
 
 /*
   PROTOTYPE EXPRESSIONS
