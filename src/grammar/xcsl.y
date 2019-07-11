@@ -146,7 +146,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 
 //  Datatype Keywords
 %token TYPE TYPECLASS
-%token IS OF REQ
+%token IS OF REQ IMPL
 %token OP_REC_L OP_REC_R OP_ELEMENT
 
 //  Static Memory Manipulation
@@ -570,7 +570,17 @@ dinit_type:
 ;
 
 decl_type:
-  dinit_type param_type OP_ASSIGN decl_construct
+  dinit_type param_type OP_ASSIGN decl_construct implements
+;
+
+implements:
+    IMPL l_typeclass
+  | 
+;
+
+l_typeclass:
+    IDENTIFIER OP_COMMA l_typeclass  {printf("Typeclass %s Implemented\n", $1);}
+  | IDENTIFIER                       {printf("Typeclass %s Implemented\n", $1);}
 ;
 
 param_type:
@@ -643,7 +653,12 @@ typeclass:
 
 decl_typeclass:
     typeclass REQ exp_prototype
+; 
+
+exp_typeclass:
+    IDENTIFIER
 ;
+
 
 /*
   PROTOTYPE EXPRESSIONS

@@ -242,12 +242,13 @@ extern int yylex();
 */  
 %}
 
-"type"      { return TYPE;      }
-"typeclass" { return TYPECLASS; }
+"type"       { return TYPE;      }
+"typeclass"  { return TYPECLASS; }
 
 "is"        { return IS;  }
 "of"        { return OF;  }
 "requires"  { return REQ; }
+"implements" { return IMPL;  }
 
 "this"      { return THIS; }
 
