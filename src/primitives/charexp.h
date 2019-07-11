@@ -22,6 +22,7 @@
     1.c) Push Character Integer
     1.d) Push Character Identifier
   2.) Character Expressions
+  3.) Character Codes
 */
 
 #ifndef PRIMITIVES_CHAREXP_H
@@ -143,6 +144,51 @@ int char_from_int(int i)
   return 0;
 
   return 0;
+}
+
+/*
+  3.) Character Codes
+
+  Returns:
+    * 0-255, Valid ASCII Character Code
+    * -1, if invalid ASCII character
+*/
+int get_char_code(char* str)
+{
+  if (strlen(str) == 0) return 0;
+  if (strlen(str) == 2)
+  {
+    if (str[0] != '\\') return -1;  //  REPORT ERROR
+    switch (str[1])
+    {
+      case '0':
+        return 0;
+      case 'a':
+        return 7;
+      case 'b':
+        return 8;
+      case 't':
+        return 9;
+      case 'n':
+        return 10;
+      case 'v':
+        return 11;
+      case 'f':
+        return 12;
+      case 'r':
+        return 13;
+      case '\"':
+        return 34;
+      case '\'':
+        return 39;
+      case '\\':
+        return 92;
+    }
+  }
+  if (strlen(str) == 1) return str[0];
+
+  //  REPORT ERROR, all valid options should be caught by now
+  return -1;
 }
 
 

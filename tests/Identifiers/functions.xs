@@ -20,7 +20,7 @@
   1.) Constant Declarations
 *)
 
-const pi of char = 'c';;
+const pi of char = '\t';;
 
 
 (*
