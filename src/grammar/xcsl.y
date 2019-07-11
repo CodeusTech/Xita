@@ -565,13 +565,17 @@ exp_type:
 /*
   TYPE DECLARATIONS
 */
-type2:
-    TYPE IDENTIFIER { decl_type($2); }
+dinit_type: 
+  TYPE IDENTIFIER  {/* Declare Identifier as Type and Refresh Buffers */}
 ;
 
 decl_type:
-    type2 OP_ASSIGN decl_construct { }
-  | type2 OP_ASSIGN exp_type {}
+  dinit_type param_type OP_ASSIGN decl_construct
+;
+
+param_type:
+    IDENTIFIER param_type     {printf("Type Parameter '%s' Encountered\n", $1); }
+  | {/* Intentionally Left Blank */}
 ;
 
 /*
