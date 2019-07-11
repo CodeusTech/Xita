@@ -332,8 +332,8 @@ exp_real:
   2.d) Character Expressions
 */
 exp_char:
-    CHAR        { last_data = (char) $1; push_char_lit($1); }
-  | CHAR_C INT  { last_data = (char) $2; push_char_int($2); }
+    CHAR        { last_data = (unsigned char) $1; push_char_lit($1); }
+  | CHAR_C INT  { last_data = (unsigned char) $2; push_char_int($2); }
 ;
 
 /*

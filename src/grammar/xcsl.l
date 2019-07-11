@@ -311,9 +311,9 @@ extern int yylex();
 <STR>([^"])* { yylval.val_string = strdup(yytext); return STRING; }  //  STRING PRIMITIVE
 <STR>\"         BEGIN(INITIAL);
 
-\'              BEGIN(CHR);
-<CHR>([.]){0,2} { yylval.val_string = strdup(yytext); return CHAR; }  //  ChHARACTER PRIMITIVE
-<CHR>\'         BEGIN(INITIAL);
+'              BEGIN(CHR);
+<CHR>([^']){0,2}  { yylval.val_char = yytext[0]; return CHAR; }  //  CHARACTER PRIMITIVE
+<CHR>'         BEGIN(INITIAL);
 
 [A-Z][a-zA-Z0-9_]*\'?   { yylval.val_ident = strdup(yytext); return CONSTRUCTOR; }
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }

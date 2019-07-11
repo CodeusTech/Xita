@@ -77,7 +77,7 @@ ErrorCode decl_constant(Identifier ident)
       add_constant_int (ident, (bool) last_data, 1);
       break;
     case TYPE_CHAR:
-      add_constant_int (ident, (char) last_data, 1);
+      add_constant_int (ident, (unsigned char) last_data, 1);
       break;
     case TYPE_STRING:
       add_constant_str (ident, (char*) last_data);
