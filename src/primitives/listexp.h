@@ -49,19 +49,28 @@ int decl_list()
       * Construct Data Node
       * Repeat for Each Node in List
   */
+
   //  Calculate Node Size
   unsigned long nsize = _xcs_get_size(last_type);
-  nsize += 16; //  Add Pointer to Next Node
+  nsize += 8; //  Add Pointer to Next Node
 
   //  Move Node Size to OSP for memory allocation
   char* str = (char*) malloc (50);
+
+  /*
+    TODO:
+      * Error Check for situations with extended register stacks
+  */
+  sprintf(str, "mov   %s, %s\n", get_reg64(rs[scope_curr][rs_second()]), 
+    get_reg64(rs[scope_curr][rs_top()]));
+  add_command(str);
 
   //  Move Node Size to OSP for Memory Allocation
   sprintf(str, "mov   x28, #%lu\n", nsize);
   add_command(str);
 
   //  Serialize Pointer's register into x29
-  sprintf(str, "mov   x29, #%d\n", rs_top());
+  sprintf(str, "mov   x29, #%d\n", rs[scope_curr][rs_second()]);
   add_command(str);
 
   /*
@@ -82,8 +91,10 @@ int decl_list()
       * Create link to the list's Tail
   */
 
-  //  Push List Pointer to Register Stack
-  ADR reg = rs_push();
+  sprintf(str, "str   %s, [%s]\n", get_reg32(rs[scope_curr][rs_top()]), get_reg64(rs[scope_curr][rs_second()]));
+  add_command(str);
+
+  rs_pop();
 
   //  Free Memory
   free(str);
@@ -104,8 +115,7 @@ int list_tail()
   */
 
   //  Acquire List Type Size
-  unsigned long offset = _xcs_get_size(last_type);
-  offset += 8; //  Shift to Tail
+  unsigned long offset = _xcs_get_size(last_type); // Shift to pointer
 
   //  Allocate Space for Command
   char* str = (char*) malloc(50);

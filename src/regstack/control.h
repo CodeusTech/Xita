@@ -33,16 +33,15 @@ extern unsigned long** rse_types;
   Returns:
     0, if Successful
 */
-int rs_stack_init(Scope scope)
+int rs_init(Scope scope)
 {
   /*
     TODO:
      * Error Check
+     * Check for Scope == 255
   */
-
   //  Set Create Register Stack
-  rs[scope]     = (ADR*) malloc(26 * sizeof(ADR));
-  rs[scope][26] = (ADR) 0;  // Indicates Extended Space isn't used
+  rs_new(scope);
 
   rs_types[scope]   = (TypeID*) malloc(25 * sizeof(unsigned int));
 
@@ -82,29 +81,6 @@ int rs_serialize()
   add_command(str);
 
   free(str);
-
-  return 0;
-}
-
-/* 3.) Initialize Register Stack
-
-  Returns:
-    0, if Successful
-*/
-int rs_init()
-{
-  printf("rs_init() Called...\n");
-  //   Initialize Register Stack Buffers, and 1st Reg Stack
-  rs = (ADR**) malloc(4096 * sizeof(ADR*));
-  rs[0] = rs_new();
-
-  //  Initialize Register Stack Types Buffer
-  rs_types = (TypeID**) malloc(4096 * sizeof(TypeID*));
-  rs_types[0] = (TypeID*) malloc (25 * sizeof(TypeID));
-
-  //  Initialize Register Stack Types Buffer (Extended)
-  rse_types = (unsigned long**) malloc(4096 * sizeof(unsigned long*));
-  rse_types[0] = NULL;  //  RESERVED
 
   return 0;
 }

@@ -9,5 +9,5 @@
   Contains test cases for XCS Primitive Linked Lists
 *)
 
-let lst = tl [1, 2, 3, 4]
+tl [1, 2, 3, 4]
 

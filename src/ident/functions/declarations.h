@@ -111,7 +111,7 @@ ErrorCode decl_function (Identifier ident)
   Scope s = get_scope_next();
 
   //  Generate Register Stack for New Scope
-  rs_stack_init(s);
+  rs_init(s);
   
   //  Print Function Identifier to Assembly File
   char comm[300];

@@ -33,12 +33,11 @@ extern unsigned char curr_reg;
 /* 1.a) Create New Register Stack
 
 */
-ADR* rs_new()
+ADR* rs_new(Scope scope)
 {
   //  Allocate Register Stack Memory
-  ADR* new_rs = (ADR*) malloc(26);
-  TypeID* types = (TypeID*) malloc(25*sizeof(TypeID));
-  
+  rs[scope] = (ADR*) malloc(26*sizeof(ADR));
+
   //  Random Order Variables
   unsigned long activeRegs = 0;
   curr_reg = 0;
@@ -51,12 +50,14 @@ ADR* rs_new()
     if (activeRegs & (int) (pow(2,chk))) i--;
     else
     {
-      new_rs[i] = chk;
+      rs[scope][i] = chk;
       activeRegs |= (int) pow(2,chk);
     }
   }
+  
+  rs[scope][25] = (ADR) 0;  // Indicates Extended Space isn't used
 
-  return new_rs;
+  return rs[scope];
 }
 
 /* 1.b) Push to Register Stack

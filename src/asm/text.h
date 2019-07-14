@@ -91,4 +91,11 @@ ErrorCode add_command(Command command)
   return 0;
 }
 
+
+Command get_last_command()
+{
+  --count_asm_text;
+  return curr_asm_text[--index_asm_text];
+}
+
 #endif

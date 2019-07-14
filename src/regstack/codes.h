@@ -30,16 +30,16 @@ char* get_reg(int i, unsigned char bits)
   switch (bits)
   {
     case 8:
-      sprintf(str, "%c%d", 'B', i);
+      sprintf(str, "%c%d", 'b', i);
       return str;
     case 16:
-      sprintf(str, "%c%d", 'H', i);
+      sprintf(str, "%c%d", 'h', i);
       return str;
     case 32:
-      sprintf(str, "%c%d", 'W', i);
+      sprintf(str, "%c%d", 'w', i);
       return str;
     case 64:
-      sprintf(str, "%c%d", 'X', i);
+      sprintf(str, "%c%d", 'x', i);
       return str;
     default:
       //  ERROR

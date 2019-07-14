@@ -66,7 +66,12 @@ int main(int argc, char** argv)
 			init_asm_text();
 			init_asm_data();
 			init_asm_bss();
-			rs_init();
+
+			rs = (ADR**) malloc(256*sizeof(ADR*));
+			rs_types = (TypeID**) malloc(256*sizeof(TypeID*));			
+			rse_types = (TypeID**) malloc(256*sizeof(TypeID*));
+
+			rs_init(0);
 
 			//  Set Parser File Pointer
 			yyin = fopen(argv[i], "r");
@@ -91,7 +96,7 @@ int main(int argc, char** argv)
 		3.) Interpreter Mode
 	*/
 	if (interpreted) yyin = stdin;
-	rs_init();
+	rs_init(scope_curr);
 
 	while (!feof(yyin)) yyparse();
 
