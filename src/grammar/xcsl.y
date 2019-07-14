@@ -308,7 +308,7 @@ exp:
 */
 exp_integer:
     RNG        { rng(); }
-  | INT        { last_data = (int) $1; push_int($1);   }
+  | INT        { last_data = (void*) (long) $1; push_int((long) last_data);   }
 ;
 
 /*
@@ -332,8 +332,8 @@ exp_real:
   2.d) Character Expressions
 */
 exp_char:
-    CHAR        { last_data = (unsigned char) $1; push_char_lit($1); }
-  | CHAR_C INT  { last_data = (unsigned char) $2; push_char_int($2); }
+    CHAR        { last_data = (void*) (unsigned long) $1; push_char_lit((unsigned char) $1); }
+  | CHAR_C INT  { last_data = (void*) (unsigned long) $2; push_char_int((unsigned char) $2); }
 ;
 
 /*

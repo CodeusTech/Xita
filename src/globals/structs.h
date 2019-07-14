@@ -43,7 +43,7 @@ typedef char* Identifier;
 typedef char* Constructor;
 
 /*
-  1.a) Assmebly Infrastructure
+  1.a) Assembly Infrastructure
 */
 
 typedef char* Command;
@@ -84,6 +84,9 @@ typedef unsigned int ElementID;
 //  4.b) Typeclasses
 typedef unsigned long TypeclassID;
 typedef unsigned int PrototypeID;
+
+//  4.c) Primitives
+typedef void* Arbitrary;
 
 /*
   7.) Operator Structures

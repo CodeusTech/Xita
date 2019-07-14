@@ -7,7 +7,7 @@
 
 CCOMP=gcc
 CFLAGS=-std=gnu11 -lm -Wall
-SILENT=-Wno-unused-variable
+SILENT=-Wno-unused-variable -Wno-pointer-to-int-cast
 
 #  Build and Install Cross Compiler
 install: build tidy

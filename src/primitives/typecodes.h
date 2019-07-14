@@ -76,4 +76,63 @@
 #define TYPE_LIST     17
 
 
+/*
+  _xcs_get_size ()
+
+  This function returns the size (in bytes) of a given Type ID.
+
+  Returns:
+    0, if Error
+*/
+unsigned long _xcs_get_size(TypeID tid)
+{
+  switch (tid)
+  {
+    case TYPE_ARBITRARY:  //  VOID POINTER
+      return 8;
+    case TYPE_INTEGER:
+      return 2;
+    case TYPE_U8:
+      return 1;
+    case TYPE_I8:
+      return 1;
+    case TYPE_U16:
+      return 2;
+    case TYPE_I16:
+      return 2;
+    case TYPE_U32:
+      return 4;
+    case TYPE_I32:
+      return 4;
+    case TYPE_U64:
+      return 8;
+    case TYPE_I64:
+      return 8;
+    case TYPE_REAL:
+      return 10;
+    case TYPE_FLOAT:
+      return 10;
+    case TYPE_DOUBLE:
+      return 16;
+    case TYPE_BOOLEAN:
+      return 1;
+    case TYPE_CHAR:
+      return 1;
+    case TYPE_STRING:   //  POINTER
+      return 8;      
+    case TYPE_LIST:     //  POINTER
+      return 8;
+    default:
+      /*
+        TODO:
+          * if tid > 17
+            - if tid > (17 + count_types)  OR  if tid == 0
+              + Report Error (tid Out of Bounds)
+            - else
+              + Find Type Size using Buffer
+      */
+      return 0; //  REPORT ERROR
+  }
+}
+
 #endif

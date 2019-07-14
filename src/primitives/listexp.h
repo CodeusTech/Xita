@@ -40,11 +40,47 @@
   Returns:
     0, if Successful
 */
-int list_construct()
+int list_construct(TypeID tid, Arbitrary data)
 {
-  printf("List Constructed: \n");
+  /*
+    TODO: 
+      * Check Size of Type ID
+      * Allocate Dynamic Memory
+      * Construct Data Node
+      * Repeat for Each Node in List
+  */
+  //  Calculate Node Size
+  unsigned long nsize = _xcs_get_size(tid);
+  nsize += 8; //  Add Pointer to Next Node
 
-  //  TODO:  Error Check
+  //  Move Node Size to OSP for memory allocation
+  char* str = (char*) malloc (50);
+
+  //  Move Node Size to OSP for Memory Allocation
+  sprintf(str, "  mov x28, #%lu", nsize);
+  add_command(str);
+
+  //  Serialize Pointer's register into x29
+  sprintf(str, "  mov x29, #%d", rs_top());
+  add_command(str);
+
+  /*
+    TODO:
+      * Preserve lr (unless unnecessary, which is VERY preferable)
+  */
+
+  sprintf(str, "  bl __xcs_alloc");  //  TODO: REPLACE WITH SYSTEM INTERRUPT 
+  add_command(str);
+
+  /*
+    Top of the register stack has an allocated address at this point
+
+    TODO:
+      * Construct Memory Node
+      * Copy data into memory
+        - Use double word store commands (e.g. str x0)
+      * Create link to the list's Tail
+  */
 
   //  Push List Pointer to Register Stack
   ADR reg = rs_push();
