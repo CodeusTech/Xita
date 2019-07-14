@@ -308,7 +308,12 @@ exp:
 */
 exp_integer:
     RNG        { rng(); }
-  | INT        { last_data = (void*) (long) $1; push_int((long) last_data);   }
+  | INT  
+    { 
+      last_data = (void*) (long) $1; 
+      last_type = TYPE_INTEGER;
+      push_int((long) last_data);   
+    }
 ;
 
 /*
@@ -364,7 +369,7 @@ exp_list:
 */
 param_list:
     param_list OP_COMMA param_list
-  | exp
+  | exp { decl_list(); }
 ;
 
 /*

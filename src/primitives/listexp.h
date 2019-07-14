@@ -40,7 +40,7 @@
   Returns:
     0, if Successful
 */
-int list_construct(TypeID tid, Arbitrary data)
+int decl_list()
 {
   /*
     TODO: 
@@ -50,18 +50,18 @@ int list_construct(TypeID tid, Arbitrary data)
       * Repeat for Each Node in List
   */
   //  Calculate Node Size
-  unsigned long nsize = _xcs_get_size(tid);
+  unsigned long nsize = _xcs_get_size(last_type);
   nsize += 16; //  Add Pointer to Next Node
 
   //  Move Node Size to OSP for memory allocation
   char* str = (char*) malloc (50);
 
   //  Move Node Size to OSP for Memory Allocation
-  sprintf(str, "  mov x28, #%lu", nsize);
+  sprintf(str, "mov   x28, #%lu\n", nsize);
   add_command(str);
 
   //  Serialize Pointer's register into x29
-  sprintf(str, "  mov x29, #%d", rs_top());
+  sprintf(str, "mov   x29, #%d\n", rs_top());
   add_command(str);
 
   /*
@@ -69,7 +69,7 @@ int list_construct(TypeID tid, Arbitrary data)
       * Preserve lr (unless unnecessary, which is VERY preferable)
   */
 
-  sprintf(str, "  bl __xcs_alloc");  //  TODO: REPLACE WITH SYSTEM INTERRUPT 
+  sprintf(str, "bl    __xcs_alloc\n");  //  TODO: REPLACE WITH SYSTEM INTERRUPT 
   add_command(str);
 
   /*
@@ -112,7 +112,7 @@ int list_tail()
 
   //  Replace Pointer to List with Pointer to List's Tail
   sprintf(str, 
-    "  ldr %s, [%s,#%lu]\n", get_reg64(rs_top()), get_reg64(rs_top()), offset);
+    "ldr   %s, [%s,#%lu]\n", get_reg64(rs_top()), get_reg64(rs_top()), offset);
 
   //  Push Command to Generated Assembly Queue
   add_command(str);
