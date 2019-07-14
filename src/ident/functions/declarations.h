@@ -98,9 +98,6 @@ ErrorCode decl_constant(Identifier ident)
 */
 ErrorCode decl_function (Identifier ident)
 {
-  //  STUB STUB STUB
-  printf("Function %s Declared\n", ident);
-
   /*
     TODO:
      * Error Check
@@ -115,8 +112,8 @@ ErrorCode decl_function (Identifier ident)
   
   //  Print Function Identifier to Assembly File
   char comm[300];
-  sprintf(comm, "%s:\n", ident);
-  //  add_command(comm);
+  sprintf(comm, "\n%s:\n", ident);
+  add_command(comm);
 
   return 0;
 }
