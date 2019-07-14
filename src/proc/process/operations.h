@@ -182,7 +182,6 @@ ErrorCode proc_new()
   //  TODO: This
 
   //  Allocate XCS Memory Block
-  xcs_alloc();
   
   /*
     TODO:

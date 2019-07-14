@@ -22,7 +22,6 @@
 #define CONSTRUCT_OPERATIONS_H
 
 //  XCS Libraries
-#include "../../memory/memory.h"
 #include "../types/types.h"
 
 //  Linux Libraries

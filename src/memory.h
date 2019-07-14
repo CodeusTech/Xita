@@ -1,21 +1,17 @@
 /*
-  static.h
+  memory.h
   Cody Fagley
   Authored on   February 16, 2019
   Last Modified February 16, 2019
 */
 
 /*
-  Contains functionality for Direct Memory Access
-  
-  Table of Contents
-  =================
-  1.) Read Expression from Memory
-  2.) Write Expression to Memory
+  Contains Backend Functionality for Memory Manipulation
 */
 
-#ifndef MEMORY_STATIC_H
-#define MEMORY_STATIC_H
+#ifndef XCS_MEMORY_H
+#define XCS_MEMORY_H
+
 
 
 
@@ -44,9 +40,6 @@ int memory_write_exp()
 
   return 0;
 }
-
-
-
 
 
 #endif

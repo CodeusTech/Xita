@@ -59,6 +59,12 @@
     3.b) Request Statements
 */
 
+
+//  Linux Libraries
+#include "time.h"
+#include "stdio.h"
+#include "stdlib.h"
+
 //  XCS Libraries
 #include "src/bytecode/bytecode.h"
 #include "src/comments/comments.h"
@@ -66,7 +72,7 @@
 #include "src/gpio/gpio.h"
 #include "src/grammar/status.h"
 #include "src/ident/ident.h"
-#include "src/memory/memory.h"
+#include "src/memory.h"
 #include "src/modules/modules.h"
 #include "src/operator/operator.h"
 #include "src/primitives/primitives.h"
@@ -74,10 +80,6 @@
 #include "src/regex/regex.h"
 #include "src/regstack/regstack.h"
 #include "src/utils/clear.h"
-
-//  Linux Libraries
-#include <stdio.h>
-#include <stdlib.h>
 
 extern int yylex();
 extern int yyparse();

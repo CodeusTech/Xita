@@ -24,22 +24,22 @@
 /* 1.) Get Register (Flexible)
  
 */
-char* get_reg(int i, unsigned char bits)
+char* get_reg(unsigned int i, unsigned char bits)
 {
   char* str = (char*) malloc(256);
   switch (bits)
   {
     case 8:
-      sprintf(str, "%c%d", 'b', i);
+      sprintf(str, "%c%u", 'b', i);
       return str;
     case 16:
-      sprintf(str, "%c%d", 'h', i);
+      sprintf(str, "%c%u", 'h', i);
       return str;
     case 32:
-      sprintf(str, "%c%d", 'w', i);
+      sprintf(str, "%c%u", 'w', i);
       return str;
     case 64:
-      sprintf(str, "%c%d", 'x', i);
+      sprintf(str, "%c%u", 'x', i);
       return str;
     default:
       //  ERROR
@@ -48,15 +48,15 @@ char* get_reg(int i, unsigned char bits)
 }
 
 /* Get  8-Bit Register */
-char* get_reg8 (int i) { return get_reg(i,  8); };
+char* get_reg8 (unsigned int i) { return get_reg(i,  8); };
 
 /* Get 16-Bit Register */
-char* get_reg16(int i) { return get_reg(i, 16); };
+char* get_reg16(unsigned int i) { return get_reg(i, 16); };
 
 /* Get 32-Bit Register */
-char* get_reg32(int i) { return get_reg(i, 32); };
+char* get_reg32(unsigned int i) { return get_reg(i, 32); };
 
 /* Get 64-Bit Register */
-char* get_reg64(int i) { return get_reg(i, 64); };
+char* get_reg64(unsigned int i) { return get_reg(i, 64); };
 
 #endif

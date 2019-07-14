@@ -175,7 +175,7 @@ int list_append()
 
   //  Append to end of list
   sprintf(str, "  str %s, %s, #%lu\n", get_reg64(rs_top()), 
-    get_reg64(rs_second), offset+8);
+    get_reg64(rs_second()), offset+8);
   add_command(str);
   rs_pop();
 
