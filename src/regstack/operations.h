@@ -41,7 +41,8 @@ ADR* rs_new(Scope scope)
   //  Random Order Variables
   unsigned long activeRegs = 0;
   curr_reg = 0;
-  int chk;
+  unsigned long chk;
+  srand(time(NULL));
 
   // TODO: Make More Efficient
   for (int i = 0; i < 25; i++)
