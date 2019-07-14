@@ -51,7 +51,7 @@ int list_construct(TypeID tid, Arbitrary data)
   */
   //  Calculate Node Size
   unsigned long nsize = _xcs_get_size(tid);
-  nsize += 8; //  Add Pointer to Next Node
+  nsize += 16; //  Add Pointer to Next Node
 
   //  Move Node Size to OSP for memory allocation
   char* str = (char*) malloc (50);
@@ -85,6 +85,10 @@ int list_construct(TypeID tid, Arbitrary data)
   //  Push List Pointer to Register Stack
   ADR reg = rs_push();
 
+  //  Free Memory
+  free(str);
+
+  //  Return Success
   return 0;
 }
 
@@ -95,13 +99,32 @@ int list_construct(TypeID tid, Arbitrary data)
 */
 int list_tail()
 {
-  printf("Returned Tail of List\n");
+  /*
+    Assume top of register stack holds pointer to list
+  */
 
-  //  TODO: Error Check
+  //  Acquire List Type Size
+  unsigned long offset = _xcs_get_size(last_type);
+  offset += 8; //  Shift to Tail
 
-  //  Push Tail List Pointer to Register Stack
-  ADR reg = rs_push();
+  //  Allocate Space for Command
+  char* str = (char*) malloc(50);
 
+  //  Replace Pointer to List with Pointer to List's Tail
+  sprintf(str, 
+    "  ldr %s, [%s,#%lu]\n", get_reg64(rs_top()), get_reg64(rs_top()), offset);
+
+  //  Push Command to Generated Assembly Queue
+  add_command(str);
+
+  /*
+    TODO:
+      * Deallocate memory node storing the previous head of the list
+      * For now, use __dealloc
+        - Eventually, replace with standard interrupt
+  */
+
+  //  Return Success
   return 0;
 }
 
@@ -117,25 +140,45 @@ int list_tail()
 */
 int list_append()
 {
-  printf("Lists Appended");
+  /*
+    Assume TOP list is getting appended to SECOND list
+  */
 
-  //  TODO: Error Check
+  /*
+    TODO:
+      * Error Check TOP and SECOND are valid lists
+  */
 
-  //  Get Register Codes
-  ADR top = rs_pop();
-  ADR sec = rs_pop();
+  //  Allocate Command String
+  char* str = (char*) malloc(50);
+  unsigned long offset = _xcs_get_size(last_type); //  Shift to 
 
-  //  Append Lists Together
-  //  Push Final List onto Register Stack
-  ADR reg = rs_push();
+  //  Temporarily store pointer in OSP
+  sprintf(str, "  mov x28, %s\n", get_reg64(rs_second()));
+  add_command(str);
+
+  //  Navigate to Last Node
+  sprintf(str, 
+    "  ldr %s, [%s,#%lu]\n", get_reg64(rs_second()), get_reg64(rs_second()), 
+    offset);
+  add_command(str);
+
+  //  Append to end of list
+  sprintf(str, "  str %s, %s, #%lu\n", get_reg64(rs_top()), 
+    get_reg64(rs_second), offset+8);
+  add_command(str);
+  rs_pop();
+
+  //  Restore pointer on register stack
+  sprintf(str, "  mov %s, x28\n", get_reg64(rs_top()));
+  add_command(str);
+
+  //  Free Command String Memory
+  free(str);
 
   return 0;
 }
 
-
-/*
-  3.) List Traversal
-*/
 
 
 
