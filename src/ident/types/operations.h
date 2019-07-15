@@ -1,5 +1,5 @@
 /*
-  operations.h (types)
+  operations.h (Types)
   Cody Fagley
   Authored on   February 19, 2019
   Last Modified February 19, 2019
@@ -15,37 +15,14 @@
   3.) Find Type
 */
 
-#ifndef COMPLEX_OPERATIONS_H
-#define COMPLEX_OPERATIONS_H
+#ifndef TYPES_OPERATIONS_H
+#define TYPES_OPERATIONS_H
 
 //  Global Variables
 extern char** ident_types;
 
 
-/* 1.) Declare Type
 
-  Returns:
-    0, if Successful
-*/
-int decl_type (char* ident)
-{
-  printf("Type %s Declared\n", ident);
-
-  return 0;
-}
-
-
-/* 2.) Type Expression
-
-  Returns:
-    0, if Successful
-*/
-int exp_type (char* ident)
-{
-  printf("Type Expression: %s\n", ident);
-
-  return 0;
-}
 
 
 /* 3.) Find Type

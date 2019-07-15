@@ -12,7 +12,6 @@
 #ifndef TYPES_COMPLEX_H
 #define TYPES_COMPLEX_H
 
-#include "operations.h"
 #include "records.h"
 #include "tuples.h"
 

@@ -13,6 +13,9 @@
 #define IDENT_TYPES_H
 
 
+#include "declarations.h"
+#include "expressions.h"
+#include "operations.h"
 #include "complex/complex.h"
 #include "inferrence/inferrence.h"
 

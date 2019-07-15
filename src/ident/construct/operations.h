@@ -2,7 +2,7 @@
   operations.h (Constructors)
   Cody Fagley
   Authored on   March  8, 2019
-  Last Modified March 14, 2019
+  Last Modified  July 15, 2019
 */
 
 /*
@@ -13,7 +13,6 @@
   1.) Structures
     1.a) Compiler Buffers
   2.) Operations
-    2.a) Declare Constructor
     2.b) Find Constructor
     2.c) Constructor Expression
 */
@@ -43,27 +42,6 @@ extern unsigned int* count_construct;
 /*
   2.) Operations
 */
-
-/* 2.a) Declare Constructor
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode decl_constructor (Constructor ident)
-{
-  //  STUB STUB STUB
-  printf("Constructor Declared: %s \n", ident);
-
-  /*
-    TODO:
-     * Error Check
-     * Add ident to Buffers
-     * Add type to Buffers
-  */
-
-  //  Return Success
-  return 0;
-}
 
 /* 2.b) Find Constructor
 
