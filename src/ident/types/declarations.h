@@ -7,6 +7,12 @@
 
 /*
   Declaration functionality for handling data type/structure backend
+
+  Table of Contents
+  =================
+  1.) Type Declarations
+    1.a) Declare Type
+    1.b) Declare Type Parameter
 */
 
 #ifndef TYPES_DECLARATIONS_H
@@ -14,12 +20,16 @@
 
 #include "operations.h"
 
-/* 1.) Declare Type
+/*
+  1.) Type Declarations
+*/
+
+/* 1.a) Declare Type
 
   Returns:
     0, if Successful
 */
-int decl_type (char* ident)
+ErrorCode decl_type (char* ident)
 {
   //  Aquire TypeID
   TypeID tid = get_next_tid() - 18;
@@ -30,8 +40,6 @@ int decl_type (char* ident)
       * Detect and Adjust for situations where tid >= 255
         - Allocate and link to next group of types
   */
-
-  printf("check\n");
 
   /*
     Set initial Values && Allocate Memory
@@ -48,14 +56,41 @@ int decl_type (char* ident)
   type_elements[tid]  = (TypeID*) malloc(40 * sizeof(TypeID));
   count_elements[tid] = (unsigned int*) malloc(40 * sizeof(unsigned int));
 
-
-
-
-
+  //  Free String Memory
   free(ident);
 
+  //  Return Success
   return 0;
 }
+
+/* 1.b) Declare Type Parameter
+
+  Returns:
+    0, if Successful
+*/
+ErrorCode decl_type_param (Identifier ident)
+{
+  //  Retrieve Current TypeID
+  TypeID tid = get_curr_tid() - 18;
+
+  /*
+    TODO:
+      * Error Check
+      * Detect and Adjust for situations where pcount_types[tid] >= 9
+        - Allocate and link to next group of type parameters
+  */
+  param_types[tid][pcount_types[tid]] = strdup(ident);
+
+  //  Increment Parameter Count for this type
+  pcount_types[tid]++;
+
+  //  Free String Buffer
+  free(ident);
+
+  //  Return Success
+  return 0;
+}
+
 
 /* 2.a) Declare Constructor
 

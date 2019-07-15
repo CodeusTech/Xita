@@ -549,8 +549,8 @@ param_arg:
   TYPE IDENTIFIERS
 */
 exp_type:
-    exp_type exp_type
-  | INT_T             { last_type = 2;  }
+    PAR_LEFT exp_type exp_type PAR_RIGHT  {printf("Parameterized Type Found\n");}
+  | INT_T             { last_type = 2;  } 
   | U8_T              { last_type = 3;  }
   | I8_T              { last_type = 4;  }
   | U16_T             { last_type = 5;  }
@@ -567,7 +567,7 @@ exp_type:
   | STRING_T          { last_type = 16; }
   | LIST_T            { last_type = 17; }
   | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
-  | OP_REC_L record OP_REC_R { printf("Implement Me\n"); }
+  | exp_type OP_COMMA exp_type
   | IDENTIFIER        { last_type = find_type($1); }
 ;
 
@@ -575,11 +575,11 @@ exp_type:
   TYPE DECLARATIONS
 */
 dinit_type: 
-  TYPE IDENTIFIER  {/* Declare Identifier as Type and Refresh Buffers */}
+  TYPE IDENTIFIER  { decl_type($2); }
 ;
 
 decl_type:
-  dinit_type param_type OP_ASSIGN decl_construct implements
+    dinit_type param_type OP_ASSIGN decl_construct implements
 ;
 
 implements:
@@ -588,13 +588,14 @@ implements:
 ;
 
 l_typeclass:
-    IDENTIFIER OP_COMMA l_typeclass  {printf("Typeclass %s Implemented\n", $1);}
-  | IDENTIFIER                       {printf("Typeclass %s Implemented\n", $1);}
+    l_typeclass OP_COMMA l_typeclass
+  | IDENTIFIER  {printf("Typeclass %s Implemented\n", $1);}
 ;
 
 param_type:
-    IDENTIFIER param_type     {printf("Type Parameter '%s' Encountered\n", $1); }
-  | {/* Intentionally Left Blank */}
+    param_type param_type 
+  | IDENTIFIER            { decl_type_param($1); }
+  |                       {/* Intentionally Left Blank */}
 ;
 
 /*
@@ -626,10 +627,10 @@ exp_construct:
 ;
 
 decl_construct:
-  | decl_construct BIT_OR decl_construct
+    decl_construct BIT_OR decl_construct
   | CONSTRUCTOR OF exp_type { decl_constructor($1); }
   | CONSTRUCTOR             { decl_constructor($1); }
-  | exp_type                {  }
+  | exp_type                {printf("TODO: Implement Type Aliases\n");}
 ;
 
 /*

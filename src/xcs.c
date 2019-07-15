@@ -72,6 +72,7 @@ int main(int argc, char** argv)
 			rse_types = (TypeID**) malloc(256*sizeof(TypeID*));
 
 			rs_init(0);
+			type_init();
 
 			//  Set Parser File Pointer
 			yyin = fopen(argv[i], "r");
