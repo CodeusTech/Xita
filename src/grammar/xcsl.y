@@ -241,7 +241,7 @@ xcs_source:
 src:
     src OP_SEP src  {}
   | open     { }
-  | exp  {}
+  | exp  { curr_reg = 0; }
 ;
 
 /*

@@ -237,8 +237,7 @@ int infer_bit_shr()
 */
 int infer_bool_and()
 {
-  //  STUB STUB STUB
-  printf("Perform Boolean AND\n");
+  boolean_and();
 
   return 0;
 }
@@ -251,8 +250,7 @@ int infer_bool_and()
 */
 int infer_bool_or()
 {
-  //  STUB STUB STUB
-  printf("Perform Boolean Or\n");
+  boolean_or();
 
   return 0;
 }
@@ -265,8 +263,7 @@ int infer_bool_or()
 */
 int infer_bool_xor()
 {
-  //  STUB STUB STUB
-  printf("Perform Boolean XOR\n");
+  boolean_xor();
 
   return 0;
 }
@@ -283,8 +280,7 @@ int infer_bool_xor()
 */
 int infer_bool_lt()
 {
-  //  STUB STUB STUB
-  printf("Perform Less Than\n");
+  boolean_lt();
 
   return 0;
 }
@@ -296,8 +292,7 @@ int infer_bool_lt()
 */
 int infer_bool_lte()
 {
-  //  STUB STUB STUB
-  printf("Perform Less Than or Equal To\n");
+  boolean_lte();
 
   return 0;
 }
@@ -309,8 +304,7 @@ int infer_bool_lte()
 */
 int infer_bool_gt()
 {
-  //  STUB STUB STUB
-  printf("Perform Greater Than\n");
+  boolean_gt();
 
   return 0;
 }
@@ -322,8 +316,7 @@ int infer_bool_gt()
 */
 int infer_bool_gte()
 {
-  //  STUB STUB STUB
-  printf("Perform Greater Than or Equal To\n");
+  boolean_gte();
 
   return 0;
 }
@@ -335,8 +328,7 @@ int infer_bool_gte()
 */
 int infer_bool_eq()
 {
-  //  STUB STUB STUB
-  printf("Perform Equal To\n");
+  boolean_eq();
 
   return 0;
 }
@@ -348,8 +340,7 @@ int infer_bool_eq()
 */
 int infer_bool_neq()
 {
-  //  STUB STUB STUB
-  printf("Perform Not Equal To\n");
+  boolean_neq();
 
   return 0;
 }

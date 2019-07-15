@@ -42,7 +42,10 @@ ADR* rs_new(Scope scope)
   unsigned long activeRegs = 0;
   curr_reg = 0;
   unsigned long chk;
-  srand(time(NULL));
+
+  mangle += rand();
+  unsigned long seed = time(NULL) + mangle;
+  srand(seed);
 
   // TODO: Make More Efficient
   for (int i = 0; i < 25; i++)

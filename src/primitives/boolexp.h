@@ -49,40 +49,6 @@
   1.a) True/False
 */
 
-/* Push True to Register Stack
-
-  Returns:
-    0, if Successful
-*/
-int boolean_true()
-{
-  //  TODO: Error Check
-
-  //  Get Next Register on Stack
-  ADR reg = rs_push();
-
-  //  Push 1 to Register Stack
-
-  return 0;
-}
-
-/* Push False to Register Stack
-
-  Returns:
-    0, if Successful
-*/
-int boolean_false()
-{
-  //  TODO: Error Check
-
-  //  Get Next Register on Stack
-  ADR reg = rs_push();
-
-  //  Push 0 to Register Stack
-
-  return 0;
-}
-
 /*
   1.b) Boolean Negation
 */
@@ -97,21 +63,28 @@ int boolean_false()
   Returns:
     0, if Successful
 */
-int boolean_and()
+ErrorCode boolean_and()
 {
-  printf("Boolean And\n");
+  rs_pop();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_top();
-  ADR sec = rs_second();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
   //  Perform Boolean And Check
+  char* str = (char*) malloc(50);
+
+  sprintf(str, "and   %s, %s, %s\n", 
+    get_reg(sec, 32), get_reg(sec, 32), get_reg(top, 32));
+  add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
+  free(str);
 
+  //  Return Success
   return 0;
 }
 
@@ -123,19 +96,26 @@ int boolean_and()
 */
 int boolean_or()
 {
-  printf("Boolean Or\n");
+  rs_pop();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_top();
-  ADR sec = rs_second();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
-  //  Perform Boolean And Check
+  //  Perform Boolean OR Check
+  char* str = (char*) malloc(50);
+
+  sprintf(str, "orr   %s, %s, %s\n", 
+    get_reg(sec, 32), get_reg(sec, 32), get_reg(top, 32));
+  add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
+  free(str);
 
+  //  Return Success
   return 0;
 }
 
@@ -147,19 +127,26 @@ int boolean_or()
 */
 int boolean_xor()
 {
-  printf("Boolean Exclusive Or\n");
+  rs_pop();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_top();
-  ADR sec = rs_second();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
-  //  Perform Boolean XOR Check
+  //  Perform Boolean Exclusive OR Check
+  char* str = (char*) malloc(50);
+
+  sprintf(str, "eor   %s, %s, %s\n", 
+    get_reg(sec, 32), get_reg(sec, 32), get_reg(top, 32));
+  add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
+  free(str);
 
+  //  Return Success
   return 0;
 }
 
@@ -174,21 +161,50 @@ int boolean_xor()
   Returns:
     0, if Successful
 */
-int boolean_lt()
+ErrorCode boolean_lt()
 {
-  printf("Boolean Less Than\n");
+  rs_pop();
+
+  mangle += rand();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_pop();
-  ADR sec = rs_pop();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
-  //  Perform < Check
+  //  Perform Boolean Exclusive OR Check
+  char* str = (char*) malloc(100);
 
-  //  Push Result onto Register Stack
-  rs_push();
+  //  Perform Comparison
+  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  add_command(str);
 
+  rs_pop();
+
+  //  Jump if Less Than
+  sprintf(str, "blt   set_%u\n", mangle);
+  add_command(str);
+
+  
+  push_int(0);
+  rs_pop();
+
+  sprintf(str, "b finish_%u\n", mangle);
+  add_command(str);
+
+  sprintf(str, "set_%u:\n", mangle);
+  add_command(str);
+
+  push_int(1);
+
+  sprintf(str, "finish_%u:\n", mangle);
+  add_command(str);
+
+
+  free(str);
+
+  //  Return Success
   return 0;
 }
 
@@ -200,19 +216,48 @@ int boolean_lt()
 */
 int boolean_lte()
 {
-  printf("Boolean Less Than or Equal To\n");
+  rs_pop();
+
+  mangle += rand();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_pop();
-  ADR sec = rs_pop();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
-  //  Perform <= Check
+  //  Perform Boolean Exclusive OR Check
+  char* str = (char*) malloc(100);
 
-  //  Push Result onto Register Stack
-  rs_push();
+  //  Perform Comparison
+  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  add_command(str);
 
+  rs_pop();
+
+  //  Jump if Less Than or Equal To
+  sprintf(str, "ble   set_%u\n", mangle);
+  add_command(str);
+
+  
+  push_int(0);
+  rs_pop();
+
+  sprintf(str, "b finish_%u\n", mangle);
+  add_command(str);
+
+  sprintf(str, "set_%u:\n", mangle);
+  add_command(str);
+
+  push_int(1);
+
+  sprintf(str, "finish_%u:\n", mangle);
+  add_command(str);
+
+
+  free(str);
+
+  //  Return Success
   return 0;
 }
 
@@ -224,19 +269,48 @@ int boolean_lte()
 */
 int boolean_gt()
 {
-  printf("Boolean Greater Than\n");
+  rs_pop();
+
+  mangle += rand();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_pop();
-  ADR sec = rs_pop();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
-  //  Perform > Check
+  //  Perform Boolean Exclusive OR Check
+  char* str = (char*) malloc(100);
 
-  //  Push Result onto Register Stack
-  rs_push();
+  //  Perform Comparison
+  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  add_command(str);
 
+  rs_pop();
+
+  //  Jump if Greater Than
+  sprintf(str, "bgt   set_%u\n", mangle);
+  add_command(str);
+
+  
+  push_int(0);
+  rs_pop();
+
+  sprintf(str, "b finish_%u\n", mangle);
+  add_command(str);
+
+  sprintf(str, "set_%u:\n", mangle);
+  add_command(str);
+
+  push_int(1);
+
+  sprintf(str, "finish_%u:\n", mangle);
+  add_command(str);
+
+
+  free(str);
+
+  //  Return Success
   return 0;
 }
 
@@ -248,19 +322,48 @@ int boolean_gt()
 */
 int boolean_gte()
 {
-  printf("Boolean Greater Than or Equal To\n");
+  rs_pop();
+
+  mangle += rand();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_pop();
-  ADR sec = rs_pop();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
-  //  Perform >= Check
+  //  Perform Boolean Exclusive OR Check
+  char* str = (char*) malloc(100);
 
-  //  Push Result onto Register Stack
-  rs_push();
+  //  Perform Comparison
+  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  add_command(str);
 
+  rs_pop();
+
+  //  Jump if Greater Than or Equal To
+  sprintf(str, "bge   set_%u\n", mangle);
+  add_command(str);
+
+  
+  push_int(0);
+  rs_pop();
+
+  sprintf(str, "b finish_%u\n", mangle);
+  add_command(str);
+
+  sprintf(str, "set_%u:\n", mangle);
+  add_command(str);
+
+  push_int(1);
+
+  sprintf(str, "finish_%u:\n", mangle);
+  add_command(str);
+
+
+  free(str);
+
+  //  Return Success
   return 0;
 }
 
@@ -272,19 +375,48 @@ int boolean_gte()
 */
 int boolean_eq()
 {
-  printf("Boolean Equivalence\n");
+  rs_pop();
+
+  mangle += rand();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_pop();
-  ADR sec = rs_pop();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
-  //  Perform == Check
+  //  Perform Boolean Exclusive OR Check
+  char* str = (char*) malloc(100);
 
-  //  Push Result onto Register Stack
-  rs_push();
+  //  Perform Comparison
+  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  add_command(str);
 
+  rs_pop();
+
+  //  Jump if Equal To
+  sprintf(str, "beq   set_%u\n", mangle);
+  add_command(str);
+
+  
+  push_int(0);
+  rs_pop();
+
+  sprintf(str, "b finish_%u\n", mangle);
+  add_command(str);
+
+  sprintf(str, "set_%u:\n", mangle);
+  add_command(str);
+
+  push_int(1);
+
+  sprintf(str, "finish_%u:\n", mangle);
+  add_command(str);
+
+
+  free(str);
+
+  //  Return Success
   return 0;
 }
 
@@ -296,19 +428,48 @@ int boolean_eq()
 */
 int boolean_neq()
 {
-  printf("Boolean Unequivalence\n");
+  rs_pop();
+
+  mangle += rand();
 
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs_pop();
-  ADR sec = rs_pop();
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
 
-  //  Perform != Check
+  //  Perform Boolean Exclusive OR Check
+  char* str = (char*) malloc(100);
 
-  //  Push Result onto Register Stack
-  rs_push();
+  //  Perform Comparison
+  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  add_command(str);
 
+  rs_pop();
+
+  //  Jump if Not Equal To
+  sprintf(str, "bne   set_%u\n", mangle);
+  add_command(str);
+
+  
+  push_int(0);
+  rs_pop();
+
+  sprintf(str, "b finish_%u\n", mangle);
+  add_command(str);
+
+  sprintf(str, "set_%u:\n", mangle);
+  add_command(str);
+
+  push_int(1);
+
+  sprintf(str, "finish_%u:\n", mangle);
+  add_command(str);
+
+
+  free(str);
+
+  //  Return Success
   return 0;
 }
 

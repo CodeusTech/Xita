@@ -42,16 +42,17 @@ extern unsigned int mangle;
 */
 int decl_if()
 {
-  printf("if ...\n");
+  //  Create Mangle ID for if ... then ... else ... expression
+  mangle += rand();
 
   //  Print Assembly Header to If Statement
-  //char* str = malloc(15); //  Supports 10-figures worth of if statements
+  char* str = malloc(40); //  Supports 10-figures worth of if statements
   
   //  Add Mangle to Header
-  //sprintf(str, "if_%d:\n", mangle);
-  //add_command(str);
+  sprintf(str, "if_%d:\n", mangle);
+  add_command(str);
 
-
+  free(str);
 
   return 0;
 }
@@ -63,19 +64,24 @@ int decl_if()
 */
 int exp_if()
 {
-  //  STUB STUB STUB
-
   //  TODO:  Error Check
   //           * TOP
 
-  //  Evaluate TOP as Boolean Expression
-  
-  //  cmp TOP to 1
+  //  Allocate Memory for String
+  char* str = (char*) malloc (50);
+
+  //  Compare Top of Register Stack to 
+  sprintf(str, "cmp %s, #1\n", get_reg32(rs[scope_curr][rs_top()]));
+  add_command(str);
 
   //  If False, Jump to else Block
-  
+  sprintf(str, "jl false_%u\n", mangle);
+  add_command(str);
+
+  free(str);
+
   //  Pop TOP
-  //rs_pop();
+  rs_pop();
 
   return 0;
 }

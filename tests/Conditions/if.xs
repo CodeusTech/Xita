@@ -9,10 +9,7 @@
   Contains test case functionality for "if .. then .. else .." statements
 *)
 
-let x = True in
-let y = False in
-  if x == y
-    then 2222
-    else 9999
-
+if True
+then 3
+else 4
 
