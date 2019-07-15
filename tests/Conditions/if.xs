@@ -9,7 +9,7 @@
   Contains test case functionality for "if .. then .. else .." statements
 *)
 
-if True
+if 1 < 5
 then 3
 else 4
 

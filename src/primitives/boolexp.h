@@ -190,7 +190,7 @@ ErrorCode boolean_lt()
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u\n", mangle);
   add_command(str);
 
   sprintf(str, "set_%u:\n", mangle);
@@ -243,7 +243,7 @@ int boolean_lte()
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u\n", mangle);
   add_command(str);
 
   sprintf(str, "set_%u:\n", mangle);
@@ -296,7 +296,7 @@ int boolean_gt()
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u\n", mangle);
   add_command(str);
 
   sprintf(str, "set_%u:\n", mangle);
@@ -349,7 +349,7 @@ int boolean_gte()
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u\n", mangle);
   add_command(str);
 
   sprintf(str, "set_%u:\n", mangle);
@@ -402,7 +402,7 @@ int boolean_eq()
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u\n", mangle);
   add_command(str);
 
   sprintf(str, "set_%u:\n", mangle);
@@ -455,7 +455,7 @@ int boolean_neq()
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u\n", mangle);
   add_command(str);
 
   sprintf(str, "set_%u:\n", mangle);

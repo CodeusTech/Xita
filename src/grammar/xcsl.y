@@ -196,6 +196,8 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %left PAR_LEFT PAR_RIGHT
 %left OP_SEQ
 
+%type <val_int> if if1 then else1 else
+
 /*
   C.) Start of Grammar
 */
@@ -387,29 +389,27 @@ param_list:
 //  IF ...
 //  HELPER FUNCTION
 if1:
-  IF      { decl_if(); };
+  IF      { $$ = decl_if(); };
 // CALLABLE FUNCTION
 if:
-  if1 exp { exp_if(); };
+  if1 exp { $$ = exp_if($1); }
+;
 
 //  THEN ...
-//  HELPER FUNCTION
-then1:
-  THEN      { decl_then(); };
 // CALLABLE FUNCTION
 then:
-  then1 exp { exp_then(); };
+  if THEN exp { $$ = exp_then($1); };
 
 //  ELSE ...
 //  HELPER FUNCTION
 else1:
-  ELSE      { decl_else(); };
+  then ELSE      { $$ = decl_else($1); };
 // CALLABLE FUNCTION
 else:
-  else1 exp { exp_else(); };
+  else1 exp { $$ = exp_else($1); };
 
 exp_if:
-    if then else { exp_if_then_else(); }
+    else { exp_if_then_else(); }
 ;
 
 /*

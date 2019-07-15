@@ -40,21 +40,21 @@ extern unsigned int mangle;
   Returns:
     0, if successful
 */
-int decl_if()
+unsigned int decl_if()
 {
   //  Create Mangle ID for if ... then ... else ... expression
   mangle += rand();
 
   //  Print Assembly Header to If Statement
-  char* str = malloc(40); //  Supports 10-figures worth of if statements
+  char* str = malloc(60); //  Supports 10-figures worth of if statements
   
   //  Add Mangle to Header
-  sprintf(str, "if_%d:\n", mangle);
+  sprintf(str, "if_%u:\n", mangle);
   add_command(str);
 
   free(str);
 
-  return 0;
+  return mangle;
 }
 
 /* 1.b) If Boolean Expression
@@ -62,28 +62,28 @@ int decl_if()
   Returns:
     0, if Successful
 */
-int exp_if()
+unsigned int exp_if(unsigned int mang)
 {
   //  TODO:  Error Check
   //           * TOP
 
+  //  Pop TOP
+  rs_pop();
+
   //  Allocate Memory for String
-  char* str = (char*) malloc (50);
+  char* str = (char*) malloc (70);
 
   //  Compare Top of Register Stack to 
-  sprintf(str, "cmp %s, #1\n", get_reg32(rs[scope_curr][rs_top()]));
+  sprintf(str, "cmp   %s, #1\n", get_reg32(rs[scope_curr][rs_top()]));
   add_command(str);
 
   //  If False, Jump to else Block
-  sprintf(str, "jl false_%u\n", mangle);
+  sprintf(str, "blt   else_%u\n", mang);
   add_command(str);
 
   free(str);
 
-  //  Pop TOP
-  rs_pop();
-
-  return 0;
+  return mang;
 }
 
 
@@ -91,46 +91,22 @@ int exp_if()
   2.) Then...
 */
 
-/* 2.a) Then Declaration
-
-  Returns:
-    0, if Successful
-*/
-int decl_then()
-{
-  printf("then ...\n");
-  /*
-
-  //  Print Assembly Header to If Statement
-  char* str = malloc(15); //  Supports 10-figures worth of if statements
-  
-  //  Add Mangle to Header
-  sprintf(str, "then_%d:\n", mangle);
-  add_command(str);  
-  */
-
-  return 0;
-}
-
 /* 2.b) Then Expression
 
   Returns:
     0, if Successful
 */
-int exp_then()
+int exp_then(unsigned int mang)
 {
-  /*
-  //  STUB STUB STUB
-  
-  //  TODO: Error Check
+  char* str = (char*) malloc (80);
 
-  //  Jump Beyond else Block
- 
-  // Reset Register Stack for Else Statement
+  sprintf(str, "b     finish_%u\n", mang);
+  add_command(str);
+
+  free(str);
   rs_pop();
-  */ 
 
-  return 0;
+  return mang;
 }
 
 
@@ -143,20 +119,16 @@ int exp_then()
   Returns:
     0, if Successful
 */
-int decl_else()
+unsigned int decl_else(unsigned int mang)
 {
-  printf("else ...\n");
-  /*
+  char* str = (char*) malloc (80);
 
-  //  Print Assembly Header to If Statement
-  char* str = malloc(15); //  Supports 10-figures worth of if statements
-  
-  //  Add Mangle to Header
-  sprintf(str, "else_%d:\n", mangle);
-  add_command(str);  
-*/
+  sprintf(str, "else_%u:\n", mang);
+  add_command(str);
 
-  return 0;
+  free(str);
+
+  return mang;
 }
 
 /* 3.b) Else Expression
@@ -164,14 +136,16 @@ int decl_else()
   Returns:
     0, if Succssful
 */
-int exp_else()
+ErrorCode exp_else(unsigned int mang)
 {
-  //  STUB STUB STUB
-  
-  //  TODO: Error Check
+  char* str = (char*) malloc (80);
 
-  //  Type Check: ELSE EXP against THEN EXP
+  sprintf(str, "finish_%u:\n", mang);
+  add_command(str);
 
+  free(str);
+
+  //  Return Success
   return 0;
 }
 
