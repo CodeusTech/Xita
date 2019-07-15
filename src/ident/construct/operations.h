@@ -33,7 +33,7 @@
 /*
   1.a) Compiler Buffers
 */
-extern Constructor* ident_construct;
+extern Identifier** ident_construct;
 extern unsigned int* size_construct;
 extern unsigned int count_types;
 extern unsigned int* count_construct;
@@ -53,7 +53,7 @@ ConstructorID construct_find (Constructor ident)
 {
   printf("Found Constructor: %s\n", ident);
 
-  for (int i = 0; i < count_types; i++)
+  for (int i = 0; i < (next_type - 18); i++)
   {
     for (int j = 0; j < count_construct[i]; j++)
     {

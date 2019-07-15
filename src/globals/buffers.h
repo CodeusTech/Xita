@@ -123,23 +123,23 @@ unsigned int count_const; //  Number of Constants
 */
 
 //  5.a) Type Data
-unsigned int* types;      //  Type Codes
-unsigned int count_types; //  Number of Types
-char** ident_types;       //  Type Identifiers
-char*** param_types;      //  Type Parameters
+TypeID next_type = 18;    //  Number of Types
+Identifier*  ident_types; //  Type Identifiers
+unsigned int* pcount_types; //  Type Parameter Count
+Identifier** param_types; //  Type Parameters
 
 //  5.b) Constructors
-char** ident_construct;       //  Constructor Identifiers
-unsigned int* count_construct;//  Number of Constructors for Function
-char*** ident_elem;           //  Element Identifiers
-char** etype_construct;       //  Types of Elements for Constructor
-unsigned int* enum_construct; //  Number of Elements for Constructor
+unsigned int* count_construct; //  Number of Constructors for Function
+Identifier**  ident_construct;  //  Constructor Identifiers
+unsigned int** count_elements; //  Number of Elements for Constructor
+Identifier**  ident_elements;  //  Element Identifiers
+TypeID**      type_elements;   //  Types of Elements for Constructor
 
 //  5.c) Typeclasses 
-char** ident_typeclasses; //  Typeclass Identifiers
+Identifier* ident_typeclasses; //  Typeclass Identifiers
 
-char** ident_prototypes;  //  Prototype Identifiers
-char*** param_prototypes; //  Prototype Parameters
+Identifier* ident_prototypes;  //  Prototype Identifiers
+Identifier** param_prototypes; //  Prototype Parameters
 
 
 /*
