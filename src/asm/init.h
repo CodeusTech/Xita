@@ -43,10 +43,10 @@ extern unsigned int count_asm_data;
 extern unsigned int index_asm_data;
 
 //  .text metadata
-extern Command* start_asm_text;
+extern Command** start_asm_text;
 extern Command*  curr_asm_text;
-extern unsigned int count_asm_text;
-extern unsigned int index_asm_text;
+extern unsigned int* count_asm_text;
+extern unsigned int* index_asm_text;
 
 
 /*
@@ -109,12 +109,13 @@ ErrorCode init_asm_data()
 ErrorCode init_asm_text()
 {
   //  Allocate Memory
-  start_asm_text = (char**) malloc(256 * sizeof(char*));
-  curr_asm_text  = start_asm_text;
-  count_asm_text = 0;
-  index_asm_text = 0;
+  start_asm_text = (Command**) malloc(256 * sizeof(Command*));
+  start_asm_text[0] = (Command*) malloc(256 * sizeof(Command));
+  curr_asm_text  = start_asm_text[0];
+  count_asm_text = (unsigned int*) malloc(256*sizeof(unsigned int));
+  index_asm_text = (unsigned int*) malloc(256*sizeof(unsigned int));
 
-  start_asm_text[255] = (char*) 0;
+  start_asm_text[255] = (char**) 0;
   curr_asm_text[255]  = (char*) 0;
 
   //  Return Success

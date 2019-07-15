@@ -27,8 +27,8 @@
 #include "../../utils/scope.h"
 
 extern Identifier* ident_constants;
-extern unsigned int index_asm_text;
-extern unsigned int count_asm_text;
+extern unsigned int* index_asm_text;
+extern unsigned int* count_asm_text;
 
 
 /* 1.) Declare Constant
@@ -106,6 +106,11 @@ ErrorCode decl_function (Identifier ident)
 
   //  Get New Context Scope
   Scope s = get_scope_next();
+
+  curr_asm_text = (Command*) malloc (256*sizeof(Command));
+  start_asm_text[s] = (Command*) curr_asm_text;
+  index_asm_text[s] = 0;
+  count_asm_text[s] = 0;
 
   //  Generate Register Stack for New Scope
   rs_init(s);

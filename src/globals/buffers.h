@@ -59,10 +59,10 @@ TypeID last_type = 0;
 */
 
 //  2.a) .text Buffers
-char** start_asm_text;
-char**  curr_asm_text;
-unsigned int count_asm_text;
-unsigned int index_asm_text;
+Command** start_asm_text;
+Command*  curr_asm_text;
+unsigned int* count_asm_text;
+unsigned int* index_asm_text;
 
 //  2.b) .bss Buffers
 char** start_asm_bss;
