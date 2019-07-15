@@ -28,5 +28,5 @@ let c = True ^^ False;;
 
 let d = 1 <  2;;
 let e = 1 <= 1;;
-let f = 3 == 6;;
+3 == 6;;
 let g = 3 >= 4

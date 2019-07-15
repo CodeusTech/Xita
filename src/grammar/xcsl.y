@@ -237,11 +237,14 @@ xcs_source:
     src         { source_end(); }
 ;
 
+src2:
+  exp  { end_scope(); }
+;
 
 src:
-    src OP_SEP src  {}
+    src2 OP_SEP src
   | open     { }
-  | exp  { curr_reg = 0; }
+  | exp { }
 ;
 
 /*

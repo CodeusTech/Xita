@@ -38,8 +38,9 @@ ErrorCode generate_text(FILE* filename)
 {
 
   //  Print TEXT Segment Name into File
-  fprintf(filename, ".text:\n");
+  fprintf(filename, ".section .text:\n\n");
 
+  fprintf(filename, "__start:\n");
 
   for (int j = 0; j < scope_next; j++)
   {
@@ -103,6 +104,16 @@ Command get_last_command()
 {
   --count_asm_text[scope_curr];
   return curr_asm_text[--index_asm_text[scope_curr]];
+}
+
+
+ErrorCode end_scope()
+{
+  curr_reg = 0; 
+  scope_curr = 0;
+  curr_asm_text = start_asm_text[0];
+
+  return 0;
 }
 
 #endif
