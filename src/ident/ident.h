@@ -30,7 +30,6 @@
 
 #include "functions/functions.h"
 #include "types/types.h"
-#include "construct/construct.h"
 #include "typeclass/typeclass.h"
 
 #include "stdbool.h"

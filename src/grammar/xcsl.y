@@ -278,6 +278,7 @@ exp:
   | exp OP_NEQ exp      { infer_bool_neq(); }
   | exp OP_APPEND exp   { infer_append(); }
   | exp OP_LIST_CON exp { infer_list_con(); }
+  | exp_construct       { }
   | exp_integer         {/* For Testing */}
   | exp_boolean         {/* For Testing */}
   | exp_real            {/* For Testing */}
@@ -291,7 +292,6 @@ exp:
   | decl_typeclass      { }
   | exp_funct           { }
   | IDENTIFIER          { printf("Type Inferred: %s\n", $1); }
-  | exp_construct       { }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
   | exp_memread         { }
   | exp_memwrite        { }
@@ -314,11 +314,10 @@ exp:
   2.a) Integer Expressions
 */
 exp_integer:
-    RNG        { rng(); last_type = 0; }
+    RNG        { rng(); }
   | INT  
     { 
-      push_int((long long) $1);   
-      last_type = 0;
+      push_int((long long) $1);
     }
 ;
 
@@ -549,25 +548,25 @@ param_arg:
 */
 exp_type:
     PAR_LEFT exp_type exp_type PAR_RIGHT  {printf("Parameterized Type Found\n");}
-  | INT_T             { last_type = 2;  } 
-  | U8_T              { last_type = 3;  }
-  | I8_T              { last_type = 4;  }
-  | U16_T             { last_type = 5;  }
-  | I16_T             { last_type = 6;  }
-  | U32_T             { last_type = 7;  }
-  | I32_T             { last_type = 8;  }
-  | U64_T             { last_type = 9;  }
-  | I64_T             { last_type = 10; }
-  | REAL_T            { last_type = 11; }
-  | FLOAT_T           { last_type = 12; }
-  | DOUBLE_T          { last_type = 13; }
-  | BOOL_T            { last_type = 14; }
-  | CHAR_T            { last_type = 15; }
-  | STRING_T          { last_type = 16; }
-  | LIST_T            { last_type = 17; }
+  | INT_T          
+  | U8_T         
+  | I8_T      
+  | U16_T      
+  | I16_T       
+  | U32_T     
+  | I32_T       
+  | U64_T      
+  | I64_T       
+  | REAL_T   
+  | FLOAT_T  
+  | DOUBLE_T    
+  | BOOL_T      
+  | CHAR_T        
+  | STRING_T   
+  | LIST_T      
   | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
   | exp_type OP_COMMA exp_type
-  | IDENTIFIER        { last_type = find_type($1); }
+  | IDENTIFIER      
 ;
 
 /*
@@ -601,39 +600,25 @@ param_type:
   5.b) Constructors
 */
 
-_construct:
-    U8_C  { last_type = TYPE_U8;  }
-  | I8_C  { last_type = TYPE_I8;  }
-  | U16_C { last_type = TYPE_U16; }
-  | I16_C { last_type = TYPE_I16; }
-  | U32_C { last_type = TYPE_U32; }
-  | I32_C { last_type = TYPE_I32; }
-  | U64_C { last_type = TYPE_U64; }
-  | I64_C { last_type = TYPE_I64; }
 
 /*
   CONSTRUCTOR IDENTIFIERS
 */
-exp_construct:
-    INT   {rs_types[scope_curr][rs_top()] = TYPE_INTEGER;}
-  | _construct exp      {  }
-  | REAL
-  | FLOAT_C exp
-  | DOUBLE_C exp
-  | CHAR_C exp
-  | TRUE
-  | FALSE
-//| STRING_C exp
-  | CONSTRUCTOR exp {exp_constructor($1);}
-  | CONSTRUCTOR     {exp_constructor($1);}
-;
-
 decl_construct:
     decl_construct BIT_OR decl_construct
   | CONSTRUCTOR OF exp_type { decl_constructor($1); }
   | CONSTRUCTOR             { decl_constructor($1); }
   | exp_type                {printf("TODO: Implement Type Aliases\n");}
 ;
+
+exp_construct:
+    exp_construct exp 
+  | CONSTRUCTOR 
+    {
+      if (!find_constructor($1)) yyerror("Undeclared Constructor\n");
+    }
+;
+
 
 /*
   5.c) Records

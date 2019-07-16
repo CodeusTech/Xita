@@ -78,26 +78,17 @@ extern int yylex();
 
 "int" { return INT_T;  }  //  INFERRED INTEGER TYPE
 "u8" { return U8_T; }     //  8-Bit UNSIGNED INTEGER TYPE
-"U8" { return U8_C; }     //  8-Bit UNSIGNED INTEGER CONSTRUCTOR
 "i8" { return I8_T; }     //  8-Bit SIGNED INTEGER TYPE
-"I8" { return I8_C; }     //  8-Bit SIGNED INTEGER CONSTRUCTOR
 "u16" { return U16_T; }   //  16-Bit UNSIGNED INTEGER TYPE
-"U16" { return U16_C; }   //  16-Bit UNSIGNED INTEGER CONSTRUCTOR
 "i16" { return I16_T; }   //  16-Bit SIGNED INTEGER TYPE
-"I16" { return I16_C; }   //  16-Bit SIGNED INTEGER CONSTRUCTOR
 "u32" { return U32_T; }   //  32-Bit UNSIGNED INTEGER TYPE
-"U32" { return U32_C; }   //  32-Bit UNSIGNED INTEGER CONSTRUCTOR
 "i32" { return I32_T; }   //  32-Bit SIGNED INTEGER TYPE
-"I32" { return I32_C; }   //  32-Bit SIGNED INTEGER CONSTRUCTOR
 "u64" { return U64_T; }   //  64-Bit UNSIGNED INTEGER TYPE
-"U64" { return U64_C; }   //  64-Bit UNSIGNED INTEGER CONSTRUCTOR
 "i64" { return I64_T; }   //  64-Bit SIGNED INTEGER TYPE
-"I64" { return I64_C; }   //  64-Bit SIGNED INTEGER CONSTRUCTOR
 
 "rng" { return RNG; } //  RANDOM NUMBER GENERATOR
 
 "bool" { return BOOL_T; }   //  BOOLEAN TYPE
-"Bool" { return BOOL_C; }   //  BOOLEAN CONSTRUCTOR
 "True" { return TRUE; }     //  BOOLEAN PRIMITIVE
 "False" { return FALSE; }   //  BOOLEAN PRIMITIVE
 

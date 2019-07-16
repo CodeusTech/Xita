@@ -24,10 +24,22 @@
   Returns:
     0, if Successful
 */
-int exp_type (char* ident)
+ErrorCode exp_type (Identifier ident)
 {
   printf("Type Expression: %s\n", ident);
 
+  return 0;
+}
+
+/* 2.) Constructor Expression
+
+  Returns:
+    0, if Successful
+*/
+ErrorCode exp_constructor (Identifier ident)
+{
+  printf("Constructor Expression: %s\n", ident);
+  
   return 0;
 }
 

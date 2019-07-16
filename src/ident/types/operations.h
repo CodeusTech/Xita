@@ -57,10 +57,10 @@ ErrorCode type_init()
   pcount_types = (unsigned int*) malloc(256 * sizeof(unsigned int));
   
   //  Constructors
-  ident_construct = (Identifier*) malloc(256 * sizeof(Identifier));
+  ident_construct = (Identifier**) malloc(256 * sizeof(Identifier*));
   count_construct = (unsigned int*) malloc(256 * sizeof(unsigned int));
-  ident_elements = (Identifier**) malloc(256 * sizeof(Identifier*));
-  type_elements = (TypeID**) malloc(256 * sizeof(TypeID*));
+  ident_elements = (Identifier***) malloc(256 * sizeof(Identifier**));
+  type_elements = (TypeID***) malloc(256 * sizeof(TypeID**));
   count_elements = (unsigned int**) malloc(256 * sizeof(unsigned int*));
 
 
@@ -89,13 +89,89 @@ TypeID get_curr_tid(){ return next_type - 1; }
     1, if ident is of Arbitrary Type
     i, if ident is a Type, where 'i' is index in Types Buffer
 */
-int find_type (char* ident)
+TypeID find_type (Identifier ident)
 {
   printf("Type Found: %s\n", ident);
 
   return 0;
 }
 
+/* 3.b) Find Constructor
 
+  Returns:
+    0, if ident is not a Constructor
+    tid, if ident is a declared constructor
+      - tid is the declaring type's ID number
+*/
+TypeID find_constructor (Identifier ident)
+{ 
+  /*
+    First, handle primitive constructors
+  */
+  if (strcmp(ident, "Int") == 0) {
+    last_type = TYPE_INTEGER;
+    rs_types[scope_curr][rs_top()] = TYPE_INTEGER;
+    return 2; } else
+  if (strcmp(ident, "U8") == 0) {
+    last_type = TYPE_U8;
+    rs_types[scope_curr][rs_top()] = TYPE_U8;
+    return 3; } else
+  if (strcmp(ident, "I8") == 0) {
+    last_type = TYPE_I8;
+    rs_types[scope_curr][rs_top()] = TYPE_I8;
+    return 4; } else
+  if (strcmp(ident, "U16") == 0) {
+    last_type = TYPE_U16;
+    rs_types[scope_curr][rs_top()] = TYPE_U16;
+    return 5; } else
+  if (strcmp(ident, "I16") == 0) {
+    last_type = TYPE_I16;
+    rs_types[scope_curr][rs_top()] = TYPE_I16;
+    return 6; } else
+  if (strcmp(ident, "U32") == 0) {
+    last_type = TYPE_U32;
+    rs_types[scope_curr][rs_top()] = TYPE_U32;
+    return 7; } else
+  if (strcmp(ident, "I32") == 0) {
+    last_type = TYPE_I32;
+    rs_types[scope_curr][rs_top()] = TYPE_I32;
+    return 8; } else
+  if (strcmp(ident, "U64") == 0) {
+    last_type = TYPE_U64;
+    rs_types[scope_curr][rs_top()] = TYPE_U64;
+    return 9; } else
+  if (strcmp(ident, "I64") == 0) {
+    last_type = TYPE_I64;
+    rs_types[scope_curr][rs_top()] = TYPE_I64;
+    return 10; } else
+  if (strcmp(ident, "Real") == 0) {
+    last_type = TYPE_REAL;
+    rs_types[scope_curr][rs_top()] = TYPE_REAL;
+    return 11; } else
+  if (strcmp(ident, "Float") == 0) {
+    last_type = TYPE_FLOAT;
+    rs_types[scope_curr][rs_top()] = TYPE_FLOAT;
+    return 12; } else
+  if (strcmp(ident, "Double") == 0) {
+    last_type = TYPE_DOUBLE;
+    rs_types[scope_curr][rs_top()] = TYPE_DOUBLE;
+    return 13; } else
+  if (strcmp(ident, "Boolean") == 0) {
+    last_type = TYPE_BOOLEAN;
+    rs_types[scope_curr][rs_top()] = TYPE_BOOLEAN;
+    return 14; } else
+  if (strcmp(ident, "Char") == 0) {
+    last_type = TYPE_CHAR;
+    rs_types[scope_curr][rs_top()] = TYPE_CHAR;
+    return 15; } else
+  if (strcmp(ident, "String") == 0) {
+    last_type = TYPE_STRING;
+    rs_types[scope_curr][rs_top()] = TYPE_STRING;
+    return 16; } 
+
+
+  //  Report: Constructor not Found
+  return 0;
+}
 
 #endif

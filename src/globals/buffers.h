@@ -52,9 +52,6 @@ unsigned int mangle = 0;
 // 1.b) Last Encountered Value
 void* last_data;
 
-// 1.c) Last Encountered Type
-TypeID last_type = 0;
-
 /*
   2.) Assembly Buffers
 */
@@ -96,7 +93,7 @@ Scope scope_curr = 0;  //  Function/Register Stack Scope
 Scope scope_next = 1;  //  Next Function Scope
 Scope* scope_parents;  //  Parent (Return) Scope 
 
-
+TypeID last_type = 0;
 
 /*
   4.) Function Buffers

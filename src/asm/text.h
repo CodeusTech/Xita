@@ -111,6 +111,7 @@ ErrorCode end_scope()
 {
   curr_reg = 0; 
   scope_curr = 0;
+  last_type = 0;
   curr_asm_text = start_asm_text[0];
 
   return 0;
