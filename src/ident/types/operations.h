@@ -38,8 +38,8 @@ extern unsigned int* pcount_types;
 //  1.b) Constructors
 extern Identifier**   ident_construct;
 extern unsigned int*  count_construct;
-extern Identifier**   ident_elements;
-extern TypeID**       type_elements;
+extern Identifier***  ident_elements;
+extern TypeID***      type_elements;
 extern unsigned int** count_elements;
 
 /* 1.c) Initialize Type Buffers

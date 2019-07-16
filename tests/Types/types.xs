@@ -10,12 +10,21 @@
 
   Table of Contents
   =================
-  1.) Type Declarations
-  2.) Typeclass Declarations
+  1.) Types
+    1.a) Type Declarations
+    1.b) Type Expressions
+  2.) Typeclasses
+    2.a) Typeclass Declarations
 *)
 
 (*
-  1.) Type Declarations
+  1.) Types
+*)
+
+(* 1.a) Type Declarations
+
+    TYPE DECLARATIONS allow peristant use of a type/data structure within the
+  declaring module and any importing modules.
 *)
 
 type flow = int;;
@@ -28,7 +37,17 @@ type node a =
     Leaf 
   | Tree of (node a), a, (node a)
 
+
+(* 1.b) Type Expressions
+
+    TYPE EXPRESSIONS are instances of a declared type/constructor
+*)
+
 (*
-  2.) Typeclass Declarations
+  2.) Typeclasses
+*)
+
+(*
+  2.a) Typeclass Declarations
 *)
 

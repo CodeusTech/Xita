@@ -88,6 +88,9 @@ int main(int argc, char** argv)
 			//  Delete Assembly File (if not Keep Assembly)
 			if (!keep_assembly) delete_asm_file(asm_fname);
 
+			//  Free Memory Buffers
+			free_buffers();
+
 			return 0;
 		}
 	}

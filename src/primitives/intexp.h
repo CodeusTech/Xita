@@ -80,14 +80,44 @@ int pop_int()
   Returns:
     0, if Successful
 */
-int push_int(int lit)
+int push_int(long long lit)
 {
   //  Map Integer Literal Type to Top of Register Stack
-  rs_types[scope_curr][rs_top()] = TYPE_INTEGER;
+  unsigned int bits;
+  last_data = (void*) (long) lit; 
+
+  //  Check Size of Int
+  switch (last_type)
+  {
+    case 0:
+      bits = 32;
+    case 2: 
+      bits = 32;
+      break;
+    case 3:
+    case 4:
+      bits = 8;
+      break;
+    case 5:
+    case 6:
+      bits = 16;
+      break;
+    case 7:
+    case 8:
+      bits = 32;
+      break;
+    case 9:
+    case 10:
+      bits = 64;
+      break;
+    default:
+      bits = 0;
+      return 1;
+  }
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mov   %s, #%d\n", get_reg(rs[scope_curr][rs_top()], 32), lit);
+  sprintf(str, "mov   %s, #%d\n", get_reg(rs[scope_curr][rs_top()], bits), lit);
 
   //  Add to Queue for File Printing
   add_command(str);

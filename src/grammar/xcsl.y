@@ -314,12 +314,11 @@ exp:
   2.a) Integer Expressions
 */
 exp_integer:
-    RNG        { rng(); }
+    RNG        { rng(); last_type = 0; }
   | INT  
     { 
-      last_data = (void*) (long) $1; 
-      last_type = TYPE_INTEGER;
-      push_int((long) last_data);   
+      push_int((long long) $1);   
+      last_type = 0;
     }
 ;
 
@@ -602,19 +601,22 @@ param_type:
   5.b) Constructors
 */
 
+_construct:
+    U8_C  { last_type = TYPE_U8;  }
+  | I8_C  { last_type = TYPE_I8;  }
+  | U16_C { last_type = TYPE_U16; }
+  | I16_C { last_type = TYPE_I16; }
+  | U32_C { last_type = TYPE_U32; }
+  | I32_C { last_type = TYPE_I32; }
+  | U64_C { last_type = TYPE_U64; }
+  | I64_C { last_type = TYPE_I64; }
+
 /*
   CONSTRUCTOR IDENTIFIERS
 */
 exp_construct:
-    INT
-  | U8_C exp
-  | I8_C exp
-  | U16_C exp
-  | I16_C exp
-  | U32_C exp
-  | I32_C exp
-  | U64_C exp
-  | I64_C exp
+    INT   {rs_types[scope_curr][rs_top()] = TYPE_INTEGER;}
+  | _construct exp      {  }
   | REAL
   | FLOAT_C exp
   | DOUBLE_C exp

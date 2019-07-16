@@ -52,8 +52,8 @@ ErrorCode decl_type (char* ident)
   //  Constructors
   count_construct[tid] = 0;
   ident_construct[tid] = (Identifier*) malloc (40 * sizeof(unsigned int));
-  ident_elements[tid] = (Identifier*) malloc(256 * sizeof(unsigned int));
-  type_elements[tid]  = (TypeID*) malloc(40 * sizeof(TypeID));
+  ident_elements[tid] = (Identifier**) malloc(256 * sizeof(Identifier*));
+  type_elements[tid]  = (TypeID**) malloc(40 * sizeof(TypeID*));
   count_elements[tid] = (unsigned int*) malloc(40 * sizeof(unsigned int));
 
   //  Free String Memory
@@ -97,17 +97,25 @@ ErrorCode decl_type_param (Identifier ident)
   Returns:
     0, if Successful
 */
-ErrorCode decl_constructor (Constructor ident)
+ErrorCode decl_constructor (Identifier ident)
 {
-  //  STUB STUB STUB
-  printf("Constructor Declared: %s \n", ident);
+  //  Retrieve Current TypeID
+  TypeID tid = get_curr_tid() - 18;
+  unsigned int cid = count_construct[tid];
 
-  /*
-    TODO:
-     * Error Check
-     * Add ident to Buffers
-     * Add type to Buffers
+  //  Add Constructor to Type
+  ident_construct[tid][cid] = ident;
+
+  /* 
+    Initialize Element Properties
   */
+  count_elements[tid][cid] = 0;
+  type_elements[tid][cid] = (TypeID*) malloc(40 * sizeof(TypeID));
+  ident_elements[tid][cid] = (Identifier*) malloc(40 * sizeof(Identifier));
+
+
+  //  Increment Number of Constructors for Current Type
+  count_construct[tid]++;
 
   //  Return Success
   return 0;
