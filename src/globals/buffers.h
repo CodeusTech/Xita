@@ -127,7 +127,9 @@ unsigned int* pcount_types; //  Type Parameter Count
 Identifier** param_types; //  Type Parameters
 
 //  5.b) Constructors
+ConstructorID** constructors;   //  ID number of each constructor
 unsigned int*  count_construct; //  Number of Constructors for Function
+unsigned long  total_construct; //  Total Number of Constructors
 Identifier**   ident_construct; //  Constructor Identifiers
 unsigned int** count_elements;  //  Number of Elements for Constructor
 Identifier***  ident_elements;  //  Element Identifiers
@@ -227,6 +229,7 @@ ErrorCode free_buffers()
     free(ident_types[tid]);
     free(param_types[tid]);
 
+    free(constructors[tid]);
     free(ident_construct[tid]);
     free(ident_elements[tid]);
     free(type_elements[tid]);
@@ -238,6 +241,7 @@ ErrorCode free_buffers()
   free (param_types);
   free (count_construct);
   
+  free (constructors);
   free (ident_construct);
   free (ident_elements);
   free (type_elements);

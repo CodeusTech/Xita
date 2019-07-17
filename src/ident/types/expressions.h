@@ -18,6 +18,8 @@
 #ifndef TYPES_EXPRESSIONS_H
 #define TYPES_EXPRESSIONS_H
 
+extern void yyerror();
+
 
 /* 1.) Type Expression
 
@@ -35,10 +37,14 @@ ErrorCode exp_type (Identifier ident)
 
   Returns:
     0, if Successful
+    1, if ident is not a declared Constructor
 */
 ErrorCode exp_constructor (Identifier ident)
 {
-  printf("Constructor Expression: %s\n", ident);
+  unsigned int cid = find_constructor(ident);
+  if (!cid) { yyerror("Undeclared Constructor\n"); }
+
+  push_int(cid);
   
   return 0;
 }

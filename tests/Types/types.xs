@@ -35,13 +35,15 @@ type switch =
 
 type node a = 
     Leaf 
-  | Tree of (node a), a, (node a)
+  | Tree of (node a), a, (node a);;
 
 
 (* 1.b) Type Expressions
 
     TYPE EXPRESSIONS are instances of a declared type/constructor
 *)
+
+Tree
 
 (*
   2.) Typeclasses

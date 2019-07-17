@@ -117,7 +117,7 @@ int push_int(long long lit)
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mov   %s, #%d\n", get_reg(rs[scope_curr][rs_top()], bits), lit);
+  sprintf(str, "mov   %s, #%llu\n", get_reg(rs[scope_curr][rs_top()], bits), lit);
 
   //  Add to Queue for File Printing
   add_command(str);

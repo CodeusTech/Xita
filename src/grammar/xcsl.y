@@ -613,10 +613,7 @@ decl_construct:
 
 exp_construct:
     exp_construct exp 
-  | CONSTRUCTOR 
-    {
-      if (!find_constructor($1)) yyerror("Undeclared Constructor\n");
-    }
+  | CONSTRUCTOR { exp_constructor($1); }
 ;
 
 

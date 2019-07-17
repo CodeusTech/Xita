@@ -51,6 +51,7 @@ ErrorCode decl_type (char* ident)
 
   //  Constructors
   count_construct[tid] = 0;
+  constructors[tid] = (ConstructorID*) malloc(40 * sizeof(ConstructorID));
   ident_construct[tid] = (Identifier*) malloc (40 * sizeof(unsigned int));
   ident_elements[tid] = (Identifier**) malloc(256 * sizeof(Identifier*));
   type_elements[tid]  = (TypeID**) malloc(40 * sizeof(TypeID*));
@@ -102,6 +103,10 @@ ErrorCode decl_constructor (Identifier ident)
   //  Retrieve Current TypeID
   TypeID tid = get_curr_tid() - 18;
   unsigned int cid = count_construct[tid];
+
+  ConstructorID constID = (total_construct++) + 18;
+  constructors[tid][cid] = constID;
+
 
   //  Add Constructor to Type
   ident_construct[tid][cid] = ident;

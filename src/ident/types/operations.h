@@ -38,6 +38,7 @@ extern unsigned int* pcount_types;
 //  1.b) Constructors
 extern Identifier**   ident_construct;
 extern unsigned int*  count_construct;
+extern unsigned long  total_construct;
 extern Identifier***  ident_elements;
 extern TypeID***      type_elements;
 extern unsigned int** count_elements;
@@ -58,7 +59,9 @@ ErrorCode type_init()
   
   //  Constructors
   ident_construct = (Identifier**) malloc(256 * sizeof(Identifier*));
+  constructors = (ConstructorID**) malloc(256 * sizeof(ConstructorID*));
   count_construct = (unsigned int*) malloc(256 * sizeof(unsigned int));
+  total_construct = 0;
   ident_elements = (Identifier***) malloc(256 * sizeof(Identifier**));
   type_elements = (TypeID***) malloc(256 * sizeof(TypeID**));
   count_elements = (unsigned int**) malloc(256 * sizeof(unsigned int*));
@@ -103,7 +106,7 @@ TypeID find_type (Identifier ident)
     tid, if ident is a declared constructor
       - tid is the declaring type's ID number
 */
-TypeID find_constructor (Identifier ident)
+ConstructorID find_constructor (Identifier ident)
 { 
   /*
     First, handle primitive constructors
@@ -168,6 +171,18 @@ TypeID find_constructor (Identifier ident)
     last_type = TYPE_STRING;
     rs_types[scope_curr][rs_top()] = TYPE_STRING;
     return 16; } 
+  else 
+  {
+    //  Check Each Type
+    for (TypeID tid = 0; tid < (get_curr_tid() - 17); tid++)
+    {
+      //  Check Each Constructor
+      for (unsigned int cid = 0; cid < count_construct[tid]; cid++)
+      {
+        if (strcmp(ident, ident_construct[tid][cid]) == 0) return constructors[tid][cid]; 
+      }
+    }
+  }
 
 
   //  Report: Constructor not Found
