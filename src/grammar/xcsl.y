@@ -548,21 +548,21 @@ param_arg:
 */
 exp_type:
     PAR_LEFT exp_type exp_type PAR_RIGHT  {printf("Parameterized Type Found\n");}
-  | INT_T          
-  | U8_T         
-  | I8_T      
-  | U16_T      
-  | I16_T       
-  | U32_T     
-  | I32_T       
-  | U64_T      
-  | I64_T       
-  | REAL_T   
-  | FLOAT_T  
-  | DOUBLE_T    
-  | BOOL_T      
-  | CHAR_T        
-  | STRING_T   
+  | INT_T           { last_type = 2; }    
+  | U8_T            { last_type = 3; } 
+  | I8_T              { last_type = 4; }  
+  | U16_T               { last_type = 5; } 
+  | I16_T           { last_type = 6; } 
+  | U32_T              { last_type = 7; } 
+  | I32_T                { last_type = 8; } 
+  | U64_T               { last_type = 9; } 
+  | I64_T                { last_type = 10; } 
+  | REAL_T            { last_type = 11; } 
+  | FLOAT_T           { last_type = 12; } 
+  | DOUBLE_T             { last_type = 13; } 
+  | BOOL_T               { last_type = 14; } 
+  | CHAR_T                 { last_type = 15; } 
+  | STRING_T            { last_type = 16; } 
   | LIST_T      
   | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
   | exp_type OP_COMMA exp_type

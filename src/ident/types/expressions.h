@@ -43,8 +43,6 @@ ErrorCode exp_constructor (Identifier ident)
 {
   unsigned int cid = find_constructor(ident);
   if (!cid) { yyerror("Undeclared Constructor\n"); }
-
-  push_int(cid);
   
   return 0;
 }

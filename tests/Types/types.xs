@@ -43,7 +43,10 @@ type node a =
     TYPE EXPRESSIONS are instances of a declared type/constructor
 *)
 
-Leaf
+let search a = 
+  if 1 is int
+  then 1
+  else 0
 
 (*
   2.) Typeclasses

@@ -91,23 +91,42 @@ int push_int(long long lit)
   {
     case 0:
       bits = 32;
+      rs_types[scope_curr][rs_top()] = 2;
+      break;
     case 2: 
       bits = 32;
+      rs_types[scope_curr][rs_top()] = 2;
       break;
     case 3:
+      rs_types[scope_curr][rs_top()] = 3;
+      bits = 8;
+      break;
     case 4:
+      rs_types[scope_curr][rs_top()] = 4;
       bits = 8;
       break;
     case 5:
+      rs_types[scope_curr][rs_top()] = 5;
+      bits = 16;
+      break;
     case 6:
+      rs_types[scope_curr][rs_top()] = 6;
       bits = 16;
       break;
     case 7:
+      rs_types[scope_curr][rs_top()] = 7;
+      bits = 32;
+      break;
     case 8:
+      rs_types[scope_curr][rs_top()] = 8;
       bits = 32;
       break;
     case 9:
+      rs_types[scope_curr][rs_top()] = 9;
+      bits = 64;
+      break;
     case 10:
+      rs_types[scope_curr][rs_top()] = 10;
       bits = 64;
       break;
     default:

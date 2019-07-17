@@ -20,6 +20,8 @@
 
 #include "operations.h"
 
+extern void yyerror(const char*);
+
 /*
   1.) Type Declarations
 */
