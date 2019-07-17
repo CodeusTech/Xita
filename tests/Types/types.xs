@@ -44,7 +44,7 @@ type node a =
 *)
 
 let search a = 
-  if U8 5 is int
+  if U8 5 is I32
   then 1
   else 0
 
