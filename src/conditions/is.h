@@ -19,15 +19,16 @@
 */
 ErrorCode is_construct()
 {
-  printf("CHECKERS\n");
+  //  Remove the last expression getting pushed to stack
+  get_last_command();
 
   /*
     Compare TOP Type vs SECOND Type
   */
-  TypeID tSec = rs_types[scope_curr][rs_second()];
+  ConstructorID cSec = constructors[scope_curr][rs_second()];
 
-  push_int(tSec);
-  push_int(last_type);
+  push_int(cSec);
+  push_int(last_constructor);
 
   rs_pop();
 
@@ -68,12 +69,7 @@ ErrorCode is_construct()
   sprintf(str, "finish_%llu:\n", mang);
   add_command(str);
 
-
-  /*
-    Pop TOP from Register Stack
-    Store Result in SECOND
-  */
-  rs_pop();
+  rs_push();
 
   free(str);
 

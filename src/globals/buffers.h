@@ -94,6 +94,7 @@ Scope scope_next = 1;  //  Next Function Scope
 Scope* scope_parents;  //  Parent (Return) Scope 
 
 TypeID last_type = 0;
+ConstructorID last_constructor = 0;
 
 /*
   4.) Function Buffers
