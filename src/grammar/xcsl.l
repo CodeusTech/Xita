@@ -280,7 +280,8 @@ extern int yylex();
 */  
 %}
 
-"clear" {return CLEAR;}
+"clear"  {return CLEAR;}
+"sizeof" {return SIZEOF;}
 
 
 

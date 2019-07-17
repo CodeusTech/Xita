@@ -148,7 +148,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 
 //  Datatype Keywords
 %token TYPE TYPECLASS
-%token IS OF REQ IMPL
+%token IS OF REQ IMPL SIZEOF
 %token OP_REC_L OP_REC_R OP_ELEMENT
 
 //  Static Memory Manipulation
@@ -315,6 +315,7 @@ exp:
 */
 exp_integer:
     RNG        { rng(); }
+  | SIZEOF exp_type {printf("TYPE SIZE CHECKED\n");}
   | INT  
     { 
       push_int((long long) $1);
