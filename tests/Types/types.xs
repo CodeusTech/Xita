@@ -44,7 +44,7 @@ type node a =
 *)
 
 let search a = 
-  if 1 is int
+  if I32 1 is int
   then 1
   else 0
 

@@ -254,8 +254,6 @@ src:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
-  | exp_if              { }
-  | exp_is              { }
   | exp_match           { }
   | exp OP_ADD exp      { infer_addition(); }
   | exp OP_SUB exp      { infer_subtraction(); }
@@ -290,6 +288,8 @@ exp:
   | decl_funct          { }
   | decl_type           { }
   | decl_typeclass      { }
+  | exp_if              { }
+  | exp_is              { }
   | exp_funct           { }
   | IDENTIFIER          { printf("Type Inferred: %s\n", $1); }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }

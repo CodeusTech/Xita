@@ -19,25 +19,6 @@
 */
 ErrorCode is_construct()
 {
-  /*
-    Compare TOP Constructor vs SECOND Constructor
-  */
-
-  /*
-    Pop TOP from Register Stack
-    Store Result in SECOND
-  */
-  rs_pop();
-
-  return 0;
-}
-
-/*
-  Returns:
-    0, if Successful
-*/
-ErrorCode is_type()
-{
   printf("CHECKERS\n");
 
   /*
@@ -81,7 +62,7 @@ ErrorCode is_type()
   sprintf(str, "set_%llu:\n", mang);
   add_command(str);
 
-  sprintf(str, "mov %s, #1\n", get_reg32(sec));
+  sprintf(str, "mov   %s, #1\n", get_reg32(sec));
   add_command(str);
 
   sprintf(str, "finish_%llu:\n", mang);
@@ -93,6 +74,70 @@ ErrorCode is_type()
     Store Result in SECOND
   */
   rs_pop();
+
+  free(str);
+
+  //  Return Success
+  return 0;
+}
+
+/*
+  Returns:
+    0, if Successful
+*/
+ErrorCode is_type()
+{
+  //  Remove the last expression getting pushed to stack
+  get_last_command();
+
+  /*
+    Compare TOP Type vs SECOND Type
+  */
+  TypeID tSec = rs_types[scope_curr][rs_second()];
+
+  push_int(tSec);
+  push_int(last_type);
+
+  rs_pop();
+
+  //  Get Register Codes
+  ADR top = rs[scope_curr][rs_top()];
+  ADR sec = rs[scope_curr][rs_second()];
+
+  char* str = (char*) malloc(50);
+
+  //  Compare Type IDs
+  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  add_command(str);
+
+  //  Create New Mangle Number
+  for (int i = 0; i < 3; i++) mangle += rand();
+  srand(time(NULL)+mangle);
+  for (int i = 0; i < 4; i++) mangle += rand();
+  unsigned long long mang = mangle;
+
+  rs_pop();
+
+  //  Branch if Equal to set
+  sprintf(str, "beq   set_%llu\n", mang);
+  add_command(str);
+
+  sprintf(str, "mov   %s, #0\n", get_reg64(sec));
+  add_command(str);
+
+  sprintf(str, "b     finish_%llu\n", mang);
+  add_command(str);
+
+  sprintf(str, "set_%llu:\n", mang);
+  add_command(str);
+
+  sprintf(str, "mov   %s, #1\n", get_reg32(sec));
+  add_command(str);
+
+  sprintf(str, "finish_%llu:\n", mang);
+  add_command(str);
+
+  rs_push();
 
   free(str);
 
