@@ -256,6 +256,7 @@ exp:
     PAR_LEFT exp PAR_RIGHT
   | exp_match           { }
   | exp OP_ADD exp      { infer_addition(); }
+  | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R {printf("STRING/LIST ELEMENT ACCESSED\n");}
   | exp OP_SUB exp      { infer_subtraction(); }
   | exp OP_MUL exp      { infer_multiplication(); }
   | exp OP_DIV exp      { infer_division(); }

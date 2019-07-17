@@ -103,17 +103,17 @@ ConstructorID last_constructor = 0;
 */
 
 //  4.a) Functions
-char** ident_funct;         //  Function Identifiers
+Identifier* ident_funct;         //  Function Identifiers
 unsigned int* type_funct;   //  Return Type of Functions
 unsigned int* rtn_funct;    //  Number of Function Returns
 
 //  4.b) Parameters
-char*** param_funct;        //  Function Parameter Identifiers
+Identifier** param_funct;        //  Function Parameter Identifiers
 unsigned int* pnum_funct;   //  Number of Parameters for Function
-unsigned int** ptype_funct; //  Function Parameter Types
+TypeID** ptype_funct; //  Function Parameter Types
 
 //  4.c) Constants
-char** ident_const;       //  Constant Identifiers
+Identifier* ident_const;       //  Constant Identifiers
 unsigned int* type_const; //  Constant Type Codes
 unsigned int count_const; //  Number of Constants
 
@@ -134,6 +134,8 @@ ConstructorID** constructors;   //  ID number of each constructor
 unsigned int*  count_construct; //  Number of Constructors for Function
 unsigned long  total_construct; //  Total Number of Constructors
 Identifier**   ident_construct; //  Constructor Identifiers
+
+//  5.c) Elements
 unsigned int** count_elements;  //  Number of Elements for Constructor
 Identifier***  ident_elements;  //  Element Identifiers
 TypeID***      type_elements;   //  Types of Elements for Constructor
@@ -162,11 +164,11 @@ operands* operands_bit_or;
 operands* operands_bit_xor;
 operands* operands_bit_shl;
 operands* operands_bit_shr;
+
+//  Comparison Operations
 operands* operands_bool_and;
 operands* operands_bool_or;
 operands* operands_bool_xor;
-
-//  Comparison Operations
 operands* operands_lt;
 operands* operands_lte;
 operands* operands_gt;
