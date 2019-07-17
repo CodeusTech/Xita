@@ -100,6 +100,9 @@ ErrorCode decl_type_param (Identifier ident)
 */
 ErrorCode decl_constructor (Identifier ident)
 {
+  //  TODO: use sprintf or something to print ident to terminal
+  if (find_constructor(ident)) yyerror("Constructor with that name already declared");
+
   //  Retrieve Current TypeID
   TypeID tid = get_curr_tid() - 18;
   unsigned int cid = count_construct[tid];

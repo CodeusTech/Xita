@@ -43,7 +43,7 @@ type node a =
     TYPE EXPRESSIONS are instances of a declared type/constructor
 *)
 
-Tree
+Leaf
 
 (*
   2.) Typeclasses
