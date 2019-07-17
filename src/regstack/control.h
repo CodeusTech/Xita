@@ -24,8 +24,10 @@
 extern ADR** rs;  //  Global Register Stack Orders
 extern Scope scope_next;
 extern TypeID** rs_types;
+extern TypeID** rse_types;
+extern ConstructorID** rs_construct;
 extern unsigned int rse_next;
-extern unsigned long** rse_types;
+extern unsigned long** rse_construct;
 
 
 /* 1.) Initialize Function's Register Stack
@@ -35,6 +37,7 @@ extern unsigned long** rse_types;
 */
 int rs_init(Scope scope)
 {
+
   /*
     TODO:
      * Error Check
@@ -43,10 +46,19 @@ int rs_init(Scope scope)
   //  Set Create Register Stack
   rs_new(scope);
 
-  rs_types[scope]   = (TypeID*) malloc(25 * sizeof(unsigned int));
+  rs_types[scope]      = (TypeID*) malloc(25*sizeof(TypeID));
+  rs_construct[scope]   = (ConstructorID*) malloc(25 * sizeof(unsigned int));
 
-  if  (scope == 0) rse_types[scope]  = NULL;
-  else rse_types[scope] = (unsigned long*) malloc(255 * sizeof(unsigned long));
+  if  (scope == 0)
+  { 
+    rse_types[scope] = NULL;
+    rse_construct[scope]  = NULL;
+  }
+  else 
+  {
+    rse_types[scope] = (TypeID*) malloc(256* sizeof(TypeID));
+    rse_construct[scope] = (ConstructorID*) malloc(256 * sizeof(unsigned long));
+  }
 
   return 0;
 }
@@ -65,12 +77,10 @@ int rs_serialize()
   for (unsigned long long i = 0; i < active; i++)
   {
     ADR reg = rs_pop();
-    printf("%d\n", curr_reg);
 
     unsigned long long test = (unsigned long long) rs[scope_curr][rs_top()];
     unsigned long long test2 = ((((unsigned long long) 31) & test) << (i * 5));
 
-    printf("%llu\n", test2);
 
     reg1 |= test2;
   }
@@ -103,27 +113,29 @@ int rs_end()
     //  Entry Function Context Scope
     if (rs[i][26] == (ADR) 0) 
     {
+  printf("check\n");
       free(rs[i]);
       free(rs_types[i]);
+      free(rs_construct[i]);
     }
     //  Subfunction Context Scopes
     else 
     {
       free (rs[i]);
       free (rs_types[i]);
+      free (rs_construct[i]);
       free (rse_types[i]);
+      free (rse_construct[i]);
     }
   }
 
   for (int i = 1; i < rse_next; i++)
   {
-    free(rse_types[i]);
+    free (rse_types[i]);
+    free(rse_construct[i]);
   }
 
   free(rs);
-  free(rs_types);
-  free(rse_types);
-
 
   return 0;
 }

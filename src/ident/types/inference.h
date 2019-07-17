@@ -1,12 +1,12 @@
 /*
-  operator.h (Type Inferrence)
+  Inference.h (Types)
   Cody Fagley
   Authored on   March 7, 2019
-  Last Modified March 7, 2019
+  Last Modified July 17, 2019
 */
 
 /*
-  Contains functionality for Operator Expression Type Inferrence
+  Contains functionality for Expression Type Inferrence
 
   Table of Contents
   =================
@@ -35,12 +35,13 @@
   4.) List Operators
     4.a) Append
     4.b) List Constructor
+  5.) Constructors
 */
 
-#ifndef INFERRENCE_OPERATOR_H
-#define INFERRENCE_OPERATOR_H
+#ifndef TYPES_INFERRENCE_H
+#define TYPES_INFERRENCE_H
 
-#include "../../../primitives/primitives.h"
+#include "../../primitives/primitives.h"
 
 /*
   1) Standard Operators
@@ -373,6 +374,26 @@ int infer_list_con()
   //  STUB STUB STUB
   printf("Perform List Construction\n");
 
+  return 0;
+}
+
+/*
+  5.) Constructors
+*/
+ErrorCode infer_constructor(ConstructorID construct)
+{
+  if (construct >= 1 && construct < 17) return construct;
+
+  //  For Each Type
+  for (TypeID tid = 0; tid < (get_curr_tid()-18); tid++)
+  {
+    for (ConstructorID cid = 0; cid < count_construct[tid]; cid++)
+    {
+      if (constructors[tid][cid] == construct) return tid;
+    }
+  }
+
+  //  Return Success
   return 0;
 }
 

@@ -12,6 +12,7 @@
 #ifndef CONDITIONS_IS_H
 #define CONDITIONS_IS_H
 
+#include "../ident/types/types.h"
 
 /*
   Returns:
@@ -25,7 +26,7 @@ ErrorCode is_construct()
   /*
     Compare TOP Type vs SECOND Type
   */
-  ConstructorID cSec = constructors[scope_curr][rs_second()];
+  ConstructorID cSec = rs_construct[scope_curr][rs_second()];
 
   push_int(cSec);
   push_int(last_constructor);
@@ -89,7 +90,7 @@ ErrorCode is_type()
   /*
     Compare TOP Type vs SECOND Type
   */
-  TypeID tSec = rs_types[scope_curr][rs_second()];
+  TypeID tSec = infer_constructor(rs_construct[scope_curr][rs_second()]);
 
   push_int(tSec);
   push_int(last_type);

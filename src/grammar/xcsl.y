@@ -291,7 +291,6 @@ exp:
   | exp_if              { }
   | exp_is              { }
   | exp_funct           { }
-  | IDENTIFIER          { printf("Type Inferred: %s\n", $1); }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
   | exp_memread         { }
   | exp_memwrite        { }
@@ -396,15 +395,18 @@ if:
 //  THEN ...
 // CALLABLE FUNCTION
 then:
-  if THEN exp { $$ = exp_then($1); };
+  if THEN exp { $$ = exp_then($1); }
+;
 
 //  ELSE ...
 //  HELPER FUNCTION
 else1:
-  then ELSE      { $$ = decl_else($1); };
+  then ELSE      { $$ = decl_else($1); }
+;
 // CALLABLE FUNCTION
 else:
-  else1 exp { $$ = exp_else($1); };
+  else1 exp { $$ = exp_else($1); }
+;
 
 exp_if:
     else { exp_if_then_else(); }

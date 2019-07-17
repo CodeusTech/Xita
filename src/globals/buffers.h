@@ -82,11 +82,13 @@ unsigned int index_asm_data;
 //  3.a) Standard Register Stack
 ADR curr_reg;       //  Current Register pointer
 ADR** rs;           //  Register Stack Orders
-TypeID** rs_types;  //  Register Stack Types
+TypeID** rs_types;
+TypeID** rse_types;
+ConstructorID** rs_construct; // Register Stack Constructors
 
 //  3.b) Extended Register Stack
 unsigned int rse_next = 1;  //  Next Extended Register Stack
-TypeID** rse_types;  //  Register Stack Types (Extended)
+ConstructorID** rse_construct;  //  Register Stack Types (Extended)
 
 //  3.c) Context Scopes
 Scope scope_curr = 0;  //  Function/Register Stack Scope
@@ -247,6 +249,12 @@ ErrorCode free_buffers()
   free (ident_elements);
   free (type_elements);
   free (count_elements);
+
+  free (rs_types);
+  free (rs_construct);
+
+  free (rse_types);
+  free (rse_construct);
 
 
   //  Return Success

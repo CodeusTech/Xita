@@ -67,10 +67,14 @@ int main(int argc, char** argv)
 			init_asm_data();
 			init_asm_bss();
 
+			//  Allocate Main Buffers
 			rs = (ADR**) malloc(256*sizeof(ADR*));
-			rs_types = (TypeID**) malloc(256*sizeof(TypeID*));			
+			rs_types  = (TypeID**) malloc(256*sizeof(TypeID*));
 			rse_types = (TypeID**) malloc(256*sizeof(TypeID*));
+			rs_construct = (ConstructorID**) malloc(256*sizeof(ConstructorID*));			
+			rse_construct = (ConstructorID**) malloc(256*sizeof(ConstructorID*));
 
+			//  Initialize Register Stack Backend
 			rs_init(0);
 			type_init();
 

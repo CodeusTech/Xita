@@ -25,6 +25,8 @@
 #ifndef TYPES_OPERATIONS_H
 #define TYPES_OPERATIONS_H
 
+#include "../../primitives/typecodes.h"
+
 /*
   1.) Compiler Buffers
 */
