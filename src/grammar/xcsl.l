@@ -180,6 +180,8 @@ extern int yylex();
 "/" { return OP_DIV; } //  DIVISION OPERATOR
 "%" { return OP_MOD; } //  MODULUS OPERATOR
 
+":=" { return OP_INLINE; } //  INLINE OPERATOR
+
 "<=" { return OP_LTE; } // LESS THAN OR EQUAL TO
 ">=" { return OP_GTE; } // GREATER THAN OR EQUAL TO
 "==" { return OP_EQ;  } // EXACTLY EQUAL TO

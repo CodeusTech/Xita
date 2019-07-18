@@ -145,6 +145,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 
 //  Functional Keywords
 %token CONST LET IN
+%token OP_INLINE
 
 //  Datatype Keywords
 %token TYPE TYPECLASS
@@ -245,8 +246,8 @@ src2:
 
 src:
     src2 OP_SEP src
-  | open     { }
-  | exp { }
+  | open              { }
+  | exp               { }
 ;
 
 /*
@@ -314,12 +315,9 @@ exp:
   2.a) Integer Expressions
 */
 exp_integer:
-    RNG        { rng(); }
-  | SIZEOF exp_type {printf("TYPE SIZE CHECKED\n");}
-  | INT  
-    { 
-      push_int((long long) $1);
-    }
+    RNG             { rng(); }
+  | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
+  | INT             { push_int((long long) $1); }
 ;
 
 /*
@@ -500,7 +498,13 @@ let:
 */
 decl_funct:
     pre_let exp_param OP_ASSIGN exp IN exp { decl2_function(); }
+    pre_let exp_param OP_ASSIGN OP_REC_L exp_inline OP_REC_R IN exp { decl2_function(); }
   | pre_let exp_param OP_ASSIGN exp        { decl2_function(); }
+;
+
+exp_inline:
+    OP_INLINE exp exp_inline {  }
+  | {/* Intentionally Left Blank */}
 ;
 
 /*

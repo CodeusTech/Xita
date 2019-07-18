@@ -45,8 +45,8 @@ type node a =
 
 let search a = 
   if U8 5 is I32
-  then sizeof int
-  else 0
+  then sizeof u8
+  else sizeof i32
 
 (*
   2.) Typeclasses

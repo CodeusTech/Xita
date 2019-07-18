@@ -15,4 +15,14 @@
 
 if True < False
 then 111
-else 999
+else 999;;
+
+--  Sum Function
+let sum x y = 
+  {
+    := x + y
+    :=  if sum < 5
+          then x
+          else y
+  } in 
+    sum 7 8
