@@ -190,10 +190,24 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 /*
   B.) Order of Operations
 */
-%left REAL INT
-%left OP_TUP
+//  High-Order Operations
+%left OP_ASSIGN OP_INLINE
+%left OP_LIST_L OP_LIST_R
+%left OP_REC_L OP_REC_R
+%left OP_ELEMENT OP_COMMA
+
+//  Literal Operations
+%left IDENTIFIER
+%left REAL INT TRUE FALSE
+%left BOOL_AND BOOL_OR BOOL_XOR OP_LT OP_GT OP_LTE OP_GTE OP_EQ OP_NEQ IS
+
+//  Operator Arithmetic
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
+%left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
+
+//  Seperators
+%left OP_TUP
 %left PAR_LEFT PAR_RIGHT
 %left OP_SEQ
 
@@ -502,25 +516,6 @@ decl_funct:
   | pre_let exp_param OP_ASSIGN exp        { decl2_function(); }
 ;
 
-exp_inline:
-    OP_INLINE exp exp_inline {  }
-  | {/* Intentionally Left Blank */}
-;
-
-/*
-  FUNCTION EXPRESSIONS (INVOCATIONS)
-*/
-exp_funct:
-    IDENTIFIER param_arg  { exp_function($1); }
-;
-
-/*
-  4.c) Parameters/Arguments
-*/
-
-/*
-  PARAMETER EXPRESSIONS (DECLARATIONS)
-*/
 param:
     IDENTIFIER { decl_parameter($1); }
 ;
@@ -530,15 +525,28 @@ exp_param:
   | {/* INTENTIONALLY LEFT BLANK */}
 ;
 
+exp_inline:
+    OP_INLINE exp exp_inline {  }
+  | {/* Intentionally Left Blank */}
+;
+
+/*
+  FUNCTION EXPRESSIONS (INVOCATIONS)
+*/
+exp_funct:
+    IDENTIFIER arg_funct  { exp_function($1); }
+;
+
 /*
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg:
-    exp { load_argument(scope_curr); }
+    IDENTIFIER {printf("Argument Encountered\n");}
 ;
 
-param_arg:
-    arg param_arg  {/* Accept arbitrary number of arguments */}
+arg_funct:
+    arg arg_funct {/* Accept arbitrary number of arguments */}
+  | arg           { load_argument(scope_curr); }
   | {/*INTENTIONALLY LEFT BLANK*/}
 ;
 
