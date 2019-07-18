@@ -525,10 +525,14 @@ let:
 /*
   FUNCTION DECLARATIONS
 */
-decl_funct:
-    pre_let exp_param OP_ASSIGN exp IN exp { decl2_function(); }
-    pre_let exp_param OP_ASSIGN OP_REC_L exp_inline OP_REC_R IN exp { decl2_function(); }
+__decl_funct:
+    pre_let exp_param OP_ASSIGN OP_REC_L exp_inline OP_REC_R { decl2_function(); }
   | pre_let exp_param OP_ASSIGN exp        { decl2_function(); }
+;
+
+decl_funct:
+    __decl_funct IN exp
+  | __decl_funct
 ;
 
 param:
