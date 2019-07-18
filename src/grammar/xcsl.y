@@ -192,13 +192,16 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 */
 //  High-Order Operations
 %left BUILD CLEAR
+%left LET IN
+%left TYPE TYPECLASS REQUIRES
+
 %left OP_ASSIGN OP_INLINE
 %left OP_LIST_L OP_LIST_R
 %left OP_REC_L OP_REC_R
 %left OP_ELEMENT OP_COMMA
 
 //  List Operations
-%left OP_APPEND 
+%left OP_APPEND LIST_HEAD LIST_TAIL
 
 //  Constructors
 %left CONSTRUCTOR
@@ -588,21 +591,21 @@ arg_funct:
 exp_type:
     PAR_LEFT exp_type exp_type PAR_RIGHT  {printf("Parameterized Type Found\n");}
   | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
-  | INT_T           { last_type = 2; }    
-  | U8_T            { last_type = 3; } 
-  | I8_T              { last_type = 4; }  
-  | U16_T               { last_type = 5; } 
-  | I16_T           { last_type = 6; } 
-  | U32_T              { last_type = 7; } 
-  | I32_T                { last_type = 8; } 
-  | U64_T               { last_type = 9; } 
-  | I64_T                { last_type = 10; } 
-  | REAL_T            { last_type = 11; } 
-  | FLOAT_T           { last_type = 12; } 
-  | DOUBLE_T             { last_type = 13; } 
-  | BOOL_T               { last_type = 14; } 
-  | CHAR_T                 { last_type = 15; } 
-  | STRING_T            { last_type = 16; } 
+  | INT_T           { last_type = 2;  }    
+  | U8_T            { last_type = 3;  } 
+  | I8_T            { last_type = 4;  }  
+  | U16_T           { last_type = 5;  } 
+  | I16_T           { last_type = 6;  } 
+  | U32_T           { last_type = 7;  } 
+  | I32_T           { last_type = 8;  } 
+  | U64_T           { last_type = 9;  } 
+  | I64_T           { last_type = 10; } 
+  | REAL_T          { last_type = 11; } 
+  | FLOAT_T         { last_type = 12; } 
+  | DOUBLE_T        { last_type = 13; } 
+  | BOOL_T          { last_type = 14; } 
+  | CHAR_T          { last_type = 15; } 
+  | STRING_T        { last_type = 16; } 
   | LIST_T      
   | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
   | exp_type OP_COMMA exp_type
