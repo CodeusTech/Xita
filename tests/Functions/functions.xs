@@ -34,9 +34,6 @@ let sum x y = x + y;;
   3.) Functional Expressions
 *)
 
-let x = 1 in
-let y = 2 in
-  sum
-
+sum x y
 
 

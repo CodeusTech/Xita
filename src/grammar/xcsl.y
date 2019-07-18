@@ -191,10 +191,24 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
   B.) Order of Operations
 */
 //  High-Order Operations
+%left BUILD CLEAR
 %left OP_ASSIGN OP_INLINE
 %left OP_LIST_L OP_LIST_R
 %left OP_REC_L OP_REC_R
 %left OP_ELEMENT OP_COMMA
+
+//  List Operations
+%left OP_APPEND 
+
+//  Constructors
+%left CONSTRUCTOR
+%left U8 I8 U16 I16 U32 I32 U64 I64 FLOAT_C DOUBLE_C STRING_C CHAR_C
+
+//  Override Operators
+%left OP_ADD_O OP_SUB_O OP_DIV_O OP_MUL_O OP_MOD_O OP_APPEND_O OP_LIST_CON_O
+%left BIT_AND_O BIT_OR_O BIT_XOR_O BOOL_AND_O BOOL_OR_O BOOL_XOR_O 
+%left OP_LT_O OP_LTE_O OP_GT_O OP_GTE_O OP_EQ_O OP_NEQ_O 
+%left MEM_READ_O MEM_SET_O ARROW_L_O ARROW_R_O 
 
 //  Literal Operations
 %left IDENTIFIER
@@ -212,6 +226,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %left OP_SEQ
 
 %type <val_int> if if1 then else1 else
+%type <val_ident> begin_exp_funct
 
 /*
   C.) Start of Grammar
@@ -271,7 +286,7 @@ exp:
     PAR_LEFT exp PAR_RIGHT
   | exp_match           { }
   | exp OP_ADD exp      { infer_addition(); }
-  | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R {printf("STRING/LIST ELEMENT ACCESSED\n");}
+  | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R {printf("ARRAY/LIST ELEMENT ACCESSED\n");}
   | exp OP_SUB exp      { infer_subtraction(); }
   | exp OP_MUL exp      { infer_multiplication(); }
   | exp OP_DIV exp      { infer_division(); }
@@ -533,15 +548,19 @@ exp_inline:
 /*
   FUNCTION EXPRESSIONS (INVOCATIONS)
 */
+begin_exp_funct:
+    IDENTIFIER {printf("Function Encountered: %s\n", $1); $$ = $1; }
+;
+
 exp_funct:
-    IDENTIFIER arg_funct  { exp_function($1); }
+    begin_exp_funct arg_funct  { exp_function($1); }
 ;
 
 /*
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg:
-    IDENTIFIER {printf("Argument Encountered\n");}
+    exp {printf("Argument Encountered\n");}
 ;
 
 arg_funct:
@@ -564,6 +583,7 @@ arg_funct:
 */
 exp_type:
     PAR_LEFT exp_type exp_type PAR_RIGHT  {printf("Parameterized Type Found\n");}
+  | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
   | INT_T           { last_type = 2; }    
   | U8_T            { last_type = 3; } 
   | I8_T              { last_type = 4; }  

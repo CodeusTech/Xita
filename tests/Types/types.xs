@@ -27,7 +27,7 @@
   declaring module and any importing modules.
 *)
 
-type flow = int;;
+type flow = int [64];;
 type dog = Bulldog | Poodle;;
 type switch =
     On of flow
@@ -37,6 +37,7 @@ type node a =
     Leaf 
   | Tree of (node a), a, (node a);;
 
+flow.[10];;
 
 (* 1.b) Type Expressions
 
