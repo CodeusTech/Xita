@@ -36,7 +36,7 @@ let sum x y = x + y;;
 
 let x = 1 in
 let y = 2 in
-  sum x y
+  sum
 
 
 
