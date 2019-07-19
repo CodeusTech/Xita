@@ -83,7 +83,9 @@ int main(int argc, char** argv)
 			while(!feof(yyin)) yyparse();
 
 			//  Create Assembly File
-			char* asm_fname = strdup(argv[i]);
+			char* asm_fname = (char*) malloc(strlen(argv[i])+3);
+			strncpy(asm_fname, argv[i],strlen(argv[i]));
+			asm_fname[strlen(argv[i]+2)] = 0;
 			strcat(asm_fname, ".s");
 
 			//  Populate Assembly File
@@ -91,6 +93,8 @@ int main(int argc, char** argv)
 
 			//  Delete Assembly File (if not Keep Assembly)
 			if (!keep_assembly) delete_asm_file(asm_fname);
+
+			free (asm_fname);
 
 			//  Free Memory Buffers
 			free_buffers();
