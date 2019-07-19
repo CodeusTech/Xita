@@ -26,7 +26,7 @@
 */
 char* get_reg(unsigned int i, unsigned char bits)
 {
-  char* str = (char*) malloc(256);
+  char* str = (char*) malloc(5);
   switch (bits)
   {
     case 8:

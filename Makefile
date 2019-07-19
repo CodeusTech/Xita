@@ -6,7 +6,7 @@
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
 CCOMP=gcc
-CFLAGS=-std=gnu11 -lm -Wall
+CFLAGS=-std=gnu11 -lm -Wall -g -O0
 SILENT=-Wno-unused-variable -Wno-pointer-to-int-cast
 
 #  Build and Install Cross Compiler

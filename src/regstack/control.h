@@ -111,7 +111,7 @@ int rs_end()
   for (int i = 0; i < scope_next; i++)
   {
     //  Entry Function Context Scope
-    if (rs[i][26] == (ADR) 0) 
+    if (rs[i][25] == (ADR) 0) 
     {
   printf("check\n");
       free(rs[i]);

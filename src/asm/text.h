@@ -36,7 +36,6 @@ extern Scope scope_next;
 */
 ErrorCode generate_text(FILE* filename)
 {
-
   //  Print TEXT Segment Name into File
   fprintf(filename, ".section .text:\n\n");
 
@@ -51,7 +50,7 @@ ErrorCode generate_text(FILE* filename)
     {
       if (i == 255) 
       {
-        curr_asm_text = (char**) start_asm_text[j][i];
+        curr_asm_text = (Command*) start_asm_text[j][i];
         free(start_asm_text);
         i = 0;
         count_asm_text[j] -= 255;

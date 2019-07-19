@@ -84,7 +84,7 @@ int push_int(long long lit)
 {
   //  Map Integer Literal Type to Top of Register Stack
   unsigned int bits;
-  last_data = (void*) (long) lit; 
+  last_data = (void*) (long long) lit; 
 
   //  Check Size of Int
   switch (last_type)
@@ -136,13 +136,15 @@ int push_int(long long lit)
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mov   %s, #%llu\n", get_reg(rs[scope_curr][rs_top()], bits), lit);
+  char* reg_top = get_reg(rs[scope_curr][rs_top()], bits);
+  sprintf(str, "mov   %s, #%llu\n", reg_top, lit);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(reg_top);
   ADR reg = rs_push();
 
   return 0;
@@ -221,13 +223,18 @@ int integer_addition()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "add   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+
+  sprintf(str, "add   %s, %s, %s\n", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(top);
+  free(sec);
 
   return 0;
 }
@@ -242,13 +249,19 @@ int integer_subtraction()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "sub   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+
+
+  sprintf(str, "sub   %s, %s, %s\n", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(top);
+  free(sec);
 
   return 0;
 }
@@ -263,13 +276,18 @@ int integer_multiplication()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mul   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+
+  sprintf(str, "mul   %s, %s, %s\n", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(top);
+  free(sec);
 
   return 0;
 }
@@ -284,13 +302,18 @@ int integer_division()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "sdiv  %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+
+  sprintf(str, "sdiv  %s, %s, %s\n", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(top);
+  free(sec);
 
   return 0;
 }
@@ -305,13 +328,18 @@ int integer_modulo()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mov   %s, %s mod %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+
+  sprintf(str, "mov   %s, %s mod %s\n", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(top);
+  free(sec);
 
   return 0;
 }
@@ -381,13 +409,18 @@ int bitwise_and()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "and   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+
+  sprintf(str, "and   %s, %s, %s\n", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(top);
+  free(sec);
 
   return 0;
 }
@@ -402,13 +435,18 @@ int bitwise_or()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "orr   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+
+  sprintf(str, "orr   %s, %s, %s\n", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(top);
+  free(sec);
 
   return 0;
 }
@@ -423,13 +461,18 @@ int bitwise_xor()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "eor   %s, %s, %s\n", get_reg(rs[scope_curr][rs_second()], 32), get_reg(rs[scope_curr][rs_second()],32), get_reg(rs[scope_curr][rs_top()],32));
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+
+  sprintf(str, "eor   %s, %s, %s\n", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
+  free(sec);
+  free(top);
 
   return 0;
 }
