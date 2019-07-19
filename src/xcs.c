@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 	{
 
 		//  Keep Assembly Option
-		if (strcmp(argv[i], "-a") == 0 || strcmp(argv[i], "--keep-assembly") == 0) 
+		if (strncmp(argv[i], "-a", 2) == 0 || strncmp(argv[i], "--keep-assembly", 15) == 0) 
 		{
 			keep_assembly = true;
 		}
@@ -84,9 +84,9 @@ int main(int argc, char** argv)
 
 			//  Create Assembly File
 			char* asm_fname = (char*) malloc(strlen(argv[i])+3);
-			strncpy(asm_fname, argv[i],strlen(argv[i]));
-			asm_fname[strlen(argv[i]+2)] = 0;
-			strcat(asm_fname, ".s");
+			asm_fname[strlen(argv[i])] = 0;
+			strncpy(asm_fname, argv[i], strlen(argv[i]));
+			strncat(asm_fname, ".s", 2);
 
 			//  Populate Assembly File
 			write_asm_file(asm_fname);
