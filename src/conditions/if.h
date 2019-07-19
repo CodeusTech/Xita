@@ -72,15 +72,18 @@ unsigned int exp_if(unsigned int mang)
 
   //  Allocate Memory for String
   char* str = (char*) malloc (70);
+  char* top = get_reg32(rs[scope_curr][rs_top()]);
 
   //  Compare Top of Register Stack to 
-  sprintf(str, "cmp   %s, #1\n", get_reg32(rs[scope_curr][rs_top()]));
+  sprintf(str, "cmp   %s, #1\n", top));
   add_command(str);
 
   //  If False, Jump to else Block
   sprintf(str, "blt   else_%u\n", mang);
   add_command(str);
 
+  //  Free Memory
+  free(top);
   free(str);
 
   return mang;

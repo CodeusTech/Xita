@@ -34,13 +34,15 @@ ErrorCode is_construct()
   rs_pop();
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  ADR topreg = rs[scope_curr][rs_top()];
+  ADR secreg = rs[scope_curr][rs_second()];
+  char* top = get_reg32(topreg);
+  char* sec = get_reg32(secreg);
 
   char* str = (char*) malloc(50);
 
   //  Compare Type IDs
-  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  sprintf(str, "cmp   %s, %s\n", sec, top);
   add_command(str);
 
   //  Create New Mangle Number
@@ -55,7 +57,7 @@ ErrorCode is_construct()
   sprintf(str, "beq   set_%llu\n", mang);
   add_command(str);
 
-  sprintf(str, "mov   %s, #0\n", get_reg64(sec));
+  sprintf(str, "mov   %s, #0\n", get_reg64(secreg);
   add_command(str);
 
   sprintf(str, "b     finish_%llu\n", mang);
@@ -64,7 +66,7 @@ ErrorCode is_construct()
   sprintf(str, "set_%llu:\n", mang);
   add_command(str);
 
-  sprintf(str, "mov   %s, #1\n", get_reg32(sec));
+  sprintf(str, "mov   %s, #1\n", sec);
   add_command(str);
 
   sprintf(str, "finish_%llu:\n", mang);
@@ -72,7 +74,10 @@ ErrorCode is_construct()
 
   rs_push();
 
+  //  Free Memory Buffers
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
