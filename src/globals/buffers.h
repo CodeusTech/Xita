@@ -200,7 +200,11 @@ ErrorCode free_buffers()
 
   //  Return Scope
 
-  //  Register Stacks
+  /*
+    ASSEMBLY BUFFERS
+  */
+  free (count_asm_text);
+  free (index_asm_text);
 
   //  Functions
 

@@ -41,27 +41,30 @@ ErrorCode generate_text(FILE* filename)
 
   fprintf(filename, "__start:\n");
 
-  for (int j = 0; j < scope_next; j++)
+  for (int scope = 0; scope < scope_next; scope++)
   {
-    curr_asm_text = start_asm_text[j];
+    curr_asm_text = start_asm_text[scope];
 
     /* Print TEXT Buffer Contents to File */
-    for (int i = 0; i < count_asm_text[j]; i++)
+    for (int comm = 0; comm < count_asm_text[scope]; comm++)
     {
-      if (i == 255) 
+      if (comm == 255) 
       {
-        curr_asm_text = (Command*) start_asm_text[j][i];
-        free(start_asm_text);
-        i = 0;
-        count_asm_text[j] -= 255;
+        curr_asm_text = (Command*) start_asm_text[scope][comm];
+        free(start_asm_text[scope]);
+        comm = 0;
+        count_asm_text[scope] -= 255;
       }
-      fprintf(filename, "  %s", curr_asm_text[i]);
-      free(curr_asm_text[i]);
+      fprintf(filename, "  %s", curr_asm_text[comm]);
+      free(curr_asm_text[scope][comm]);
     }
+
+    free(curr_asm_text);
   }
 
   //  Pretty up file with new lines
-  free(curr_asm_text);
+  free(start_asm_text);
+
   fprintf(filename, "\n\n");
 
   //  Report Success to Terminal
