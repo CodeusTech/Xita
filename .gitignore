@@ -20,3 +20,6 @@ _build
 #  Generated Assembly Test Files
 tests/**/*.s
 
+
+#  Generated Memory Leak Testing Files
+vgcore*
