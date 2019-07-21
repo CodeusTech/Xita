@@ -27,8 +27,8 @@
 #include "../../utils/scope.h"
 
 extern Identifier* ident_constants;
-extern unsigned int* index_asm_text;
-extern unsigned int* count_asm_text;
+extern unsigned long long* index_asm_text;
+extern unsigned long long* count_asm_text;
 
 
 /* 1.) Declare Constant
@@ -39,8 +39,7 @@ extern unsigned int* count_asm_text;
 ErrorCode decl_constant(Identifier ident)
 {
   //  Retract last register stack push
-  index_asm_text--;
-  count_asm_text--;
+  get_last_command();
   rs_pop();
 
   switch (last_type)
@@ -109,7 +108,6 @@ ErrorCode decl_function (Identifier ident)
 
   curr_asm_text = (Command*) malloc (256*sizeof(Command));
   start_asm_text[s] = (Command*) curr_asm_text;
-  index_asm_text[s] = 0;
   count_asm_text[s] = 0;
 
   //  Generate Register Stack for New Scope

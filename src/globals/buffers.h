@@ -59,8 +59,7 @@ void* last_data;
 //  2.a) .text Buffers
 Command** start_asm_text;
 Command*  curr_asm_text;
-unsigned int* count_asm_text;
-unsigned int* index_asm_text;
+unsigned long long* count_asm_text;
 
 //  2.b) .bss Buffers
 char** start_asm_bss;
@@ -203,8 +202,8 @@ ErrorCode free_buffers()
   /*
     ASSEMBLY BUFFERS
   */
-  free (count_asm_text);
-  free (index_asm_text);
+
+  free(count_asm_text);
 
   /* 
     REGISTER STACK

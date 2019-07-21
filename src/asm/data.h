@@ -85,7 +85,7 @@ ErrorCode add_constant_int(Identifier ident, int value, int bytes)
     curr_asm_data[255] = (Command*) malloc(256 * sizeof(Command));
     curr_asm_data = (Command*) curr_asm_data[255];
 
-    index_asm_text = 0;
+    index_asm_data = 0;
   }
 
   char* str = (char*) malloc(256);
@@ -174,7 +174,7 @@ ErrorCode add_constant_str(Identifier ident, char* string)
     curr_asm_data[255] = (Command*) malloc(256 * sizeof(Command));
     curr_asm_data = (Command*) curr_asm_data[255];
 
-    index_asm_text = 0;
+    index_asm_data = 0;
   }
 
   char* str = (char*) malloc(256);

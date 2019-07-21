@@ -21,8 +21,7 @@
 #define ASM_TEXT_H
 
 extern Command* curr_asm_text;
-extern unsigned int* index_asm_text;
-extern unsigned int* count_asm_text;
+extern unsigned long long* count_asm_text;
 extern Scope scope_next;
 
 /*
@@ -43,6 +42,15 @@ ErrorCode generate_text(FILE* filename)
 
   for (int scope = 0; scope < scope_next; scope++)
   {
+    if (scope == 255)
+    {
+      void* index_asm_text = (unsigned long long*) count_asm_text[255];
+      free(count_asm_text);
+      count_asm_text = index_asm_text;
+      scope = 0;
+
+      scope_next -= 255;
+    }
     curr_asm_text = start_asm_text[scope];
 
     /* Print TEXT Buffer Contents to File */
@@ -57,6 +65,7 @@ ErrorCode generate_text(FILE* filename)
       }
       fprintf(filename, "  %s\n", curr_asm_text[comm]);
       free(curr_asm_text[comm]);
+  
     }
 
     free(curr_asm_text);
@@ -86,17 +95,16 @@ ErrorCode generate_text(FILE* filename)
 */
 ErrorCode add_command(Command command)
 {
-  if (index_asm_text[scope_curr] == 255)
+  if (count_asm_text[scope_curr] == 255)
   {
     curr_asm_text[255] = (Command*) malloc(256 * sizeof(Command));
     curr_asm_text = (Command*) curr_asm_text[255];
 
-    index_asm_text[scope_curr] = 0;
+    count_asm_text[scope_curr] = 0;
   }
 
-  curr_asm_text[index_asm_text[scope_curr]] = strdup(command);
+  curr_asm_text[count_asm_text[scope_curr]] = strdup(command);
 
-  index_asm_text[scope_curr]++;
   count_asm_text[scope_curr]++;
 
   return 0;
@@ -105,8 +113,7 @@ ErrorCode add_command(Command command)
 
 Command get_last_command()
 {
-  --count_asm_text[scope_curr];
-  return curr_asm_text[--index_asm_text[scope_curr]];
+  return curr_asm_text[--count_asm_text[scope_curr]];
 }
 
 
