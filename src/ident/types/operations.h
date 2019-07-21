@@ -191,4 +191,18 @@ ConstructorID find_constructor (Identifier ident)
   return 0;
 }
 
+
+ErrorCode impl_typeclass(Identifier ident)
+{
+  //  STUB STUB STUB
+  
+
+  //  Free Buffers
+  free(ident);
+
+  //  Return Success
+  return 0;
+}
+
+
 #endif

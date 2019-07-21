@@ -98,7 +98,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 
 //  Primitive Data Types
 %union {
-	int val_int;
+	long long val_int;
 	double val_real;
   char val_char;
   char* val_string;
@@ -229,7 +229,6 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %left OP_SEQ
 
 %type <val_int> if if1 then else1 else
-%type <val_ident> begin_exp_funct
 
 /*
   C.) Start of Grammar
@@ -555,12 +554,9 @@ exp_inline:
 /*
   FUNCTION EXPRESSIONS (INVOCATIONS)
 */
-begin_exp_funct:
-    IDENTIFIER {printf("Function Encountered: %s\n", $1); $$ = $1; }
-;
 
 exp_funct:
-    begin_exp_funct arg_funct  { exp_function($1); }
+    IDENTIFIER arg_funct  { exp_function($1); }
 ;
 
 /*
@@ -609,7 +605,7 @@ exp_type:
   | LIST_T      
   | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
   | exp_type OP_COMMA exp_type
-  | IDENTIFIER      
+  | IDENTIFIER      { exp_type($1); }
 ;
 
 /*
@@ -630,7 +626,7 @@ implements:
 
 l_typeclass:
     l_typeclass OP_COMMA l_typeclass
-  | IDENTIFIER  {printf("Typeclass %s Implemented\n", $1);}
+  | IDENTIFIER  { impl_typeclass($1); }
 ;
 
 param_type:
@@ -649,14 +645,14 @@ param_type:
 */
 decl_construct:
     decl_construct BIT_OR decl_construct
-  | CONSTRUCTOR OF exp_type { decl_constructor($1); free($1); }
-  | CONSTRUCTOR             { decl_constructor($1); free($1); }
+  | CONSTRUCTOR OF exp_type { decl_constructor($1); }
+  | CONSTRUCTOR             { decl_constructor($1); }
   | exp_type                {printf("TODO: Implement Type Aliases\n");}
 ;
 
 exp_construct:
     exp_construct exp 
-  | CONSTRUCTOR { exp_constructor($1); free($1); }
+  | CONSTRUCTOR { exp_constructor($1); }
 ;
 
 
@@ -693,7 +689,7 @@ decl_typeclass:
 ; 
 
 exp_typeclass:
-    IDENTIFIER
+    IDENTIFIER      { exp_typeclass($1); }
 ;
 
 

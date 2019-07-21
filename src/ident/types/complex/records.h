@@ -93,6 +93,9 @@ ErrorCode decl_element(Identifier ident)
       + Last encountered type at this point
   */
 
+  //  Free Buffers
+  free(ident);
+
   //  Return Success
   return 0;
 }
@@ -112,6 +115,9 @@ ErrorCode exp_element(Identifier ident)
      * Error Check, Type Check, etc.
      * Copy Element onto Register Stack
   */
+
+  //  Free Buffers
+  free(ident);
 
   //  Return Success
   return 0;

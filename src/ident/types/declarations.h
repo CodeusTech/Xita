@@ -127,6 +127,9 @@ ErrorCode decl_constructor (Identifier ident)
   //  Increment Number of Constructors for Current Type
   count_construct[tid]++;
 
+  //  Free Buffers
+  free(ident);
+
   //  Return Success
   return 0;
 }

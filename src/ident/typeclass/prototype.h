@@ -34,6 +34,9 @@ ErrorCode decl_proto(Identifier ident)
      * Add ident to Prototype Buffer
   */
 
+  //  Free Buffers
+  free(ident);
+
   //  Return Success
   return 0;
 }
@@ -55,6 +58,9 @@ ErrorCode param_proto(Identifier ident)
      * Error Check
      * Add ident to Prototype Parameter Buffer
   */
+
+  //  Free Buffers
+  free(ident);
 
   //  Return Success
   return 0;

@@ -39,6 +39,9 @@ ErrorCode decl_typeclass (Identifier ident)
      * Add Prototype Metadata to Buffers
   */
 
+  //  Free Buffers
+  free(ident);
+
   //  Return Success
   return 0;
 }
@@ -60,6 +63,9 @@ ErrorCode exp_typeclass (Identifier ident)
      * PLANNING/ARCHITECTURE REQUIRED
      * DO NOT PROCEED
   */
+
+  //  Free Buffers
+  free(ident);
 
   //  Return Success
   return 0;

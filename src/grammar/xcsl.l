@@ -298,7 +298,7 @@ extern int yylex();
 0[oO][0-7]+          { yylval.val_int = strtol(yytext, NULL,  8); return INT; } //  OCTAL PRIMITIVE
 0[xX][0-9a-fA-F]+    { yylval.val_int = strtol(yytext, NULL, 16); return INT; } //  HEXADECIMAL PRIMITIVE
 
-[0-9]+            { yylval.val_int = atoi(yytext); return INT; }    //  INTEGER PRIMITIVE
+[0-9]+            { yylval.val_int = atoll(yytext); return INT; }    //  INTEGER PRIMITIVE
 [0-9]+\.[0-9]*    { yylval.val_real = atof(yytext); return REAL; }  //  REAL PRIMITIVE
 
 \"              BEGIN(STR);

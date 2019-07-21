@@ -137,9 +137,9 @@ int push_int(long long lit)
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
   char* reg_top = get_reg(rs[scope_curr][rs_top()], bits);
-  sprintf(str, "mov   %s, #%llu\n", reg_top, lit);
 
   //  Add to Queue for File Printing
+  sprintf(str, "mov   %s, #%llu", reg_top, lit);
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
@@ -226,7 +226,7 @@ int integer_addition()
   char* top = get_reg(rs[scope_curr][rs_top()], 32);
   char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
-  sprintf(str, "add   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "add   %s, %s, %s", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
@@ -253,7 +253,7 @@ int integer_subtraction()
   char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
 
-  sprintf(str, "sub   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "sub   %s, %s, %s", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
@@ -279,7 +279,7 @@ int integer_multiplication()
   char* top = get_reg(rs[scope_curr][rs_top()], 32);
   char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
-  sprintf(str, "mul   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "mul   %s, %s, %s", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
@@ -305,7 +305,7 @@ int integer_division()
   char* top = get_reg(rs[scope_curr][rs_top()], 32);
   char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
-  sprintf(str, "sdiv  %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "sdiv  %s, %s, %s", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
@@ -331,7 +331,7 @@ int integer_modulo()
   char* top = get_reg(rs[scope_curr][rs_top()], 32);
   char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
-  sprintf(str, "mov   %s, %s mod %s\n", sec, sec, top);
+  sprintf(str, "mov   %s, %s mod %s", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
@@ -412,7 +412,7 @@ int bitwise_and()
   char* top = get_reg(rs[scope_curr][rs_top()], 32);
   char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
-  sprintf(str, "and   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "and   %s, %s, %s", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
@@ -438,7 +438,7 @@ int bitwise_or()
   char* top = get_reg(rs[scope_curr][rs_top()], 32);
   char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
-  sprintf(str, "orr   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "orr   %s, %s, %s", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);
@@ -464,7 +464,7 @@ int bitwise_xor()
   char* top = get_reg(rs[scope_curr][rs_top()], 32);
   char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
-  sprintf(str, "eor   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "eor   %s, %s, %s", sec, sec, top);
 
   //  Add to Queue for File Printing
   add_command(str);

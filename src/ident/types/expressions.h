@@ -28,7 +28,12 @@ extern void yyerror();
 */
 ErrorCode exp_type (Identifier ident)
 {
+  //  STUB STUB STUB
   printf("Type Expression: %s\n", ident);
+
+  
+  //  Free Buffers
+  free(ident);
 
   return 0;
 }
@@ -46,6 +51,9 @@ ErrorCode exp_constructor (Identifier ident)
 
   last_constructor = cid;
   
+  //  Free Buffers
+  free(ident);
+
   return 0;
 }
 
