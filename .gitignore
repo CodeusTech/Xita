@@ -23,3 +23,4 @@ tests/**/*.s
 
 #  Generated Memory Leak Testing Files
 vgcore*
+
