@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 			char* asm_fname = (char*) malloc(strlen(argv[i])+3);
 			asm_fname[strlen(argv[i])] = 0;
 			strncpy(asm_fname, argv[i], strlen(argv[i]));
-			strncat(asm_fname, ".s", 2);
+			strncat(asm_fname, ".s", 3);
 
 			//  Populate Assembly File
 			write_asm_file(asm_fname);

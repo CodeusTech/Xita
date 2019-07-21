@@ -2,7 +2,7 @@
   text.h
   Cody Fagley
   Authored on   February 13, 2019
-  Last Modified March 25, 2019
+  Last Modified     July 21, 2019
 */
 
 /*
@@ -55,8 +55,8 @@ ErrorCode generate_text(FILE* filename)
         comm = 0;
         count_asm_text[scope] -= 255;
       }
-      fprintf(filename, "  %s", curr_asm_text[comm]);
-      free(curr_asm_text[scope][comm]);
+      fprintf(filename, "  %s\n", curr_asm_text[comm]);
+      free(curr_asm_text[scope]);
     }
 
     free(curr_asm_text);
@@ -86,7 +86,7 @@ ErrorCode generate_text(FILE* filename)
 */
 ErrorCode add_command(Command command)
 {
-  if (index_asm_text == 255)
+  if (index_asm_text[scope_curr] == 255)
   {
     curr_asm_text[255] = (Command*) malloc(256 * sizeof(Command));
     curr_asm_text = (Command*) curr_asm_text[255];
