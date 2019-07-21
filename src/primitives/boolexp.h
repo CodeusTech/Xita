@@ -70,19 +70,20 @@ ErrorCode boolean_and()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean And Check
   char* str = (char*) malloc(50);
 
-  sprintf(str, "and   %s, %s, %s\n", 
-    get_reg(sec, 32), get_reg(sec, 32), get_reg(top, 32));
+  sprintf(str, "and   %s, %s, %s\n", sec, sec, top);
   add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
@@ -101,19 +102,20 @@ int boolean_or()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean OR Check
   char* str = (char*) malloc(50);
 
-  sprintf(str, "orr   %s, %s, %s\n", 
-    get_reg(sec, 32), get_reg(sec, 32), get_reg(top, 32));
+  sprintf(str, "orr   %s, %s, %s\n", sec, sec, top);
   add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
@@ -132,19 +134,20 @@ int boolean_xor()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(50);
 
-  sprintf(str, "eor   %s, %s, %s\n", 
-    get_reg(sec, 32), get_reg(sec, 32), get_reg(top, 32));
+  sprintf(str, "eor   %s, %s, %s\n", sec, sec, top);
   add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
@@ -170,14 +173,14 @@ ErrorCode boolean_lt()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  sprintf(str, "cmp   %s, %s\n", sec, top);
   add_command(str);
 
   rs_pop();
@@ -202,7 +205,10 @@ ErrorCode boolean_lt()
   add_command(str);
 
 
+  //  Free Buffers
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
@@ -223,14 +229,14 @@ int boolean_lte()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  sprintf(str, "cmp   %s, %s\n", sec, top);
   add_command(str);
 
   rs_pop();
@@ -255,7 +261,10 @@ int boolean_lte()
   add_command(str);
 
 
+  //  Free Buffers
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
@@ -276,14 +285,14 @@ int boolean_gt()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  sprintf(str, "cmp   %s, %s\n", sec, top);
   add_command(str);
 
   rs_pop();
@@ -309,6 +318,8 @@ int boolean_gt()
 
 
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
@@ -329,14 +340,14 @@ int boolean_gte()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  sprintf(str, "cmp   %s, %s\n", sec, top);
   add_command(str);
 
   rs_pop();
@@ -361,7 +372,10 @@ int boolean_gte()
   add_command(str);
 
 
+  //  Free Buffers
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
@@ -382,14 +396,14 @@ int boolean_eq()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  sprintf(str, "cmp   %s, %s\n", sec, top);
   add_command(str);
 
   rs_pop();
@@ -414,7 +428,10 @@ int boolean_eq()
   add_command(str);
 
 
+  //  Free Buffers
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;
@@ -435,14 +452,14 @@ int boolean_neq()
   //  TODO: Error Check
 
   //  Get Register Codes
-  ADR top = rs[scope_curr][rs_top()];
-  ADR sec = rs[scope_curr][rs_second()];
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", get_reg32(sec), get_reg32(top));
+  sprintf(str, "cmp   %s, %s\n", sec, top);
   add_command(str);
 
   rs_pop();
@@ -467,7 +484,10 @@ int boolean_neq()
   add_command(str);
 
 
+  //  Free Buffers
   free(str);
+  free(top);
+  free(sec);
 
   //  Return Success
   return 0;

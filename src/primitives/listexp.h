@@ -56,13 +56,15 @@ int decl_list()
 
   //  Move Node Size to OSP for memory allocation
   char* str = (char*) malloc (50);
+  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* top64 = get_reg(rs[scope_curr][rs_top()], 64);
+  char* sec64 = get_reg(rs[scope_curr][rs_second()], 64);
 
   /*
     TODO:
       * Error Check for situations with extended register stacks
   */
-  sprintf(str, "mov   %s, %s\n", get_reg64(rs[scope_curr][rs_second()]), 
-    get_reg64(rs[scope_curr][rs_top()]));
+  sprintf(str, "mov   %s, %s\n", sec64, top64);
   add_command(str);
 
   //  Move Node Size to OSP for Memory Allocation
@@ -91,13 +93,16 @@ int decl_list()
       * Create link to the list's Tail
   */
 
-  sprintf(str, "str   %s, [%s]\n", get_reg32(rs[scope_curr][rs_top()]), get_reg64(rs[scope_curr][rs_second()]));
+  sprintf(str, "str   %s, [%s]\n", top, sec64);
   add_command(str);
 
   rs_pop();
 
   //  Free Memory
   free(str);
+  free(top);
+  free(top64);
+  free(sec64);
 
   //  Return Success
   return 0;
@@ -119,10 +124,10 @@ int list_tail()
 
   //  Allocate Space for Command
   char* str = (char*) malloc(50);
+  char* top64 = get_reg(rs[scope_curr][rs_top()], 64);
 
   //  Replace Pointer to List with Pointer to List's Tail
-  sprintf(str, 
-    "ldr   %s, [%s,#%lu]\n", get_reg64(rs_top()), get_reg64(rs_top()), offset);
+  sprintf(str, "ldr   %s, [%s,#%lu]\n", top64, top64, offset);
 
   //  Push Command to Generated Assembly Queue
   add_command(str);
@@ -133,6 +138,9 @@ int list_tail()
       * For now, use __dealloc
         - Eventually, replace with standard interrupt
   */
+
+  free(str);
+  free(top64);
 
   //  Return Success
   return 0;
@@ -161,30 +169,32 @@ int list_append()
 
   //  Allocate Command String
   char* str = (char*) malloc(50);
+  char* top64 = get_reg(rs[scope_curr][rs_top()], 64);
+  char* sec64 = get_reg(rs[scope_curr][rs_second()], 64);
   unsigned long offset = _xcs_get_size(last_type); //  Shift to 
 
   //  Temporarily store pointer in OSP
-  sprintf(str, "  mov x28, %s\n", get_reg64(rs_second()));
+  sprintf(str, "  mov x28, %s\n", sec64);
   add_command(str);
 
   //  Navigate to Last Node
   sprintf(str, 
-    "  ldr %s, [%s,#%lu]\n", get_reg64(rs_second()), get_reg64(rs_second()), 
-    offset);
+    "  ldr %s, [%s,#%lu]\n", sec64, sec64, offset);
   add_command(str);
 
   //  Append to end of list
-  sprintf(str, "  str %s, %s, #%lu\n", get_reg64(rs_top()), 
-    get_reg64(rs_second()), offset+8);
+  sprintf(str, "  str %s, %s, #%lu\n", top64, sec64, offset+8);
   add_command(str);
   rs_pop();
 
   //  Restore pointer on register stack
-  sprintf(str, "  mov %s, x28\n", get_reg64(rs_top()));
+  sprintf(str, "  mov %s, x28\n", sec64);
   add_command(str);
 
   //  Free Command String Memory
   free(str);
+  free(top64);
+  free(sec64);
 
   return 0;
 }

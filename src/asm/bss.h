@@ -53,6 +53,8 @@ ErrorCode generate_bss(FILE* filename)
     free(curr_asm_bss[i]);
   }
 
+
+  free(curr_asm_bss);
   //  Pretty up file with new lines
   fprintf(filename, "\n\n");
 

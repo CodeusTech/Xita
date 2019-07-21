@@ -27,7 +27,7 @@
   declaring module and any importing modules.
 *)
 
-type flow = int [64];;
+type flow = int;;
 type dog = Bulldog | Poodle;;
 type switch =
     On of flow
@@ -37,8 +37,6 @@ type node a =
     Leaf 
   | Tree of (node a), a, (node a);;
 
-flow.[10];;
-
 (* 1.b) Type Expressions
 
     TYPE EXPRESSIONS are instances of a declared type/constructor
@@ -46,8 +44,8 @@ flow.[10];;
 
 let search a = 
   if U8 5 is I32
-  then sizeof u8
-  else sizeof i32
+  then 1
+  else 2
 
 (*
   2.) Typeclasses

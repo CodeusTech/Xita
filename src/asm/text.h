@@ -61,6 +61,7 @@ ErrorCode generate_text(FILE* filename)
   }
 
   //  Pretty up file with new lines
+  free(curr_asm_text);
   fprintf(filename, "\n\n");
 
   //  Report Success to Terminal

@@ -59,6 +59,7 @@ ErrorCode generate_data(FILE* filename)
     free(curr_asm_data[i]);
   }
 
+  free(curr_asm_data);
   //  Pretty up file with new lines
   fprintf(filename, "\n\n");
 

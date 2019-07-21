@@ -47,16 +47,4 @@ char* get_reg(unsigned int i, unsigned char bits)
   }
 }
 
-/* Get  8-Bit Register */
-char* get_reg8 (unsigned int i) { return get_reg(i,  8); };
-
-/* Get 16-Bit Register */
-char* get_reg16(unsigned int i) { return get_reg(i, 16); };
-
-/* Get 32-Bit Register */
-char* get_reg32(unsigned int i) { return get_reg(i, 32); };
-
-/* Get 64-Bit Register */
-char* get_reg64(unsigned int i) { return get_reg(i, 64); };
-
 #endif
