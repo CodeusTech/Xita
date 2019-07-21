@@ -206,6 +206,27 @@ ErrorCode free_buffers()
   free (count_asm_text);
   free (index_asm_text);
 
+  /* 
+    REGISTER STACK
+  */
+  for (int s = 0; s < scope_next; s++)
+  {
+    free(rs_types[s]);
+    free(rs_construct[s]);
+    free(rs[s]);
+
+    free(rse_types[s]);
+    free(rse_construct[s]);
+  }
+
+  free (rs_types);
+  free (rs_construct);
+
+  free (rse_types);
+  free (rse_construct);
+
+  free(rs);
+
   //  Functions
 
   /*
@@ -256,26 +277,6 @@ ErrorCode free_buffers()
   free (type_elements);
   free (count_elements);
 
-
-  for (int s = 0; s < scope_next; s++)
-  {
-    free(rs_types[s]);
-    free(rs_construct[s]);
-    free(rs[s]);
-
-    /*
-      TODO:
-        * Check for Extended Register Stack
-    */
-  }
-
-  free (rs_types);
-  free (rs_construct);
-
-  free (rse_types);
-  free (rse_construct);
-
-  free(rs);
 
 
   //  Return Success

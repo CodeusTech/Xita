@@ -3,7 +3,7 @@
   xcsl.y  (AArch64)
   Cody Fagley
   Authored on    January 29, 2019
-  Last Modified    March  7, 2019
+  Last Modified     July 21, 2019
 */
 
 /*
@@ -487,8 +487,8 @@ exp_is:
   4.a) Constants
 */
 decl_const:
-    CONST IDENTIFIER OF exp_type OP_ASSIGN exp  { decl_constant($2); }
-  | CONST exp_construct {}
+    CONST IDENTIFIER OF exp_type OP_ASSIGN exp  { decl_constant($2); free($2); }
+  | CONST exp_construct IDENTIFIER { decl_constant($3); free($3); }
 ;
 
 /*
@@ -500,8 +500,8 @@ pre_let:
 ;
 
 let:
-    LET IDENTIFIER OF exp_type  { decl_function($2); }
-  | LET IDENTIFIER              { decl_function($2); }
+    LET IDENTIFIER OF exp_type  { decl_function($2); free($2); }
+  | LET IDENTIFIER              { decl_function($2); free($2); }
   | LET OP_ADD_O                { override_add(); }
   | LET OP_SUB_O                { override_sub(); }
   | LET OP_MUL_O                { override_mul(); }
@@ -539,7 +539,7 @@ decl_funct:
 ;
 
 param:
-    IDENTIFIER { decl_parameter($1); }
+    IDENTIFIER { decl_parameter($1); free($1); }
 ;
 
 exp_param:
@@ -649,14 +649,14 @@ param_type:
 */
 decl_construct:
     decl_construct BIT_OR decl_construct
-  | CONSTRUCTOR OF exp_type { decl_constructor($1); }
-  | CONSTRUCTOR             { decl_constructor($1); }
+  | CONSTRUCTOR OF exp_type { decl_constructor($1); free($1); }
+  | CONSTRUCTOR             { decl_constructor($1); free($1); }
   | exp_type                {printf("TODO: Implement Type Aliases\n");}
 ;
 
 exp_construct:
     exp_construct exp 
-  | CONSTRUCTOR { exp_constructor($1); }
+  | CONSTRUCTOR { exp_constructor($1); free($1); }
 ;
 
 

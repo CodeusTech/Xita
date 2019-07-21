@@ -1,12 +1,13 @@
 #  Makefile
 #  Cody Fagley
 #  Authored on 	 January 25, 2019
-#  Last Modified January 25, 2019
+#  Last Modified    July 21, 2019
 
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
 CCOMP=gcc
-CFLAGS=-std=gnu11 -lm -Wall -g -O0
+CFLAGS=-std=gnu11 -lm -Wall
+MEMTEST=-g -O0
 SILENT=-Wno-unused-variable -Wno-pointer-to-int-cast
 
 #  Build and Install Cross Compiler
@@ -19,6 +20,12 @@ build:  grammar src/xcs.c
 	rm -rf _build
 	mkdir _build
 	${CCOMP} ${CFLAGS} ${SILENT} src/xcs.c -o _build/xcs-aarch64
+
+leakTest: grammar src/xcs.c
+	rm -rf _build
+	mkdir _build
+	${CCOMP} ${CFLAGS} ${MEMTEST} ${SILENT} src/xcs.c -o _build/xcs-aarch64
+
 
 #  Build Grammar
 grammar: src/grammar/xcsl.y src/grammar/xcsl.l 
