@@ -56,7 +56,7 @@ ErrorCode generate_text(FILE* filename)
         count_asm_text[scope] -= 255;
       }
       fprintf(filename, "  %s\n", curr_asm_text[comm]);
-      free(curr_asm_text[scope]);
+      free(curr_asm_text[comm]);
     }
 
     free(curr_asm_text);
@@ -93,7 +93,7 @@ ErrorCode add_command(Command command)
 
     index_asm_text[scope_curr] = 0;
   }
-    
+
   curr_asm_text[index_asm_text[scope_curr]] = strdup(command);
 
   index_asm_text[scope_curr]++;

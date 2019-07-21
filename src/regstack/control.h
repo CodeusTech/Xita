@@ -105,38 +105,6 @@ int rs_end()
 {
   rs_serialize();
 
-  /*
-    FREE MEMORY BUFFERS
-  */
-  for (int i = 0; i < scope_next; i++)
-  {
-    //  Entry Function Context Scope
-    if (rs[i][25] == (ADR) 0) 
-    {
-  printf("check\n");
-      free(rs[i]);
-      free(rs_types[i]);
-      free(rs_construct[i]);
-    }
-    //  Subfunction Context Scopes
-    else 
-    {
-      free (rs[i]);
-      free (rs_types[i]);
-      free (rs_construct[i]);
-      free (rse_types[i]);
-      free (rse_construct[i]);
-    }
-  }
-
-  for (int i = 1; i < rse_next; i++)
-  {
-    free (rse_types[i]);
-    free(rse_construct[i]);
-  }
-
-  free(rs);
-
   return 0;
 }
 
