@@ -110,10 +110,8 @@ $  xcs-aarch64 [file1 file2 ...] [OPTIONS]
 Command-line options can be fed to either the live interpreter or cross-compiler.  
 See the following list for option syntax and functionality.
 
-* -k | --keep-assembly
+* -a | --keep-assembly
   * Instructs XCSL-AArch64 to keep any procedurally generated ARM Assembly 
   files after compiling to binary.
-* -o *fname* | --output-file *fname*
-  * Instructs XCSL-AArch64 to use *fname* for output file names
 
 
