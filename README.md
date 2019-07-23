@@ -1,8 +1,7 @@
 # XCSL Cross-Compiler (AArch64)
-#### Version: 0.1.0
+#### Version: 0.9
 
-Currently, the XCSL cross-compiler works on the Linux platform.  The resulting binary
-executable uses XCS ABI, calling conventions, etc.
+This respository provides the Linux-to-XCS cross compiler.  This **X-Ita Control System (XCS)** compiler targets ARM's AArch64 architecture.  As of the current version, it specifically targets BCM 2837 (Rasberry Pi 3 B+).  However, it could be adapted to fit other AArch64 chips with ease.  
 
 ### Table of Contents
 
