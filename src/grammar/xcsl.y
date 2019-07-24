@@ -178,7 +178,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 
 //  Filesystem Operations
 %token FILEK REMOVE
-%token READ WRITE 
+%token READ WRITE APPEND
 %token SEARCH TSEARCH
 %token COPY MOVE RETAG
 
@@ -897,14 +897,15 @@ exp_fnew:
   Read File
 */
 exp_fread:
-  READ exp_fpath
+  READ IDENTIFIER           {printf("Return Contents of File: %s\n", $2); free($2);}
 ;
 
 /*
   Write File
 */
 exp_fwrite:
-  WRITE exp_fpath STRING
+    WRITE IDENTIFIER STRING   {printf("\"%s\" has been written to %s\n", $3, $2); free($3); free($2);}
+  | APPEND IDENTIFIER STRING  {printf("\"%s\" has been appended to %s\n", $3, $2); free($3); free($2);}
 ;
 
 /*

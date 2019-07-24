@@ -9,8 +9,14 @@
   Contains test case script for Filesystem Expressions
 *)
 
+--  Create/Open a file named fito_the_dog, with tags: dogs, spaniels
 file fito dogs, spaniels : fito_the_dog;;
 
-read dogs:fito;;
+--  Erase old fito and write new file containing "hello"
+write fito "hello";;
 
-write dogs:fito "hello"
+--  Write " world!" at the end of fito
+append fito " world!";;
+
+--  Return "Hello World!" to caller
+read fito

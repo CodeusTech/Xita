@@ -258,6 +258,7 @@ extern int yylex();
 
 "read"    { return READ;   }
 "write"   { return WRITE;  }
+"append"  { return APPEND; }
 
 "search"  { return SEARCH; }
 "tsearch" { return TSEARCH;}
