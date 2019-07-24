@@ -281,7 +281,7 @@ xcs_source:
 ;
 
 src2:
-  exp     { printf("check\n"); end_scope();  }
+  exp     { end_scope();  }
 ;
 
 src:
@@ -344,7 +344,7 @@ exp_primitive:
 exp_integer:
     RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
-  | INT             { push_int((long long) $1);printf("checkers\n"); }
+  | INT             { push_int((long long) $1); }
 ;
 
 /*
@@ -855,13 +855,16 @@ exp_receive:
     RECEIVE IDENTIFIER   { exp_receive($2); }
 ;
 
+
 /*
   8.) Filesystem Operations
 */
 exp_file:
-    FILEK IDENTIFIER exp_fpath
-    { printf("File Declared: %s\n", $2); }
+    exp_fnew
+  | exp_fread
+  | exp_fwrite
 ;
+
 
 exp_fpath:
   exp_ffilter OP_LIST_CON exp_fname  
@@ -880,6 +883,28 @@ exp_ftag:
 exp_fname:
     IDENTIFIER    { printf("File Name Encountered: %s\n", $1); free($1); }
   | CONSTRUCTOR   { free($1); }
+;
+
+
+/*
+  New File
+*/
+exp_fnew:
+  FILEK IDENTIFIER exp_fpath  { printf("File Declared: %s\n", $2); }
+;
+
+/*
+  Read File
+*/
+exp_fread:
+  READ exp_fpath
+;
+
+/*
+  Write File
+*/
+exp_fwrite:
+  WRITE exp_fpath STRING
 ;
 
 /*

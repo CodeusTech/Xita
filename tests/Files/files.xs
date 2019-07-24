@@ -9,4 +9,8 @@
   Contains test case script for Filesystem Expressions
 *)
 
-file fito dogs, spaniels : fito_the_dog
+file fito dogs, spaniels : fito_the_dog;;
+
+read dogs:fito;;
+
+write dogs:fito "hello"
