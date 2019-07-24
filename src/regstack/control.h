@@ -70,19 +70,20 @@ int rs_init(Scope scope)
 */
 int rs_serialize()
 {
+  printf("Current Register is: %d\n", curr_reg);
+
   int active = curr_reg;
-  unsigned long long reg1, reg2 = (unsigned long long) 0;
+  unsigned long long reg1 = (unsigned long long) 0;
 
   //  Create Serial Integers
   for (unsigned long long i = 0; i < active; i++)
   {
-    ADR reg = rs_pop();
-
-    unsigned long long test = (unsigned long long) rs[scope_curr][rs_top()];
-    unsigned long long test2 = ((((unsigned long long) 31) & test) << (i * 5));
-
+    unsigned long long test = (unsigned long long) rs[scope_curr][rs_second()];
+    unsigned long long test2 = ((31 & test) << (i * 5));
 
     reg1 |= test2;
+
+    ADR reg = rs_pop();
   }
 
   char* str = (char*) malloc(50);

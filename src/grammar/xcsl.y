@@ -277,16 +277,16 @@ open:
 */
 
 xcs_source:
-    src         { source_end(); }
+    src   { source_end(); }
 ;
 
 src2:
-  exp  { end_scope(); }
+  exp     { printf("check\n"); end_scope();  }
 ;
 
 src:
     src2 OP_SEP src
-  | src2
+  | exp
 ;
 
 /*
@@ -295,7 +295,7 @@ src:
 exp:
     PAR_LEFT exp PAR_RIGHT
   | exp_match           { }
-  | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R {printf("ARRAY/LIST ELEMENT ACCESSED\n");}
+  | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
   | exp_file
   | exp_primitive
   | exp_arith
@@ -342,9 +342,9 @@ exp_primitive:
   2.a) Integer Expressions
 */
 exp_integer:
-    RNG             { rng(); }
+    RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
-  | INT             { push_int((long long) $1); }
+  | INT             { push_int((long long) $1);printf("checkers\n"); }
 ;
 
 /*
