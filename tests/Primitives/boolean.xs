@@ -18,15 +18,17 @@
   1.) Boolean Comparisons
 *)
 
-let a = True && False;;
-let b = True || False;;
-let c = True ^^ False;;
+True && False;;
+True || False;;
+True ^^ False;;
 
 (*
   2.) Integer Comparisons
 *)
 
-let d = 1 <  2;;
-let e = 1 <= 1;;
+1 <  2;;
+1 <= 1;;
+2 >  1;;
+2 >= 1;;
 3 == 6;;
-let g = 3 >= 4
+3 != 4

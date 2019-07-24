@@ -25,6 +25,9 @@
     2.d) Character Expressions
     2.e) String Expressions
     2.f) List Expressions
+  3.) Basic Operations
+    3.a) Arithmetic Expressions
+    3.b) Logical Expressions
   3.) Conditional Expressions
     3.a) if ... then ... else ...
     3.b) match ... with ...
@@ -69,7 +72,6 @@
 #include "src/bytecode/bytecode.h"
 #include "src/comments/comments.h"
 #include "src/conditions/conditions.h"
-#include "src/gpio/gpio.h"
 #include "src/grammar/status.h"
 #include "src/ident/ident.h"
 #include "src/memory.h"
@@ -174,6 +176,12 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %token STRING_T STRING_C
 %token BYTE_STRING  /* DEPRECATED */
 
+//  Filesystem Operations
+%token FILEK REMOVE
+%token READ WRITE 
+%token SEARCH TSEARCH
+%token COPY MOVE RETAG
+
 //  Special Operations
 %token BUILD RUN            //  Bytecode Operations
 %token REGEX                //  Regular Expressions
@@ -194,6 +202,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %left BUILD CLEAR
 %left LET IN
 %left TYPE TYPECLASS REQUIRES
+%left FILEK
 
 %left OP_ASSIGN OP_INLINE
 %left OP_LIST_L OP_LIST_R
@@ -277,8 +286,7 @@ src2:
 
 src:
     src2 OP_SEP src
-  | open              { }
-  | exp               { }
+  | src2
 ;
 
 /*
@@ -287,35 +295,14 @@ src:
 exp:
     PAR_LEFT exp PAR_RIGHT
   | exp_match           { }
-  | exp OP_ADD exp      { infer_addition(); }
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R {printf("ARRAY/LIST ELEMENT ACCESSED\n");}
-  | exp OP_SUB exp      { infer_subtraction(); }
-  | exp OP_MUL exp      { infer_multiplication(); }
-  | exp OP_DIV exp      { infer_division(); }
-  | exp OP_MOD exp      { infer_modulus(); }
-  | exp BOOL_AND exp    { infer_bool_and(); }
-  | exp BOOL_OR exp     { infer_bool_or();  }
-  | exp BOOL_XOR exp    { infer_bool_xor(); }
-  | exp BIT_AND exp     { infer_bit_and(); }
-  | exp BIT_OR exp      { infer_bit_or(); }
-  | exp BIT_XOR exp     { infer_bit_xor(); }
-  | exp BIT_SHL exp     { infer_bit_shl(); }
-  | exp BIT_SHR exp     { infer_bit_shr(); }
-  | exp OP_LT exp       { infer_bool_lt(); }
-  | exp OP_LTE exp      { infer_bool_lte(); }
-  | exp OP_GT exp       { infer_bool_gt(); }
-  | exp OP_GTE exp      { infer_bool_gte(); }
-  | exp OP_EQ exp       { infer_bool_eq(); }
-  | exp OP_NEQ exp      { infer_bool_neq(); }
+  | exp_file
+  | exp_primitive
+  | exp_arith
+  | exp_logical
   | exp OP_APPEND exp   { infer_append(); }
   | exp OP_LIST_CON exp { infer_list_con(); }
   | exp_construct       { }
-  | exp_integer         {/* For Testing */}
-  | exp_boolean         {/* For Testing */}
-  | exp_real            {/* For Testing */}
-  | exp_char            {/* For Testing */}
-  | exp_string          {/* For Testing */}
-  | exp_list            { }
   | exp_regex           { }
   | decl_const          { }
   | decl_funct          { }
@@ -341,6 +328,15 @@ exp:
 /*
   2.) Primitive Expressions
 */
+
+exp_primitive:
+    exp_integer         {/* For Testing */}
+  | exp_boolean         {/* For Testing */}
+  | exp_real            {/* For Testing */}
+  | exp_char            {/* For Testing */}
+  | exp_string          {/* For Testing */}
+  | exp_list            { }
+;
 
 /*
   2.a) Integer Expressions
@@ -405,6 +401,41 @@ exp_list:
 param_list:
     param_list OP_COMMA param_list
   | exp { decl_list(); }
+;
+
+/*
+  3.) Basic Operations
+*/
+
+/*
+  3.a) Arithmetic Expressions
+*/
+exp_arith:
+    exp OP_ADD exp      { infer_addition(); }
+  | exp OP_SUB exp      { infer_subtraction(); }
+  | exp OP_MUL exp      { infer_multiplication(); }
+  | exp OP_DIV exp      { infer_division(); }
+  | exp OP_MOD exp      { infer_modulus(); }
+  | exp BIT_AND exp     { infer_bit_and(); }
+  | exp BIT_OR exp      { infer_bit_or(); }
+  | exp BIT_XOR exp     { infer_bit_xor(); }
+  | exp BIT_SHL exp     { infer_bit_shl(); }
+  | exp BIT_SHR exp     { infer_bit_shr(); }
+;
+
+/*
+  3.b) Logical Expressions
+*/
+exp_logical:
+  | exp BOOL_AND exp    { infer_bool_and(); }
+  | exp BOOL_OR exp     { infer_bool_or();  }
+  | exp BOOL_XOR exp    { infer_bool_xor(); }
+  | exp OP_LT exp       { infer_bool_lt(); }
+  | exp OP_LTE exp      { infer_bool_lte(); }
+  | exp OP_GT exp       { infer_bool_gt(); }
+  | exp OP_GTE exp      { infer_bool_gte(); }
+  | exp OP_EQ exp       { infer_bool_eq(); }
+  | exp OP_NEQ exp      { infer_bool_neq(); }
 ;
 
 /*
@@ -824,13 +855,39 @@ exp_receive:
     RECEIVE IDENTIFIER   { exp_receive($2); }
 ;
 
+/*
+  8.) Filesystem Operations
+*/
+exp_file:
+    FILEK IDENTIFIER exp_fpath
+    { printf("File Declared: %s\n", $2); }
+;
+
+exp_fpath:
+  exp_ffilter OP_LIST_CON exp_fname  
+;
+
+exp_ffilter:
+   exp_ffilter OP_COMMA exp_ffilter
+  | exp_ftag                  
+;
+
+exp_ftag:
+    IDENTIFIER    { printf("Tag Encountered: %s\n", $1); free($1); }
+  | CONSTRUCTOR   { free($1); }
+;
+
+exp_fname:
+    IDENTIFIER    { printf("File Name Encountered: %s\n", $1); free($1); }
+  | CONSTRUCTOR   { free($1); }
+;
 
 /*
-  8.) Special Operations
+  9.) Special Operations
 */
 
 /*
-  8.a) Regular Expressions
+  9.a) Regular Expressions
 */
 exp_regex:
     REGEX STRING  { regular_expression($2); }

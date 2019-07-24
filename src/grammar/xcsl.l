@@ -3,7 +3,7 @@
   xcsl.l (AArch64)
   Cody Fagley
   Authored on   January 30, 2019
-  Last Modified February 10, 2019
+  Last Modified    July 24, 2019
 */
 
 /*
@@ -18,7 +18,8 @@
   5.) Conditional Keywords
   6.) Functional Keywords
   7.) Datatype Keywords
-  8.) Special Operations
+  8.) Filesystem Operations
+  9.) Special Operations
 
   A.) Tether Modules 
   B.) Constructors/Identifiers
@@ -246,10 +247,29 @@ extern int yylex();
 "this"      { return THIS; }
 
 
+%{
+/*
+  8.) Filesystem Operations
+*/
+%}
+
+"file"    { return FILEK;  }
+"remove"  { return REMOVE; }
+
+"read"    { return READ;   }
+"write"   { return WRITE;  }
+
+"search"  { return SEARCH; }
+"tsearch" { return TSEARCH;}
+
+"copy"    { return COPY;   }
+"move"    { return MOVE;   }
+"retag"   { return RETAG;  }
+
 
 %{
 /*
-  8.) Special Operations
+  9.) Special Operations
 */  
 %}
 
