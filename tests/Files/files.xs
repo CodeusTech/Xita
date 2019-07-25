@@ -19,4 +19,14 @@ write fito "hello";;
 append fito " world!";;
 
 --  Return "Hello World!" to caller
-read fito
+read fito ;;
+
+--  List of files with both 'dogs' AND 'spaniels' tags
+tsearch dogs+.spaniels;;
+
+--  Get all spaniels named fito_the_dog
+search spaniels : fito_the_dog;;
+
+--  Get all files named fito_the_dog
+search fito_the_dog
+

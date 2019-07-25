@@ -863,26 +863,32 @@ exp_file:
     exp_fnew
   | exp_fread
   | exp_fwrite
+  | exp_fsearch
 ;
 
 
 exp_fpath:
-  exp_ffilter OP_LIST_CON exp_fname  
+    exp_ffilter OP_LIST_CON exp_fname 
 ;
 
 exp_ffilter:
-   exp_ffilter OP_COMMA exp_ffilter
-  | exp_ftag                  
+    exp_ffilter OP_COMMA exp_ffilter 
+  | exp_ffilter OP_ADD exp_ffilter
+  | exp_ftag        
 ;
 
 exp_ftag:
     IDENTIFIER    { printf("Tag Encountered: %s\n", $1); free($1); }
+  | OP_ELEMENT IDENTIFIER { printf("Hidden Tag Encountered: %s\n", $2); free($2); }
   | CONSTRUCTOR   { free($1); }
+  | OP_ELEMENT CONSTRUCTOR { printf("Hidden Tag Name Encountered: %s\n", $2); free($2); }
 ;
 
 exp_fname:
     IDENTIFIER    { printf("File Name Encountered: %s\n", $1); free($1); }
+  | OP_ELEMENT IDENTIFIER { printf("Hidden File Name Encountered: %s\n", $2); free($2); }
   | CONSTRUCTOR   { free($1); }
+  | OP_ELEMENT CONSTRUCTOR { printf("Hidden File Name Encountered: %s\n", $2); free($2); }
 ;
 
 
@@ -892,6 +898,7 @@ exp_fname:
 exp_fnew:
   FILEK IDENTIFIER exp_fpath  { printf("File Declared: %s\n", $2); }
 ;
+
 
 /*
   Read File
@@ -906,6 +913,15 @@ exp_fread:
 exp_fwrite:
     WRITE IDENTIFIER STRING   {printf("\"%s\" has been written to %s\n", $3, $2); free($3); free($2);}
   | APPEND IDENTIFIER STRING  {printf("\"%s\" has been appended to %s\n", $3, $2); free($3); free($2);}
+;
+
+/*
+  Search for File
+*/
+exp_fsearch:
+    TSEARCH exp_ffilter 
+  | SEARCH exp_fpath
+  | SEARCH exp_fname
 ;
 
 /*
