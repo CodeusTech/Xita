@@ -38,7 +38,7 @@ ErrorCode generate_text(FILE* filename)
   //  Print TEXT Segment Name into File
   fprintf(filename, ".section .text.xcs:\n\n");
 
-  fprintf(filename, "__start:\n");
+  fprintf(filename, ".global __start\n__start:\n");
 
   for (int scope = 0; scope < scope_next; scope++)
   {
