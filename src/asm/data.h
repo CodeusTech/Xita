@@ -41,7 +41,7 @@ ErrorCode generate_data(FILE* filename)
   printf(".data Section Generated\n");
 
   //  Print TEXT Segment Name into File
-  fprintf(filename, ".section .data:\n");
+  fprintf(filename, ".section .data.xcs:\n");
   
   curr_asm_data = start_asm_data;
 

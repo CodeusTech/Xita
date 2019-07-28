@@ -36,7 +36,7 @@ extern Scope scope_next;
 ErrorCode generate_text(FILE* filename)
 {
   //  Print TEXT Segment Name into File
-  fprintf(filename, ".section .text:\n\n");
+  fprintf(filename, ".section .text.xcs:\n\n");
 
   fprintf(filename, "__start:\n");
 

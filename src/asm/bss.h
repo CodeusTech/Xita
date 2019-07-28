@@ -35,7 +35,7 @@ ErrorCode generate_bss(FILE* filename)
   printf(".bss Section Generated\n");
 
   //  Print TEXT Segment Name into File
-  fprintf(filename, ".bss:\n");
+  fprintf(filename, ".section .bss.xcs:\n");
 
   curr_asm_bss = start_asm_bss;
 
