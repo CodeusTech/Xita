@@ -20,31 +20,6 @@
 #include "operations.h"
 
 
-/* 1.) Parse Header Module
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode mod_parse_header()
-{
-  //  STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-  */
-
-  /*
-    TODO:
-     * Shift to New Header Context
-      + Change Input Stream
-      + Reset Line Number to 0
-      + Change Parser/Module States
-  */
-
-  return 0;
-}
-
 
 /* 2.) Import Header (Submodule)
 
@@ -53,23 +28,38 @@ ErrorCode mod_parse_header()
 */
 ErrorCode open_header(Identifier ident)
 {
-  //  STUB STUB STUB
-  printf("Header Opened: %s\n", ident);
+  //  Allocate Buffers
+  char** argvH = (char**) malloc(3*sizeof(char*));
 
-  /*
-    TODO:
-     * Error Check
-     * Ensure Target File Exists
-  */
+  pid_t  pid;
+  int    status;
 
-  //  Store Current Metadata
-  mod_store_context();
+  //  Set Recursive Call's `argv`
+  argvH[0] = strndup("/usr/bin/xcs-aarch64", 21);  
+  argvH[1] = strndup("-a", 3);
+  argvH[2] = strndup(ident, strlen(ident)+1);
+  printf("Call: %s %s %s\n", argvH[0], argvH[1], argvH[2]);
 
-  //  Parse New Header Module
-  mod_parse_header();
+  if ((pid = fork()) < 0) 
+  {     
+    //  Fork a child process 
+    printf("*** ERROR: forking child process failed\n");
+  }
+  else if (pid == 0) 
+  {    
+    //  Create external module assembly libraries
+    execvp(argvH[0], argvH);
+  }
+  else 
+  {                                  /* for the parent:      */
+    while (wait(&status) != pid)       /* wait for completion  */
+        ;
+  }
 
-  //  Restore Current Context
-  mod_restore_context();
+
+  //  Free Buffers
+  for (int arg = 0; arg < 3; arg++) free(argvH[arg]);
+  free(argvH);
 
   //  Return Success
   return 0;

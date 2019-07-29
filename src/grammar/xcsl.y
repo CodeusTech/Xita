@@ -254,6 +254,12 @@ xcs:
   | xcs_tether  {/* Tether Module Structure */}
 ;
 
+exp_open:
+    open_source
+  | open_tether
+  | open_header
+  ;
+
 open_source:
   OPEN SOURCE_M STRING { open_source($3); }
 ;
@@ -294,6 +300,7 @@ src:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
+  | exp_open
   | exp_match           { }
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
   | exp_file
