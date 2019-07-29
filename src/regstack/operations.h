@@ -23,6 +23,7 @@
 #define REGSTACK_OPERATIONS_H
 
 #include "math.h"
+#include "time.h"
 
 extern unsigned char curr_reg;
 

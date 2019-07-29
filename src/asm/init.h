@@ -39,6 +39,7 @@ extern unsigned int index_asm_bss;
 //  .data metadata
 extern Constant* start_asm_data;
 extern Constant* curr_asm_data;
+extern void** values_const;
 extern unsigned int count_asm_data;
 extern unsigned int index_asm_data;
 
@@ -85,6 +86,8 @@ ErrorCode init_asm_data()
 {
   start_asm_data = (char**) malloc(256 * sizeof(char*));
   curr_asm_data = start_asm_data;
+  ident_const  = (Identifier*) malloc(256 * sizeof(Identifier));
+  values_const = (void**) malloc(256 * sizeof(void*));
   count_asm_data = 0;
   index_asm_data = 0;
 

@@ -524,8 +524,14 @@ exp_is:
   4.a) Constants
 */
 decl_const:
-    CONST IDENTIFIER OF exp_type OP_ASSIGN exp  { decl_constant($2); free($2); }
-  | CONST exp_construct IDENTIFIER { decl_constant($3); free($3); }
+    CONST IDENTIFIER OF exp_type   OP_ASSIGN exp_const { decl_constant($2); }
+  | CONST exp_construct IDENTIFIER OP_ASSIGN exp_const { decl_constant($3); }
+;
+
+exp_const:
+    INT     { last_data = (unsigned long long) $1; }
+  | IDENTIFIER { last_data = (unsigned long long) get_const($1); free($1); }
+  | exp_const OP_ADD INT {last_data = (unsigned long long) last_data + $3; }
 ;
 
 /*

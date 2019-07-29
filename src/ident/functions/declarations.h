@@ -9,14 +9,12 @@
   Contains implementations for Functional Declarations.  
 
   This includes:
-    * Constants
     * Functions
     * Parameters
 
 
   TABLE OF CONTENTS
   =================
-  1.) Declare Constant
   2.) Declare Function
 */
 
@@ -30,61 +28,6 @@ extern Identifier* ident_constants;
 extern unsigned long long* index_asm_text;
 extern unsigned long long* count_asm_text;
 
-
-/* 1.) Declare Constant
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode decl_constant(Identifier ident)
-{
-  //  Retract last register stack push
-  get_last_command();
-  rs_pop();
-
-  switch (last_type)
-  {
-    case TYPE_INTEGER:
-      add_constant_int (ident, (int) last_data, 2);
-      break;
-    case TYPE_U8: 
-      add_constant_int (ident, (unsigned char) last_data, 1);
-      break;
-    case TYPE_I8: 
-      add_constant_int (ident, (char) last_data, 1);
-      break;
-    case TYPE_U16:
-      add_constant_int (ident, (unsigned int) last_data, 2);
-      break;
-    case TYPE_I16:
-      add_constant_int (ident, (int) last_data, 2);
-      break;
-    case TYPE_U32:
-      add_constant_int (ident, (unsigned long) last_data, 4);
-      break;
-    case TYPE_I32:
-      add_constant_int (ident, (long) last_data, 4);
-      break;
-    case TYPE_U64:
-      add_constant_int (ident, (unsigned long long) last_data, 8);
-      break;
-    case TYPE_I64:
-      add_constant_int (ident, (long long) last_data, 8);
-      break;
-    //  FLOAT, DOUBLE and REAL values go here
-    case TYPE_BOOLEAN:
-      add_constant_int (ident, (bool) last_data, 1);
-      break;
-    case TYPE_CHAR:
-      add_constant_int (ident, (unsigned char) last_data, 1);
-      break;
-    case TYPE_STRING:
-      add_constant_str (ident, (char*) last_data);
-      break;
-  }
-
-  return 0;
-}
 
 /*
   1.) Function Initialization

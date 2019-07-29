@@ -112,9 +112,10 @@ unsigned int* pnum_funct;   //  Number of Parameters for Function
 TypeID** ptype_funct; //  Function Parameter Types
 
 //  4.c) Constants
-Identifier* ident_const;       //  Constant Identifiers
+Identifier* ident_const;  //  Constant Identifiers
 unsigned int* type_const; //  Constant Type Codes
 unsigned int count_const; //  Number of Constants
+void** values_const;    //  Constant Values
 
 
 
@@ -275,7 +276,6 @@ ErrorCode free_buffers()
   free (ident_elements);
   free (type_elements);
   free (count_elements);
-
 
 
   //  Return Success

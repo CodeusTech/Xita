@@ -24,7 +24,13 @@
 #ifndef ASM_DATA_H
 #define ASM_DATA_H
 
+
+#include "text.h"
+
 #include "stdbool.h"
+#include "../regstack/operations.h"
+
+extern void** values_const;
 
 /*
   1.) Structure
@@ -60,6 +66,7 @@ ErrorCode generate_data(FILE* filename)
   }
 
   free(curr_asm_data);
+  free(values_const);
   //  Pretty up file with new lines
   fprintf(filename, "\n\n");
 
@@ -71,147 +78,101 @@ ErrorCode generate_data(FILE* filename)
   2.) Operations
 */
 
-/* 2.a) Add Integer to Data
-Adds Integer Constant to .data Section
+/* 2.a) Add Constant to Data
+Adds Constant to .data Section
 
   Returns:
     0, if Successful
-    1, if `bytes` is invalid
 */
-ErrorCode add_constant_int(Identifier ident, int value, int bytes)
+ErrorCode decl_constant(Identifier ident)
 {
+  //  If at final link in list, create a new tail list
   if (index_asm_data == 255)
   {
     curr_asm_data[255] = (Command*) malloc(256 * sizeof(Command));
+    values_const[255] = (void**) malloc(256 * sizeof(void*));
+    ident_const[255] = (Identifier*) malloc(256 * sizeof(Identifier));
+
     curr_asm_data = (Command*) curr_asm_data[255];
+    values_const  = (void**)  values_const[255];
+    ident_const   = (Identifier*) ident_const[255];
 
     index_asm_data = 0;
   }
 
+  //  Allocate Command Buffers
   char* str = (char*) malloc(256);
   char* size = (char*) malloc(10);
+
+  //  'bytes' indicates the assembly size directive to be used
+  int bytes;
+
+  //  Determine bytes via data type
+  if ((last_type > 2 && last_type < 5) || (last_type > 13 && last_type < 16)) bytes = 1;
+  else if (last_type > 4 && last_type < 7) bytes = 2;
+  else if (last_type > 6 && last_type < 9) bytes = 4;
+  else if (last_type == 2 || (last_type > 8 && last_type < 11)) bytes = 8;
   
+  /*
+    Commit constant to assembly file
+  */
   switch (bytes)
   {
-    case 1:
+    case 1: //  1-Byte Alignment
       sprintf(size, "byte");
+      sprintf(str, "%s: .%s #%u\n", ident, size, (unsigned int) last_data);
+      values_const[index_asm_data] = (unsigned int) last_data;
       break;
-    case 2:
+    case 2: //  2-Byte Alignment
       sprintf(size, "hword");
+      sprintf(str, "%s: .%s #%u\n", ident, size, (unsigned int) last_data);
+      values_const[index_asm_data] = (unsigned int) last_data;
       break;
-    case 4:
+    case 4: //  4-Byte Alignment
       sprintf(size, "word");
+      sprintf(str, "%s: .%s #%lu\n", ident, size, (unsigned long) last_data);
+      values_const[index_asm_data] = (unsigned long) last_data;
       break;
-    case 8:
+    case 8: //  8-Byte Alignment
       sprintf(size, "dword");
+      sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
+      values_const[index_asm_data] = (unsigned long long) last_data;
       break;
-    default:
+    default:  
+      //  Invalid Attempt
       return 1;
   }
 
-  sprintf(str, "%s: .%s #%d", ident, size, value);
+  //  Set Identifier
+  ident_const[index_asm_data] = strdup(ident);
     
+  //  Increment to prepare for next constant
   curr_asm_data[index_asm_data] = strdup(str);
   index_asm_data++;
   count_asm_data++;
 
+  //  Free Local String Buffers
   free(str);
   free(size);
+  free(ident);
 
   // Return Success
   return 0;
 }
 
-/* 2.b) Add Real to Data
-Adds Real Constant to .data Section
 
-  Returns:
-    0, if Successful
+/*
+  3.) Get Constant Value
 */
-ErrorCode add_real_to_data(Identifier ident, double value)
+void* get_const(Identifier ident)
 {
-  //  STUB STUB STUB STUB
-  
-  /*
-    TODO:
-     * Error Check
-     * Print Real Constant to .data Section
-  */
-
-  //  Return Success
-  return 0;
-}
-
-/* 2.d) Add Character to Data
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode add_char_to_data(Identifier ident, char value)
-{
-  //  STUB STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-     * Print Character Constant to .data Section
-  */
-
-  //  Return Success
-
-  return 0;
-}
-
-/* 2.e) Add String to Data
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode add_constant_str(Identifier ident, char* string)
-{
-  if (index_asm_data == 255)
+  for (int i = 0; i < count_asm_data; i++)
   {
-    curr_asm_data[255] = (Command*) malloc(256 * sizeof(Command));
-    curr_asm_data = (Command*) curr_asm_data[255];
-
-    index_asm_data = 0;
+    if (strcmp(ident, ident_const[i]) == 0) return (values_const[i]);
   }
 
-  char* str = (char*) malloc(256);
-
-
-
-  sprintf(str, "%s SETS \"%s\"", ident, string);
-    
-  curr_asm_data[index_asm_data] = strdup(str);
-  index_asm_data++;
-  count_asm_data++;
-
-  free(str);
-
-  //  Return Success
   return 0;
 }
 
-/* 2.f) Add List to Data
-
-NOTE: Constant Lists are only available in Linux-to-XCS Cross Compiler
-  Returns:
-    0, if Successful
-*/
-ErrorCode add_list_to_data(Identifier ident, long value)
-{
-  //  STUB STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-     * Print List Constant to .data Section
-  */
-
-  //  Return Success
-
-  return 0;
-}
 
 #endif
