@@ -25,7 +25,7 @@
 #include "math.h"
 #include "time.h"
 
-extern unsigned char curr_reg;
+extern ADR curr_reg;
 
 /*
   1.) Static Operations
@@ -34,11 +34,8 @@ extern unsigned char curr_reg;
 /* 1.a) Create New Register Stack
 
 */
-ADR* rs_new(Scope scope)
+ErrorCode rs_new(Scope scope)
 {
-  //  Allocate Register Stack Memory
-  rs[scope] = (ADR*) malloc(26*sizeof(ADR));
-
   //  Random Order Variables
   unsigned long activeRegs = 0;
   curr_reg = 0;
@@ -55,14 +52,13 @@ ADR* rs_new(Scope scope)
     if (activeRegs & (int) (pow(2,chk))) i--;
     else
     {
-      rs[scope][i] = chk;
+      (rs[scope].rs_code).push_back(chk);
       activeRegs |= (int) pow(2,chk);
     }
   }
-  
-  rs[scope][25] = (ADR) 0;  // Indicates Extended Space isn't used
 
-  return rs[scope];
+  //  Return Success
+  return 0;
 }
 
 /* 1.b) Push to Register Stack
@@ -91,20 +87,29 @@ ADR rs_pop()
 /* 2.a) Access Top Element
 
 */
-unsigned int rs_top()
+ADR rs_top()
 { 
   //  TODO: Error Check
-  return curr_reg; 
+  
+  return rs[scope_curr].rs_code[curr_reg]; 
 }
 
 /* 2.b) Access Second Element (from Top)
 
 */
-unsigned int rs_second()
+ADR rs_sec()
 {
   //  TODO: Error Check
-  return (curr_reg - 1);
+  return rs[scope_curr].rs_code[curr_reg-1];
 }
+
+
+TypeID rs_top_type() { return rs[scope_curr].rs_type[curr_reg]; }
+TypeID rs_sec_type() { return rs[scope_curr].rs_type[curr_reg-1]; }
+
+
+ConstructorID rs_top_struct() { return rs[scope_curr].rs_type[curr_reg]; }
+ConstructorID rs_sec_struct() { return rs[scope_curr].rs_type[curr_reg-1]; }
 
 
 

@@ -19,16 +19,11 @@
 #ifndef REGSTACK_CONTROL_H
 #define REGSTACK_CONTROL_H
 
+#include "../globals/structs.h"
 #include "operations.h"
 
-extern ADR** rs;  //  Global Register Stack Orders
+extern vector<regstack> rs;  //  Global Register Stack Orders
 extern Scope scope_next;
-extern TypeID** rs_types;
-extern TypeID** rse_types;
-extern ConstructorID** rs_construct;
-extern unsigned int rse_next;
-extern unsigned long** rse_construct;
-
 
 /* 1.) Initialize Function's Register Stack
 
@@ -37,7 +32,6 @@ extern unsigned long** rse_construct;
 */
 int rs_init(Scope scope)
 {
-
   /*
     TODO:
      * Error Check
@@ -46,19 +40,6 @@ int rs_init(Scope scope)
   //  Set Create Register Stack
   rs_new(scope);
 
-  rs_types[scope]      = (TypeID*) malloc(25*sizeof(TypeID));
-  rs_construct[scope]   = (ConstructorID*) malloc(25 * sizeof(unsigned int));
-
-  if  (scope == 0)
-  { 
-    rse_types[scope] = NULL;
-    rse_construct[scope]  = NULL;
-  }
-  else 
-  {
-    rse_types[scope] = (TypeID*) malloc(256* sizeof(TypeID));
-    rse_construct[scope] = (ConstructorID*) malloc(256 * sizeof(unsigned long));
-  }
 
   return 0;
 }
@@ -76,9 +57,9 @@ int rs_serialize()
   unsigned long long reg1 = (unsigned long long) 0;
 
   //  Create Serial Integers
-  for (unsigned long long i = 0; i < active; i++)
+  for (int i = 0; i < active; i++)
   {
-    unsigned long long test = (unsigned long long) rs[scope_curr][rs_second()];
+    unsigned long long test = (unsigned long long) (rs[scope_curr].rs_code)[rs_sec()];
     unsigned long long test2 = ((31 & test) << (i * 5));
 
     reg1 |= test2;

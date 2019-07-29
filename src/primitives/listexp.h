@@ -56,9 +56,9 @@ int decl_list()
 
   //  Move Node Size to OSP for memory allocation
   char* str = (char*) malloc (50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* top64 = get_reg(rs[scope_curr][rs_top()], 64);
-  char* sec64 = get_reg(rs[scope_curr][rs_second()], 64);
+  char* top = get_reg(rs_top(), 32);
+  char* top64 = get_reg(rs_top(), 64);
+  char* sec64 = get_reg(rs_sec(), 64);
 
   /*
     TODO:
@@ -72,7 +72,7 @@ int decl_list()
   add_command(str);
 
   //  Serialize Pointer's register into x29
-  sprintf(str, "mov   x29, #%d\n", rs[scope_curr][rs_second()]);
+  sprintf(str, "mov   x29, #%d\n", rs_sec());
   add_command(str);
 
   /*
@@ -124,7 +124,7 @@ int list_tail()
 
   //  Allocate Space for Command
   char* str = (char*) malloc(50);
-  char* top64 = get_reg(rs[scope_curr][rs_top()], 64);
+  char* top64 = get_reg(rs_top(), 64);
 
   //  Replace Pointer to List with Pointer to List's Tail
   sprintf(str, "ldr   %s, [%s,#%lu]\n", top64, top64, offset);
@@ -169,8 +169,8 @@ int list_append()
 
   //  Allocate Command String
   char* str = (char*) malloc(50);
-  char* top64 = get_reg(rs[scope_curr][rs_top()], 64);
-  char* sec64 = get_reg(rs[scope_curr][rs_second()], 64);
+  char* top64 = get_reg(rs_top(), 64);
+  char* sec64 = get_reg(rs_sec(), 64);
   unsigned long offset = _xcs_get_size(last_type); //  Shift to 
 
   //  Temporarily store pointer in OSP

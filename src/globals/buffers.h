@@ -2,7 +2,7 @@
   buffers.h
   Cody Fagley
   Authored on   March 9, 2019
-  Last Modified March 9, 2019
+  Last Modified July 29, 2019
 */
 
 /*
@@ -38,9 +38,20 @@
 #ifndef GLOBALS_BUFFERS_H
 #define GLOBALS_BUFFERS_H
 
+//  XCS Libraries
 #include "structs.h"
 
+//  Linux Libraries
+#include <iostream>
+#include <string>
+#include <vector>
+#include <list>
 
+using namespace std;
+
+using std::list;
+using std::vector;
+using std::string;
 
 /*
   1.) Compiler Buffers
@@ -57,21 +68,13 @@ void* last_data;
 */
 
 //  2.a) .text Buffers
-Command** start_asm_text;
-Command*  curr_asm_text;
-unsigned long long* count_asm_text;
+vector<list<string>> asm_text;
 
 //  2.b) .bss Buffers
-char** start_asm_bss;
-char**  curr_asm_bss;
-unsigned int count_asm_bss;
-unsigned int index_asm_bss;
+list<string> asm_bss;
 
 //  2.c) .data Buffers
-char** start_asm_data;
-char**  curr_asm_data;
-unsigned int count_asm_data;
-unsigned int index_asm_data;
+list<string> asm_data;
 
 
 /*
@@ -80,10 +83,7 @@ unsigned int index_asm_data;
 
 //  3.a) Standard Register Stack
 ADR curr_reg;       //  Current Register pointer
-ADR** rs;           //  Register Stack Orders
-TypeID** rs_types;
-TypeID** rse_types;
-ConstructorID** rs_construct; // Register Stack Constructors
+vector<regstack> rs;
 
 //  3.b) Extended Register Stack
 unsigned int rse_next = 1;  //  Next Extended Register Stack
@@ -111,12 +111,7 @@ Identifier** param_funct;        //  Function Parameter Identifiers
 unsigned int* pnum_funct;   //  Number of Parameters for Function
 TypeID** ptype_funct; //  Function Parameter Types
 
-//  4.c) Constants
-Identifier* ident_const;  //  Constant Identifiers
-unsigned int* type_const; //  Constant Type Codes
-unsigned int count_const; //  Number of Constants
-void** values_const;    //  Constant Values
-
+vector<node_constant> constants;
 
 
 /*
@@ -197,38 +192,6 @@ operands* operands_list_con;
 */
 ErrorCode free_buffers()
 {
-
-  //  Return Scope
-
-  /*
-    ASSEMBLY BUFFERS
-  */
-
-  free(count_asm_text);
-
-  /* 
-    REGISTER STACK
-  */
-  for (int s = 0; s < scope_next; s++)
-  {
-    free(rs_types[s]);
-    free(rs_construct[s]);
-    free(rs[s]);
-
-    free(rse_types[s]);
-    free(rse_construct[s]);
-  }
-
-  free (rs_types);
-  free (rs_construct);
-
-  free (rse_types);
-  free (rse_construct);
-
-  free(rs);
-
-  //  Functions
-
   /*
     TYPES
   */

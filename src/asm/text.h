@@ -20,9 +20,20 @@
 #ifndef ASM_TEXT_H
 #define ASM_TEXT_H
 
-extern Command* curr_asm_text;
-extern unsigned long long* count_asm_text;
+//  XCS Libraries
 extern Scope scope_next;
+
+//  Linux Libraries
+#include <string>
+#include <list>
+#include <vector>
+
+using namespace std;
+
+using std::list;
+using std::vector;
+using std::string;
+
 
 /*
   1.) Structure
@@ -40,39 +51,12 @@ ErrorCode generate_text(FILE* filename)
 
   fprintf(filename, ".global __start\n__start:\n");
 
-  for (int scope = 0; scope < scope_next; scope++)
+  for (vector<list<string>>::iterator scope = asm_text.begin(); scope < asm_text.end(); ++scope)
   {
-    if (scope == 255)
-    {
-      void* index_asm_text = (unsigned long long*) count_asm_text[255];
-      free(count_asm_text);
-      count_asm_text = index_asm_text;
-      scope = 0;
-
-      scope_next -= 255;
-    }
-    curr_asm_text = start_asm_text[scope];
-
     /* Print TEXT Buffer Contents to File */
-    for (int comm = 0; comm < count_asm_text[scope]; comm++)
-    {
-      if (comm == 255) 
-      {
-        curr_asm_text = (Command*) start_asm_text[scope][comm];
-        free(start_asm_text[scope]);
-        comm = 0;
-        count_asm_text[scope] -= 255;
-      }
-      fprintf(filename, "  %s\n", curr_asm_text[comm]);
-      free(curr_asm_text[comm]);
-  
-    }
-
-    free(curr_asm_text);
+    for (list<string>::iterator it = (*scope).begin(); it != (*scope).end(); it++)
+      fprintf(filename, "  %s\n", (*it).c_str());
   }
-
-  //  Pretty up file with new lines
-  free(start_asm_text);
 
   fprintf(filename, "\n\n");
 
@@ -95,25 +79,18 @@ ErrorCode generate_text(FILE* filename)
 */
 ErrorCode add_command(Command command)
 {
-  if (count_asm_text[scope_curr] == 255)
-  {
-    curr_asm_text[255] = (Command*) malloc(256 * sizeof(Command));
-    curr_asm_text = (Command*) curr_asm_text[255];
+  asm_text[scope_curr].push_back(strdup(command));
 
-    count_asm_text[scope_curr] = 0;
-  }
-
-  curr_asm_text[count_asm_text[scope_curr]] = strdup(command);
-
-  count_asm_text[scope_curr]++;
+  free(command);
 
   return 0;
 }
 
 
-Command get_last_command()
+void get_last_command()
 {
-  return curr_asm_text[--count_asm_text[scope_curr]];
+  asm_text[scope_curr].pop_back();
+  return;
 }
 
 
@@ -122,7 +99,6 @@ ErrorCode end_scope()
   curr_reg = 0; 
   scope_curr = 0;
   last_type = 0;
-  curr_asm_text = start_asm_text[0];
 
   return 0;
 }

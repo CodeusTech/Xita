@@ -529,9 +529,9 @@ decl_const:
 ;
 
 exp_const:
-    INT     { last_data = (unsigned long long) $1; }
-  | IDENTIFIER { last_data = (unsigned long long) get_const($1); free($1); }
-  | exp_const OP_ADD INT {last_data = (unsigned long long) last_data + $3; }
+    INT     { last_data = (void*) (unsigned long long) $1; }
+  | IDENTIFIER { last_data = (void*) (unsigned long long) get_const($1); free($1); }
+  | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long) last_data + $3); }
 ;
 
 /*

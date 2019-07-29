@@ -65,20 +65,20 @@ int pop_char()
 int push_char_lit(unsigned char lit)
 {
   //  Map Integer Literal Type to Top of Register Stack
-  rs_types[scope_curr][rs_top()] = TYPE_CHAR;
+  rs[scope_curr].rs_type[curr_reg] = TYPE_CHAR;
 
-  char* reg_top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* top = get_reg(rs_top(), 32);
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mov   %s, #%d\n", reg_top, lit);
+  sprintf(str, "mov   %s, #%d\n", top, lit);
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
-  free(reg_top);
+  free(top);
   ADR reg = rs_push();
 
   return 0;

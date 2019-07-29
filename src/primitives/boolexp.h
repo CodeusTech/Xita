@@ -70,8 +70,8 @@ ErrorCode boolean_and()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean And Check
   char* str = (char*) malloc(50);
@@ -102,8 +102,8 @@ int boolean_or()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean OR Check
   char* str = (char*) malloc(50);
@@ -134,8 +134,8 @@ int boolean_xor()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(50);
@@ -173,8 +173,8 @@ ErrorCode boolean_lt()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
@@ -229,8 +229,8 @@ int boolean_lte()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
@@ -285,8 +285,8 @@ int boolean_gt()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
@@ -340,8 +340,8 @@ int boolean_gte()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
@@ -396,8 +396,8 @@ int boolean_eq()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);
@@ -452,8 +452,8 @@ int boolean_neq()
   //  TODO: Error Check
 
   //  Get Register Codes
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(100);

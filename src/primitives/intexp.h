@@ -91,42 +91,42 @@ int push_int(long long lit)
   {
     case 0:
       bits = 32;
-      rs_construct[scope_curr][rs_top()] = 2;
+      rs[scope_curr].rs_struct[curr_reg] = 0;
       break;
     case 2: 
       bits = 32;
-      rs_construct[scope_curr][rs_top()] = 2;
+      rs[scope_curr].rs_struct[curr_reg] = 2;
       break;
     case 3:
-      rs_construct[scope_curr][rs_top()] = 3;
+      rs[scope_curr].rs_struct[curr_reg] = 3;
       bits = 8;
       break;
     case 4:
-      rs_construct[scope_curr][rs_top()] = 4;
+      rs[scope_curr].rs_struct[curr_reg] = 4;
       bits = 8;
       break;
     case 5:
-      rs_construct[scope_curr][rs_top()] = 5;
+      rs[scope_curr].rs_struct[curr_reg] = 5;
       bits = 16;
       break;
     case 6:
-      rs_construct[scope_curr][rs_top()] = 6;
+      rs[scope_curr].rs_struct[curr_reg] = 6;
       bits = 16;
       break;
     case 7:
-      rs_construct[scope_curr][rs_top()] = 7;
+      rs[scope_curr].rs_struct[curr_reg] = 7;
       bits = 32;
       break;
     case 8:
-      rs_construct[scope_curr][rs_top()] = 8;
+      rs[scope_curr].rs_struct[curr_reg] = 8;
       bits = 32;
       break;
     case 9:
-      rs_construct[scope_curr][rs_top()] = 9;
+      rs[scope_curr].rs_struct[curr_reg] = 9;
       bits = 64;
       break;
     case 10:
-      rs_construct[scope_curr][rs_top()] = 10;
+      rs[scope_curr].rs_struct[curr_reg] = 10;
       bits = 64;
       break;
     default:
@@ -136,7 +136,7 @@ int push_int(long long lit)
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* reg_top = get_reg(rs[scope_curr][rs_top()], bits);
+  char* reg_top = get_reg(rs_top(), bits);
 
   //  Add to Queue for File Printing
   sprintf(str, "mov   %s, #%llu", reg_top, lit);
@@ -223,8 +223,8 @@ int integer_addition()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   sprintf(str, "add   %s, %s, %s", sec, sec, top);
 
@@ -249,8 +249,8 @@ int integer_subtraction()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
 
   sprintf(str, "sub   %s, %s, %s", sec, sec, top);
@@ -276,8 +276,8 @@ int integer_multiplication()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   sprintf(str, "mul   %s, %s, %s", sec, sec, top);
 
@@ -302,8 +302,8 @@ int integer_division()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   sprintf(str, "sdiv  %s, %s, %s", sec, sec, top);
 
@@ -328,8 +328,8 @@ int integer_modulo()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   sprintf(str, "mov   %s, %s mod %s", sec, sec, top);
 
@@ -366,7 +366,7 @@ int bitwise_shl()
 
   //  Perform Bitwise Shift
   ADR rhs = rs_top();
-  ADR lhs = rs_second();
+  ADR lhs = rs_sec();
 
   //  After Bitwise Shift, Pop Entry from Register Stack
   rs_pop();
@@ -391,7 +391,7 @@ int bitwise_shr()
 
   //  Perform Bitwise Shift
   ADR rhs = rs_top();
-  ADR lhs = rs_second();
+  ADR lhs = rs_sec();
 
   //  After Bitwise Shift, Pop Entry from Register Stack
   rs_pop();
@@ -409,8 +409,8 @@ int bitwise_and()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   sprintf(str, "and   %s, %s, %s", sec, sec, top);
 
@@ -435,8 +435,8 @@ int bitwise_or()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   sprintf(str, "orr   %s, %s, %s", sec, sec, top);
 
@@ -461,8 +461,8 @@ int bitwise_xor()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
-  char* sec = get_reg(rs[scope_curr][rs_second()], 32);
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
   sprintf(str, "eor   %s, %s, %s", sec, sec, top);
 

@@ -2,7 +2,7 @@
   declarations.h
   Cody Fagley
   Authored on   July 11, 2019
-  Last Modified July 11, 2019
+  Last Modified July 29, 2019
 */
 
 /*
@@ -48,10 +48,6 @@ ErrorCode decl_function (Identifier ident)
 
   //  Get New Context Scope
   Scope s = get_scope_next();
-
-  curr_asm_text = (Command*) malloc (256*sizeof(Command));
-  start_asm_text[s] = (Command*) curr_asm_text;
-  count_asm_text[s] = 0;
 
   //  Generate Register Stack for New Scope
   rs_init(s);

@@ -26,11 +26,11 @@
 
 
 #include "text.h"
+#include "../globals/buffers.h"
+#include "../globals/structs.h"
 
 #include "stdbool.h"
 #include "../regstack/operations.h"
-
-extern void** values_const;
 
 /*
   1.) Structure
@@ -43,32 +43,18 @@ extern void** values_const;
 */
 ErrorCode generate_data(FILE* filename)
 {
-  //  Stub Stub Stub
-  printf(".data Section Generated\n");
-
   //  Print TEXT Segment Name into File
   fprintf(filename, ".section .data.xcs:\n");
-  
-  curr_asm_data = start_asm_data;
 
-  /* Print TEXT Buffer Contents to File */
-  for (int i = 0; i < count_asm_data; i++)
-  {
-    if (i == 255) 
-    {
-      curr_asm_data = (char**) start_asm_data[i];
-      free(start_asm_data);
-      i = 0;
-      count_asm_data -= 255;
-    }
-    fprintf(filename, "  %s", curr_asm_data[i]);
-    free(curr_asm_data[i]);
-  }
+    /* Print TEXT Buffer Contents to File */
+    for (list<string>::iterator it = asm_data.begin(); it != asm_data.end(); it++)
+      fprintf(filename, "  %s\n", (*it).c_str());
 
-  free(curr_asm_data);
-  free(values_const);
   //  Pretty up file with new lines
   fprintf(filename, "\n\n");
+
+  //  Stub Stub Stub
+  printf(".data Section Generated\n");
 
   //  Return Success
   return 0;
@@ -86,23 +72,13 @@ Adds Constant to .data Section
 */
 ErrorCode decl_constant(Identifier ident)
 {
-  //  If at final link in list, create a new tail list
-  if (index_asm_data == 255)
-  {
-    curr_asm_data[255] = (Command*) malloc(256 * sizeof(Command));
-    values_const[255] = (void**) malloc(256 * sizeof(void*));
-    ident_const[255] = (Identifier*) malloc(256 * sizeof(Identifier));
-
-    curr_asm_data = (Command*) curr_asm_data[255];
-    values_const  = (void**)  values_const[255];
-    ident_const   = (Identifier*) ident_const[255];
-
-    index_asm_data = 0;
-  }
-
   //  Allocate Command Buffers
   char* str = (char*) malloc(256);
   char* size = (char*) malloc(10);
+
+  node_constant cnst;
+  cnst.const_ident = strdup(ident);
+  cnst.const_type  = last_type;
 
   //  'bytes' indicates the assembly size directive to be used
   int bytes;
@@ -120,36 +96,32 @@ ErrorCode decl_constant(Identifier ident)
   {
     case 1: //  1-Byte Alignment
       sprintf(size, "byte");
-      sprintf(str, "%s: .%s #%u\n", ident, size, (unsigned int) last_data);
-      values_const[index_asm_data] = (unsigned int) last_data;
+      sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
+      cnst.value = (void*) (unsigned long long) last_data;
       break;
     case 2: //  2-Byte Alignment
       sprintf(size, "hword");
-      sprintf(str, "%s: .%s #%u\n", ident, size, (unsigned int) last_data);
-      values_const[index_asm_data] = (unsigned int) last_data;
+      sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
+      cnst.value = (void*) (unsigned long long) last_data;
       break;
     case 4: //  4-Byte Alignment
       sprintf(size, "word");
-      sprintf(str, "%s: .%s #%lu\n", ident, size, (unsigned long) last_data);
-      values_const[index_asm_data] = (unsigned long) last_data;
+      sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
+      cnst.value = (void*) (unsigned long long) last_data;
       break;
     case 8: //  8-Byte Alignment
       sprintf(size, "dword");
       sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
-      values_const[index_asm_data] = (unsigned long long) last_data;
+      cnst.value = (void*) (unsigned long long) last_data;
       break;
     default:  
       //  Invalid Attempt
       return 1;
   }
-
-  //  Set Identifier
-  ident_const[index_asm_data] = strdup(ident);
     
   //  Increment to prepare for next constant
-  curr_asm_data[index_asm_data] = strdup(str);
-  index_asm_data++;
-  count_asm_data++;
+  asm_data.push_back(strdup(str));
+  constants.push_back(cnst);
 
   //  Free Local String Buffers
   free(str);
@@ -166,10 +138,8 @@ ErrorCode decl_constant(Identifier ident)
 */
 void* get_const(Identifier ident)
 {
-  for (int i = 0; i < count_asm_data; i++)
-  {
-    if (strcmp(ident, ident_const[i]) == 0) return (values_const[i]);
-  }
+  for (vector<node_constant>::iterator it = constants.begin(); it != constants.end(); it++)
+    if (strcmp(((*it).const_ident), ident) == 0) return (*it).value;
 
   return 0;
 }

@@ -17,7 +17,6 @@
 #include "data.h"
 #include "header.h"
 #include "text.h"
-#include "init.h"
 
 //  Linux Libraries
 #include "stdlib.h"

@@ -2,7 +2,7 @@
   header.h
   Cody Fagley
   Authored on   March 18, 2019
-  Last Modified March 18, 2019
+  Last Modified  July 29, 2019
 */
 
 /*
@@ -19,6 +19,10 @@
 
 #include "operations.h"
 
+#include <stdio.h> 
+#include <sys/types.h> 
+#include <unistd.h> 
+#include <sys/wait.h>
 
 
 /* 2.) Import Header (Submodule)

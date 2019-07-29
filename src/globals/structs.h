@@ -2,7 +2,7 @@
   structs.h
   Cody Fagley
   Authored on   March 8, 2019
-  Last Modified March 8, 2019
+  Last Modified July 29, 2019
 */
 
 /*
@@ -12,9 +12,9 @@
   =================
   1.) Infrastructure
     1.a) Assembly Infrastructure
-  2.) Register Stacks
-  3.) Functions
-  4.) Data Types
+  2.) Data Types
+  3.) Register Stacks
+  4.) Functions
   7.) Operator Structures
     7.a) Operand Pairs
   8.) Internal Memory Allocation
@@ -32,6 +32,12 @@
 
 #ifndef GLOBALS_STRUCTS_H
 #define GLOBALS_STRUCTS_H
+
+#include <vector>
+
+using namespace std;
+
+using std::vector;
 
 /*
   1.) Infrastructure
@@ -51,42 +57,53 @@ typedef char* Constant;
 typedef char* Variable;
 
 /*
-  2.) Register Stacks
+  2.) Data Types
 */
 
-typedef unsigned char ADR;
+//  2.a) Types
+typedef unsigned long TypeID;
+typedef unsigned long ConstructorID;
+typedef unsigned int ElementID;
+
+//  2.b) Typeclasses
+typedef unsigned long TypeclassID;
+typedef unsigned int PrototypeID;
+
+//  2.c) Primitives
+typedef void* Arbitrary;
+
+/*
+  3.) Register Stacks
+*/
+
+typedef unsigned int ADR;
 typedef unsigned int Scope;
 
-typedef struct regstack_t
+struct regstack
 {
-  ADR order[30];
-} RegStack;
+  //  UNSAFE:  Assumes stack size < 26
+  vector<ADR> rs_code;
+  vector<TypeID> rs_type;
+  vector<ConstructorID> rs_struct;
+};
 
 
 /*
-  3.) Functions
+  4.) Functions
 */
 
 typedef unsigned long ConstantID;
 typedef unsigned long FunctionID;
 typedef unsigned int ParameterID;
 
+//  4.c) Constants
+struct node_constant
+{
+  Identifier const_ident;
+  TypeID     const_type;
+  void*      value;
+};
 
-/*
-  4.) Data Types
-*/
-
-//  4.a) Types
-typedef unsigned long TypeID;
-typedef unsigned long ConstructorID;
-typedef unsigned int ElementID;
-
-//  4.b) Typeclasses
-typedef unsigned long TypeclassID;
-typedef unsigned int PrototypeID;
-
-//  4.c) Primitives
-typedef void* Arbitrary;
 
 /*
   7.) Operator Structures

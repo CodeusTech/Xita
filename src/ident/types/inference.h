@@ -2,7 +2,7 @@
   Inference.h (Types)
   Cody Fagley
   Authored on   March 7, 2019
-  Last Modified July 17, 2019
+  Last Modified July 29, 2019
 */
 
 /*
@@ -58,8 +58,8 @@ int infer_addition()
   rs_pop();
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_types[scope_curr][rs_second()];
-  TypeID rhsT = rs_types[scope_curr][rs_top()];
+  TypeID lhsT = rs_sec_type();
+  TypeID rhsT = rs_top_type();
 
   if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_addition();
 
@@ -77,8 +77,8 @@ int infer_subtraction()
   rs_pop();
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_types[scope_curr][rs_second()];
-  TypeID rhsT = rs_types[scope_curr][rs_top()];
+  TypeID lhsT = rs_sec_type();
+  TypeID rhsT = rs_top_type();
 
   if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_subtraction();
 
@@ -96,8 +96,8 @@ int infer_multiplication()
   rs_pop();
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_types[scope_curr][rs_second()];
-  TypeID rhsT = rs_types[scope_curr][rs_top()];
+  TypeID lhsT = rs_sec_type();
+  TypeID rhsT = rs_top_type();
 
   if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_multiplication();
 
@@ -115,8 +115,8 @@ int infer_division()
   rs_pop();
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_types[scope_curr][rs_second()];
-  TypeID rhsT = rs_types[scope_curr][rs_top()];
+  TypeID lhsT = rs_sec_type();
+  TypeID rhsT = rs_top_type();
 
   if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_division();
 
@@ -134,8 +134,8 @@ int infer_modulus()
   rs_pop();
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_types[scope_curr][rs_second()];
-  TypeID rhsT = rs_types[scope_curr][rs_top()];
+  TypeID lhsT = rs_sec_type();
+  TypeID rhsT = rs_top_type();
 
   if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_modulo();
 
@@ -158,8 +158,8 @@ int infer_bit_and()
   rs_pop();
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_types[scope_curr][rs_second()];
-  TypeID rhsT = rs_types[scope_curr][rs_top()];
+  TypeID lhsT = rs_sec_type();
+  TypeID rhsT = rs_top_type();
 
   if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return bitwise_and();
 
@@ -177,8 +177,8 @@ int infer_bit_or()
   rs_pop();
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_types[scope_curr][rs_second()];
-  TypeID rhsT = rs_types[scope_curr][rs_top()];
+  TypeID lhsT = rs_sec_type();
+  TypeID rhsT = rs_top_type();
 
   if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return bitwise_or();
 
@@ -196,8 +196,8 @@ int infer_bit_xor()
   rs_pop();
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_types[scope_curr][rs_second()];
-  TypeID rhsT = rs_types[scope_curr][rs_top()];
+  TypeID lhsT = rs_sec_type();
+  TypeID rhsT = rs_top_type();
 
   if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return bitwise_xor();
 
@@ -382,16 +382,9 @@ int infer_list_con()
 */
 ErrorCode infer_constructor(ConstructorID construct)
 {
-  if (construct >= 1 && construct < 17) return construct;
-
-  //  For Each Type
-  for (TypeID tid = 0; tid < (get_curr_tid()-18); tid++)
-  {
-    for (ConstructorID cid = 0; cid < count_construct[tid]; cid++)
-    {
-      if (constructors[tid][cid] == construct) return tid;
-    }
-  }
+  /*
+    STUB STUB STUB
+  */
 
   //  Return Success
   return 0;

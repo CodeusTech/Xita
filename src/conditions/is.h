@@ -26,7 +26,7 @@ ErrorCode is_construct()
   /*
     Compare TOP Type vs SECOND Type
   */
-  ConstructorID cSec = rs_construct[scope_curr][rs_second()];
+  ConstructorID cSec = rs_sec_struct();
 
   push_int(cSec);
   push_int(last_constructor);
@@ -34,8 +34,8 @@ ErrorCode is_construct()
   rs_pop();
 
   //  Get Register Codes
-  ADR topreg = rs[scope_curr][rs_top()];
-  ADR secreg = rs[scope_curr][rs_second()];
+  ADR topreg = rs_top();
+  ADR secreg = rs_sec();
   char* top = get_reg(topreg, 32);
   char* sec = get_reg(secreg, 32);
   char* sec64 = get_reg(secreg, 64);
@@ -97,7 +97,7 @@ ErrorCode is_type()
   /*
     Compare TOP Type vs SECOND Type
   */
-  TypeID tSec = infer_constructor(rs_construct[scope_curr][rs_second()]);
+  TypeID tSec = infer_constructor(rs_sec_struct());
 
   push_int(tSec);
   push_int(last_type);
@@ -105,8 +105,8 @@ ErrorCode is_type()
   rs_pop();
 
   //  Get Register Codes
-  ADR topreg = rs[scope_curr][rs_top()];
-  ADR secreg = rs[scope_curr][rs_second()];
+  ADR topreg = rs_top();
+  ADR secreg = rs_sec();
   char* top = get_reg(topreg, 32);
   char* sec = get_reg(secreg, 32);
   char* sec64 = get_reg(secreg, 64);

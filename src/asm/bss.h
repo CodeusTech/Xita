@@ -20,6 +20,17 @@
 #define ASM_BSS_H
 
 
+//  Linux Libraries
+#include <string>
+#include <list>
+
+using namespace std;
+
+using std::list;
+using std::vector;
+using std::string;
+
+
 /*
   1.) Structure
 */
@@ -37,24 +48,10 @@ ErrorCode generate_bss(FILE* filename)
   //  Print TEXT Segment Name into File
   fprintf(filename, ".section .bss.xcs:\n");
 
-  curr_asm_bss = start_asm_bss;
-
   /* Print TEXT Buffer Contents to File */
-  for (int i = 0; i < count_asm_bss; i++)
-  {
-    if (i == 255) 
-    {
-      curr_asm_bss = (char**) start_asm_bss[i];
-      free(start_asm_bss);
-      i = 0;
-      count_asm_bss -= 255;
-    }
-    fprintf(filename, "  %s", curr_asm_bss[i]);
-    free(curr_asm_bss[i]);
-  }
+  for (list<string>::iterator it = asm_bss.begin(); it != asm_bss.end(); it++)
+    fprintf(filename, "  %s\n", (*it).c_str());
 
-
-  free(curr_asm_bss);
   //  Pretty up file with new lines
   fprintf(filename, "\n\n");
 
@@ -74,23 +71,9 @@ ErrorCode generate_bss(FILE* filename)
 */
 ErrorCode add_to_bss(Identifier ident, TypeID tid)
 {
-  if (index_asm_bss == 255)
-  {
-    curr_asm_bss[255] = (Command*) malloc(256 * sizeof(Command));
-    curr_asm_bss = (Command*) curr_asm_bss[255];
-
-    index_asm_bss = 0;
-  }
-
-  char* str = (char*) malloc(256);
-
-  sprintf(str, "%s, %lu", ident, tid);
-    
-  curr_asm_bss[index_asm_bss] = strdup(str);
-  index_asm_bss++;
-  count_asm_bss++;
-
-  free(str);
+  /*
+    STUB STUB STUB
+  */
 
   // Return Success
   return 0;

@@ -5,7 +5,7 @@
 
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
-CCOMP=gcc
+CCOMP=g++
 CFLAGS=-std=gnu11 -lm -Wall
 MEMTEST=-g -O0
 SILENT=-Wno-unused-variable -Wno-pointer-to-int-cast
@@ -16,10 +16,10 @@ install: build tidy
 	sudo rm -rf _build
 
 #  Build XCSL Cross Compiler
-build:  grammar src/xcs.c
+build:  grammar src/xcs.cc
 	rm -rf _build
 	mkdir _build
-	${CCOMP} ${CFLAGS} ${SILENT} src/xcs.c -o _build/xcs-aarch64
+	${CCOMP} ${CFLAGS} ${SILENT} src/xcs.cc -o _build/xcs-aarch64
 
 leakTest: grammar src/xcs.c
 	rm -rf _build

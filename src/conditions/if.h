@@ -46,7 +46,7 @@ unsigned int decl_if()
   mangle += rand();
 
   //  Print Assembly Header to If Statement
-  char* str = malloc(60); //  Supports 10-figures worth of if statements
+  char* str = (char*) malloc(60); //  Supports 10-figures worth of if statements
   
   //  Add Mangle to Header
   sprintf(str, "if_%u:\n", mangle);
@@ -72,7 +72,7 @@ unsigned int exp_if(unsigned int mang)
 
   //  Allocate Memory for String
   char* str = (char*) malloc (70);
-  char* top = get_reg(rs[scope_curr][rs_top()], 32);
+  char* top = get_reg(rs_top(), 32);
 
   //  Compare Top of Register Stack to 
   sprintf(str, "cmp   %s, #1\n", top);

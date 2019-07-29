@@ -17,13 +17,18 @@
 #ifndef TYPECLASS_PROTOTYPE_H
 #define TYPECLASS_PROTOTYPE_H
 
+#include <string>
+
+using namespace std;
+
+using std::string;
 
 /* 1.) Declare Prototype
 
   Returns:
     0, if Successful
 */
-ErrorCode decl_proto(Identifier ident)
+ErrorCode decl_proto(string ident)
 {
   //  STUB STUB STUB
   printf("Prototype %s Declared, and requires parameters: ", ident);
@@ -33,9 +38,6 @@ ErrorCode decl_proto(Identifier ident)
      * Error Check
      * Add ident to Prototype Buffer
   */
-
-  //  Free Buffers
-  free(ident);
 
   //  Return Success
   return 0;
