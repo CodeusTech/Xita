@@ -81,8 +81,6 @@ ErrorCode add_command(Command command)
 {
   asm_text[scope_curr].push_back(strdup(command));
 
-  free(command);
-
   return 0;
 }
 

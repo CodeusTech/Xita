@@ -145,6 +145,7 @@ int push_int(long long lit)
 
   //  Free allocated memory and move to next register on stack
 
+  free(str);
   free(reg_top);
   ADR reg = rs_push();
 
@@ -234,6 +235,7 @@ int integer_addition()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
+  free(str);
   free(top);
   free(sec);
 
@@ -260,6 +262,7 @@ int integer_subtraction()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
+  free(str);
   free(top);
   free(sec);
 
@@ -285,6 +288,7 @@ int integer_multiplication()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
+  free(str);
   free(top);
   free(sec);
 
@@ -310,6 +314,7 @@ int integer_division()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
+  free(str);
   free(top);
   free(sec);
 
@@ -335,6 +340,7 @@ int integer_modulo()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
+  free(str);
   free(top);
   free(sec);
 
@@ -415,6 +421,7 @@ int bitwise_and()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
+  free(str);
   free(top);
   free(sec);
 
@@ -440,6 +447,7 @@ int bitwise_or()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
+  free(str);
   free(top);
   free(sec);
 
@@ -465,6 +473,7 @@ int bitwise_xor()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
+  free(str);
   free(sec);
   free(top);
 

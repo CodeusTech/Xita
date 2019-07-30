@@ -76,12 +76,11 @@ ErrorCode boolean_and()
   //  Perform Boolean And Check
   char* str = (char*) malloc(50);
 
-  sprintf(str, "and   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "and   %s, %s, %s", sec, sec, top);
   add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
-  free(str);
   free(top);
   free(sec);
 
@@ -108,12 +107,11 @@ int boolean_or()
   //  Perform Boolean OR Check
   char* str = (char*) malloc(50);
 
-  sprintf(str, "orr   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "orr   %s, %s, %s", sec, sec, top);
   add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
-  free(str);
   free(top);
   free(sec);
 
@@ -140,12 +138,11 @@ int boolean_xor()
   //  Perform Boolean Exclusive OR Check
   char* str = (char*) malloc(50);
 
-  sprintf(str, "eor   %s, %s, %s\n", sec, sec, top);
+  sprintf(str, "eor   %s, %s, %s", sec, sec, top);
   add_command(str);
 
   //  Pop Right-hand Operand from Register Stack
   rs_pop();
-  free(str);
   free(top);
   free(sec);
 
@@ -180,33 +177,32 @@ ErrorCode boolean_lt()
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", sec, top);
+  sprintf(str, "cmp   %s, %s", sec, top);
   add_command(str);
 
   rs_pop();
 
   //  Jump if Less Than
-  sprintf(str, "blt   set_%u\n", mangle);
+  sprintf(str, "blt   set_%u", mangle);
   add_command(str);
 
   
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b     finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u", mangle);
   add_command(str);
 
-  sprintf(str, "set_%u:\n", mangle);
+  sprintf(str, "set_%u:", mangle);
   add_command(str);
 
   push_int(1);
 
-  sprintf(str, "finish_%u:\n", mangle);
+  sprintf(str, "finish_%u:", mangle);
   add_command(str);
 
 
   //  Free Buffers
-  free(str);
   free(top);
   free(sec);
 
@@ -231,38 +227,40 @@ int boolean_lte()
   //  Get Register Codes
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  char* str = (char*) malloc (60);
 
   //  Perform Boolean Exclusive OR Check
-  char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", sec, top);
+  sprintf(str, "cmp   %s, %s", sec, top);
   add_command(str);
 
   rs_pop();
 
   //  Jump if Less Than or Equal To
-  sprintf(str, "ble   set_%u\n", mangle);
+  sprintf(str, "ble   set_%u", mangle);
   add_command(str);
 
   
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b     finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u", mangle);
   add_command(str);
 
-  sprintf(str, "set_%u:\n", mangle);
+  sprintf(str, "set_%u:", mangle);
   add_command(str);
+
 
   push_int(1);
 
-  sprintf(str, "finish_%u:\n", mangle);
+  sprintf(str, "finish_%u:", mangle);
   add_command(str);
 
 
-  //  Free Buffers
   free(str);
+
+  //  Free Buffers
   free(top);
   free(sec);
 
@@ -292,28 +290,28 @@ int boolean_gt()
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", sec, top);
+  sprintf(str, "cmp   %s, %s", sec, top);
   add_command(str);
 
   rs_pop();
 
   //  Jump if Greater Than
-  sprintf(str, "bgt   set_%u\n", mangle);
+  sprintf(str, "bgt   set_%u", mangle);
   add_command(str);
 
   
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b     finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u", mangle);
   add_command(str);
 
-  sprintf(str, "set_%u:\n", mangle);
+  sprintf(str, "set_%u:", mangle);
   add_command(str);
 
   push_int(1);
 
-  sprintf(str, "finish_%u:\n", mangle);
+  sprintf(str, "finish_%u:", mangle);
   add_command(str);
 
 
@@ -347,28 +345,28 @@ int boolean_gte()
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", sec, top);
+  sprintf(str, "cmp   %s, %s", sec, top);
   add_command(str);
 
   rs_pop();
 
   //  Jump if Greater Than or Equal To
-  sprintf(str, "bge   set_%u\n", mangle);
+  sprintf(str, "bge   set_%u", mangle);
   add_command(str);
 
   
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b     finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u", mangle);
   add_command(str);
 
-  sprintf(str, "set_%u:\n", mangle);
+  sprintf(str, "set_%u:", mangle);
   add_command(str);
 
   push_int(1);
 
-  sprintf(str, "finish_%u:\n", mangle);
+  sprintf(str, "finish_%u:", mangle);
   add_command(str);
 
 
@@ -403,28 +401,28 @@ int boolean_eq()
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", sec, top);
+  sprintf(str, "cmp   %s, %s", sec, top);
   add_command(str);
 
   rs_pop();
 
   //  Jump if Equal To
-  sprintf(str, "beq   set_%u\n", mangle);
+  sprintf(str, "beq   set_%u", mangle);
   add_command(str);
 
   
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b     finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u", mangle);
   add_command(str);
 
-  sprintf(str, "set_%u:\n", mangle);
+  sprintf(str, "set_%u:", mangle);
   add_command(str);
 
   push_int(1);
 
-  sprintf(str, "finish_%u:\n", mangle);
+  sprintf(str, "finish_%u:", mangle);
   add_command(str);
 
 
@@ -459,28 +457,28 @@ int boolean_neq()
   char* str = (char*) malloc(100);
 
   //  Perform Comparison
-  sprintf(str, "cmp   %s, %s\n", sec, top);
+  sprintf(str, "cmp   %s, %s", sec, top);
   add_command(str);
 
   rs_pop();
 
   //  Jump if Not Equal To
-  sprintf(str, "bne   set_%u\n", mangle);
+  sprintf(str, "bne   set_%u", mangle);
   add_command(str);
 
   
   push_int(0);
   rs_pop();
 
-  sprintf(str, "b     finish_%u\n", mangle);
+  sprintf(str, "b     finish_%u", mangle);
   add_command(str);
 
-  sprintf(str, "set_%u:\n", mangle);
+  sprintf(str, "set_%u:", mangle);
   add_command(str);
 
   push_int(1);
 
-  sprintf(str, "finish_%u:\n", mangle);
+  sprintf(str, "finish_%u:", mangle);
   add_command(str);
 
 
