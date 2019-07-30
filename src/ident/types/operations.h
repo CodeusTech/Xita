@@ -10,10 +10,6 @@
 
   Table of Contents
   =================
-  1.) Compiler Buffers
-    1.a) Types
-    1.b) Constructors
-    1.c) Initialize Type Buffers
   1.) Utility Operations
     1.a) Get Next TypeID
     1.b) Get Current TypeID
@@ -28,59 +24,15 @@
 #include "../../primitives/typecodes.h"
 
 /*
-  1.) Compiler Buffers
-*/
-
-//  1.a) Types
-extern TypeID  next_type;
-extern Identifier*  ident_types;
-extern Identifier** param_types;
-extern unsigned int* pcount_types;
-
-//  1.b) Constructors
-extern Identifier**   ident_construct;
-extern unsigned int*  count_construct;
-extern unsigned long  total_construct;
-extern Identifier***  ident_elements;
-extern TypeID***      type_elements;
-extern unsigned int** count_elements;
-
-/* 1.c) Initialize Type Buffers
-
-  Allocates necessary memory to begin declaring types
-*/
-ErrorCode type_init()
-{
-  /*
-    Allocate memory for buffers
-  */
-  //  Types
-  ident_types = (Identifier*) malloc(256 * sizeof(Identifier));
-  param_types = (Identifier**) malloc(256 * sizeof(Identifier));
-  pcount_types = (unsigned int*) malloc(256 * sizeof(unsigned int));
-  
-  //  Constructors
-  ident_construct = (Identifier**) malloc(256 * sizeof(Identifier*));
-  constructors = (ConstructorID**) malloc(256 * sizeof(ConstructorID*));
-  count_construct = (unsigned int*) malloc(256 * sizeof(unsigned int));
-  total_construct = 0;
-  ident_elements = (Identifier***) malloc(256 * sizeof(Identifier**));
-  type_elements = (TypeID***) malloc(256 * sizeof(TypeID**));
-  count_elements = (unsigned int**) malloc(256 * sizeof(unsigned int*));
-
-
-  //  Return Success
-  return 0;
-}
-
-/*
-  2.) Utility Operations
+  1.) Utility Operations
 */
 
 //  2.a) Get Next TypeID
 TypeID get_next_tid(){ return next_type++; }
 //  2.b) Get Current TypeID
 TypeID get_curr_tid(){ return next_type - 1; }
+
+ConstructorID get_next_cid() { return next_cid++; }
 
 
 /*
@@ -110,6 +62,7 @@ TypeID find_type (Identifier ident)
 */
 ConstructorID find_constructor (Identifier ident)
 { 
+
   /*
     First, handle primitive constructors
   */
@@ -175,13 +128,11 @@ ConstructorID find_constructor (Identifier ident)
     return 16; } 
   else 
   {
-    //  Check Each Type
-    for (TypeID tid = 0; tid < (get_curr_tid() - 17); tid++)
+    for (vector<node_type>::iterator t = types.begin(); t != types.end(); t++)
     {
-      //  Check Each Constructor
-      for (unsigned int cid = 0; cid < count_construct[tid]; cid++)
+      for (vector<node_constructor>::iterator c = (*t).constructors.begin(); c != (*t).constructors.end(); c++)
       {
-        if (strcmp(ident, ident_construct[tid][cid]) == 0) return constructors[tid][cid]; 
+        if (strcmp(ident, (*c).ident) == 0) return (*c).cid;
       }
     }
   }

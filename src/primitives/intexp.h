@@ -91,42 +91,42 @@ int push_int(long long lit)
   {
     case 0:
       bits = 32;
-      rs[scope_curr].rs_struct[curr_reg] = 0;
+      rs[scope_curr].rs_struct.push_back(0);
       break;
     case 2: 
       bits = 32;
-      rs[scope_curr].rs_struct[curr_reg] = 2;
+      rs[scope_curr].rs_struct.push_back(2);
       break;
     case 3:
-      rs[scope_curr].rs_struct[curr_reg] = 3;
+      rs[scope_curr].rs_struct.push_back(3);
       bits = 8;
       break;
     case 4:
-      rs[scope_curr].rs_struct[curr_reg] = 4;
+      rs[scope_curr].rs_struct.push_back(4);
       bits = 8;
       break;
     case 5:
-      rs[scope_curr].rs_struct[curr_reg] = 5;
+      rs[scope_curr].rs_struct.push_back(5);
       bits = 16;
       break;
     case 6:
-      rs[scope_curr].rs_struct[curr_reg] = 6;
+      rs[scope_curr].rs_struct.push_back(6);
       bits = 16;
       break;
     case 7:
-      rs[scope_curr].rs_struct[curr_reg] = 7;
+      rs[scope_curr].rs_struct.push_back(7);
       bits = 32;
       break;
     case 8:
-      rs[scope_curr].rs_struct[curr_reg] = 8;
+      rs[scope_curr].rs_struct.push_back(8);
       bits = 32;
       break;
     case 9:
-      rs[scope_curr].rs_struct[curr_reg] = 9;
+      rs[scope_curr].rs_struct.push_back(9);
       bits = 64;
       break;
     case 10:
-      rs[scope_curr].rs_struct[curr_reg] = 10;
+      rs[scope_curr].rs_struct.push_back(10);
       bits = 64;
       break;
     default:
@@ -138,14 +138,16 @@ int push_int(long long lit)
   char* str = (char*) malloc(50);
   char* reg_top = get_reg(rs_top(), bits);
 
+
   //  Add to Queue for File Printing
   sprintf(str, "mov   %s, #%llu", reg_top, lit);
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
+
   free(reg_top);
   ADR reg = rs_push();
+
 
   return 0;
 }
@@ -232,7 +234,6 @@ int integer_addition()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
   free(top);
   free(sec);
 
@@ -259,7 +260,6 @@ int integer_subtraction()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
   free(top);
   free(sec);
 
@@ -285,7 +285,6 @@ int integer_multiplication()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
   free(top);
   free(sec);
 
@@ -311,7 +310,6 @@ int integer_division()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
   free(top);
   free(sec);
 
@@ -337,7 +335,6 @@ int integer_modulo()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
   free(top);
   free(sec);
 
@@ -418,7 +415,6 @@ int bitwise_and()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
   free(top);
   free(sec);
 
@@ -444,7 +440,6 @@ int bitwise_or()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
   free(top);
   free(sec);
 
@@ -470,7 +465,6 @@ int bitwise_xor()
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
-  free(str);
   free(sec);
   free(top);
 

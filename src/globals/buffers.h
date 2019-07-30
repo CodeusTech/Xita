@@ -120,20 +120,10 @@ vector<node_constant> constants;
 
 //  5.a) Type Data
 TypeID next_type = 18;    //  Number of Types
-Identifier*  ident_types; //  Type Identifiers
-unsigned int* pcount_types; //  Type Parameter Count
-Identifier** param_types; //  Type Parameters
+ConstructorID next_cid = 18;
 
-//  5.b) Constructors
-ConstructorID** constructors;   //  ID number of each constructor
-unsigned int*  count_construct; //  Number of Constructors for Function
-unsigned long  total_construct; //  Total Number of Constructors
-Identifier**   ident_construct; //  Constructor Identifiers
+vector<node_type> types;
 
-//  5.c) Elements
-unsigned int** count_elements;  //  Number of Elements for Constructor
-Identifier***  ident_elements;  //  Element Identifiers
-TypeID***      type_elements;   //  Types of Elements for Constructor
 
 //  5.c) Typeclasses 
 Identifier* ident_typeclasses; //  Typeclass Identifiers
@@ -177,78 +167,14 @@ operands* operands_list_con;
 
 
 
-/*  A.) Free Global Buffers
-
-      This is one of the last functions that is executed upon each run of the
-    XCSL-AArch Cross Compiler.  It's responsibility is to free all buffers that
-    do not get freed naturally upon conclusion/assembly generation.
-
-    TODO:
-      * Many, many if ... else ... statements needed
-        - Need to recursively check for extended lists
-
-    Returns:
-      0, if Successful
+/*
+  Initialize Buffers
 */
-ErrorCode free_buffers()
+ErrorCode init_buffers()
 {
-  /*
-    TYPES
-  */
-  
-  //  For Each Type
-  for (TypeID tid = 0; tid < (next_type-18); tid++)
-  { 
-    //  For Each Parameter
-    for (unsigned int pid = 0; pid < pcount_types[tid]; pid++)
-    {
-      free(param_types[tid][pid]);
-    }
 
-    //  For Each Constructor
-    for (unsigned int cid = 0; cid < count_construct[tid]; cid++)
-    {
-      //  For Each Element
-      for (unsigned int eid = 0; eid < count_elements[tid][cid]; eid++)
-      {
-        free(ident_elements[tid][cid][eid]);
-      }
-
-      free(ident_construct[tid][cid]);
-      free(ident_elements[tid][cid]);
-      free(type_elements[tid][cid]);
-    }
-
-    free(ident_types[tid]);
-    free(param_types[tid]);
-
-    free(constructors[tid]);
-    free(ident_construct[tid]);
-    free(ident_elements[tid]);
-    free(type_elements[tid]);
-    free(count_elements[tid]);
-  }
-
-  free (ident_types);
-  free (pcount_types);
-  free (param_types);
-  free (count_construct);
-  
-  free (constructors);
-  free (ident_construct);
-  free (ident_elements);
-  free (type_elements);
-  free (count_elements);
-
-
-  //  Return Success
   return 0;
 }
-
-
-
-
-
 
 
 

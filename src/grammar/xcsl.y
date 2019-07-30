@@ -283,7 +283,7 @@ open:
 */
 
 xcs_source:
-    src   { source_end(); }
+    src   { source_end();  }
 ;
 
 src2:

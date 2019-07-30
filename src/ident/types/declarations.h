@@ -36,6 +36,11 @@ ErrorCode decl_type (char* ident)
   //  Aquire TypeID
   TypeID tid = get_next_tid() - 18;
 
+  node_type new_type;
+
+  new_type.type_ident = strdup(ident);
+  new_type.type_id    = tid;  
+
   /*
     TODO:
       * Error Check
@@ -46,18 +51,7 @@ ErrorCode decl_type (char* ident)
   /*
     Set initial Values && Allocate Memory
   */
-  //  Types
-  ident_types[tid] = strdup(ident);
-  pcount_types[tid] = 0;
-  param_types[tid] = (Identifier*) malloc (10 * sizeof(Identifier));
-
-  //  Constructors
-  count_construct[tid] = 0;
-  constructors[tid] = (ConstructorID*) malloc(40 * sizeof(ConstructorID));
-  ident_construct[tid] = (Identifier*) malloc (40 * sizeof(unsigned int));
-  ident_elements[tid] = (Identifier**) malloc(256 * sizeof(Identifier*));
-  type_elements[tid]  = (TypeID**) malloc(40 * sizeof(TypeID*));
-  count_elements[tid] = (unsigned int*) malloc(40 * sizeof(unsigned int));
+  types.push_back(new_type);
 
   //  Free String Memory
   free(ident);
@@ -73,19 +67,8 @@ ErrorCode decl_type (char* ident)
 */
 ErrorCode decl_type_param (Identifier ident)
 {
-  //  Retrieve Current TypeID
   TypeID tid = get_curr_tid() - 18;
-
-  /*
-    TODO:
-      * Error Check
-      * Detect and Adjust for situations where pcount_types[tid] >= 9
-        - Allocate and link to next group of type parameters
-  */
-  param_types[tid][pcount_types[tid]] = strdup(ident);
-
-  //  Increment Parameter Count for this type
-  pcount_types[tid]++;
+  types.back().param_type.push_back(strdup(ident));
 
   //  Free String Buffer
   free(ident);
@@ -102,30 +85,17 @@ ErrorCode decl_type_param (Identifier ident)
 */
 ErrorCode decl_constructor (Identifier ident)
 {
+  TypeID tid = get_curr_tid() - 18;
   //  TODO: use sprintf or something to print ident to terminal
   if (find_constructor(ident)) yyerror("Constructor with that name already declared");
 
-  //  Retrieve Current TypeID
-  TypeID tid = get_curr_tid() - 18;
-  unsigned int cid = count_construct[tid];
 
-  ConstructorID constID = (total_construct++) + 18;
-  constructors[tid][cid] = constID;
+  node_constructor constructor;
 
+  constructor.ident = strdup(ident);
+  constructor.cid   = get_next_cid();
 
-  //  Add Constructor to Type
-  ident_construct[tid][cid] = ident;
-
-  /* 
-    Initialize Element Properties
-  */
-  count_elements[tid][cid] = 0;
-  type_elements[tid][cid] = (TypeID*) malloc(40 * sizeof(TypeID));
-  ident_elements[tid][cid] = (Identifier*) malloc(40 * sizeof(Identifier));
-
-
-  //  Increment Number of Constructors for Current Type
-  count_construct[tid]++;
+  types.back().constructors.push_back(constructor);
 
   //  Free Buffers
   free(ident);

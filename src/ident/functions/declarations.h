@@ -51,6 +51,9 @@ ErrorCode decl_function (Identifier ident)
 
   //  Generate Register Stack for New Scope
   rs_init(s);
+
+  list<string> new_comms;
+  asm_text.push_back(new_comms);
   
   //  Print Function Identifier to Assembly File
   char comm[300];

@@ -72,6 +72,28 @@ typedef unsigned int PrototypeID;
 //  2.c) Primitives
 typedef void* Arbitrary;
 
+
+struct node_element
+{
+  Identifier ident;
+  TypeID     type;
+};
+
+struct node_constructor
+{
+  Identifier ident;
+  ConstructorID cid;
+  vector<node_element> elements;
+};
+
+struct node_type
+{
+  Identifier type_ident;  //  Type Identifier
+  TypeID     type_id;
+  vector<Identifier> param_type; //  Parameter Types
+  vector<node_constructor> constructors;
+};
+
 /*
   3.) Register Stacks
 */
@@ -136,17 +158,16 @@ typedef unsigned long Address;
 /* 8.b.1) Memory Node
 
 */
-typedef struct mem_node
+struct node_memory
 {
-  struct mem_node* left;
-  struct mem_node* right;
+  struct node_memory* left;
+  struct node_memory* right;
   unsigned int height;
   Address addr;
   unsigned long size;
   void* data;
-} MemoryNode;
+};
 
-MemoryNode* ActiveMemory;
 
 
 /*

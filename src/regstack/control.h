@@ -38,7 +38,7 @@ int rs_init(Scope scope)
      * Check for Scope == 255
   */
   //  Set Create Register Stack
-  rs_new(scope);
+  rs_new();
 
 
   return 0;
@@ -71,8 +71,6 @@ int rs_serialize()
   sprintf(str, "mov   W30, %llu\n", reg1);
 
   add_command(str);
-
-  free(str);
 
   return 0;
 }

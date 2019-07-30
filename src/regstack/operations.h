@@ -34,10 +34,12 @@ extern ADR curr_reg;
 /* 1.a) Create New Register Stack
 
 */
-ErrorCode rs_new(Scope scope)
+ErrorCode rs_new()
 {
+  regstack new_rs;
+
   //  Random Order Variables
-  unsigned long activeRegs = 0;
+  unsigned long long activeRegs = 0;
   curr_reg = 0;
   unsigned long chk;
 
@@ -52,10 +54,12 @@ ErrorCode rs_new(Scope scope)
     if (activeRegs & (int) (pow(2,chk))) i--;
     else
     {
-      (rs[scope].rs_code).push_back(chk);
+      new_rs.rs_code.push_back(chk);
       activeRegs |= (int) pow(2,chk);
     }
   }
+
+  rs.push_back(new_rs);
 
   //  Return Success
   return 0;

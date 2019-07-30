@@ -64,7 +64,10 @@ int main(int argc, char** argv)
 
 			//  Initialize Register Stack Backend
 			rs_init(0);
-			type_init();
+
+			//  Init Text Buffer
+			list<string> tmp;
+			asm_text.push_back(tmp);
 
 			//  Set Parser File Pointer
 			yyin = fopen(argv[i], "r");
@@ -76,13 +79,11 @@ int main(int argc, char** argv)
 			strncpy(asm_fname, argv[i], strlen(argv[i]));
 			strncat(asm_fname, ".s", 3);
 
+
 			//  Populate Assembly File
 			write_asm_file(asm_fname);
 
 			free (asm_fname);
-
-			//  Free Memory Buffers
-			free_buffers();
 
 			return 0;
 		}
