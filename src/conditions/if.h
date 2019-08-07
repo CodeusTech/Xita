@@ -49,7 +49,7 @@ unsigned int decl_if()
   char* str = (char*) malloc(60); //  Supports 10-figures worth of if statements
   
   //  Add Mangle to Header
-  sprintf(str, "if_%u:\n", mangle);
+  sprintf(str, "if_%u:", mangle);
   add_command(str);
 
   free(str);
@@ -75,11 +75,11 @@ unsigned int exp_if(unsigned int mang)
   char* top = get_reg(rs_top(), 32);
 
   //  Compare Top of Register Stack to 
-  sprintf(str, "cmp   %s, #1\n", top);
+  sprintf(str, "cmp   %s, #1", top);
   add_command(str);
 
   //  If False, Jump to else Block
-  sprintf(str, "blt   else_%u\n", mang);
+  sprintf(str, "blt   else_%u", mang);
   add_command(str);
 
   //  Free Memory
@@ -103,7 +103,7 @@ int exp_then(unsigned int mang)
 {
   char* str = (char*) malloc (80);
 
-  sprintf(str, "b     finish_%u\n", mang);
+  sprintf(str, "b     finish_%u", mang);
   add_command(str);
 
   free(str);
@@ -126,7 +126,7 @@ unsigned int decl_else(unsigned int mang)
 {
   char* str = (char*) malloc (80);
 
-  sprintf(str, "else_%u:\n", mang);
+  sprintf(str, "else_%u:", mang);
   add_command(str);
 
   free(str);
@@ -143,7 +143,7 @@ ErrorCode exp_else(unsigned int mang)
 {
   char* str = (char*) malloc (80);
 
-  sprintf(str, "finish_%u:\n", mang);
+  sprintf(str, "finish_%u:", mang);
   add_command(str);
 
   free(str);
@@ -152,25 +152,6 @@ ErrorCode exp_else(unsigned int mang)
   return 0;
 }
 
-
-/* 4.) Conclude If Then Else
-
-*/
-int exp_if_then_else()
-{
-  /*
-  //  Print Assembly Header to If Statement
-  char* str = malloc(15); //  Supports 10-figures worth of if statements
-  
-  //  Add Mangle to Header
-  sprintf(str, "done_%d:\n", mangle);
-  add_command(str);  
-
-  mangle++;
-*/
-
-  return 0;
-}
 
 
 #endif

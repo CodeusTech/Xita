@@ -473,12 +473,8 @@ else1:
   then ELSE      { $$ = decl_else($1); }
 ;
 // CALLABLE FUNCTION
-else:
-  else1 exp { $$ = exp_else($1); }
-;
-
 exp_if:
-    else { exp_if_then_else(); }
+  else1 exp { exp_else($1); }
 ;
 
 /*
