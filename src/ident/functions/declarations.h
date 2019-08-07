@@ -200,9 +200,9 @@ ErrorCode undecl_function()
   Returns:
     0, if Successful
 */
-ErrorCode decl_parameter (Identifier name)
+ErrorCode decl_parameter (Identifier ident)
 {
-  printf("Parameter %s Declared\n", name);
+  printf("Parameter %s Declared\n", ident);
   //  STUB STUB STUB
 
   /*
@@ -215,6 +215,8 @@ ErrorCode decl_parameter (Identifier name)
   //pnum_funct[scope_curr]++;
 
   //  TODO: Add Parameter Type to Backend Buffers
+
+  free(ident);
 
   return 0;
 }

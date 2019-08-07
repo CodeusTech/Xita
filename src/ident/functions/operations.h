@@ -10,13 +10,11 @@
 
   Table of Contents
   =================
-  1.) Function Initialization
-    1.a) Declare Function
-    1.b) Undeclare Function
-  2.) Function Expressions
-  3.) Find Function ID
-    3.a) Find Function /wo Parameters
-    3.b) Find Function /w Parameters
+  1.) Find Constant
+  2.) Find Function
+    2.a) Find Function /wo Parameters
+    2.b) Find Function /w Parameters
+  3.) Find Functional Parameter
 */
 
 #ifndef FUNCTIONS_OPERATIONS_H
@@ -30,38 +28,32 @@ extern Identifier* ident_functions;
 
 
 
+/*  1.) Find Constant
 
-/* 2.) Function Expressions
 
-  Returns:
-    0, if Successful
 */
-ErrorCode exp_function (Identifier name)
+void* find_constant(Identifier ident)
 {
-  //  STUB STUB STUB
-  printf("Function %s Invoked\n", name);
+  for (vector<node_constant>::iterator it = constants.begin(); it != constants.end(); it++)
+    if (strcmp(((*it).const_ident), ident) == 0) 
+    {
+      found = true;
+      //  TODO:  Generalize cast to work on more than integers
+      return (void*) (unsigned long long) (*it).value;
+    }
 
-  /*
-    TODO:
-     * Error Check
-     * If target function has parameters,
-      + If parameter ADRs are active, copy data to Data Stack
-      + Load Parameter Into Expected ADR
-  */
+  found = false;
+  free(ident);
 
-  /*
-    TODO:
-     * Perform Contextual Type Check
-  */
-
-  return 0;
+  return NULL;
 }
 
+
 /*
-  3.) Find Function ID
+  2.) Find Function
 */
 
-/* 3.a) Find Function /wo Parameters
+/* 2.a) Find Function /wo Parameters
 
   Returns:
     0, if ident is not a Declared Function
@@ -83,7 +75,7 @@ void* find_function (Identifier ident)
   return NULL;
 }
 
-/* 3.) Find Function /w Parameters
+/* 2.b) Find Function /w Parameters
 
   Returns:
     0, if ident is not a Declared Function
@@ -106,27 +98,31 @@ void* find_pfunction (Identifier ident, TypeID* ptypes)
 }
 
 
+/* 3.) Find Functional Parameter
 
-
-/*  4.) Find Constant Value
-
-
+  Returns:
+    0, if identifier is not a Parameter
+    i, if identifier is Parameter, where 'i' is index in Parameter Buffer
 */
-void* find_constant(Identifier ident)
+ParameterID find_parameter(Identifier ident)
 {
-  for (vector<node_constant>::iterator it = constants.begin(); it != constants.end(); it++)
-    if (strcmp(((*it).const_ident), ident) == 0) 
-    {
-      found = true;
-      //  TODO:  Generalize cast to work on more than integers
-      return (void*) (unsigned long long) (*it).value;
-    }
+  printf("Parameter Found: %s\n", ident);
+  found = true;
+  //  STUB STUB STUB
 
-  found = false;
-  free(ident);
+  /*
+    TODO:
+     * Error Check
+     * Search thru backend buffers
+      - If Parameter is found, 
+        + Return Buffer Index
+      - If Not Found,
+        + Return 0
+  */
 
-  return NULL;
+  return 0;
 }
+
 
 
 #endif
