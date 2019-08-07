@@ -2,7 +2,7 @@
   functions.h
   Cody Fagley
   Authored on   February 13, 2019
-  Last Modified February 13, 2019
+  Last Modified   August  7, 2019
 */
 
 /*
@@ -14,7 +14,6 @@
 
 
 //  Function Headers
-#include "constant.h"
 #include "declarations.h"
 #include "parameter.h"
 #include "operations.h"

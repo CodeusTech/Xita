@@ -28,46 +28,19 @@
 #ifndef FUNCTIONS_PARAMETER_H
 #define FUNCTIONS_PARAMETER_H
 
-//  Global Variables
-extern Identifier** param_funct;
-
 
 /*
   1.) Parameter Operations
 */
-
-/* 1.a) Declare Parameter
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode decl_parameter (Identifier name)
-{
-  printf("Parameter %s Declared\n", name);
-  //  STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-  */
-
-  //  Push Parameter to Register Stack
-  //ADR reg = rs_push();
-  //pnum_funct[scope_curr]++;
-
-  //  TODO: Add Parameter Type to Backend Buffers
-
-  return 0;
-}
 
 /* 1.b) Parameter Expression
 
   Returns:
     0, if Successful
 */
-ErrorCode exp_parameter(Identifier name)
+ErrorCode exp_parameter(Identifier ident)
 {
-  printf("Parameter %s Invoked\n", name);
+  printf("Parameter %s Invoked\n", ident);
   //  STUB STUB STUB
 
   /*
@@ -79,6 +52,8 @@ ErrorCode exp_parameter(Identifier name)
   ADR reg = rs_push();
 
   //  TODO: Copy contents of Parameter to 'reg'
+
+  free (ident);
 
   return 0;
 }
@@ -92,6 +67,7 @@ ErrorCode exp_parameter(Identifier name)
 ParameterID find_parameter(Identifier ident)
 {
   printf("Parameter Found: %s\n", ident);
+  found = true;
   //  STUB STUB STUB
 
   /*

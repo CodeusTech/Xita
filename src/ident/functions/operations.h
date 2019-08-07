@@ -2,7 +2,7 @@
   operations.h
   Cody Fagley
   Authored on   February 14, 2019
-  Last Modified    March 19, 2019
+  Last Modified   August  7, 2019
 */
 
 /*
@@ -67,10 +67,11 @@ ErrorCode exp_function (Identifier name)
     0, if ident is not a Declared Function
     s, where 's' is the matching function's Context Scope ID
 */
-Scope find_function (Identifier ident)
+void* find_function (Identifier ident)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);
+  found = true;
 
   /*
     TODO:
@@ -79,7 +80,7 @@ Scope find_function (Identifier ident)
       + Ensure ident has no expected parameters
   */
 
-  return 0;
+  return NULL;
 }
 
 /* 3.) Find Function /w Parameters
@@ -88,10 +89,11 @@ Scope find_function (Identifier ident)
     0, if ident is not a Declared Function
     i, if ident is a function, where i is index in function buffer
 */
-Scope find_pfunction (Identifier ident, TypeID* ptypes)
+void* find_pfunction (Identifier ident, TypeID* ptypes)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);
+  found = true;
 
   /*
     TODO:
@@ -100,9 +102,31 @@ Scope find_pfunction (Identifier ident, TypeID* ptypes)
       + If ident is found, compare parameters types with ptypes
   */
 
-  return 0;
+  return NULL;
 }
 
+
+
+
+/*  4.) Find Constant Value
+
+
+*/
+void* find_constant(Identifier ident)
+{
+  for (vector<node_constant>::iterator it = constants.begin(); it != constants.end(); it++)
+    if (strcmp(((*it).const_ident), ident) == 0) 
+    {
+      found = true;
+      //  TODO:  Generalize cast to work on more than integers
+      return (void*) (unsigned long long) (*it).value;
+    }
+
+  found = false;
+  free(ident);
+
+  return NULL;
+}
 
 
 #endif

@@ -10,10 +10,11 @@
 
   Table of Contents
   =================
-  1.) Compiler Buffers
+  1.) Compiler Utilities
     1.a) Name Mangling
     1.b) Last Encountered Value
     1.c) Last Encountered Type
+    1.d) Found Identifier
   2.) Assembly Buffers
     2.a) .text Section
     2.b) .bss Section
@@ -54,7 +55,7 @@ using std::vector;
 using std::string;
 
 /*
-  1.) Compiler Buffers
+  1.) Compiler Utilities
 */
 
 // 1.a) Name Mangling
@@ -62,6 +63,9 @@ unsigned int mangle = 0;
 
 // 1.b) Last Encountered Value
 void* last_data;
+
+// 1.d) Found Identifier
+bool found = false;
 
 /*
   2.) Assembly Buffers

@@ -526,7 +526,7 @@ decl_const:
 
 exp_const:
     INT     { last_data = (void*) (unsigned long long) $1; }
-  | IDENTIFIER { last_data = (void*) (unsigned long long) get_const($1); free($1); }
+  | IDENTIFIER { last_data = (void*) find_constant($1); }
   | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long) last_data + $3); }
 ;
 
@@ -539,8 +539,8 @@ pre_let:
 ;
 
 let:
-    LET IDENTIFIER OF exp_type  { decl_function($2); free($2); }
-  | LET IDENTIFIER              { decl_function($2); free($2); }
+    LET IDENTIFIER OF exp_type  { decl_function($2); }
+  | LET IDENTIFIER              { decl_function($2); }
   | LET OP_ADD_O                { override_add(); }
   | LET OP_SUB_O                { override_sub(); }
   | LET OP_MUL_O                { override_mul(); }
@@ -568,17 +568,17 @@ let:
   FUNCTION DECLARATIONS
 */
 __decl_funct:
-    pre_let exp_param OP_ASSIGN OP_REC_L exp_inline OP_REC_R { decl2_function(); }
-  | pre_let exp_param OP_ASSIGN exp        { decl2_function(); }
+    pre_let exp_param OP_ASSIGN OP_REC_L exp_inline OP_REC_R { ret_function(); }
+  | pre_let exp_param OP_ASSIGN exp                          { ret_function(); }
 ;
 
 decl_funct:
-    __decl_funct IN exp
+    __decl_funct IN exp   { undecl_function(); }
   | __decl_funct
 ;
 
 param:
-    IDENTIFIER { decl_parameter($1); free($1); }
+    IDENTIFIER { decl_parameter($1); }
 ;
 
 exp_param:
