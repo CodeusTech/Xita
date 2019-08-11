@@ -19,15 +19,11 @@
   1.) Read Memory
 *)
 
-let f = 0x00000000 *-> num in num + 1;;
-
-let read_gpio port = 
-  (0x3F000000 + port) *-> this;;
-
+let sum = 0x00000 <*- 0x0000f321 4
 
 (*
   2.) Write Memory
 *)
 
-0x3F000000 <-* gpio_expression
+
 

@@ -305,6 +305,7 @@ extern int yylex();
 
 "clear"  {return CLEAR;}
 "sizeof" {return SIZEOF;}
+"delay"  {return DELAY; }
 
 
 

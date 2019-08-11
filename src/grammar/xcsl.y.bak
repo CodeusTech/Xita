@@ -16,7 +16,6 @@
   C.) Start of Grammar
   D.) Source Modules
 
-
   ----------------------
   
   I. DECLARATIONS
@@ -26,8 +25,8 @@
   ----------------------
 
   II. EXPRESSIONS
-  
-  1.) XCSL Expressions
+
+  1.) Top-Level Expressions
   2.) Primitive Expressions
     2.a) Integer Expressions
     2.b) Boolean Expressions
@@ -196,7 +195,7 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %token BUILD RUN            //  Bytecode Operations
 %token REGEX                //  Regular Expressions
 %token TETHER SEND RECEIVE  //  Interprocess Communication
-%token CLEAR  DELAY         //  Utilities
+%token CLEAR DELAY          //  Clear Terminal
 
 //  Module Operations
 %token OPEN SOURCE_M HEADER_M TETHER_M
@@ -208,23 +207,22 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 /*
   B.) Order of Operations
 */
-//  High-Order Operations
-%left BUILD CLEAR
-%left LET IN
-%left TYPE TYPECLASS REQUIRES
-%left FILEK
-
 %left OP_ASSIGN OP_INLINE
+%left LET IN
+
 %left OP_LIST_L OP_LIST_R
 %left OP_REC_L OP_REC_R
 %left OP_ELEMENT OP_COMMA
 
-//  List Operations
-%left OP_APPEND LIST_HEAD LIST_TAIL
 
 //  Constructors
 %left CONSTRUCTOR
 %left U8 I8 U16 I16 U32 I32 U64 I64 FLOAT_C DOUBLE_C STRING_C CHAR_C
+
+//  Literal Operations
+%left IDENTIFIER
+%left REAL INT TRUE FALSE
+%left BOOL_AND BOOL_OR BOOL_XOR OP_LT OP_GT OP_LTE OP_GTE OP_EQ OP_NEQ IS
 
 //  Override Operators
 %left OP_ADD_O OP_SUB_O OP_DIV_O OP_MUL_O OP_MOD_O OP_APPEND_O OP_LIST_CON_O
@@ -232,22 +230,33 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %left OP_LT_O OP_LTE_O OP_GT_O OP_GTE_O OP_EQ_O OP_NEQ_O 
 %left MEM_READ_O MEM_SET_O ARROW_L_O ARROW_R_O 
 
-//  Literal Operations
-%left IDENTIFIER
-%left REAL INT TRUE FALSE
-%left BOOL_AND BOOL_OR BOOL_XOR OP_LT OP_GT OP_LTE OP_GTE OP_EQ OP_NEQ IS
+
+//  List Operations
+%left OP_APPEND LIST_HEAD LIST_TAIL
 
 //  Operator Arithmetic
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
 
+
+//  Memory Set Operations
+%left MEM_READ MEM_SET
+
+
+//  High-Order Operations
+%left BUILD CLEAR
+%left TYPE TYPECLASS REQUIRES
+%left FILEK
+
 //  Seperators
 %left OP_TUP
 %left PAR_LEFT PAR_RIGHT
-%left OP_SEQ
+%left OP_SEP
 
-%type <val_int> if if1 then else1
+
+
+%type <val_int> if if1 then else1 else
 
 /*
   C.) Start of Grammar
@@ -260,7 +269,7 @@ ref_com:
 
 xcs:
     ref_com xcs { }
-  | src  { }
+  | src  { printf("\n\ncheck\n\n"); }
   | xcs_tether  {/* Tether Module Structure */}
 ;
 
@@ -294,6 +303,8 @@ decl:
   | decl_fnew
 ;
 
+
+
 /*
   4.) External Module Declarations
 */
@@ -314,7 +325,6 @@ open_tether:
 open_header:
   OPEN HEADER_M STRING { open_header($3); }
 ;
-
 
 
 /*
@@ -447,7 +457,7 @@ exp_arith:
   3.b) Logical Expressions
 */
 exp_logical:
-  | exp BOOL_AND exp    { infer_bool_and(); }
+    exp BOOL_AND exp    { infer_bool_and(); } 
   | exp BOOL_OR exp     { infer_bool_or();  }
   | exp BOOL_XOR exp    { infer_bool_xor(); }
   | exp OP_LT exp       { infer_bool_lt(); }
@@ -491,8 +501,12 @@ else1:
   then ELSE      { $$ = decl_else($1); }
 ;
 // CALLABLE FUNCTION
+else:
+  else1 exp { $$ = exp_else($1); }
+;
+
 exp_if:
-  else1 exp { exp_else($1); }
+    else { exp_if_then_else(); }
 ;
 
 /*
@@ -539,26 +553,21 @@ exp_is:
 */
 decl_const:
     CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { decl_constant($2); }
-  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { decl_constant($3); }
+  | CONST exp_struct IDENTIFIER OP_ASSIGN exp_const { decl_constant($3); }
 ;
 
 exp_const:
     INT     { last_data = (void*) (unsigned long long) $1; }
-  | IDENTIFIER { last_data = (void*) find_constant($1); }
+  | IDENTIFIER { last_data = (void*) (unsigned long long) get_const($1); free($1); }
   | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long) last_data + $3); }
 ;
 
 /*
   4.b) Function Declarations/Invocations
 */
-pre_let:
-    ref_com let
-  | let
-;
-
 let:
-    LET IDENTIFIER OF exp_type  { decl_function($2); }
-  | LET IDENTIFIER              { decl_function($2); }
+    LET IDENTIFIER OF exp_type  { decl_function($2); free($2); }
+  | LET IDENTIFIER              { decl_function($2); free($2); }
   | LET OP_ADD_O                { override_add(); }
   | LET OP_SUB_O                { override_sub(); }
   | LET OP_MUL_O                { override_mul(); }
@@ -586,17 +595,17 @@ let:
   FUNCTION DECLARATIONS
 */
 __decl_funct:
-    pre_let exp_param OP_ASSIGN OP_REC_L exp_inline OP_REC_R { ret_function(); }
-  | pre_let exp_param OP_ASSIGN exp                          { ret_function(); }
+    let exp_param OP_ASSIGN OP_REC_L exp_inline OP_REC_R { decl2_function(); }
+  | let exp_param OP_ASSIGN exp        { decl2_function(); }
 ;
 
 decl_funct:
-    __decl_funct IN exp   { undecl_function(); }
-  | __decl_funct
+    __decl_funct IN exp
+  | __decl_funct         
 ;
 
 param:
-    IDENTIFIER { decl_parameter($1); }
+    IDENTIFIER { decl_parameter($1); free($1); }
 ;
 
 exp_param:
@@ -614,7 +623,7 @@ exp_inline:
 */
 
 exp_funct:
-    IDENTIFIER arg_funct  { exp_function($1); }
+    IDENTIFIER arg_funct { exp_function($1); }
 ;
 
 /*
@@ -674,7 +683,7 @@ dinit_type:
 ;
 
 decl_type:
-    dinit_type param_type OP_ASSIGN decl_struct implements
+    dinit_type param_type OP_ASSIGN decl_construct implements
 ;
 
 implements:
@@ -701,16 +710,16 @@ param_type:
 /*
   CONSTRUCTOR IDENTIFIERS
 */
-decl_struct:
-    decl_struct BIT_OR decl_struct
+decl_construct:
+    decl_construct BIT_OR decl_construct
   | CONSTRUCTOR OF exp_type { decl_constructor($1); }
   | CONSTRUCTOR             { decl_constructor($1); }
   | exp_type                {printf("TODO: Implement Type Aliases\n");}
 ;
 
 exp_struct:
-    exp_struct exp 
-  | CONSTRUCTOR { exp_constructor($1); }
+    CONSTRUCTOR exp { exp_constructor($1); }
+  | CONSTRUCTOR     { exp_constructor($1); }
 ;
 
 
@@ -802,18 +811,16 @@ param_prototype:
 */
 
 /*
-  7) Direct Memory Access (DMA)
-*/
-
-/*
-  6.a) Read Expression from Memory
+  7) Direct Memory Access
 */
 exp_memIO:
   | exp_memread         { }
   | exp_memwrite        { }
 ;
 
-
+/*
+  6.a) Read Expression from Memory
+*/
 read:
   exp MEM_READ IDENTIFIER { memory_read_exp($3); }
 ;
@@ -984,15 +991,20 @@ exp_regex:
   1.) Tether Module Structure
 */
 xcs_tether:
-    TETHER_H teth_sep           { printf("Finished Parsing Tether Module.\n"); }
+    teth    { printf("Finished Parsing Tether Module.\n"); }
 ;
 
-teth_sep:
-    teth_sep OP_SEP teth_sep
-  | decl_offer
-  | decl
-  | exp
+teth:
+    teth2 OP_SEP teth2
+  | teth2
 ;
+
+teth2:
+    exp     { end_scope();  } 
+  | decl    { end_scope();  }
+  | offer   { end_scope();  }
+;
+
 
 /*
   3.) Request/Offer
@@ -1006,7 +1018,7 @@ offer:
   | OFFER IDENTIFIER OF exp_type  { decl_offer($2); }
 ;
 
-decl_offer:
+exp_offer:
     offer param_offer OP_ASSIGN exp
 ;
 

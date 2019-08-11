@@ -110,6 +110,11 @@ ParameterID find_parameter(Identifier ident)
   found = true;
   //  STUB STUB STUB
 
+  //  Temporary test
+  rs[scope_curr].rs_type.push_back(TYPE_INTEGER);
+  rs[scope_curr].rs_struct.push_back(TYPE_INTEGER);
+  push_int(32);
+
   /*
     TODO:
      * Error Check
