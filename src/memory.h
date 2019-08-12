@@ -36,7 +36,7 @@ int memory_read_exp(char* ident)
 */
 int memory_write_exp()
 {
-  rs_pop();
+
   printf("Expression Written to Memory\n");
 
   return 0;

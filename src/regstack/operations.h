@@ -70,6 +70,8 @@ ErrorCode rs_new()
 */
 ADR rs_push()
 {
+
+  printf("check\n");
   // TODO:  Error Check
   return curr_reg++;
 }
@@ -112,8 +114,8 @@ TypeID rs_top_type() { return rs[scope_curr].rs_type[curr_reg]; }
 TypeID rs_sec_type() { return rs[scope_curr].rs_type[curr_reg-1]; }
 
 
-ConstructorID rs_top_struct() { return rs[scope_curr].rs_type[curr_reg]; }
-ConstructorID rs_sec_struct() { return rs[scope_curr].rs_type[curr_reg-1]; }
+ConstructorID rs_top_struct() { return rs[scope_curr].rs_struct[curr_reg]; }
+ConstructorID rs_sec_struct() { return rs[scope_curr].rs_struct[curr_reg-1]; }
 
 
 

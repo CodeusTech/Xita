@@ -18,8 +18,10 @@
 (*
   1.) Read Memory
 *)
+let write_4_bytes entry offset = 
+  offset <-* (entry) 4;;
 
-let sum = 0x00000 <*- 0x0000f321 4
+1
 
 (*
   2.) Write Memory

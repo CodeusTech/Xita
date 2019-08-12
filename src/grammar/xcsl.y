@@ -209,15 +209,17 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
   B.) Order of Operations
 */
 //  High-Order Operations
+%left OP_ASSIGN OP_INLINE
 %left BUILD CLEAR
 %left LET IN
 %left TYPE TYPECLASS REQUIRES
 %left FILEK
 
-%left OP_ASSIGN OP_INLINE
-%left OP_LIST_L OP_LIST_R
-%left OP_REC_L OP_REC_R
 %left OP_ELEMENT OP_COMMA
+
+
+//  Memory Operations
+%left MEM_READ MEM_SET
 
 //  List Operations
 %left OP_APPEND LIST_HEAD LIST_TAIL
@@ -226,10 +228,12 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %left CONSTRUCTOR
 %left U8 I8 U16 I16 U32 I32 U64 I64 FLOAT_C DOUBLE_C STRING_C CHAR_C
 
+
+
 //  Override Operators
+%left OP_LT_O OP_LTE_O OP_GT_O OP_GTE_O OP_EQ_O OP_NEQ_O BOOL_AND_O BOOL_OR_O BOOL_XOR_O 
+%left BIT_AND_O BIT_OR_O BIT_XOR_O 
 %left OP_ADD_O OP_SUB_O OP_DIV_O OP_MUL_O OP_MOD_O OP_APPEND_O OP_LIST_CON_O
-%left BIT_AND_O BIT_OR_O BIT_XOR_O BOOL_AND_O BOOL_OR_O BOOL_XOR_O 
-%left OP_LT_O OP_LTE_O OP_GT_O OP_GTE_O OP_EQ_O OP_NEQ_O 
 %left MEM_READ_O MEM_SET_O ARROW_L_O ARROW_R_O 
 
 //  Literal Operations
@@ -242,9 +246,16 @@ unsigned int grammar_status = GRAMMAR_RUNNING;
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
 
+
+
+
+//  Order Keepers
+%left OP_LIST_L OP_LIST_R
+%left OP_REC_L OP_REC_R
+%left PAR_LEFT PAR_RIGHT
+
 //  Seperators
 %left OP_TUP
-%left PAR_LEFT PAR_RIGHT
 %left OP_SEQ
 
 %type <val_int> if if1 then else1
@@ -274,7 +285,7 @@ src2:
 
 src:
     src2 OP_SEP src
-  | src2
+  | src2  
 ;
 
 
@@ -326,15 +337,15 @@ open_header:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
-  | DELAY exp exp
+  | DELAY exp exp       
+  | exp_funct           {printf("function declared\n");}
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
   | exp_primitive
   | exp_arith
   | exp_logical
   | exp_conditional
-  | exp_funct           {printf("function declared\n");}
   | exp_regex       
-  | exp_request          
+  | exp_request   
   | exp_memIO
   | exp_ipcIO
   | exp_fileIO
@@ -809,7 +820,7 @@ param_prototype:
   6.a) Read Expression from Memory
 */
 exp_memIO:
-  | exp_memread         { }
+    exp_memread         { }
   | exp_memwrite        { }
 ;
 
@@ -827,7 +838,7 @@ exp_memread:
   6.b) Write Expression to Memory
 */
 exp_memwrite:
-    exp MEM_SET exp { memory_write_exp(); }
+    exp MEM_SET exp exp { memory_write_exp(); }
 ;
 
 

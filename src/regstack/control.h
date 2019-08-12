@@ -59,7 +59,7 @@ int rs_serialize()
   //  Create Serial Integers
   for (int i = 0; i < active; i++)
   {
-    unsigned long long test = (unsigned long long) (rs[scope_curr].rs_code)[rs_sec()];
+    unsigned long long test = (unsigned long long) rs[scope_curr].rs_code[rs_sec()];
     unsigned long long test2 = ((31 & test) << (i * 5));
 
     reg1 |= test2;
