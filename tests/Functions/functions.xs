@@ -20,21 +20,13 @@
   1.) Constant Declarations
 *)
 
-const pi of char = '\t';;
+const Int pi = 314;;
 
 
 (*
   2.) Functional Declarations
 *)
 
-let sum x y = x + y;;
-
-
-(*
-  3.) Functional Expressions
-*)
-
-let x = 1 in
-  sum x 2
+pi * 32
 
 

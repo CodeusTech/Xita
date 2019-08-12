@@ -159,59 +159,6 @@ int push_int(long long lit)
 
 
 
-/* 1.c) Push Integer Identifier
-
-  Returns:
-    0, if Successful
-    1, if Identifier is not an Integer
-*/
-int push_int_ident(char* ident)
-{
-  //  STUB STUB STUB
-  printf("Integer Identifier Pushed to Register Stack: %s\n", ident);
-  ADR reg = rs_push();
-  
-
-  switch (find_type(ident))
-  {
-    case TYPE_INTEGER:
-      //  Handle Integer
-      break;
-    case TYPE_U8:
-      //  Handle U8
-      break;
-    case TYPE_I8:
-      //  Handle I8
-      break;
-    case TYPE_U16:
-      //  Handle U16
-      break;
-    case TYPE_I16:
-      //  Handle I16
-      break;
-    case TYPE_U32:
-      //  Handle U32
-      break;
-    case TYPE_I32:
-      //  Handle I32
-      break;
-    case TYPE_U64:
-      //  Handle U64
-      break;
-    case TYPE_I64:
-      //  Handle I64
-      break;
-    default:
-      //  Not an Integer -- Throw Error
-      //  TODO: Replace with yyerror()
-      grammar_status = GRAMMAR_ERROR_TYPECHECK;
-      return 1;
-  }
-
-  return 0;
-}
-
-
 /*
   2.) Integer Arithmetic
 */

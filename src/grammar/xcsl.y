@@ -838,7 +838,7 @@ exp_memread:
   6.b) Write Expression to Memory
 */
 exp_memwrite:
-    exp MEM_SET exp exp { memory_write_exp(); }
+    exp MEM_SET exp { memory_write_exp(); }
 ;
 
 

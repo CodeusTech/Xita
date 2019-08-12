@@ -21,11 +21,9 @@
 #define FUNCTIONS_OPERATIONS_H
 
 //  XCS Libraries
+#include "../../regstack/regstack.h"
 #include "../../utils/scope.h"
-
-//  Global Variables
-extern Identifier* ident_functions;
-
+#include "../../grammar/status.h"
 
 
 /*  1.) Find Constant
@@ -38,8 +36,27 @@ void* find_constant(Identifier ident)
     if (strcmp(((*it).const_ident), ident) == 0) 
     {
       found = true;
-      //  TODO:  Generalize cast to work on more than integers
-      return (void*) (unsigned long long) (*it).value;
+
+      //  Create ARM Assembly Command
+      char* str = (char*) malloc(50);
+      char* rtop = get_reg(rs_top(), 32);
+
+      //  Add to Queue for File Printing
+      sprintf(str, "ldr   %s, %s", rtop, ident);
+      add_command(str);
+
+      //  Deallocate Strings
+      free(str);
+      free(rtop);
+      free(ident);
+
+      ADR reg = rs_push();
+
+      rs[scope_curr].rs_struct.push_back(2);
+      rs[scope_curr].rs_type.push_back(2);
+
+      //  
+      return (void*) (*it).value;
     }
 
   found = false;
@@ -63,7 +80,6 @@ void* find_function (Identifier ident)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);
-  found = true;
 
   /*
     TODO:
@@ -85,7 +101,6 @@ void* find_pfunction (Identifier ident, TypeID* ptypes)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);
-  found = true;
 
   /*
     TODO:
@@ -107,13 +122,13 @@ void* find_pfunction (Identifier ident, TypeID* ptypes)
 ParameterID find_parameter(Identifier ident)
 {
   printf("Parameter Found: %s\n", ident);
-  found = true;
+  //found = true;
   //  STUB STUB STUB
 
   //  Temporary test
-  rs[scope_curr].rs_type.push_back(TYPE_INTEGER);
-  rs[scope_curr].rs_struct.push_back(TYPE_INTEGER);
-  push_int(32);
+  //rs[scope_curr].rs_type.push_back(TYPE_INTEGER);
+  //rs[scope_curr].rs_struct.push_back(TYPE_INTEGER);
+  //push_int(32);
 
   /*
     TODO:
