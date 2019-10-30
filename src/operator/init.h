@@ -46,7 +46,7 @@
 /*
   1.) Definitions/Structures
 */
-#include "../globals/structs.h"
+#include "../std/structs.h"
 
 /*
   2.) Standard Operands

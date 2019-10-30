@@ -18,7 +18,7 @@
 #ifndef UTILS_SCOPE_H
 #define UTILS_SCOPE_H
 
-#include "../globals/structs.h"
+#include "../std/structs.h"
 
 
 extern Scope scope_curr;

@@ -28,10 +28,11 @@
 #ifndef PRIMITIVES_CHAREXP_H
 #define PRIMITIVES_CHAREXP_H
 
-#include "typecodes.h"
+#include "../std/typecodes.h"
+#include "../std/structs.h"
+
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
-#include "../globals/structs.h"
 
 extern unsigned int grammar_status;
 

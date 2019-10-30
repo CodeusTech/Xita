@@ -27,7 +27,7 @@
 #ifndef FUNCTIONS_DECLARATIONS_H
 #define FUNCTIONS_DECLARATIONS_H
 
-#include "../../primitives/typecodes.h"
+#include "../../std/typecodes.h"
 #include "../../utils/scope.h"
 
 extern Identifier* ident_constants;
@@ -51,7 +51,7 @@ ErrorCode decl_constant(Identifier ident)
   char* str = (char*) malloc(256);
   char* size = (char*) malloc(10);
 
-  node_constant cnst;
+  ConstantNode cnst;
   cnst.const_ident = strdup(ident);
   cnst.const_type  = last_type;
 

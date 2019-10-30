@@ -26,10 +26,11 @@
 #define PRIMITIVES_LISTEXP_H
 
 //  XCS Libraries
-#include "typecodes.h"
+#include "../std/typecodes.h"
+#include "../std/structs.h"
+
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
-#include "../globals/structs.h"
 
 /*
   1.) List Literals

@@ -26,8 +26,8 @@
 
 
 #include "text.h"
-#include "../globals/buffers.h"
-#include "../globals/structs.h"
+#include "../std/buffers.h"
+#include "../std/structs.h"
 
 #include "stdbool.h"
 #include "../regstack/operations.h"

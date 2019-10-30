@@ -32,7 +32,7 @@
 */
 void* find_constant(Identifier ident)
 {
-  for (vector<node_constant>::iterator it = constants.begin(); it != constants.end(); it++)
+  for (vector<ConstantNode>::iterator it = constants.begin(); it != constants.end(); it++)
     if (strcmp(((*it).const_ident), ident) == 0) 
     {
       found = true;

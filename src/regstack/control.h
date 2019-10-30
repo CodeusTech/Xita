@@ -19,7 +19,7 @@
 #ifndef REGSTACK_CONTROL_H
 #define REGSTACK_CONTROL_H
 
-#include "../globals/structs.h"
+#include "../std/structs.h"
 #include "operations.h"
 
 extern vector<regstack> rs;  //  Global Register Stack Orders

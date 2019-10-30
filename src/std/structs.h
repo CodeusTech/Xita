@@ -30,8 +30,8 @@
   10.) Tether Modules
 */
 
-#ifndef GLOBALS_STRUCTS_H
-#define GLOBALS_STRUCTS_H
+#ifndef std_STRUCTS_H
+#define std_STRUCTS_H
 
 #include <vector>
 

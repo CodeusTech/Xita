@@ -36,8 +36,8 @@
   A.) Free Global Buffers
 */
 
-#ifndef GLOBALS_BUFFERS_H
-#define GLOBALS_BUFFERS_H
+#ifndef XCS_BUFFERS_H
+#define XCS_BUFFERS_H
 
 //  XCS Libraries
 #include "structs.h"

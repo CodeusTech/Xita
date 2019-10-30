@@ -9,8 +9,8 @@
   Contains standard type definitions for use within the XCSL Cross-Compiler
 */
 
-#ifndef GLOBALS_TYPEDEFS_H
-#define GLOBALS_TYPEDEFS_H
+#ifndef XCS_TYPEDEFS_H
+#define XCS_TYPEDEFS_H
 
 
 /*

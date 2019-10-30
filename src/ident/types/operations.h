@@ -21,7 +21,7 @@
 #ifndef TYPES_OPERATIONS_H
 #define TYPES_OPERATIONS_H
 
-#include "../../primitives/typecodes.h"
+#include "../../std/typecodes.h"
 
 /*
   1.) Utility Operations

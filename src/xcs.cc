@@ -26,7 +26,7 @@
 #include "stdlib.h"
 
 //  XCS Libraries
-#include "globals/globals.h"
+#include "std/std.h"
 #include "asm/asm.h"
 
 //  Import Grammar Libraries
