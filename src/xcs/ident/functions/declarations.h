@@ -113,27 +113,21 @@ ErrorCode decl_constant(Identifier ident)
 */
 ErrorCode decl_function (Identifier ident)
 {
-  /*
-    TODO:
-     * Error Check
-     * Store Parent Context Scope 
-  */
 
-  //  Get New Context Scope
-  Scope s = get_scope_next();
+  FunctionNode fnode = FunctionNode(ident);
+  functions.push_back(fnode);
 
   //  Generate Register Stack for New Scope
-  rs_init(s);
+  rs_init(functions.back().get_scope());
 
   list<string> new_comms;
   asm_text.push_back(new_comms);
+
   
   //  Print Function Identifier to Assembly File
   char comm[300];
-  sprintf(comm, "\n%s:\n", ident);
+  sprintf(comm, "\n__%u_%s:", fnode.get_ID() , fnode.get_identifier());
   add_command(comm);
-
-  free(ident);
 
   return 0;
 }
@@ -157,8 +151,8 @@ ErrorCode ret_function ()
 
   //  Return to Parent Context Scope
   char comm[9];
-  sprintf(comm, "  bx lr\n");
-  // add_command(comm);
+  sprintf(comm, "bx lr");
+  add_command(comm);
 
   return 0;
 }

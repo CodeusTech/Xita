@@ -116,8 +116,9 @@ Identifier** param_funct;        //  Function Parameter Identifiers
 unsigned int* pnum_funct;   //  Number of Parameters for Function
 TypeID** ptype_funct; //  Function Parameter Types
 
-vector<ConstantNode> constants;
 
+vector<ConstantNode> constants;
+vector<FunctionNode> functions;
 
 /*
   5.) Type Buffers

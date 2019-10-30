@@ -51,9 +51,6 @@ ConstantID find_constant(Identifier ident)
       return (*it).get_ID();
     }
 
-  found = false;
-  free(ident);
-
   return NULL;
 }
 
@@ -96,38 +93,44 @@ ErrorCode resolve_constant(ConstantID _const)
 */
 FunctionID find_function (Identifier ident)
 {
-  //  STUB STUB STUB
-  printf("Function Found: %s\n", ident);
+  for (vector<FunctionNode>::iterator iter = functions.begin(); iter != functions.end(); ++iter )
+    if (strcmp((*iter).get_identifier(), ident) == 0) 
+    {
+      found = true;
+      free(ident);
 
-  /*
-    TODO:
-     * Error Check
-     * Search Function Buffers for ident
-      + Ensure ident has no expected parameters
-  */
+      return (*iter).get_ID();
+    }
 
   return NULL;
 }
 
-/* 2.b) Find Function /w Parameters
-
-  Returns:
-    0, if ident is not a Declared Function
-    i, if ident is a function, where i is index in function buffer
-*/
-void* find_pfunction (Identifier ident, TypeID* ptypes)
+ErrorCode resolve_function (FunctionID _funct)
 {
-  //  STUB STUB STUB
-  printf("Function Found: %s\n", ident);
 
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  
   /*
-    TODO:
-     * Error Check
-     * Search Function Buffers for ident
-      + If ident is found, compare parameters types with ptypes
+    TODO: Function Call Precursor Actions HERE
+
+      * Prepare the current scope for a context shift
+      * Load Arguments if necessary
   */
 
-  return NULL;
+  //  Add to Queue for File Printing
+  printf("check2\n");
+  sprintf(str, "bl __%u_%s", functions[_funct-1].get_ID(), functions[_funct-1].get_identifier());
+  add_command(str);
+
+  rs[scope_curr].rs_struct.push_back(2);
+  rs[scope_curr].rs_type.push_back(2);
+
+  //  Deallocate Strings
+  free(str);
+
+  //  Return Success
+  return 0;
 }
 
 

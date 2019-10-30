@@ -50,7 +50,7 @@ ErrorCode resolve_expression(char* ident)
 
   //  1.b) Check for Function
   rtn = find_function(ident);
-  if (rtn) { printf("Identifier is Function\n"); return 2; }
+  if (rtn) { return resolve_function(rtn); }
 
 
   //  1.c) Check for Constant

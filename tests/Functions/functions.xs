@@ -27,6 +27,9 @@ const Int pi = 314;;
   2.) Functional Declarations
 *)
 
-pi * 32
+pi * 32;;
 
+let pi_2 = 314;;
+
+pi_2
 

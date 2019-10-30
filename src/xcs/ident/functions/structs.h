@@ -89,6 +89,7 @@ class FunctionParameterNode
 */
 class FunctionNode
 {
+  FunctionID fid;
   Identifier identifier;
   Scope parent;
   Scope scope;
@@ -100,6 +101,7 @@ public:
 //  CONSTRUCTORS
   FunctionNode(Identifier name)
   { 
+    fid = get_next_function();
     parent = get_scope_curr();
     scope = get_scope_next(); 
     identifier = strdup(name);
@@ -107,6 +109,8 @@ public:
   }
 
 //  ACCESSORS
+  Scope get_scope() const { return scope; }
+  FunctionID get_ID() const { return fid; }
   Identifier get_identifier() const { return identifier; }
   TypeID get_type() const { return rtn_type; }
 
