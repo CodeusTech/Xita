@@ -46,6 +46,7 @@
 #include <list>
 
 //  XCS Libraries
+#include "typedefs.h"
 #include "structs.h"
 #include "../ident/functions/structs.h"
 
@@ -95,9 +96,7 @@ vector<regstack> rs;
 unsigned int rse_next = 1;  //  Next Extended Register Stack
 ConstructorID** rse_construct;  //  Register Stack Types (Extended)
 
-//  3.c) Context Scopes
-Scope scope_curr = 0;  //  Function/Register Stack Scope
-Scope scope_next = 1;  //  Next Function Scope
+
 Scope* scope_parents;  //  Parent (Return) Scope 
 
 TypeID last_type = 0;

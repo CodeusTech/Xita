@@ -18,12 +18,11 @@
 #ifndef UTILS_SCOPE_H
 #define UTILS_SCOPE_H
 
-#include "../std/structs.h"
+#include "typedefs.h"
 
-
-extern Scope scope_curr;
-extern Scope scope_next;
-
+//  Scope Trackers
+Scope scope_curr = 0;  //  Function/Register Stack Scope
+Scope scope_next = 1;  //  Next Function Scope
 
 /* 1.) Get Current Scope
 

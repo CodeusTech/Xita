@@ -12,7 +12,7 @@
 #ifndef CONDITIONS_IS_H
 #define CONDITIONS_IS_H
 
-#include "../ident/types/types.h"
+#include <xcs/ident/types/types.h>
 
 /*
   Returns:

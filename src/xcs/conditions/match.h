@@ -24,7 +24,7 @@
 #ifndef CONDITIONS_MATCH_H
 #define CONDITIONS_MATCH_H
 
-extern unsigned int mangle;
+#include <xcs/std/typedefs.h>
 
 /*
   1.) Match ...
@@ -35,7 +35,7 @@ extern unsigned int mangle;
   Returns:
     0, if Successful
 */
-int decl_match()
+ErrorCode decl_match()
 {
   //  STUB STUB STUB
   printf("match ... \n");
@@ -55,7 +55,7 @@ int decl_match()
   Returns:
     0, if Successful
 */
-int exp_match()
+ErrorCode exp_match()
 {
   // STUB STUB STUB
 
@@ -76,7 +76,7 @@ int exp_match()
   Returns:
     0, if Successful
 */
-int decl_with()
+ErrorCode decl_with()
 {
   printf("with ... ");
   
@@ -93,7 +93,7 @@ int decl_with()
   Returns:
     0, if Successful
 */
-int exp_with()
+ErrorCode exp_with()
 {
   //  STUB STUB STUB
 
@@ -117,7 +117,7 @@ int exp_with()
   Returns:
     0, if Successful
 */
-int decl_case()
+ErrorCode decl_case()
 {
   //  STUB STUB STUB
 
@@ -134,7 +134,7 @@ int decl_case()
 /* 4.) Finalize match ... with ...
 
 */
-int exp_match_with()
+ErrorCode exp_match_with()
 {
   printf("Statement Invoked\n");
   

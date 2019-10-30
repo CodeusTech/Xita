@@ -22,10 +22,12 @@
 #ifndef REGSTACK_OPERATIONS_H
 #define REGSTACK_OPERATIONS_H
 
+//  Linux Libraries
 #include "math.h"
 #include "time.h"
 
-extern ADR curr_reg;
+//  XCS Libraries
+#include <xcs/std/typedefs.h>
 
 /*
   1.) Static Operations

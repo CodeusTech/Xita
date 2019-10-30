@@ -25,10 +25,10 @@
 #ifndef CONDITIONS_IF_H
 #define CONDITIONS_IF_H
 
-#include "../asm/asm.h"
-#include "../regstack/regstack.h"
 
-extern unsigned int mangle;
+//  XCS Libraries
+#include <xcs/asm/asm.h>
+#include <xcs/regstack/regstack.h>
 
 
 /*

@@ -20,13 +20,13 @@
 #ifndef ASM_TEXT_H
 #define ASM_TEXT_H
 
-//  XCS Libraries
-extern Scope scope_next;
-
 //  Linux Libraries
 #include <string>
 #include <list>
 #include <vector>
+
+//  XCS Libraries
+#include <xcs/std/scope.h>
 
 using namespace std;
 
@@ -79,7 +79,7 @@ ErrorCode generate_text(FILE* filename)
 */
 ErrorCode add_command(Command command)
 {
-  asm_text[scope_curr].push_back(strdup(command));
+  asm_text[get_scope_curr()].push_back(strdup(command));
 
   return 0;
 }
@@ -87,7 +87,7 @@ ErrorCode add_command(Command command)
 
 void get_last_command()
 {
-  asm_text[scope_curr].pop_back();
+  asm_text[get_scope_curr()].pop_back();
   return;
 }
 

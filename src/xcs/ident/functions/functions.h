@@ -16,8 +16,8 @@
 //  Function Headers
 #include "declarations.h"
 #include "expressions.h"
-#include "operations.h"
 #include "recursion.h"
+#include "structs.h"
 
 
 #endif

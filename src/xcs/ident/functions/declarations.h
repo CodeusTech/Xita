@@ -29,7 +29,7 @@
 
 #include "../../std/typedefs.h"
 #include "../../std/typecodes.h"
-#include "../../utils/scope.h"
+#include "../../std/scope.h"
 
 #include "structs.h"
 

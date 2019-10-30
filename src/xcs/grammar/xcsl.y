@@ -79,19 +79,19 @@
 #include "stdlib.h"
 
 //  XCS Libraries
-#include "src/bytecode/bytecode.h"
-#include "src/comments/comments.h"
-#include "src/conditions/conditions.h"
-#include "src/grammar/status.h"
-#include "src/ident/ident.h"
-#include "src/memory.h"
-#include "src/modules/modules.h"
-#include "src/operator/operator.h"
-#include "src/primitives/primitives.h"
-#include "src/proc/proc.h"
-#include "src/regex/regex.h"
-#include "src/regstack/regstack.h"
-#include "src/utils/clear.h"
+#include <xcs/bytecode/bytecode.h>
+#include <xcs/comments/comments.h>
+#include <xcs/conditions/conditions.h>
+#include <xcs/grammar/status.h>
+#include <xcs/ident/ident.h>
+#include <xcs/memory.h>
+#include <xcs/modules/modules.h>
+#include <xcs/operator/operator.h>
+#include <xcs/primitives/primitives.h>
+#include <xcs/proc/proc.h>
+#include <xcs/regex/regex.h>
+#include <xcs/regstack/regstack.h>
+#include <xcs/utils/clear.h>
 
 extern int yylex();
 extern int yyparse();
@@ -366,7 +366,7 @@ exp_primitive:
   | exp_list            { }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
   | exp_struct
-  | IDENTIFIER           { resolve_identifier($1); }
+  | IDENTIFIER           { resolve_expression($1); }
 ;
 
 /*

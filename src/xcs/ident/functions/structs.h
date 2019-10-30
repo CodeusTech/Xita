@@ -26,13 +26,16 @@
 //  XCS Standard Libraries
 #include "../../std/typedefs.h"
 #include "../../std/typecodes.h"
-
-//  XCS Utility Libraries
-#include "../../utils/scope.h"
+#include "../../std/scope.h"
 
 using namespace std;
 
 
+ConstantID next_const = 1;
+FunctionID next_funct = 1;
+
+ConstantID get_next_constant() { return next_const++; }
+FunctionID get_next_function() { return next_funct++; }
 
 /*
   1.) Constants
@@ -49,6 +52,7 @@ public:
 //  CONSTRUCTORS
   ConstantNode(Identifier ident, TypeID _tid, Arbitrary val)
   {
+    cid = get_next_constant();
     identifier = strdup(ident);
     tid = _tid;
     value = val;

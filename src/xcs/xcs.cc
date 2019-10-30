@@ -16,8 +16,8 @@
 	3.) Interpreter Mode
 */
 
-#ifndef XCS_C
-#define XCS_C
+#ifndef XCS_CC
+#define XCS_CC
 
 //  Linux Libraries
 #include "stdbool.h"
@@ -26,11 +26,11 @@
 #include "stdlib.h"
 
 //  XCS Libraries
-#include "std/std.h"
-#include "asm/asm.h"
+#include <xcs/std/std.h>
+#include <xcs/asm/asm.h>
 
 //  Import Grammar Libraries
-#include "../lex.yy.c"
+#include "../../lex.yy.c"
 
 extern FILE* yyin;
 

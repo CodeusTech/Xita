@@ -25,12 +25,16 @@
 #define ASM_DATA_H
 
 
-#include "text.h"
-#include "../std/buffers.h"
-#include "../std/structs.h"
-
+//  Linux Libraries
 #include "stdbool.h"
-#include "../regstack/operations.h"
+
+//  XCS Libraries
+#include "text.h"
+
+#include <xcs/std/buffers.h>
+#include <xcs/std/typedefs.h>
+#include <xcs/regstack/regstack.h>
+
 
 /*
   1.) Structure

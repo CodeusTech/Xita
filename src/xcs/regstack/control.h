@@ -19,11 +19,9 @@
 #ifndef REGSTACK_CONTROL_H
 #define REGSTACK_CONTROL_H
 
-#include "../std/structs.h"
+#include <xcs/std/typedefs.h>
 #include "operations.h"
 
-extern vector<regstack> rs;  //  Global Register Stack Orders
-extern Scope scope_next;
 
 /* 1.) Initialize Function's Register Stack
 

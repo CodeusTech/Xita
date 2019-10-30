@@ -36,12 +36,10 @@
   1.) Identifier Resolution
 
   Returns:
-    0, if unable to resolve ident
-    1, if ident is a Parameter
-    2, if ident is a Function
-    3, if ident is a Constant
+    0, if Successful
+    1, if identifier is not found
 */
-int resolve_identifier(char* ident)
+ErrorCode resolve_expression(char* ident)
 {
   ID_NUMBER rtn;
 
@@ -54,13 +52,13 @@ int resolve_identifier(char* ident)
   rtn = find_function(ident);
   if (rtn) { printf("Identifier is Function\n"); return 2; }
 
-  
+
   //  1.c) Check for Constant
   rtn = find_constant(ident);
-  if (rtn) { printf("Identifier is Constant\n"); return 3; }
+  if (rtn) { return resolve_constant(rtn); }
 
   printf("Unable to resolve Identifier: %s\n", ident);
-  return 0;
+  return 1;
 }
 
 /* 2.) Type Inferrence

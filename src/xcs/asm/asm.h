@@ -12,15 +12,16 @@
 #ifndef XCS_ASM_H
 #define XCS_ASM_H
 
-//  XCS Libraries
-#include "bss.h"
-#include "data.h"
-#include "header.h"
-#include "text.h"
-
 //  Linux Libraries
 #include "stdlib.h"
 #include "stdio.h"
+
+//  XCS Libraries
+#include "header.h"
+#include "bss.h"
+#include "data.h"
+#include "text.h"
+
 
 /*
   Returns:
