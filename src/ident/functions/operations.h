@@ -25,15 +25,17 @@
 #include "../../utils/scope.h"
 #include "../../grammar/status.h"
 
+#include "structs.h"
 
-/*  1.) Find Constant
 
-
+/*  
+  1.) Find Constant
+    * Returns ConstantID of the matched constant identifier
 */
-void* find_constant(Identifier ident)
+ConstantID find_constant(Identifier ident)
 {
   for (vector<ConstantNode>::iterator it = constants.begin(); it != constants.end(); it++)
-    if (strcmp(((*it).const_ident), ident) == 0) 
+    if (strcmp((*it).get_identifier(), ident) == 0) 
     {
       found = true;
 
@@ -56,7 +58,7 @@ void* find_constant(Identifier ident)
       rs[scope_curr].rs_type.push_back(2);
 
       //  
-      return (void*) (*it).value;
+      return (*it).get_ID();
     }
 
   found = false;
@@ -76,7 +78,7 @@ void* find_constant(Identifier ident)
     0, if ident is not a Declared Function
     s, where 's' is the matching function's Context Scope ID
 */
-void* find_function (Identifier ident)
+FunctionID find_function (Identifier ident)
 {
   //  STUB STUB STUB
   printf("Function Found: %s\n", ident);

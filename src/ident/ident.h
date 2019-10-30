@@ -43,21 +43,21 @@
 */
 int resolve_identifier(char* ident)
 {
-  void* rtn;
+  ID_NUMBER rtn;
 
   //  1.a) Check for Parameter
-  rtn = (void*) find_parameter(ident);
-  if (found) { printf("Identifier is Parameter\n"); return 1; }
+  rtn = find_parameter(ident);
+  if (rtn) { printf("Identifier is Parameter\n"); return 1; }
 
 
   //  1.b) Check for Function
-  rtn = (void*) find_function(ident);
-  if (found) { printf("Identifier is Function\n"); return 2; }
+  rtn = find_function(ident);
+  if (rtn) { printf("Identifier is Function\n"); return 2; }
 
   
   //  1.c) Check for Constant
   rtn = find_constant(ident);
-  if (found) { printf("Identifier is Constant\n"); return 3; }
+  if (rtn) { printf("Identifier is Constant\n"); return 3; }
 
   printf("Unable to resolve Identifier: %s\n", ident);
   return 0;

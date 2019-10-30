@@ -7,6 +7,12 @@
 
 /*
   Contains Data Structures for handling functions
+
+  
+  TABLE OF CONTENTS
+  =================
+  1.) Constants
+  2.) Functions
 */
 
 #ifndef FUNCTIONS_STRUCTS_H
@@ -14,7 +20,7 @@
 
 //  Linux Libraries
 #include <vector>
-#include <string>
+#include "string.h"
 #include <cstdlib>
 
 //  XCS Standard Libraries
@@ -27,6 +33,41 @@
 using namespace std;
 
 
+
+/*
+  1.) Constants
+*/
+
+class ConstantNode
+{
+  ConstantID cid;
+  Identifier identifier;
+  TypeID tid;
+  Arbitrary value;
+
+public: 
+//  CONSTRUCTORS
+  ConstantNode(Identifier ident, TypeID _tid, Arbitrary val)
+  {
+    identifier = strdup(ident);
+    tid = _tid;
+    value = val;
+  }
+
+//  ACCESSORS
+  ConstantID get_ID() const { return cid; }
+  Identifier get_identifier() const { return identifier; }
+  TypeID     get_type() const { return tid; }
+  Arbitrary  get_value() const { return value; }
+
+//  MUTATORS
+  ErrorCode set_value(Arbitrary data) { value = data; return 0; /*Success*/ }
+};
+
+
+/*
+  FunctionParameterNode(ident)
+*/
 class FunctionParameterNode
 {
   ParameterID pid;
@@ -57,7 +98,7 @@ public:
   { 
     parent = get_scope_curr();
     scope = get_scope_next(); 
-    ident = strdup(name);
+    identifier = strdup(name);
     free(name);
   }
 

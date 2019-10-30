@@ -27,14 +27,11 @@
 #ifndef FUNCTIONS_DECLARATIONS_H
 #define FUNCTIONS_DECLARATIONS_H
 
+#include "../../std/typedefs.h"
 #include "../../std/typecodes.h"
 #include "../../utils/scope.h"
 
-extern Identifier* ident_constants;
-extern unsigned long long* index_asm_text;
-extern unsigned long long* count_asm_text;
-
-
+#include "structs.h"
 
 /*
   1.) Constant Declarations
@@ -51,9 +48,7 @@ ErrorCode decl_constant(Identifier ident)
   char* str = (char*) malloc(256);
   char* size = (char*) malloc(10);
 
-  ConstantNode cnst;
-  cnst.const_ident = strdup(ident);
-  cnst.const_type  = last_type;
+  ConstantNode cnst = ConstantNode(ident, last_type, last_data);
 
   //  'bytes' indicates the assembly size directive to be used
   int bytes;
@@ -71,22 +66,22 @@ ErrorCode decl_constant(Identifier ident)
     case 1: //  1-Byte Alignment
       sprintf(size, "byte");
       sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
-      cnst.value = (void*) (unsigned long long) last_data;
+      cnst.set_value((Arbitrary) (unsigned long long) last_data);
       break;
     case 2: //  2-Byte Alignment
       sprintf(size, "hword");
       sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
-      cnst.value = (void*) (unsigned long long) last_data;
+      cnst.set_value((Arbitrary) (unsigned long long) last_data);
       break;
     case 4: //  4-Byte Alignment
       sprintf(size, "word");
       sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
-      cnst.value = (void*) (unsigned long long) last_data;
+      cnst.set_value((Arbitrary) (unsigned long long) last_data);
       break;
     case 8: //  8-Byte Alignment
       sprintf(size, "dword");
       sprintf(str, "%s: .%s #%llu\n", ident, size, (unsigned long long) last_data);
-      cnst.value = (void*) (unsigned long long) last_data;
+      cnst.set_value((Arbitrary) (unsigned long long) last_data);
       break;
     default:  
       //  Invalid Attempt

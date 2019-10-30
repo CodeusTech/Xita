@@ -74,20 +74,6 @@ struct regstack
 };
 
 
-/*
-  4.) Functions
-*/
-
-
-//  4.c) Constants
-struct ConstantNode
-{
-  Identifier const_ident;
-  TypeID     const_type;
-  void*      value;
-};
-
-
 
 /*
   7.) Operator Structures

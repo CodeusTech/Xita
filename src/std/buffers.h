@@ -39,14 +39,16 @@
 #ifndef XCS_BUFFERS_H
 #define XCS_BUFFERS_H
 
-//  XCS Libraries
-#include "structs.h"
-
 //  Linux Libraries
 #include <iostream>
 #include <string>
 #include <vector>
 #include <list>
+
+//  XCS Libraries
+#include "structs.h"
+#include "../ident/functions/structs.h"
+
 
 using namespace std;
 

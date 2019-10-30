@@ -25,6 +25,7 @@ typedef char* Command;
 /*
   ID NUMBERS
 */
+typedef unsigned long ID_NUMBER;
 //  Functions
 typedef unsigned long ConstantID;
 typedef unsigned long FunctionID;
