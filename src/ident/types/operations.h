@@ -128,9 +128,9 @@ ConstructorID find_constructor (Identifier ident)
     return 16; } 
   else 
   {
-    for (vector<node_type>::iterator t = types.begin(); t != types.end(); t++)
+    for (vector<TypeNode>::iterator t = types.begin(); t != types.end(); t++)
     {
-      for (vector<node_constructor>::iterator c = (*t).constructors.begin(); c != (*t).constructors.end(); c++)
+      for (vector<ConstructorNode>::iterator c = (*t).constructors.begin(); c != (*t).constructors.end(); c++)
       {
         if (strcmp(ident, (*c).ident) == 0) return (*c).cid;
       }

@@ -36,7 +36,7 @@ ErrorCode decl_type (char* ident)
   //  Aquire TypeID
   TypeID tid = get_next_tid() - 18;
 
-  node_type new_type;
+  TypeNode new_type;
 
   new_type.type_ident = strdup(ident);
   new_type.type_id    = tid;  
@@ -90,7 +90,7 @@ ErrorCode decl_constructor (Identifier ident)
   if (find_constructor(ident)) yyerror("Constructor with that name already declared");
 
 
-  node_constructor constructor;
+  ConstructorNode constructor;
 
   constructor.ident = strdup(ident);
   constructor.cid   = get_next_cid();

@@ -35,71 +35,35 @@
 
 #include <vector>
 
+#include "typedefs.h"
+
 using namespace std;
 
 using std::vector;
 
-/*
-  1.) Infrastructure
-*/
-
-typedef int ErrorCode;
-
-typedef char* Identifier;
-typedef char* Constructor;
-
-/*
-  1.a) Assembly Infrastructure
-*/
-
-typedef char* Command;
-typedef char* Constant;
-typedef char* Variable;
-
-/*
-  2.) Data Types
-*/
-
-//  2.a) Types
-typedef unsigned long TypeID;
-typedef unsigned long ConstructorID;
-typedef unsigned int ElementID;
-
-//  2.b) Typeclasses
-typedef unsigned long TypeclassID;
-typedef unsigned int PrototypeID;
-
-//  2.c) Primitives
-typedef void* Arbitrary;
 
 
-struct node_element
+struct ElementNode
 {
   Identifier ident;
   TypeID     type;
 };
 
-struct node_constructor
+struct ConstructorNode
 {
   Identifier ident;
   ConstructorID cid;
-  vector<node_element> elements;
+  vector<ElementNode> elements;
 };
 
-struct node_type
+struct TypeNode
 {
   Identifier type_ident;  //  Type Identifier
   TypeID     type_id;
   vector<Identifier> param_type; //  Parameter Types
-  vector<node_constructor> constructors;
+  vector<ConstructorNode> constructors;
 };
 
-/*
-  3.) Register Stacks
-*/
-
-typedef unsigned int ADR;
-typedef unsigned int Scope;
 
 struct regstack
 {
@@ -114,17 +78,15 @@ struct regstack
   4.) Functions
 */
 
-typedef unsigned long ConstantID;
-typedef unsigned long FunctionID;
-typedef unsigned int ParameterID;
 
 //  4.c) Constants
-struct node_constant
+struct ConstantNode
 {
   Identifier const_ident;
   TypeID     const_type;
   void*      value;
 };
+
 
 
 /*
@@ -149,7 +111,6 @@ typedef struct operands_t
   8.a) Infrastructure
 */
 
-typedef unsigned long Address;
 
 /*
   8.b) Memory Blocks
@@ -178,7 +139,6 @@ struct node_memory
   9.a) Infrastructure
 */
 
-typedef unsigned long ProcessID;
 
 /*
   9.b) Interprocess Communication
@@ -257,7 +217,5 @@ typedef struct ProcessScheduler_t
 /*
   10.) Tether Modules
 */
-
-typedef unsigned long OfferID;
 
 #endif

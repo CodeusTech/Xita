@@ -115,7 +115,7 @@ Identifier** param_funct;        //  Function Parameter Identifiers
 unsigned int* pnum_funct;   //  Number of Parameters for Function
 TypeID** ptype_funct; //  Function Parameter Types
 
-vector<node_constant> constants;
+vector<ConstantNode> constants;
 
 
 /*
@@ -126,7 +126,7 @@ vector<node_constant> constants;
 TypeID next_type = 18;    //  Number of Types
 ConstructorID next_cid = 18;
 
-vector<node_type> types;
+vector<TypeNode> types;
 
 
 //  5.c) Typeclasses 
