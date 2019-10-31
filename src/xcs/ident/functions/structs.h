@@ -24,9 +24,11 @@
 #include <cstdlib>
 
 //  XCS Standard Libraries
-#include "../../std/typedefs.h"
-#include "../../std/typecodes.h"
-#include "../../std/scope.h"
+#include <xcs/std/typedefs.h>
+#include <xcs/std/typecodes.h>
+#include <xcs/std/scope.h>
+
+#include <xcs/regstack/regstack.h>
 
 using namespace std;
 
@@ -69,6 +71,13 @@ public:
 };
 
 
+
+/*
+  ParameterID Generation
+*/
+ParameterID parameter_index = 1;
+ParameterID get_parameter_id() { return parameter_index++; }
+
 /*
   FunctionParameterNode(ident)
 */
@@ -77,6 +86,41 @@ class FunctionParameterNode
   ParameterID pid;
   Identifier ident;
   TypeID tid = TYPE_ARBITRARY;
+  ADR reg;
+
+public:
+
+//  CONSTRUCTORS
+  FunctionParameterNode() { pid = get_parameter_id(); }
+  FunctionParameterNode(Identifier name)
+  {
+    pid = get_parameter_id();
+    ident = strdup(name);
+    free (name);
+  }
+
+
+
+//  ACCESSORS
+  ParameterID get_ID()          { return pid; }
+  Identifier  get_identifier()  { return ident; }
+  TypeID      get_type()        { return tid; }
+  ADR         get_reg()         { return reg; }
+
+
+//  MUTATORS
+  ErrorCode set_identifier(Identifier _ident) { ident = strdup(_ident); free(_ident); return 0; }
+  ErrorCode set_type(TypeID _tid) { tid = _tid; return 0; }
+
+//  DEEP COPY
+  typedef FunctionParameterNode Self;
+  Self copy()
+  {
+    Self data = Self(ident);
+    data.tid = tid;
+    data.pid = pid;
+    return data;
+  }
 };
 
 
@@ -95,6 +139,8 @@ class FunctionNode
   Scope scope;
   TypeID rtn_type = TYPE_ARBITRARY;
   vector<FunctionParameterNode> parameters;
+  ParameterID param_index;
+  RegisterStack reg_stack;
 
 public:
 
@@ -104,15 +150,61 @@ public:
     fid = get_next_function();
     parent = get_scope_curr();
     scope = get_scope_next(); 
+    set_scope_curr(scope);
     identifier = strdup(name);
     free(name);
+    param_index = parameter_index;
+    reg_stack = RegisterStack();
   }
 
 //  ACCESSORS
+  //  General Accessors
   Scope get_scope() const { return scope; }
+  Scope get_parent() const { return parent; }
   FunctionID get_ID() const { return fid; }
   Identifier get_identifier() const { return identifier; }
   TypeID get_type() const { return rtn_type; }
+  vector<FunctionParameterNode> get_param() { return parameters; }
+  
+  //  Register Stack Accessors
+  ADR get_top() { return reg_stack.top(); }
+  ADR get_sec() { return reg_stack.sec(); }
+  TypeID get_top_type() { return reg_stack.top_type(); }
+  TypeID get_sec_type() { return reg_stack.sec_type(); }
+
+//  MUTATORS
+  ErrorCode add_parameter(FunctionParameterNode node) { parameters.push_back(node); return 0; }
+  ErrorCode push(TypeID tid) { return reg_stack.push(tid); }
+  ErrorCode pop() { return reg_stack.pop(); }
+
+
+  /* 2.) Serialize Register Stack
+
+    Returns:
+      0, if Successful
+  */
+  /*ErrorCode serialize()
+  {
+    unsigned long long reg1 = (unsigned long long) 0;
+
+    //  Create Serial Integers
+    for (int i = 0; i < active; i++)
+    {
+      unsigned long long test = (unsigned long long) rs[scope_curr].rs_code[rs_sec()];
+      unsigned long long test2 = ((31 & test) << (i * 5));
+
+      reg1 |= test2;
+
+      ADR reg = rs_pop();
+    }
+
+    char* str = (char*) malloc(50);
+    sprintf(str, "mov   W30, %llu\n", reg1);
+
+    add_command(str);
+
+    return 0;
+  }*/
 
 };
 

@@ -33,6 +33,7 @@
 
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
+#include <xcs/regstack/utils.h>
 
 extern unsigned int grammar_status;
 
@@ -65,8 +66,7 @@ int pop_char()
 */
 int push_char_lit(unsigned char lit)
 {
-  //  Map Integer Literal Type to Top of Register Stack
-  rs[scope_curr].rs_type[curr_reg] = TYPE_CHAR;
+  ADR reg = rs_push(TYPE_CHAR);
 
   char* top = get_reg(rs_top(), 32);
 
@@ -80,7 +80,6 @@ int push_char_lit(unsigned char lit)
   //  Free allocated memory and move to next register on stack
   free(str);
   free(top);
-  ADR reg = rs_push();
 
   return 0;
 }
@@ -98,7 +97,7 @@ int push_char_int(unsigned int lit)
   //  TODO: Error Check
 
   //  Push to Register Stack
-  ADR reg = rs_push();
+  ADR reg = rs_push(TYPE_CHAR);
 
   return 0;
 }
@@ -119,7 +118,7 @@ int push_char_ident(char* ident)
     //  TODO: Error Check
 
     //  Push to Register Stack
-    ADR reg = rs_push(); 
+    ADR reg = rs_push(TYPE_CHAR); 
 
     return 0;
   }
@@ -143,7 +142,7 @@ int char_from_int(int i)
   //  TODO: Error Check
 
   //  Push to Register Stack
-  ADR reg = rs_push();
+  ADR reg = rs_push(TYPE_CHAR);
   
   return 0;
 

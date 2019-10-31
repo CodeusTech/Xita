@@ -32,6 +32,7 @@
 #include <xcs/grammar/status.h>
 
 #include <xcs/regstack/regstack.h>
+#include <xcs/regstack/utils.h>
 
 #include "structs.h"
 
@@ -51,7 +52,7 @@ ConstantID find_constant(Identifier ident)
       return (*it).get_ID();
     }
 
-  return NULL;
+  return (ConstantID) NULL;
 }
 
 /*
@@ -59,6 +60,10 @@ ConstantID find_constant(Identifier ident)
 */
 ErrorCode resolve_constant(ConstantID _const)
 {
+  //  Push Constant 
+  rs_push(TYPE_ARBITRARY);
+
+
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
   char* rtop = get_reg(rs_top(), 32);
@@ -66,11 +71,6 @@ ErrorCode resolve_constant(ConstantID _const)
   //  Add to Queue for File Printing
   sprintf(str, "ldr   %s, %s", rtop, constants.at(_const-1).get_identifier());
   add_command(str);
-
-  ADR reg = rs_push();
-
-  rs[scope_curr].rs_struct.push_back(2);
-  rs[scope_curr].rs_type.push_back(2);
 
   //  Deallocate Strings
   free(str);
@@ -102,7 +102,7 @@ FunctionID find_function (Identifier ident)
       return (*iter).get_ID();
     }
 
-  return NULL;
+  return (FunctionID) NULL;
 }
 
 ErrorCode resolve_function (FunctionID _funct)
@@ -119,13 +119,9 @@ ErrorCode resolve_function (FunctionID _funct)
   */
 
   //  Add to Queue for File Printing
-  printf("check2\n");
-  sprintf(str, "bl __%u_%s", functions[_funct-1].get_ID(), functions[_funct-1].get_identifier());
+  sprintf(str, "bl __%lu_%s", functions[_funct-1].get_ID(), functions[_funct-1].get_identifier());
   add_command(str);
-
-  rs[scope_curr].rs_struct.push_back(2);
-  rs[scope_curr].rs_type.push_back(2);
-
+  
   //  Deallocate Strings
   free(str);
 
@@ -140,16 +136,25 @@ ErrorCode resolve_function (FunctionID _funct)
     0, if identifier is not a Parameter
     i, if identifier is Parameter, where 'i' is index in Parameter Buffer
 */
-ParameterID find_parameter(Identifier ident)
+bool resolve_parameter(Identifier ident)
 {
-  printf("Parameter Found: %s\n", ident);
-  //found = true;
-  //  STUB STUB STUB
+  /*
+    FunctionNodes are checked for qualified parameter in the following order:
+      * Current Function Scope
+      * Parent Function Scope
+      * Recursive Parent Checks until Scope 0 (Root) is hit
+  */
+  if (functions.size() == 0) { return 0; }
 
-  //  Temporary test
-  //rs[scope_curr].rs_type.push_back(TYPE_INTEGER);
-  //rs[scope_curr].rs_struct.push_back(TYPE_INTEGER);
-  //push_int(32);
+  char* str = (char*) malloc(50);
+
+  //  Check Current Function Scope
+  for (vector<FunctionParameterNode>::iterator iter = functions.back().get_param().begin(); iter != functions.back().get_param().end(); ++iter)
+    if (strcmp((*iter).get_identifier(), ident) == 0) 
+    { 
+      printf("Found Parameter: %s\n", (*iter).get_identifier());
+      return true;
+    }
 
   /*
     TODO:
@@ -161,9 +166,10 @@ ParameterID find_parameter(Identifier ident)
         + Return 0
   */
 
-  return 0;
-}
+  free(str);
 
+  return false;
+}
 
 
 
@@ -269,7 +275,7 @@ ErrorCode exp_parameter(Identifier ident)
   */
 
   //  Push Parameter to Register Stack
-  ADR reg = rs_push();
+  ADR reg = rs_push(TYPE_ARBITRARY);
 
   //  TODO: Copy contents of Parameter to 'reg'
 

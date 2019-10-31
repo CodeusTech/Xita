@@ -61,8 +61,6 @@ using std::string;
   1.) Compiler Utilities
 */
 
-// 1.a) Name Mangling
-unsigned int mangle = 0;
 
 // 1.b) Last Encountered Value
 void* last_data;
@@ -88,9 +86,8 @@ list<string> asm_data;
   3.) Register Stack
 */
 
-//  3.a) Standard Register Stack
-ADR curr_reg;       //  Current Register pointer
-vector<regstack> rs;
+RegisterStack rs_root;
+
 
 //  3.b) Extended Register Stack
 unsigned int rse_next = 1;  //  Next Extended Register Stack
@@ -105,16 +102,6 @@ ConstructorID last_constructor = 0;
 /*
   4.) Function Buffers
 */
-
-//  4.a) Functions
-Identifier* ident_funct;         //  Function Identifiers
-unsigned int* type_funct;   //  Return Type of Functions
-unsigned int* rtn_funct;    //  Number of Function Returns
-
-//  4.b) Parameters
-Identifier** param_funct;        //  Function Parameter Identifiers
-unsigned int* pnum_funct;   //  Number of Parameters for Function
-TypeID** ptype_funct; //  Function Parameter Types
 
 
 vector<ConstantNode> constants;

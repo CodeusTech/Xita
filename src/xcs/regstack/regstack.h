@@ -13,7 +13,6 @@
 #define XCS_REGSTACK_H
 
 #include "codes.h"
-#include "control.h"
-#include "operations.h"
+#include "structs.h"
 
 #endif

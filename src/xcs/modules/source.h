@@ -64,7 +64,7 @@ ErrorCode source_end()
       This should only deallocate all buffers if this module is
       the 'driver' module.  In other words, it is outermost module.
   */
-  rs_end();
+  //rs_end();
 
   /*
     If it is a nested header module of driver module,

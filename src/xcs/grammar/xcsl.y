@@ -537,7 +537,7 @@ param_match:
 */
 
 exp_is:
-    exp IS exp_struct { is_construct(); }
+    exp IS exp_struct { /*is_construct();*/ }
   | exp IS exp_type   { is_type();      }
 ;
 
@@ -1048,7 +1048,7 @@ void yyerror(const char* error) {
 
   //  TODO: DEALLOCATE ALL BUFFERS
   
-  rs_end();
+  //rs_end();
 
 	exit(grammar_status);
 }

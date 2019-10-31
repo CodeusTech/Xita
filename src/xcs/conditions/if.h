@@ -29,6 +29,7 @@
 //  XCS Libraries
 #include <xcs/asm/asm.h>
 #include <xcs/regstack/regstack.h>
+#include <xcs/regstack/utils.h>
 
 
 /*
@@ -49,7 +50,7 @@ unsigned int decl_if()
   char* str = (char*) malloc(60); //  Supports 10-figures worth of if statements
   
   //  Add Mangle to Header
-  sprintf(str, "if_%u:", mangle);
+  sprintf(str, "if_%u:", (unsigned) mangle);
   add_command(str);
 
   free(str);

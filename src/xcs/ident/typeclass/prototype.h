@@ -31,7 +31,7 @@ using std::string;
 ErrorCode decl_proto(string ident)
 {
   //  STUB STUB STUB
-  printf("Prototype %s Declared, and requires parameters: ", ident);
+  printf("Prototype %s Declared, and requires parameters: ", ident.c_str());
 
   /*
     TODO:

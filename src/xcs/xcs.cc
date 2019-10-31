@@ -62,9 +62,6 @@ int main(int argc, char** argv)
 		{
 			interpreted = false;
 
-			//  Initialize Register Stack Backend
-			rs_init(0);
-
 			//  Init Text Buffer
 			list<string> tmp;
 			asm_text.push_back(tmp);
@@ -94,7 +91,7 @@ int main(int argc, char** argv)
 		3.) Interpreter Mode
 	*/
 	if (interpreted) yyin = stdin;
-	rs_init(scope_curr);
+	//  Initialize Register Stack Backend
 
 	while (!feof(yyin)) yyparse();
 

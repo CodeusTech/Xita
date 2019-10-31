@@ -13,19 +13,20 @@
 #define CONDITIONS_IS_H
 
 #include <xcs/ident/types/types.h>
+#include <xcs/regstack/regstack.h>
+#include <xcs/regstack/utils.h>
 
 /*
   Returns:
     0, if Successful
-*/
 ErrorCode is_construct()
 {
   //  Remove the last expression getting pushed to stack
   get_last_command();
 
-  /*
+  *
     Compare TOP Type vs SECOND Type
-  */
+  *
   ConstructorID cSec = rs_sec_struct();
 
   push_int(cSec);
@@ -73,7 +74,7 @@ ErrorCode is_construct()
   sprintf(str, "finish_%llu:\n", mang);
   add_command(str);
 
-  rs_push();
+  rs_push(TYPE_BOOLEAN);
 
   //  Free Memory Buffers
   free(str);
@@ -84,6 +85,7 @@ ErrorCode is_construct()
   //  Return Success
   return 0;
 }
+*/
 
 /*
   Returns:
@@ -97,7 +99,7 @@ ErrorCode is_type()
   /*
     Compare TOP Type vs SECOND Type
   */
-  TypeID tSec = infer_constructor(rs_sec_struct());
+  TypeID tSec = rs_sec_type();
 
   push_int(tSec);
   push_int(last_type);
@@ -144,7 +146,7 @@ ErrorCode is_type()
   sprintf(str, "finish_%llu:\n", mang);
   add_command(str);
 
-  rs_push();
+  rs_push(TYPE_BOOLEAN);
 
   free(str);
 

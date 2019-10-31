@@ -24,15 +24,13 @@
 Scope scope_curr = 0;  //  Function/Register Stack Scope
 Scope scope_next = 1;  //  Next Function Scope
 
-/* 1.) Get Current Scope
+/* 1.) Get/Set Current Scope
 
   Returns:
     Current Scope Context
 */
-Scope get_scope_curr() 
-{ 
-  return scope_curr; 
-}
+Scope get_scope_curr() { return scope_curr; }
+ErrorCode set_scope_curr(Scope s) { scope_curr = s; return 0; }
 
 /* 2.) Get Next Scope
 

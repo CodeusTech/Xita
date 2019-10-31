@@ -34,6 +34,7 @@
 
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
+#include <xcs/regstack/utils.h>
 
 extern unsigned int grammar_status;
 
@@ -72,7 +73,7 @@ int push_string_lit(char* str)
   //  TODO:  Error Check
 
   //  Push String to Register Stack
-  ADR reg = rs_push();
+  ADR reg = rs_push(TYPE_STRING);
 
   return 0;
 }
@@ -93,7 +94,7 @@ int push_string_ident(char* ident)
     //  TODO: Error Check
 
     //  Push String to Register Stack
-    ADR reg = rs_push();
+    ADR reg = rs_push(TYPE_STRING);
   }
   else
   {
@@ -117,7 +118,6 @@ int push_string_ident(char* ident)
 */
 int string_append()
 {
-  printf("Strings have been appended\n");
 
   //  TODO:  Error Check
 
@@ -125,10 +125,10 @@ int string_append()
   ADR top = rs_pop();
   ADR sec = rs_pop();
 
-  //  Append Strings in TOP and SECOND together
-  
+
   //  Push New String to Register Stack
-  ADR reg = rs_push();
+  ADR reg = rs_push(TYPE_STRING);
+  
 
   return 0;
 }

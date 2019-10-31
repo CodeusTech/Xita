@@ -44,8 +44,8 @@ ErrorCode resolve_expression(char* ident)
   ID_NUMBER rtn;
 
   //  1.a) Check for Parameter
-  rtn = find_parameter(ident);
-  if (rtn) { printf("Identifier is Parameter\n"); return 1; }
+  //      NOTE: Parameters are found/resolved in one function to minimize lookup latency
+  if (resolve_parameter(ident)) { return 0; }
 
 
   //  1.b) Check for Function
@@ -59,30 +59,6 @@ ErrorCode resolve_expression(char* ident)
 
   printf("Unable to resolve Identifier: %s\n", ident);
   return 1;
-}
-
-/* 2.) Type Inferrence
-
-  Returns:
-    0, if UNSUCCESSFUL
-    t, if Successful, where 't' is the type code
-*/
-int infer_type(char* ident)
-{
-
-  return 0;
-}
-
-
-/* 3.) Type Checking
-
-  Returns:
-    0, if Successful (SUBJECT TO CHANGE)
-*/
-int check_type(char* ident, unsigned int type)
-{
-
-  return 0;
 }
 
 

@@ -42,6 +42,7 @@
 #define TYPES_INFERRENCE_H
 
 #include "../../primitives/primitives.h"
+#include <xcs/regstack/utils.h>
 
 /*
   1) Standard Operators

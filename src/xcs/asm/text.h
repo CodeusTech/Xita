@@ -94,7 +94,7 @@ void get_last_command()
 
 ErrorCode end_scope()
 {
-  curr_reg = 0; 
+  //  TODO:  REWRITE THIS
   scope_curr = 0;
   last_type = 0;
 

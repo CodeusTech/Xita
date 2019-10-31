@@ -41,6 +41,7 @@
 
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
+#include <xcs/regstack/utils.h>
 
 /*
   1.) Boolean Literals
@@ -128,7 +129,7 @@ int boolean_or()
 */
 int boolean_xor()
 {
-  rs_pop();
+  unsigned int mangle = (unsigned int) get_mangle();
 
   //  TODO: Error Check
 
@@ -164,9 +165,7 @@ int boolean_xor()
 */
 ErrorCode boolean_lt()
 {
-  rs_pop();
-
-  mangle += rand();
+  unsigned int mangle = (unsigned int) get_mangle();
 
   //  TODO: Error Check
 
@@ -219,9 +218,7 @@ ErrorCode boolean_lt()
 */
 int boolean_lte()
 {
-  rs_pop();
-
-  mangle += rand();
+  unsigned int mangle = (unsigned int) get_mangle();
 
   //  TODO: Error Check
 
@@ -277,9 +274,7 @@ int boolean_lte()
 */
 int boolean_gt()
 {
-  rs_pop();
-
-  mangle += rand();
+  unsigned int mangle = (unsigned int) get_mangle();
 
   //  TODO: Error Check
 
@@ -332,9 +327,7 @@ int boolean_gt()
 */
 int boolean_gte()
 {
-  rs_pop();
-
-  mangle += rand();
+  unsigned int mangle = (unsigned int) get_mangle();
 
   //  TODO: Error Check
 
@@ -388,9 +381,7 @@ int boolean_gte()
 */
 int boolean_eq()
 {
-  rs_pop();
-
-  mangle += rand();
+  unsigned int mangle = (unsigned int) get_mangle();
 
   //  TODO: Error Check
 
@@ -444,9 +435,7 @@ int boolean_eq()
 */
 int boolean_neq()
 {
-  rs_pop();
-
-  mangle += rand();
+  unsigned int mangle = (unsigned int) get_mangle();
 
   //  TODO: Error Check
 

@@ -176,7 +176,7 @@ ErrorCode proc_new()
   */
 
   //  Get Register
-  ADR reg = rs_push();
+  //ADR reg = rs_push();
 
   //  Push Size of Process Block (in bytes)
   //  TODO: This

@@ -68,63 +68,48 @@ ConstructorID find_constructor (Identifier ident)
   */
   if (strcmp(ident, "Int") == 0) {
     last_type = TYPE_INTEGER;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 2; } else
   if (strcmp(ident, "U8") == 0) {
     last_type = TYPE_U8;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 3; } else
   if (strcmp(ident, "I8") == 0) {
     last_type = TYPE_I8;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 4; } else
   if (strcmp(ident, "U16") == 0) {
     last_type = TYPE_U16;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 5; } else
   if (strcmp(ident, "I16") == 0) {
     last_type = TYPE_I16;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 6; } else
   if (strcmp(ident, "U32") == 0) {
     last_type = TYPE_U32;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 7; } else
   if (strcmp(ident, "I32") == 0) {
     last_type = TYPE_I32;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 8; } else
   if (strcmp(ident, "U64") == 0) {
     last_type = TYPE_U64;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 9; } else
   if (strcmp(ident, "I64") == 0) {
     last_type = TYPE_I64;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 10; } else
   if (strcmp(ident, "Real") == 0) {
     last_type = TYPE_REAL;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 11; } else
   if (strcmp(ident, "Float") == 0) {
     last_type = TYPE_FLOAT;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 12; } else
   if (strcmp(ident, "Double") == 0) {
     last_type = TYPE_DOUBLE;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 13; } else
   if (strcmp(ident, "Boolean") == 0) {
     last_type = TYPE_BOOLEAN;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 14; } else
   if (strcmp(ident, "Char") == 0) {
     last_type = TYPE_CHAR;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 15; } else
   if (strcmp(ident, "String") == 0) {
     last_type = TYPE_STRING;
-    (rs[scope_curr].rs_type).push_back(last_type);
     return 16; } 
   else 
   {

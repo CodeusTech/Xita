@@ -39,10 +39,11 @@ ErrorCode decl_match()
 {
   //  STUB STUB STUB
   printf("match ... \n");
+  unsigned int mangle = (unsigned int) get_mangle();
   
   //  Mangled match in Assembly File
   char* str = (char*) malloc(20);
-  sprintf(str, "match_%d:", mangle);
+  sprintf(str, "match_%u:", mangle);
 
   //  Print str to Assembly File
   add_command(str);

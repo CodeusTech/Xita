@@ -31,6 +31,7 @@
 
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
+#include <xcs/regstack/utils.h>
 
 /*
   1.) List Literals

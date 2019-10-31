@@ -51,6 +51,7 @@
 
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
+#include <xcs/regstack/utils.h>
 
 
 extern unsigned int grammar_status;
@@ -87,53 +88,7 @@ int push_int(long long lit)
   unsigned int bits;
   last_data = (void*) (long long) lit; 
 
-  //  Check Size of Int
-  switch (last_type)
-  {
-    case 0:
-      bits = 32;
-      rs[scope_curr].rs_struct.push_back(0);
-      break;
-    case 2: 
-      bits = 32;
-      rs[scope_curr].rs_struct.push_back(2);
-      break;
-    case 3:
-      rs[scope_curr].rs_struct.push_back(3);
-      bits = 8;
-      break;
-    case 4:
-      rs[scope_curr].rs_struct.push_back(4);
-      bits = 8;
-      break;
-    case 5:
-      rs[scope_curr].rs_struct.push_back(5);
-      bits = 16;
-      break;
-    case 6:
-      rs[scope_curr].rs_struct.push_back(6);
-      bits = 16;
-      break;
-    case 7:
-      rs[scope_curr].rs_struct.push_back(7);
-      bits = 32;
-      break;
-    case 8:
-      rs[scope_curr].rs_struct.push_back(8);
-      bits = 32;
-      break;
-    case 9:
-      rs[scope_curr].rs_struct.push_back(9);
-      bits = 64;
-      break;
-    case 10:
-      rs[scope_curr].rs_struct.push_back(10);
-      bits = 64;
-      break;
-    default:
-      bits = 0;
-      return 1;
-  }
+  rs_push(last_type);
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
@@ -148,7 +103,6 @@ int push_int(long long lit)
 
   free(str);
   free(reg_top);
-  ADR reg = rs_push();
 
 
   return 0;

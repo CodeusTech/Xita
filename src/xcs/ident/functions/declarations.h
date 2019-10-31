@@ -27,9 +27,10 @@
 #ifndef FUNCTIONS_DECLARATIONS_H
 #define FUNCTIONS_DECLARATIONS_H
 
-#include "../../std/typedefs.h"
-#include "../../std/typecodes.h"
-#include "../../std/scope.h"
+#include <xcs/std/typedefs.h>
+#include <xcs/std/typecodes.h>
+#include <xcs/std/scope.h>
+#include <xcs/std/buffers.h>
 
 #include "structs.h"
 
@@ -117,16 +118,13 @@ ErrorCode decl_function (Identifier ident)
   FunctionNode fnode = FunctionNode(ident);
   functions.push_back(fnode);
 
-  //  Generate Register Stack for New Scope
-  rs_init(functions.back().get_scope());
-
   list<string> new_comms;
   asm_text.push_back(new_comms);
 
   
   //  Print Function Identifier to Assembly File
   char comm[300];
-  sprintf(comm, "\n__%u_%s:", fnode.get_ID() , fnode.get_identifier());
+  sprintf(comm, "\n__%lu_%s:", fnode.get_ID() , fnode.get_identifier());
   add_command(comm);
 
   return 0;
@@ -164,8 +162,6 @@ ErrorCode ret_function ()
 */
 ErrorCode undecl_function()
 {
-  //  STUB STUB STUB
-
   /*
     TODO:
      * Error Check
@@ -174,6 +170,10 @@ ErrorCode undecl_function()
       + Type Buffers
       + etc.
   */
+
+  scope_curr = functions.back().get_parent();
+
+  functions.pop_back();
 
   //  Return Success
   return 0;
@@ -184,6 +184,8 @@ ErrorCode undecl_function()
   3.) Parameter Declarations
 */
 
+
+
 /* 3.a) Declare Parameter
 
   Returns:
@@ -191,21 +193,9 @@ ErrorCode undecl_function()
 */
 ErrorCode decl_parameter (Identifier ident)
 {
-  printf("Parameter %s Declared\n", ident);
-  //  STUB STUB STUB
+  FunctionParameterNode fpnode = FunctionParameterNode(ident);
 
-  /*
-    TODO:
-     * Error Check
-  */
-
-  //  Push Parameter to Register Stack
-  //ADR reg = rs_push();
-  //pnum_funct[scope_curr]++;
-
-  //  TODO: Add Parameter Type to Backend Buffers
-
-  free(ident);
+  functions.back().add_parameter(fpnode);
 
   return 0;
 }
