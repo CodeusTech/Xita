@@ -92,13 +92,4 @@ void get_last_command()
 }
 
 
-ErrorCode end_scope()
-{
-  //  TODO:  REWRITE THIS
-  scope_curr = 0;
-  last_type = 0;
-
-  return 0;
-}
-
 #endif

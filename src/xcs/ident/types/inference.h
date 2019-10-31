@@ -55,8 +55,6 @@
 */
 int infer_addition()
 {
-  //  Pop from Register Stack
-  rs_pop();
 
   //  Check LHS/RHS Types
   TypeID lhsT = rs_sec_type();
@@ -74,9 +72,6 @@ int infer_addition()
 */
 int infer_subtraction()
 {
-  //  Pop from Register Stack
-  rs_pop();
-
   //  Check LHS/RHS Types
   TypeID lhsT = rs_sec_type();
   TypeID rhsT = rs_top_type();
@@ -93,9 +88,6 @@ int infer_subtraction()
 */
 int infer_multiplication()
 {
-  //  Pop from Register Stack
-  rs_pop();
-
   //  Check LHS/RHS Types
   TypeID lhsT = rs_sec_type();
   TypeID rhsT = rs_top_type();
@@ -112,8 +104,6 @@ int infer_multiplication()
 */
 int infer_division()
 {
-  //  Pop from Register Stack
-  rs_pop();
 
   //  Check LHS/RHS Types
   TypeID lhsT = rs_sec_type();
@@ -131,8 +121,6 @@ int infer_division()
 */
 int infer_modulus()
 {
-  //  Pop from Register Stack
-  rs_pop();
 
   //  Check LHS/RHS Types
   TypeID lhsT = rs_sec_type();
@@ -155,8 +143,6 @@ int infer_modulus()
 */
 int infer_bit_and()
 {
-  //  Pop from Register Stack
-  rs_pop();
 
   //  Check LHS/RHS Types
   TypeID lhsT = rs_sec_type();
@@ -174,8 +160,6 @@ int infer_bit_and()
 */
 int infer_bit_or()
 {
-  //  Pop from Register Stack
-  rs_pop();
 
   //  Check LHS/RHS Types
   TypeID lhsT = rs_sec_type();
@@ -193,8 +177,6 @@ int infer_bit_or()
 */
 int infer_bit_xor()
 {
-  //  Pop from Register Stack
-  rs_pop();
 
   //  Check LHS/RHS Types
   TypeID lhsT = rs_sec_type();

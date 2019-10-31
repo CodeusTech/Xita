@@ -24,7 +24,7 @@
 /* 1.) Get Register (Flexible)
  
 */
-char* get_reg(unsigned int i, unsigned char bits)
+char* get_reg(ADR i, unsigned char bits)
 {
   char* str = (char*) malloc(5);
   switch (bits)

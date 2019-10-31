@@ -375,7 +375,7 @@ exp_primitive:
 exp_integer:
     RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
-  | INT             { push_int((long long) $1); }
+  | INT             { last_type = TYPE_INTEGER; push_int((long long) $1); }
 ;
 
 /*

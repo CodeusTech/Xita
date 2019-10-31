@@ -85,10 +85,33 @@ int pop_int()
 int push_int(long long lit)
 {
   //  Map Integer Literal Type to Top of Register Stack
-  unsigned int bits;
+  unsigned char bits;
   last_data = (void*) (long long) lit; 
 
   rs_push(last_type);
+
+  switch(last_type)
+  {
+    case TYPE_U8:
+    case TYPE_I8:
+      bits = 8;
+      break;
+    case TYPE_U16:
+    case TYPE_I16:
+      bits = 16;
+      break;
+    case TYPE_U32:
+    case TYPE_I32:
+    case TYPE_INTEGER:
+      bits = 32;
+      break;
+    case TYPE_U64:
+    case TYPE_I64:
+      bits = 64;
+      break;
+    default:
+      bits = 32;
+  }
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
@@ -126,10 +149,13 @@ int push_int(long long lit)
 */
 int integer_addition()
 {
+
+  printf("check\n");
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  rs_pop();
 
   sprintf(str, "add   %s, %s, %s", sec, sec, top);
 
@@ -156,6 +182,7 @@ int integer_subtraction()
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  rs_pop();
 
 
   sprintf(str, "sub   %s, %s, %s", sec, sec, top);
@@ -183,6 +210,7 @@ int integer_multiplication()
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  rs_pop();
 
   sprintf(str, "mul   %s, %s, %s", sec, sec, top);
 
@@ -209,6 +237,7 @@ int integer_division()
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  rs_pop();
 
   sprintf(str, "sdiv  %s, %s, %s", sec, sec, top);
 
@@ -235,6 +264,7 @@ int integer_modulo()
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  rs_pop();
 
   sprintf(str, "mov   %s, %s mod %s", sec, sec, top);
 
@@ -316,6 +346,7 @@ int bitwise_and()
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  rs_pop();
 
   sprintf(str, "and   %s, %s, %s", sec, sec, top);
 
@@ -342,6 +373,7 @@ int bitwise_or()
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  rs_pop();
 
   sprintf(str, "orr   %s, %s, %s", sec, sec, top);
 
@@ -368,6 +400,7 @@ int bitwise_xor()
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
   char* sec = get_reg(rs_sec(), 32);
+  rs_pop();
 
   sprintf(str, "eor   %s, %s, %s", sec, sec, top);
 

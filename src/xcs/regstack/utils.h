@@ -67,5 +67,16 @@ ErrorCode rs_pop()
   return functions[s-1].pop();
 }
 
+ErrorCode end_scope()
+{
+  //  TODO: FIX THIS
+  scope_curr = 0;
+  last_type = 2;
+
+  rs_root = RegisterStack();
+
+  return 0;
+}
+
 
 #endif
