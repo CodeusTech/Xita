@@ -338,12 +338,12 @@ open_header:
 exp:
     PAR_LEFT exp PAR_RIGHT
   | DELAY exp exp       
-  | exp_funct           {printf("function declared\n");}
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
   | exp_primitive
   | exp_arith
   | exp_logical
   | exp_conditional
+  | exp_funct           {printf("function declared\n");}
   | exp_regex       
   | exp_request   
   | exp_memIO
@@ -625,20 +625,15 @@ exp_inline:
 */
 
 exp_funct:
-    IDENTIFIER arg_funct  { exp_function($1); }
+    IDENTIFIER exp  { exp_function($1); }
 ;
 
 /*
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
-arg:
-    exp {printf("Argument Encountered\n");}
-;
-
 arg_funct:
-    arg arg_funct {/* Accept arbitrary number of arguments */}
-  | arg           { load_argument(scope_curr); }
-  | {/*INTENTIONALLY LEFT BLANK*/}
+    arg_funct arg_funct {/* Accept arbitrary number of arguments */}
+  | exp           { /*load_argument(scope_curr);*/ printf("Argument Loaded\n"); }
 ;
 
 

@@ -10,5 +10,7 @@
 *)
 
 
-let sum x y = y
+let sum x y = y;;
+
+sum 1
 
