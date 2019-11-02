@@ -630,8 +630,8 @@ exp_funct:
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg_funct:
-    arg_funct exp_primitive { xcs_argc++; }
-  | exp_primitive           { xcs_argc++; }
+    arg_funct arg_funct {  }
+  | exp_primitive           { argt.push_back(last_type); }
 ;
 
 

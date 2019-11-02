@@ -15,9 +15,9 @@
     1.a) Find Constant
     1.b) Resolve Constant
   2.) Functional Expressions
-    2.a) Execute Function
-    2.b) Load Argument (Standard)
-    2.c) Load Argument (Recursive)
+    2.a) Find Function w/o Parameters
+    2.b) Find Function w/ Parameters
+    2.c) Load Argument (Standard)
   3.) Parameter Expressions
 */
 
@@ -63,7 +63,6 @@ ErrorCode resolve_constant(ConstantID _const)
   //  Push Constant 
   rs_push(TYPE_ARBITRARY);
 
-
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
   char* rtop = get_reg(rs_top(), 32);
@@ -85,30 +84,8 @@ ErrorCode resolve_constant(ConstantID _const)
   2.) Find Function
 */
 
-/* 2.a) Find Function /wo Parameters
 
-  Returns:
-    0, if ident is not a Declared Function
-    s, where 's' is the matching function's Context Scope ID
-*/
-FunctionID find_function (Identifier ident)
-{
-  for (vector<FunctionNode>::iterator iter = functions.begin(); iter != functions.end(); ++iter )
-    if (strcmp((*iter).get_identifier(), ident) == 0) 
-    {
-      found = true;
-      free(ident);
-
-      return (*iter).get_ID();
-    }
-
-  return (FunctionID) NULL;
-}
-
-
-
-
-/* 2.b) Load Argument (Standard)
+/* 2.c) Load Argument (Standard)
 
   Returns:
     0, if Successful
@@ -117,12 +94,11 @@ ErrorCode load_argument(Scope scope)
 {
   char* str = (char*) malloc(50);
 
-  ADR adr = functions[scope-1].get_param()[--xcs_argc].get_reg();
+  ADR adr = functions[scope-1].get_param_reg(argt.size()-1);
+  argt.pop_back();
+  
   char* tgt = get_reg(adr, 32);
   char* src;
-
-  
-  printf("woot\n");
 
   switch (get_scope_curr())
   {
@@ -145,13 +121,42 @@ ErrorCode load_argument(Scope scope)
 }
 
 
+/* 2.a) Find Function w/o Parameters
+
+  Returns:
+    0, if ident is not a Declared Function
+    s, where 's' is the matching function's Context Scope ID
+*/
+FunctionID find_function (Identifier ident)
+{
+  for (vector<FunctionNode>::iterator iter = functions.begin(); iter != functions.end(); ++iter )
+    if (strcmp((*iter).get_identifier(), ident) == 0) 
+    {
+      if ((*iter).count_param() == argt.size())
+      {
+        found = true;
+        free(ident);
+
+        load_argument((*iter).get_scope());
+
+        return (*iter).get_ID();
+      }
+
+    }
+
+  return (FunctionID) NULL;
+}
+
+
+
+
 ErrorCode resolve_function (FunctionID _funct)
 {
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
 
-  while (xcs_argc > 0) { load_argument(_funct); }
+  while (argt.size() > 0) { load_argument(_funct); }
 
   //  Add to Queue for File Printing
   sprintf(str, "bl __%lu_%s", functions[_funct-1].get_ID(), functions[_funct-1].get_identifier());
@@ -160,7 +165,7 @@ ErrorCode resolve_function (FunctionID _funct)
   //  Deallocate Strings
   free(str);
 
-  xcs_args = 0;
+  args = 0;
 
   //  Return Success
   return 0;

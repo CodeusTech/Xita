@@ -166,7 +166,11 @@ public:
   FunctionID get_ID() const { return fid; }
   Identifier get_identifier() const { return identifier; }
   TypeID get_type() const { return rtn_type; }
+
+  unsigned int count_param() const { return parameters.size(); }
   vector<FunctionParameterNode> get_param() { return parameters; }
+  TypeID get_param_type(int p) { return parameters[p].get_type(); }
+  ADR get_param_reg(int p) { return parameters[p].get_reg(); }
   
   //  Register Stack Accessors
   ADR get_top() { return reg_stack.top(); }

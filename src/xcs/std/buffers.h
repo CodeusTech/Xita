@@ -107,9 +107,9 @@ ConstructorID last_constructor = 0;
 vector<ConstantNode> constants;
 vector<FunctionNode> functions;
 
-bool pfunct = false;
-unsigned int xcs_argc = 0;
-Scope xcs_args = 0;
+bool pfunct = false;  //  DEPRECATED
+vector<TypeID> argt;
+Scope args = 0;
 
 /*
   5.) Type Buffers
