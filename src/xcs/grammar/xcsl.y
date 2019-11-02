@@ -101,6 +101,8 @@ extern int yylineno;
 void yyerror(const char* error);
 unsigned int grammar_status = GRAMMAR_RUNNING;
 
+extern Scope xcs_args;
+
 
 %}
 
@@ -597,8 +599,7 @@ let:
   FUNCTION DECLARATIONS
 */
 __decl_funct:
-    pre_let exp_param OP_ASSIGN OP_REC_L exp_inline OP_REC_R { ret_function(); }
-  | pre_let exp_param OP_ASSIGN exp                          { ret_function(); }
+    pre_let exp_param OP_ASSIGN exp   { ret_function(); }
 ;
 
 decl_funct:
@@ -606,13 +607,9 @@ decl_funct:
   | __decl_funct
 ;
 
-param:
-    IDENTIFIER { decl_parameter($1); }
-;
-
 exp_param:
-    param exp_param  { }
-  | {/* INTENTIONALLY LEFT BLANK */}
+    exp_param IDENTIFIER { functions.back().add_parameter($2); }
+  | IDENTIFIER { functions.back().add_parameter($1); }
 ;
 
 exp_inline:
@@ -625,15 +622,16 @@ exp_inline:
 */
 
 exp_funct:
-    IDENTIFIER exp  { exp_function($1); }
+    IDENTIFIER arg_funct  { resolve_function( find_function($1) ); }
 ;
+
 
 /*
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg_funct:
-    arg_funct arg_funct {/* Accept arbitrary number of arguments */}
-  | exp           { /*load_argument(scope_curr);*/ printf("Argument Loaded\n"); }
+    arg_funct exp_primitive { load_argument( 1 ); }
+  | exp_primitive           { load_argument( 1 ); }
 ;
 
 

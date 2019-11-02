@@ -180,26 +180,6 @@ ErrorCode undecl_function()
 }
 
 
-/* 
-  3.) Parameter Declarations
-*/
-
-
-
-/* 3.a) Declare Parameter
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode decl_parameter (Identifier ident)
-{
-  FunctionParameterNode fpnode = FunctionParameterNode(ident);
-
-  functions.back().add_parameter(fpnode);
-
-  return 0;
-}
-
 
 
 #endif

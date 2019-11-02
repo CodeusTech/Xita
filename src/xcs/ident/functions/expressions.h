@@ -110,13 +110,6 @@ ErrorCode resolve_function (FunctionID _funct)
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  
-  /*
-    TODO: Function Call Precursor Actions HERE
-
-      * Prepare the current scope for a context shift
-      * Load Arguments if necessary
-  */
 
   //  Add to Queue for File Printing
   sprintf(str, "bl __%lu_%s", functions[_funct-1].get_ID(), functions[_funct-1].get_identifier());
@@ -124,6 +117,8 @@ ErrorCode resolve_function (FunctionID _funct)
   
   //  Deallocate Strings
   free(str);
+
+  xcs_args = 0;
 
   //  Return Success
   return 0;
@@ -149,13 +144,16 @@ bool resolve_parameter(Identifier ident)
   char* str = (char*) malloc(50);
 
   //  Check Current Function Scope
-  for (vector<FunctionParameterNode>::iterator iter = functions.back().get_param().begin(); iter != functions.back().get_param().end(); ++iter)
+  for (vector<FunctionParameterNode>::iterator iter = functions.back().get_param().begin(); iter != functions.back().get_param().end(); iter++)
+  {
     if (strcmp((*iter).get_identifier(), ident) == 0) 
     { 
       printf("Found Parameter: %s\n", (*iter).get_identifier());
+      free(str);
       return true;
     }
-
+  }
+ 
   /*
     TODO:
      * Error Check
@@ -167,7 +165,6 @@ bool resolve_parameter(Identifier ident)
   */
 
   free(str);
-
   return false;
 }
 
@@ -177,32 +174,6 @@ bool resolve_parameter(Identifier ident)
   2.) Functional Expressions
 */
 
-/* 2.a) Execute Function
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode exp_function (Identifier name)
-{
-  //  STUB STUB STUB
-  printf("Function %s Invoked\n", name);
-
-  /*
-    TODO:
-     * Error Check
-     * If target function has parameters,
-      + If parameter ADRs are active, copy data to Data Stack
-      + Load Parameter Into Expected ADR
-  */
-
-  /*
-    TODO:
-     * Perform Contextual Type Check
-  */
-
-  return 0;
-}
-
 
 /* 2.b) Load Argument (Standard)
 
@@ -211,24 +182,32 @@ ErrorCode exp_function (Identifier name)
 */
 ErrorCode load_argument(Scope scope)
 {
-  printf("Argument Loaded\n");
-  //  STUB STUB STUB
+  char* str = (char*) malloc(50);
 
-  /*
-    TODO:
-     * Error Check
-  */
+  ADR adr = functions[scope-1].get_param()[xcs_argc++].get_reg();
+  char* tgt = get_reg(adr, 32);
+  char* src;
 
-  /*
-    TODO:
-     * If not immediately found,
-      + Recursively search through parent context scopes
-     * If reg is already currently active,
-      + Push current contents of reg onto data stack
-      + UNLESS, reg contents are getting moved to reg for function call
-     * Load Expression into reg
-  */
+  
+  printf("woot\n");
 
+  switch (get_scope_curr())
+  {
+    case 0:
+      //  Move from current scope's stack to function argument registers 'tgt'
+      src = get_reg(rs_root.top(), 32);
+      rs_root.pop();
+      sprintf(str, "mov   %s, %s", tgt, src);
+      add_command(str);
+      break;
+    default:
+      src = get_reg(functions[get_scope_curr()-1].get_top(), 32);
+      functions[get_scope_curr()-1].pop();
+  }
+      
+  //  Deallocate Strings
+  free(tgt); free(src);
+  free(str);
   return 0;
 }
 

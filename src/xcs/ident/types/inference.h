@@ -57,8 +57,9 @@ int infer_addition()
 {
 
   //  Check LHS/RHS Types
-  TypeID lhsT = rs_sec_type();
   TypeID rhsT = rs_top_type();
+  TypeID lhsT = rs_sec_type();
+
 
   if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_addition();
 

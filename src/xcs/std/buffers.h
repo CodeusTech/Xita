@@ -96,16 +96,20 @@ ConstructorID** rse_construct;  //  Register Stack Types (Extended)
 
 Scope* scope_parents;  //  Parent (Return) Scope 
 
+//  Context Buffers
 TypeID last_type = 0;
 ConstructorID last_constructor = 0;
 
 /*
-  4.) Function Buffers
+  4.) Functional Buffers
 */
-
 
 vector<ConstantNode> constants;
 vector<FunctionNode> functions;
+
+bool pfunct = false;
+unsigned int xcs_argc = 0;
+Scope xcs_args = 0;
 
 /*
   5.) Type Buffers

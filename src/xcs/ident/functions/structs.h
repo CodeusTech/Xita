@@ -85,18 +85,18 @@ class FunctionParameterNode
 {
   ParameterID pid;
   Identifier ident;
-  TypeID tid = TYPE_ARBITRARY;
+  TypeID tid;
   ADR reg;
 
 public:
 
 //  CONSTRUCTORS
-  FunctionParameterNode() { pid = get_parameter_id(); }
   FunctionParameterNode(Identifier name)
   {
     pid = get_parameter_id();
     ident = strdup(name);
     free (name);
+    tid = TYPE_ARBITRARY;
   }
 
 
@@ -111,6 +111,7 @@ public:
 //  MUTATORS
   ErrorCode set_identifier(Identifier _ident) { ident = strdup(_ident); free(_ident); return 0; }
   ErrorCode set_type(TypeID _tid) { tid = _tid; return 0; }
+  ErrorCode set_reg(ADR adr) { reg = adr; return 0; }
 
 //  DEEP COPY
   typedef FunctionParameterNode Self;
@@ -155,6 +156,7 @@ public:
     free(name);
     param_index = parameter_index;
     reg_stack = RegisterStack();
+    parameters = vector<FunctionParameterNode>();
   }
 
 //  ACCESSORS
@@ -173,10 +175,20 @@ public:
   TypeID get_sec_type() { return reg_stack.sec_type(); }
 
 //  MUTATORS
-  ErrorCode add_parameter(FunctionParameterNode node) { parameters.push_back(node); return 0; }
   ErrorCode push(TypeID tid) { return reg_stack.push(tid); }
   ErrorCode pop() { return reg_stack.pop(); }
 
+  ErrorCode add_parameter(Identifier ident)
+  {
+    FunctionParameterNode node = FunctionParameterNode(ident);
+
+    push(2);
+    node.set_reg(get_top());
+    
+    parameters.push_back(node);
+
+    return 0;
+  }
 
   /* 2.) Serialize Register Stack
 

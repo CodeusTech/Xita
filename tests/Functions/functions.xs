@@ -10,7 +10,7 @@
 *)
 
 
-let sum x y = y;;
+let sum x y = x + y;;
 
-sum 1
+sum 1 2
 
