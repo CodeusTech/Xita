@@ -819,12 +819,12 @@ exp_memIO:
 
 
 read:
-  exp MEM_READ IDENTIFIER { memory_read_exp($3); }
+  exp MEM_READ {  }
 ;
 
 exp_memread:
-    read IN exp { }
-  | exp MEM_READ THIS
+    read IDENTIFIER IN exp { memory_read_exp($2); }
+  | read THIS { memory_read_exp(); }
 ;
 
 /*

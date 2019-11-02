@@ -149,8 +149,6 @@ int push_int(long long lit)
 */
 int integer_addition()
 {
-
-  printf("check\n");
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
