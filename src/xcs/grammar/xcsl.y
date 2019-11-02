@@ -630,8 +630,8 @@ exp_funct:
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg_funct:
-    arg_funct exp_primitive { load_argument( 1 ); }
-  | exp_primitive           { load_argument( 1 ); }
+    arg_funct exp_primitive { xcs_argc++; }
+  | exp_primitive           { xcs_argc++; }
 ;
 
 

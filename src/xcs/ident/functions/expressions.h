@@ -105,11 +105,53 @@ FunctionID find_function (Identifier ident)
   return (FunctionID) NULL;
 }
 
+
+
+
+/* 2.b) Load Argument (Standard)
+
+  Returns:
+    0, if Successful
+*/
+ErrorCode load_argument(Scope scope)
+{
+  char* str = (char*) malloc(50);
+
+  ADR adr = functions[scope-1].get_param()[--xcs_argc].get_reg();
+  char* tgt = get_reg(adr, 32);
+  char* src;
+
+  
+  printf("woot\n");
+
+  switch (get_scope_curr())
+  {
+    case 0:
+      //  Move from current scope's stack to function argument registers 'tgt'
+      src = get_reg(rs_root.top(), 32);
+      rs_root.pop();
+      sprintf(str, "mov   %s, %s", tgt, src);
+      add_command(str);
+      break;
+    default:
+      src = get_reg(functions[get_scope_curr()-1].get_top(), 32);
+      functions[get_scope_curr()-1].pop();
+  }
+      
+  //  Deallocate Strings
+  free(tgt); free(src);
+  free(str);
+  return 0;
+}
+
+
 ErrorCode resolve_function (FunctionID _funct)
 {
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
+
+  while (xcs_argc > 0) { load_argument(_funct); }
 
   //  Add to Queue for File Printing
   sprintf(str, "bl __%lu_%s", functions[_funct-1].get_ID(), functions[_funct-1].get_identifier());
@@ -174,42 +216,6 @@ bool resolve_parameter(Identifier ident)
   2.) Functional Expressions
 */
 
-
-/* 2.b) Load Argument (Standard)
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode load_argument(Scope scope)
-{
-  char* str = (char*) malloc(50);
-
-  ADR adr = functions[scope-1].get_param()[xcs_argc++].get_reg();
-  char* tgt = get_reg(adr, 32);
-  char* src;
-
-  
-  printf("woot\n");
-
-  switch (get_scope_curr())
-  {
-    case 0:
-      //  Move from current scope's stack to function argument registers 'tgt'
-      src = get_reg(rs_root.top(), 32);
-      rs_root.pop();
-      sprintf(str, "mov   %s, %s", tgt, src);
-      add_command(str);
-      break;
-    default:
-      src = get_reg(functions[get_scope_curr()-1].get_top(), 32);
-      functions[get_scope_curr()-1].pop();
-  }
-      
-  //  Deallocate Strings
-  free(tgt); free(src);
-  free(str);
-  return 0;
-}
 
 /* 2.c) Load Argument (Recursive)
 

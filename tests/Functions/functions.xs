@@ -11,6 +11,9 @@
 
 
 let sum x y = x + y;;
+let prod x y = x * y;;
 
-sum 1 2
+sum 1 2;;
+prod 1 2
+
 
