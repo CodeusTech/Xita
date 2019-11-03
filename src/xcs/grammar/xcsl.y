@@ -213,7 +213,7 @@ extern Scope xcs_args;
 //  High-Order Operations
 %left OP_ASSIGN OP_INLINE
 %left BUILD CLEAR
-%left LET IN
+%left LET
 %left TYPE TYPECLASS REQUIRES
 %left FILEK
 
@@ -248,7 +248,7 @@ extern Scope xcs_args;
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
 
-
+%left IN
 
 
 //  Order Keepers
@@ -603,8 +603,7 @@ __decl_funct:
 ;
 
 decl_funct:
-    __decl_funct IN exp   { undecl_function(); }
-  | __decl_funct
+    pre_let exp_param OP_ASSIGN exp   { ret_function(); }
 ;
 
 exp_param:
@@ -622,7 +621,8 @@ exp_inline:
 */
 
 exp_funct:
-    IDENTIFIER arg_funct  { resolve_function( find_function($1) ); }
+    __decl_funct IN exp   { undecl_function(); }
+  | IDENTIFIER arg_funct  { resolve_function( find_function($1) ); }
 ;
 
 

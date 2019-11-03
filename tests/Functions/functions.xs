@@ -18,6 +18,12 @@ sum 1 2;;
 prod 1 2;;
 sum 1 2;;
 
-sum 1 2 3
+--  Test Parameter Overloading
+sum 1 2 3;;
+
+--  Test Nested Functions
+let test x = 
+  let dummy y = 5 in 
+    dummy 1
 
 

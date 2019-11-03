@@ -152,6 +152,9 @@ ErrorCode ret_function ()
   sprintf(comm, "bx lr");
   add_command(comm);
 
+
+  set_scope_curr(functions.back().get_parent());
+
   return 0;
 }
 
