@@ -192,26 +192,33 @@ int infer_bit_xor()
 
   Returns:
     0, if Successful
+    1, if Invalid Type Operand
 */
-int infer_bit_shl()
+int infer_bit_shl(int val)
 {
-  //  STUB STUB STUB
-  printf("Perform Bitwise SHL\n");
 
-  return 0;
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_top_type();
+
+  if ((lhsT>0 && lhsT<11)) return bitwise_shl(val);
+
+  return 1;
 }
 
 /* 2.e) Bitwise SHR
 
   Returns:
     0, if Successful
+    1, if Invalid Type Operand
 */
-int infer_bit_shr()
+int infer_bit_shr(int val)
 {
-  //  STUB STUB STUB
-  printf("Perform Bitwise SHR\n");
+  //  Check LHS/RHS Types
+  TypeID lhsT = rs_top_type();
 
-  return 0;
+  if ((lhsT>0 && lhsT<11)) return bitwise_shr(val);
+
+  return 1;
 }
 
 /*

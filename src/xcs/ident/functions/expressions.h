@@ -190,12 +190,21 @@ bool resolve_parameter(Identifier ident)
 
   char* str = (char*) malloc(50);
 
-  //  Check Current Function Scope
+  //  Check Each Parmeter in Function Scope
   for (vector<FunctionParameterNode>::iterator iter = functions.back().get_param().begin(); iter != functions.back().get_param().end(); iter++)
-  {
+  { //  Check for Identifier Match
     if (strcmp((*iter).get_identifier(), ident) == 0) 
     { 
       printf("Found Parameter: %s\n", (*iter).get_identifier());
+
+      rs_push((*iter).get_type());
+
+      char* top = get_reg(rs_top(), 32);
+      char* p = get_reg((*iter).get_reg(), 32);
+
+      sprintf(str, "mov %s, %s", top, p);
+      add_command(str);
+
       free(str);
       return true;
     }

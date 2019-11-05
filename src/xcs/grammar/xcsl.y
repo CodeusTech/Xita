@@ -219,7 +219,6 @@ extern Scope xcs_args;
 
 %left OP_ELEMENT OP_COMMA
 
-
 //  Memory Operations
 %left MEM_READ MEM_SET
 
@@ -247,6 +246,8 @@ extern Scope xcs_args;
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
+
+
 
 %left IN
 
@@ -452,8 +453,8 @@ exp_arith:
   | exp BIT_AND exp     { infer_bit_and(); }
   | exp BIT_OR exp      { infer_bit_or(); }
   | exp BIT_XOR exp     { infer_bit_xor(); }
-  | exp BIT_SHL exp     { infer_bit_shl(); }
-  | exp BIT_SHR exp     { infer_bit_shr(); }
+  | exp BIT_SHL INT     { infer_bit_shl($3); }
+  | exp BIT_SHR INT     { infer_bit_shr($3); }
 ;
 
 /*
@@ -607,7 +608,7 @@ decl_funct:
 ;
 
 exp_param:
-    exp_param IDENTIFIER { functions.back().add_parameter($2); }
+    IDENTIFIER exp_param { functions.back().add_parameter($1); }
   | IDENTIFIER { functions.back().add_parameter($1); }
 ;
 

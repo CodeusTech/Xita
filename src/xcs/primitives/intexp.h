@@ -287,22 +287,20 @@ int integer_modulo()
   Returns:
     1, if Succcessful
 */
-int bitwise_shl()
+int bitwise_shl(int val)
 {
-  // STUB STUB STUB
-  printf("Bitwise Shift Left\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  char* top = get_reg(rs_top(), 32);
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  sprintf(str, "lsr   %s, #%d", top, val);
 
-  //  Perform Bitwise Shift
-  ADR rhs = rs_top();
-  ADR lhs = rs_sec();
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  After Bitwise Shift, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
+  free(top);
 
   return 0;
 }
@@ -313,21 +311,20 @@ int bitwise_shl()
   Returns:
     0, if Successful
 */
-int bitwise_shr()
+int bitwise_shr(int val)
 {
-  printf("Bitwise Shift Right\n");
+  //  Create ARM Assembly Command
+  char* str = (char*) malloc(50);
+  char* top = get_reg(rs_top(), 32);
 
-  /*
-    Error Check for Type Definition:
-    (int) -> (int) -> (int)
-  */
+  sprintf(str, "rsr   %s, #%d", top, val);
 
-  //  Perform Bitwise Shift
-  ADR rhs = rs_top();
-  ADR lhs = rs_sec();
+  //  Add to Queue for File Printing
+  add_command(str);
 
-  //  After Bitwise Shift, Pop Entry from Register Stack
-  rs_pop();
+  //  Free allocated memory and move to next register on stack
+  free(str);
+  free(top);
 
   return 0;
 }

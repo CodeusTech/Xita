@@ -9,5 +9,5 @@
   STUB to be imported for testing
 *)
 
-1
+let some_funct x y = x * y
 
