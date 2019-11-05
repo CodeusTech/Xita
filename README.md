@@ -59,7 +59,7 @@ $  sudo apt-get install build-essential flex flexc++ bison bisonc++
 ##### Clone the Repository
 
 ```bash
-$  cd path/to/projects
+$  mkdir CodeusTech && cd CodeusTech
 $  git clone https://github.com/CodeusTech/XCSL-AArch64.git
 ```
 **NOTE:** Two-Factor Authentication *must* be enabled.
@@ -68,7 +68,7 @@ $  git clone https://github.com/CodeusTech/XCSL-AArch64.git
 
 ```bash
 $  cd XCSL-AArch64/
-$  sudo make install
+$  make install
 ```
 
 ##### Build XCSL and Do NOT Install
@@ -82,7 +82,7 @@ $  make build
 
 ```bash
 $  cd XCSL-AArch64/
-$  sudo make uninstall
+$  make uninstall
 ```
 
 ###  XCSL Terminal Usage 

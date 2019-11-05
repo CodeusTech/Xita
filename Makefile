@@ -6,7 +6,7 @@
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
 CCOMP=g++
-CFLAGS=-lm -Wall -I/home/cody/Work/XCSL-AArch64/src
+CFLAGS=-lm -Wall -I/home/${USER}/CodeusTech/XCSL-AArch64/src
 MEMTEST=-g -O0
 SILENT=-Wno-unused-variable
 
@@ -14,6 +14,9 @@ SILENT=-Wno-unused-variable
 install: build tidy
 	sudo cp _build/xcs-aarch64 /usr/bin/xcs-aarch64
 	sudo rm -rf _build
+
+uninstall: 
+	sudo rm -rf /usr/bin/xcs-aarch64
 
 #  Build XCSL Cross Compiler
 build:  grammar src/xcs/xcs.cc
@@ -37,4 +40,8 @@ grammar: src/xcs/grammar/xcsl.y src/xcs/grammar/xcsl.l
 #  Tidy Generated Files
 tidy:
 	rm lex.yy.c xcsl.tab.c
+
+
+#  PHONY TARGETS
+.PHONY: install uninstall build
 
