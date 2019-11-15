@@ -199,13 +199,16 @@ bool resolve_parameter(Identifier ident)
 
       rs_push((*iter).get_type());
 
-      char* top = get_reg(rs_top(), 32);
-      char* p = get_reg((*iter).get_reg(), 32);
+      char* src = get_reg((*iter).get_reg(), 32);
+      char* rtop = get_reg(rs_top(), 32);
 
-      sprintf(str, "mov %s, %s", top, p);
+      sprintf(str, "mov   %s, %s", rtop, src);
       add_command(str);
 
       free(str);
+      free (src);
+      free(rtop);
+      
       return true;
     }
   }

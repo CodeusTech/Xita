@@ -43,6 +43,14 @@ using std::vector;
 
 
 
+struct DebugMessageNode
+{
+  Identifier ident;
+  char* msg;
+};
+
+vector<DebugMessageNode> debug;
+
 struct ElementNode
 {
   Identifier ident;

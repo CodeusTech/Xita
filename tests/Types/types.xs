@@ -42,7 +42,7 @@ type node a =
     TYPE EXPRESSIONS are instances of a declared type/constructor
 *)
 
-let search a = 
+(*let search a = 
   if U8 5 is I32
   then 1
   else 2
@@ -55,3 +55,4 @@ let search a =
   2.a) Typeclass Declarations
 *)
 
+On 5

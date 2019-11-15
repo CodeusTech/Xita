@@ -303,9 +303,12 @@ extern int yylex();
 */  
 %}
 
-"clear"  {return CLEAR;}
-"sizeof" {return SIZEOF;}
-"delay"  {return DELAY; }
+"clear"  { return CLEAR; }
+"sizeof" { return SIZEOF;}
+"delay"  { return DELAY; }
+
+"debug"  { return DEBUG; }
+"@"      { return DEBUG_PRINT; }
 
 
 

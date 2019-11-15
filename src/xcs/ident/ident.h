@@ -28,6 +28,7 @@
 #ifndef XCS_IDENT_H
 #define XCS_IDENT_H
 
+#include "debug.h"
 #include "functions/functions.h"
 #include "types/types.h"
 #include "typeclass/typeclass.h"

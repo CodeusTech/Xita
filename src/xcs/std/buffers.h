@@ -73,7 +73,7 @@ bool found = false;
 */
 
 //  2.a) .text Buffers
-vector<list<string>> asm_text;
+vector<list<string> > asm_text;
 
 //  2.b) .bss Buffers
 list<string> asm_bss;

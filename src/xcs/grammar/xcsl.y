@@ -198,7 +198,10 @@ extern Scope xcs_args;
 %token BUILD RUN            //  Bytecode Operations
 %token REGEX                //  Regular Expressions
 %token TETHER SEND RECEIVE  //  Interprocess Communication
-%token CLEAR  DELAY         //  Utilities
+
+//  Utilities
+%token CLEAR DELAY         
+%token DEBUG DEBUG_PRINT 
 
 //  Module Operations
 %token OPEN SOURCE_M HEADER_M TETHER_M
@@ -247,10 +250,7 @@ extern Scope xcs_args;
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
 
-
-
 %left IN
-
 
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
@@ -340,7 +340,9 @@ open_header:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
-  | DELAY exp exp       
+  | DELAY exp exp  
+  | DEBUG STRING        { printf("%s\n", $2); }
+  | DEBUG_PRINT IDENTIFIER { print_debug_message($2); }
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
   | exp_primitive
   | exp_arith
@@ -369,7 +371,8 @@ exp_primitive:
   | exp_list            { }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
   | exp_struct
-  | IDENTIFIER           { resolve_expression($1); }
+  | IDENTIFIER          { resolve_expression($1); }
+  | CONSTRUCTOR         {  }
 ;
 
 /*
@@ -571,7 +574,8 @@ pre_let:
 ;
 
 let:
-    LET IDENTIFIER OF exp_type  { decl_function($2); }
+    DEBUG STRING LET IDENTIFIER { add_debug_message($4, $2); decl_function($2); }
+  | LET IDENTIFIER OF exp_type  { decl_function($2); }
   | LET IDENTIFIER              { decl_function($2); }
   | LET OP_ADD_O                { override_add(); }
   | LET OP_SUB_O                { override_sub(); }
@@ -601,14 +605,16 @@ let:
 */
 __decl_funct:
     pre_let exp_param OP_ASSIGN exp   { ret_function(); }
+  | pre_let OP_ASSIGN exp             { ret_function(); }
 ;
 
 decl_funct:
     pre_let exp_param OP_ASSIGN exp   { ret_function(); }
+  | pre_let OP_ASSIGN exp             { ret_function(); }
 ;
 
 exp_param:
-    IDENTIFIER exp_param { functions.back().add_parameter($1); }
+    exp_param IDENTIFIER { functions.back().add_parameter($2); }
   | IDENTIFIER { functions.back().add_parameter($1); }
 ;
 
