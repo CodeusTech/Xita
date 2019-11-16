@@ -38,7 +38,7 @@ ErrorCode add_debug_message(Identifier ident, char* msg)
 
   debug.push_back(node);
 
-  free(msg);
+  //free(msg);
 
   //  Return Success
   return 0;

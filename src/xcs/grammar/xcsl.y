@@ -341,21 +341,22 @@ open_header:
 exp:
     PAR_LEFT exp PAR_RIGHT
   | DELAY exp exp  
-  | DEBUG STRING        { printf("%s\n", $2); }
-  | DEBUG_PRINT IDENTIFIER { print_debug_message($2); }
-  | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
+  | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
+  | IDENTIFIER arg_funct                    { resolve_function( find_function($1) );   }
   | exp_primitive
   | exp_arith
   | exp_logical
   | exp_conditional
-  | exp_funct           {printf("function declared\n");}
+  | exp_funct                                { printf("function declared\n"); }
   | exp_regex       
   | exp_request   
   | exp_memIO
   | exp_ipcIO
   | exp_fileIO
-  | exp OP_TUP exp      { add_to_tuple(); }
-  | CLEAR               { clear_terminal(); }
+  | exp OP_TUP exp                           { add_to_tuple(); }
+  | DEBUG STRING                             { printf("%s\n", $2); }
+  | DEBUG_PRINT IDENTIFIER                   { print_debug_message($2); }
+  | CLEAR                                    { clear_terminal(); }
 ;
 
 /*
@@ -371,8 +372,8 @@ exp_primitive:
   | exp_list            { }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
   | exp_struct
-  | IDENTIFIER          { resolve_expression($1); }
   | CONSTRUCTOR         {  }
+  | IDENTIFIER          { resolve_expression($1); }
 ;
 
 /*
@@ -563,6 +564,9 @@ exp_const:
     INT     { last_data = (void*) (unsigned long long) $1; }
   | IDENTIFIER { last_data = (void*) find_constant($1); }
   | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long) last_data + $3); }
+  | exp_const OP_SUB INT {last_data = (void*) ((unsigned long long) last_data - $3); }
+  | exp_const OP_MUL INT {last_data = (void*) ((unsigned long long) last_data * $3); }
+  | exp_const OP_DIV INT {last_data = (void*) ((unsigned long long) last_data / $3); }
 ;
 
 /*
@@ -574,7 +578,7 @@ pre_let:
 ;
 
 let:
-    DEBUG STRING LET IDENTIFIER { add_debug_message($4, $2); decl_function($2); }
+    DEBUG STRING LET IDENTIFIER { add_debug_message($4, $2); decl_function($4); }
   | LET IDENTIFIER OF exp_type  { decl_function($2); }
   | LET IDENTIFIER              { decl_function($2); }
   | LET OP_ADD_O                { override_add(); }
@@ -605,12 +609,10 @@ let:
 */
 __decl_funct:
     pre_let exp_param OP_ASSIGN exp   { ret_function(); }
-  | pre_let OP_ASSIGN exp             { ret_function(); }
 ;
 
 decl_funct:
     pre_let exp_param OP_ASSIGN exp   { ret_function(); }
-  | pre_let OP_ASSIGN exp             { ret_function(); }
 ;
 
 exp_param:
@@ -629,7 +631,6 @@ exp_inline:
 
 exp_funct:
     __decl_funct IN exp   { undecl_function(); }
-  | IDENTIFIER arg_funct  { resolve_function( find_function($1) ); }
 ;
 
 
@@ -637,7 +638,7 @@ exp_funct:
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg_funct:
-    arg_funct arg_funct {  }
+    arg_funct OP_COMMA arg_funct {  }
   | exp_primitive           { argt.push_back(last_type); }
 ;
 
@@ -646,12 +647,44 @@ arg_funct:
   5.) Datatype Expressions
 */
 
+
 /*
     5.a) Types
 */
 
 /*
-  TYPE IDENTIFIERS
+  TYPE DECLARATIONS
+*/
+
+dinit_type: 
+    DEBUG STRING TYPE IDENTIFIER { add_debug_message($4, $2); decl_type($4); }
+  | TYPE IDENTIFIER  { decl_type($2); }
+;
+
+decl_type:
+    dinit_type param_type OP_ASSIGN decl_struct implements
+  | dinit_type            OP_ASSIGN decl_struct implements
+    dinit_type param_type OP_ASSIGN decl_struct
+  | dinit_type            OP_ASSIGN decl_struct
+;
+
+implements:
+    IMPL l_typeclass
+;
+
+l_typeclass:
+    l_typeclass OP_COMMA l_typeclass
+  | IDENTIFIER  { impl_typeclass($1); }
+;
+
+param_type:
+    param_type param_type 
+  | IDENTIFIER            { decl_type_param($1); }
+;
+
+
+/*
+  TYPE EXPRESSIONS
 */
 exp_type:
     PAR_LEFT exp_type exp_type PAR_RIGHT  {printf("Parameterized Type Found\n");}
@@ -673,35 +706,6 @@ exp_type:
   | STRING_T        { last_type = 16; } 
   | LIST_T      
   | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
-  | exp_type OP_COMMA exp_type
-  | IDENTIFIER      { exp_type($1); }
-;
-
-/*
-  TYPE DECLARATIONS
-*/
-dinit_type: 
-  TYPE IDENTIFIER  { decl_type($2); }
-;
-
-decl_type:
-    dinit_type param_type OP_ASSIGN decl_struct implements
-;
-
-implements:
-    IMPL l_typeclass
-  | 
-;
-
-l_typeclass:
-    l_typeclass OP_COMMA l_typeclass
-  | IDENTIFIER  { impl_typeclass($1); }
-;
-
-param_type:
-    param_type param_type 
-  | IDENTIFIER            { decl_type_param($1); }
-  |                       {/* Intentionally Left Blank */}
 ;
 
 /*
@@ -714,9 +718,9 @@ param_type:
 */
 decl_struct:
     decl_struct BIT_OR decl_struct
-  | CONSTRUCTOR OF exp_type { decl_constructor($1); }
-  | CONSTRUCTOR             { decl_constructor($1); }
-  | exp_type                {printf("TODO: Implement Type Aliases\n");}
+  | CONSTRUCTOR OF decl_record  { decl_constructor($1); }
+  | CONSTRUCTOR                 { decl_constructor($1); }
+  | exp_type                    { printf("TODO: Implement Type Aliases\n"); }
 ;
 
 exp_struct:
@@ -732,8 +736,8 @@ exp_struct:
 /*
   TYPE RECORDS
 */
-record:
-    record OP_COMMA record
+decl_record:
+    decl_record OP_COMMA decl_record
   | IDENTIFIER OF exp_type    { decl_element($1); }
 ;
 
