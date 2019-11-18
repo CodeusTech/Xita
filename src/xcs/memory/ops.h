@@ -1,16 +1,16 @@
 /*
-  memory.h
+  ops.h
   Cody Fagley
   Authored on   February 16, 2019
   Last Modified February 16, 2019
 */
 
 /*
-  Contains Backend Functionality for Memory Manipulation
+  Contains semantics for static memory operators
 */
 
-#ifndef XCS_MEMORY_H
-#define XCS_MEMORY_H
+#ifndef MEMORY_OPS_H
+#define MEMORY_OPS_H
 
 #include <cstdlib>
 #include <string>

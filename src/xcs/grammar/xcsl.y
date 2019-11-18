@@ -84,7 +84,7 @@
 #include <xcs/conditions/conditions.h>
 #include <xcs/grammar/status.h>
 #include <xcs/ident/ident.h>
-#include <xcs/memory.h>
+#include <xcs/memory/memory.h>
 #include <xcs/modules/modules.h>
 #include <xcs/operator/operator.h>
 #include <xcs/primitives/primitives.h>
@@ -556,12 +556,15 @@ exp_is:
   4.a) Constants
 */
 decl_const:
-    CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { decl_constant($2); }
+    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); decl_constant($4); }
+  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); decl_constant($5); }
+  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { decl_constant($2); }
   | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { decl_constant($3); }
 ;
 
 exp_const:
     INT     { last_data = (void*) (unsigned long long) $1; }
+  | exp_struct
   | IDENTIFIER { last_data = (void*) find_constant($1); }
   | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long) last_data + $3); }
   | exp_const OP_SUB INT {last_data = (void*) ((unsigned long long) last_data - $3); }
@@ -664,7 +667,7 @@ dinit_type:
 decl_type:
     dinit_type param_type OP_ASSIGN decl_struct implements
   | dinit_type            OP_ASSIGN decl_struct implements
-    dinit_type param_type OP_ASSIGN decl_struct
+  | dinit_type param_type OP_ASSIGN decl_struct
   | dinit_type            OP_ASSIGN decl_struct
 ;
 
@@ -705,6 +708,7 @@ exp_type:
   | CHAR_T          { last_type = 15; } 
   | STRING_T        { last_type = 16; } 
   | LIST_T      
+  | IDENTIFIER      { free($1); }
   | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
 ;
 
@@ -726,7 +730,10 @@ decl_struct:
 exp_struct:
     exp_struct exp 
   | CONSTRUCTOR { exp_constructor($1); }
+  | CONSTRUCTOR PAR_LEFT arg_record  PAR_RIGHT
 ;
+
+
 
 
 /*
@@ -738,12 +745,17 @@ exp_struct:
 */
 decl_record:
     decl_record OP_COMMA decl_record
-  | IDENTIFIER OF exp_type    { decl_element($1); }
+  | IDENTIFIER OF exp_type      { decl_element($1); }
 ;
 
 exp_record:
     exp OP_ELEMENT exp_record  {}
-  | IDENTIFIER { exp_element($1); }
+  | IDENTIFIER                  { exp_element($1); }
+;
+
+arg_record: 
+    arg_record OP_COMMA arg_record
+  | IDENTIFIER OP_ASSIGN exp
 ;
 
 /*

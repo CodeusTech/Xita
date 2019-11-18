@@ -23,16 +23,16 @@
 (*
   2.) Write Memory
 *)
-let write_entry entry offset = 
+let write_entry dumb_parameter entry offset = 
   offset <-* entry;;
 
 
-write_entry 10 5;;
+--write_entry 10 5;;
 
 
-let read_int offset = 
+let read_int dumb_parameter offset = 
   offset *-> entry in
     entry;;
 
-read_int 10
+--read_int 10
 

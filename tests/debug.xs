@@ -7,6 +7,8 @@
 
 --  Tests Debug Messages with Terminal I/O
 
+--  Print Debug Message for initial test
+debug "Test 1: Initial Test";;
 
 --  Define function 'test_me', with debug message "Hello World!!"
 debug "Hello World!!"
@@ -29,6 +31,12 @@ type person =
       age of int;;
 
 
---  Prints "Woot!" to native OS terminal
+--  Prints debug message for type Person
 @person
+
+--  Define Constant value 'guy' equal to 'Cody'
+--debug ""
+--const guy of person = 1 --Person (name="Cody", age=27)
+
+
 
