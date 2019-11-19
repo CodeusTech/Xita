@@ -22,7 +22,10 @@ sum 1 2;;
 sum 1 2 3;;
 
 --  Test Nested Functions
-let test x = 
-    1
+debug "Test Unparameterized Functions"
+let test = 
+    1;;
+
+@test
 
 

@@ -610,7 +610,8 @@ let:
   FUNCTION DECLARATIONS
 */
 __decl_funct:
-    pre_let exp_param OP_ASSIGN exp   { ret_function(); }
+    pre_let exp_param OP_ASSIGN exp  { ret_function(); }
+  | pre_let           OP_ASSIGN exp  { ret_function(); }
 ;
 
 decl_funct:
