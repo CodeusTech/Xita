@@ -33,6 +33,7 @@ type switch =
     On of flow
   | Off;;
 
+(*
 type node a = 
     Leaf 
   | Tree of (node a), a, (node a);;

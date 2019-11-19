@@ -18,6 +18,14 @@
 #ifndef TYPES_DECLARATIONS_H
 #define TYPES_DECLARATIONS_H
 
+
+//  Linux headers
+#include <string.h>
+#include <cstdlib>
+
+#include <xcs/std/structs.h>
+#include <xcs/std/buffers.h>
+
 #include "operations.h"
 
 extern void yyerror(const char*);

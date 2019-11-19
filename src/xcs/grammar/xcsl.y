@@ -723,6 +723,7 @@ exp_type:
 */
 decl_struct:
     decl_struct BIT_OR decl_struct
+  | CONSTRUCTOR OF exp_type     { decl_constructor($1); }
   | CONSTRUCTOR OF decl_record  { decl_constructor($1); }
   | CONSTRUCTOR                 { decl_constructor($1); }
   | exp_type                    { printf("TODO: Implement Type Aliases\n"); }
