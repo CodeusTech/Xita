@@ -348,7 +348,7 @@ exp:
   | exp_arith
   | exp_logical
   | exp_conditional
-  | exp_funct                                { printf("function declared\n"); }
+  | exp_funct                                
   | exp_regex       
   | exp_request   
   | exp_memIO
@@ -364,16 +364,15 @@ exp:
 */
 
 exp_primitive:
-    exp_integer         {/* For Testing */}
-  | exp_boolean         {/* For Testing */}
-  | exp_real            {/* For Testing */}
-  | exp_char            {/* For Testing */}
-  | exp_string          {/* For Testing */}
+    exp_integer         { last_type = TYPE_INTEGER; }
+  | exp_boolean         { last_type = TYPE_BOOLEAN; }
+  | exp_real            { last_type = TYPE_REAL;    }
+  | exp_char            { last_type = TYPE_CHAR;    }
+  | exp_string          { last_type = TYPE_STRING;  }
   | exp_list            { }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
   | exp_struct
-  | CONSTRUCTOR         {  }
-  | IDENTIFIER          { resolve_expression($1); }
+  | IDENTIFIER          { resolve_expression($1); /* TODO: Type Check here */ }
 ;
 
 /*
@@ -382,7 +381,7 @@ exp_primitive:
 exp_integer:
     RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
-  | INT             { last_type = TYPE_INTEGER; push_int((long long) $1); }
+  | INT             { push_int((long long) $1); }
 ;
 
 /*
@@ -632,7 +631,6 @@ exp_inline:
 /*
   FUNCTION EXPRESSIONS (INVOCATIONS)
 */
-
 
 exp_funct:
     IDENTIFIER arg_funct  { resolve_function( find_function($1) ); }

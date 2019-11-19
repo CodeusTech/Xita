@@ -60,8 +60,10 @@ int infer_addition()
   TypeID rhsT = rs_top_type();
   TypeID lhsT = rs_sec_type();
 
+  printf("Check Addition: %d, %d\n", lhsT, rhsT);
 
-  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_addition();
+
+  if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return integer_addition();
 
   return 0;
 }
