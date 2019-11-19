@@ -306,6 +306,7 @@ decl:
   | decl_typeclass      
   | decl_open
   | decl_fnew
+  | DEBUG STRING                             { printf("%s\n", $2); }
 ;
 
 /*
@@ -342,7 +343,7 @@ exp:
     PAR_LEFT exp PAR_RIGHT
   | DELAY exp exp  
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
-  | IDENTIFIER arg_funct                    { resolve_function( find_function($1) );   }
+//  | IDENTIFIER arg_funct                    { resolve_function( find_function($1) );   }
   | exp_primitive
   | exp_arith
   | exp_logical
@@ -354,7 +355,6 @@ exp:
   | exp_ipcIO
   | exp_fileIO
   | exp OP_TUP exp                           { add_to_tuple(); }
-  | DEBUG STRING                             { printf("%s\n", $2); }
   | DEBUG_PRINT IDENTIFIER                   { print_debug_message($2); }
   | CLEAR                                    { clear_terminal(); }
 ;
@@ -615,7 +615,8 @@ __decl_funct:
 ;
 
 decl_funct:
-    pre_let exp_param OP_ASSIGN exp   { ret_function(); }
+    __decl_funct IN exp   { undecl_function(); }
+  | __decl_funct
 ;
 
 exp_param:
@@ -632,8 +633,9 @@ exp_inline:
   FUNCTION EXPRESSIONS (INVOCATIONS)
 */
 
+
 exp_funct:
-    __decl_funct IN exp   { undecl_function(); }
+    IDENTIFIER arg_funct  { resolve_function( find_function($1) ); }
 ;
 
 
@@ -641,7 +643,7 @@ exp_funct:
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg_funct:
-    arg_funct OP_COMMA arg_funct {  }
+    arg_funct arg_funct {  }
   | exp_primitive           { argt.push_back(last_type); }
 ;
 

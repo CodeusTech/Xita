@@ -23,7 +23,6 @@ sum 1 2 3;;
 
 --  Test Nested Functions
 let test x = 
-  let dummy y = 5 in 
-    dummy 1
+    1
 
 

@@ -12,7 +12,7 @@ debug "Test 1: Initial Test";;
 
 --  Define function 'test_me', with debug message "Hello World!!"
 debug "Hello World!!"
-let test_me i = 1;;
+let test_me = 1 + 1;;
 
 --  Prints "Hello World!!" to native OS terminal
 @test_me;;
