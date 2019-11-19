@@ -10,16 +10,16 @@
 *)
 
 
-let sum t x y = x + y;;
-let sum t x y z = x + y + z;;
-let prod t x y = x * y;;
+let sum x y = x + y;;
+let sum x y z = x + y + z;;
+let prod x y = x * y;;
 
-sum 0 1 2;;
-prod 0 1 2;;
-sum 0 1 2;;
+sum 1 2;;
+prod 1 2;;
+sum 1 2;;
 
 --  Test Parameter Overloading
-sum 0 1 2 3;;
+sum 1 2 3;;
 
 --  Test Nested Functions
 let test x = 

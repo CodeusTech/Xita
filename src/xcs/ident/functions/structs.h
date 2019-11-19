@@ -168,7 +168,7 @@ public:
   TypeID get_type() const { return rtn_type; }
 
   unsigned int count_param() const { return parameters.size(); }
-  vector<FunctionParameterNode> get_param() { return parameters; }
+  FunctionParameterNode get_param(int p) { return parameters[p]; }
   TypeID get_param_type(int p) { return parameters[p].get_type(); }
   ADR get_param_reg(int p) { return parameters[p].get_reg(); }
   
@@ -184,6 +184,8 @@ public:
 
   ErrorCode add_parameter(Identifier ident)
   {
+    printf("Added Parameter ( %s ) to function ( %s )\n", ident, get_identifier());
+
     FunctionParameterNode node = FunctionParameterNode(ident);
 
     push(2);

@@ -34,6 +34,8 @@
 #include <xcs/regstack/regstack.h>
 #include <xcs/regstack/utils.h>
 
+#include <xcs/asm/text.h>
+
 #include "structs.h"
 
 
@@ -190,16 +192,15 @@ bool resolve_parameter(Identifier ident)
 
   char* str = (char*) malloc(50);
 
-  //  Check Each Parmeter in Function Scope
-  for (vector<FunctionParameterNode>::iterator iter = functions.back().get_param().begin(); iter != functions.back().get_param().end(); iter++)
-  { //  Check for Identifier Match
-    if (strcmp((*iter).get_identifier(), ident) == 0) 
+  FunctionNode fnode = functions.back();
+
+  for (unsigned int i = 0; i < fnode.count_param(); i++)
+  {
+    if (strcmp(fnode.get_param(i).get_identifier(), ident) == 0)
     { 
-      printf("Found Parameter: %s\n", (*iter).get_identifier());
+      rs_push(fnode.get_param_type(i));
 
-      rs_push((*iter).get_type());
-
-      char* src = get_reg((*iter).get_reg(), 32);
+      char* src = get_reg(fnode.get_param_reg(i), 32);
       char* rtop = get_reg(rs_top(), 32);
 
       sprintf(str, "mov   %s, %s", rtop, src);
@@ -226,66 +227,6 @@ bool resolve_parameter(Identifier ident)
   free(str);
   return false;
 }
-
-
-
-/*
-  2.) Functional Expressions
-*/
-
-
-/* 2.c) Load Argument (Recursive)
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode load_argument_rec()
-{
-  printf("Recursive Argument Loaded\n");
-
-  /*
-    TODO:
-     * Error Check
-  */
-
-  /*
-    TODO:
-     * PLANNING/ARCHITECTURE REQUIRED
-     * DO NOT PROCEEED
-  */
-
-  return 0;
-}
-
-
-
-/* 3.) Parameter Expression
-
-  'Parameters' are arbitrary, named expressions used in function declarations
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode exp_parameter(Identifier ident)
-{
-  printf("Parameter %s Invoked\n", ident);
-  //  STUB STUB STUB
-
-  /*
-    TODO:
-     * Error Check
-  */
-
-  //  Push Parameter to Register Stack
-  ADR reg = rs_push(TYPE_ARBITRARY);
-
-  //  TODO: Copy contents of Parameter to 'reg'
-
-  free (ident);
-
-  return 0;
-}
-
 
 
 
