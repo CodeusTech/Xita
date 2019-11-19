@@ -131,20 +131,18 @@ ErrorCode load_argument(Scope scope)
 */
 FunctionID find_function (Identifier ident)
 {
-  for (vector<FunctionNode>::iterator iter = functions.begin(); iter != functions.end(); ++iter )
-    if (strcmp((*iter).get_identifier(), ident) == 0) 
+  for (int i = 0; i < functions.size(); i++)
+    if (strcmp(functions[i].get_identifier(), ident) == 0) 
     {
-      if ((*iter).count_param() == argt.size())
+      if (functions[i].count_param() == argt.size())
       {
         found = true;
         free(ident);
 
-        load_argument((*iter).get_scope());
-
-        return (*iter).get_ID();
+        return functions[i].get_ID();
       }
-
     }
+
 
   return (FunctionID) NULL;
 }
