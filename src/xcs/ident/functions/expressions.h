@@ -131,7 +131,7 @@ ErrorCode load_argument(Scope scope)
 */
 FunctionID find_function (Identifier ident)
 {
-  for (int i = 0; i < functions.size(); i++)
+  for (unsigned long i = 0; i < functions.size(); i++)
     if (strcmp(functions[i].get_identifier(), ident) == 0) 
     {
       if (functions[i].count_param() == argt.size())

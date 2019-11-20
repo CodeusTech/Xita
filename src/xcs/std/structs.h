@@ -35,7 +35,14 @@
 
 #include <vector>
 
+
+#include <xcs/regstack/structs.h>
+
+#include <xcs/ident/functions/structs.h>
+#include <xcs/ident/types/structs.h>
+
 #include "typedefs.h"
+
 
 using namespace std;
 
@@ -50,27 +57,6 @@ struct DebugMessageNode
 };
 
 vector<DebugMessageNode> debug;
-
-struct ElementNode
-{
-  Identifier ident;
-  TypeID     type;
-};
-
-struct ConstructorNode
-{
-  Identifier ident;
-  ConstructorID cid;
-  vector<ElementNode> elements;
-};
-
-struct TypeNode
-{
-  Identifier type_ident;  //  Type Identifier
-  TypeID     type_id;
-  vector<Identifier> param_type; //  Parameter Types
-  vector<ConstructorNode> constructors;
-};
 
 
 struct regstack
