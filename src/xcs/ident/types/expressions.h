@@ -59,8 +59,11 @@ ConstructorID find_constructor (Identifier ident)
   //  TODO: Optimize This
   for (int i = 0; i < types.size(); i++)
     for (int j = 0; j < types[i].count_struct(); j++)
-      if (strcmp(types[i].get_constructor(j).ident, ident) == 0)
-        return types[i].get_constructor(j).cid;
+      if (strcmp(types[i].get_constructor(j).get_ident(), ident) == 0)
+        
+        //  TODO: Check if given arguments match constructor's expected layout
+
+        return types[i].get_constructor(j).get_cid();
 
   return 0;
 }
@@ -77,6 +80,7 @@ ErrorCode exp_constructor (Identifier ident)
   if (!cid) { yyerror("Undeclared Constructor\n"); }
 
   last_constructor = cid;
+  printf("Invoked Constructor: %s\n", ident);
   
   //  Free Buffers
   free(ident);

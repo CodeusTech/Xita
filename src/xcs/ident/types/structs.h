@@ -21,17 +21,10 @@
 
 using namespace std;
 
-extern "C" void yyerror(const char* error);
+extern void yyerror(const char* error);
 
 TypeID next_tid = 18;    //  Number of Types
 ConstructorID next_cid = 18;
-
-
-struct ElementNode
-{
-  Identifier ident;
-  TypeID     type;
-};
 
 
 struct TypeParameterNode
@@ -39,13 +32,62 @@ struct TypeParameterNode
   Identifier ident;
 };
 
-struct ConstructorNode
+
+/*
+  Records
+
+    A record is an entry within a constructor.  
+    Each record has a type expression and an identifier
+*/
+struct RecordNode
+{
+  Identifier ident;
+  TypeID     type;
+};
+
+
+/*
+  Constructors
+
+    A constructor is used to create an entry of a certain data type
+*/
+class ConstructorNode
 {
   Identifier ident;
   ConstructorID cid;
-  vector<ElementNode> elements;
+  vector<RecordNode> records;
+
+public:
+//  CONSTRUCTORS
+  ConstructorNode(Identifier _name)
+  {
+    ident = _name;
+    cid = next_cid++;
+  }
+
+//  ACCESSORS
+  Identifier get_ident()  { return ident; }
+  ConstructorID get_cid() { return cid; }
+  vector<RecordNode> get_records() { return records; }
+
+//  MUTATORS
+  ErrorCode add_record(Identifier ident, TypeID tid)
+  {
+    RecordNode rec;
+    rec.ident = strdup(ident);
+    rec.type = tid;
+
+    records.push_back(rec);
+
+    free(ident);
+  }
+
 };
 
+
+/*
+  Type Nodes
+*/
 class TypeNode
 {
 /*
@@ -91,6 +133,7 @@ public:
   {
     /*if (i < 0 || i >= parameters.size())
       yyerror("Constructor out of bounds");*/
+    //printf("found constructor: %s\n", constructors[i].get_ident());
     return constructors[i];
   }
 
@@ -121,14 +164,10 @@ public:
   */
   ErrorCode add_constructor(Identifier ident)
   {
-    ConstructorNode node;
-
-    node.ident = strdup(ident);
-    node.cid = next_cid++;
+    ConstructorNode node = ConstructorNode(ident);
 
     constructors.push_back(node);
 
-    free(ident);
 
     //  Return Success
     return 0;
