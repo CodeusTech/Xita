@@ -678,7 +678,7 @@ implements:
 
 l_typeclass:
     l_typeclass OP_COMMA l_typeclass
-  | IDENTIFIER  { impl_typeclass($1); }
+//  | IDENTIFIER  { impl_typeclass($1); }
 ;
 
 param_type:

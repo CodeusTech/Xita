@@ -102,34 +102,6 @@ int push_char_int(unsigned int lit)
   return 0;
 }
 
-/* 1.d) Push Character Identifier
-
-  Returns:
-    0, if Successful
-    1, if Identifier is not a Character
-*/
-int push_char_ident(char* ident)
-{
-  //  STUB STUB STUB
-  printf("Character Identifier Pushed: %s\n", ident);
-
-  if (find_type(ident) == TYPE_CHAR) 
-  {
-    //  TODO: Error Check
-
-    //  Push to Register Stack
-    ADR reg = rs_push(TYPE_CHAR); 
-
-    return 0;
-  }
-  else 
-  {
-    /*TODO: Replace with yyerror()*/
-    grammar_status = GRAMMAR_ERROR_TYPECHECK;
-    return 1;
-  }
-}
-
 
 /*
   2.) Character Expressions

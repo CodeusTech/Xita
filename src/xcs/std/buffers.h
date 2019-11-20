@@ -48,7 +48,6 @@
 //  XCS Libraries
 #include "typedefs.h"
 #include "structs.h"
-#include "../ident/functions/structs.h"
 
 
 using namespace std;
@@ -116,9 +115,6 @@ Scope args = 0;
 */
 
 //  5.a) Type Data
-TypeID next_type = 18;    //  Number of Types
-ConstructorID next_cid = 18;
-
 vector<TypeNode> types;
 
 

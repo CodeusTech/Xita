@@ -21,6 +21,19 @@
 extern void yyerror();
 
 
+
+/*
+  find_type()
+*/
+TypeID find_type (Identifier ident)
+{
+  //  TODO:  Fix Memory Leak
+
+
+
+  return 0;
+}
+
 /* 1.) Type Expression
 
   Returns:
@@ -34,6 +47,20 @@ ErrorCode exp_type (Identifier ident)
   
   //  Free Buffers
   free(ident);
+
+  return 0;
+}
+
+/*
+  find_constructor()
+*/
+ConstructorID find_constructor (Identifier ident)
+{
+  //  TODO: Optimize This
+  for (int i = 0; i < types.size(); i++)
+    for (int j = 0; j < types[i].count_struct(); j++)
+      if (strcmp(types[i].get_constructor(j).ident, ident) == 0)
+        return types[i].get_constructor(j).cid;
 
   return 0;
 }

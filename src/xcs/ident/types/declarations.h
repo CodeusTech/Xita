@@ -26,8 +26,6 @@
 #include <xcs/std/structs.h>
 #include <xcs/std/buffers.h>
 
-#include "operations.h"
-
 extern void yyerror(const char*);
 
 /*
@@ -39,77 +37,26 @@ extern void yyerror(const char*);
   Returns:
     0, if Successful
 */
-ErrorCode decl_type (char* ident)
+ErrorCode decl_type (Identifier ident)
 {
-  //  Aquire TypeID
-  TypeID tid = get_next_tid() - 18;
+  //  Create new TypeNode
+  TypeNode node = TypeNode(ident);
 
-  TypeNode new_type;
-
-  new_type.type_ident = strdup(ident);
-  new_type.type_id    = tid;  
-
-  /*
-    TODO:
-      * Error Check
-      * Detect and Adjust for situations where tid >= 255
-        - Allocate and link to next group of types
-  */
-
-  /*
-    Set initial Values && Allocate Memory
-  */
-  types.push_back(new_type);
-
-  //  Free String Memory
-  free(ident);
+  //  Add to Buffers
+  types.push_back(node);
 
   //  Return Success
   return 0;
 }
 
-/* 1.b) Declare Type Parameter
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode decl_type_param (Identifier ident)
+ErrorCode decl_type_param(Identifier ident)
 {
-  TypeID tid = get_curr_tid() - 18;
-  types.back().param_type.push_back(strdup(ident));
-
-  //  Free String Buffer
-  free(ident);
-
-  //  Return Success
-  return 0;
+  types.back().add_parameter(ident);
 }
 
-
-/* 2.a) Declare Constructor
-
-  Returns:
-    0, if Successful
-*/
-ErrorCode decl_constructor (Identifier ident)
+ErrorCode decl_constructor(Identifier ident)
 {
-  TypeID tid = get_curr_tid() - 18;
-  //  TODO: use sprintf or something to print ident to terminal
-  if (find_constructor(ident)) yyerror("Constructor with that name already declared");
-
-
-  ConstructorNode constructor;
-
-  constructor.ident = strdup(ident);
-  constructor.cid   = get_next_cid();
-
-  types.back().constructors.push_back(constructor);
-
-  //  Free Buffers
-  free(ident);
-
-  //  Return Success
-  return 0;
+  types.back().add_constructor(ident);
 }
 
 #endif

@@ -78,34 +78,6 @@ int push_string_lit(char* str)
   return 0;
 }
 
-/* 1.c) Push String Identifier
-
-  Returns:
-    0, if Successful
-    1, if Identifier is not a String
-*/
-int push_string_ident(char* ident)
-{
-  // STUB STUB STUB
-  printf("String Identifier Pushed onto Reg Stack: %s\n", ident);
-
-  if (find_type(ident) == TYPE_STRING) 
-  {
-    //  TODO: Error Check
-
-    //  Push String to Register Stack
-    ADR reg = rs_push(TYPE_STRING);
-  }
-  else
-  {
-    grammar_status = GRAMMAR_ERROR_TYPECHECK;
-
-    return 1;
-  }
-
-  return 0;
-}
-
 
 /*
   2.) String Arithmetic
