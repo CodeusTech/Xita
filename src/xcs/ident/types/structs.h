@@ -57,6 +57,7 @@ class ConstructorNode
   Identifier ident;
   ConstructorID cid;
   vector<RecordNode> records;
+  unsigned int size;
 
 public:
 //  CONSTRUCTORS
@@ -64,12 +65,14 @@ public:
   {
     ident = _name;
     cid = next_cid++;
+    size = 0;
   }
 
 //  ACCESSORS
   Identifier get_ident()  { return ident; }
   ConstructorID get_cid() { return cid; }
   vector<RecordNode> get_records() { return records; }
+  unsigned int get_size() { return size; }
 
 //  MUTATORS
   ErrorCode add_record(Identifier ident, TypeID tid)
@@ -79,6 +82,7 @@ public:
     rec.type = tid;
 
     records.push_back(rec);
+    size += 1; // TODO: Change this to real size
 
     free(ident);
     return 0;

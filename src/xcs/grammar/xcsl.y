@@ -79,7 +79,6 @@
 #include "stdlib.h"
 
 //  XCS Libraries
-#include <xcs/bytecode/bytecode.h>
 #include <xcs/comments/comments.h>
 #include <xcs/conditions/conditions.h>
 #include <xcs/grammar/status.h>
@@ -717,7 +716,7 @@ exp_type:
   5.b) Constructors
 */
 
-pre_struct:
+pre_decl_struct:
   CONSTRUCTOR  { decl_constructor($1); }
 ;
 
@@ -726,16 +725,21 @@ pre_struct:
 */
 decl_struct:
     decl_struct BIT_OR decl_struct
-  | pre_struct OF decl_record 
-  | pre_struct OF exp_type     
-  | pre_struct                 
+  | pre_decl_struct OF decl_record 
+  | pre_decl_struct OF exp_type     
+  | pre_decl_struct                 
   | exp_type   { decl_type_alias(last_type); }
+;
+
+
+pre_exp_struct:
+  CONSTRUCTOR { exp_constructor_alloc($1); }
 ;
 
 exp_struct:
     exp_struct exp 
-  | CONSTRUCTOR                 { exp_constructor($1); }
-  | CONSTRUCTOR PAR_LEFT arg_record PAR_RIGHT
+  | pre_exp_struct PAR_LEFT arg_record PAR_RIGHT
+  | CONSTRUCTOR                               { exp_constructor($1); }   
 ; 
 
 
@@ -866,29 +870,9 @@ exp_memwrite:
 */
 
 exp_ipcIO:
-    exp_byte_build      { }
-  | exp_byte_run        { }
-  | exp_tether
+    exp_tether
   | exp_send
   | exp_receive
-;
-
-/*
-  7.a) Build/Run
-*/
-
-/*
-  BUILD EXECUTABLE BYTECODE STRING
-*/
-exp_byte_build:
-    BUILD IDENTIFIER { build_header($2); }
-;
-
-/*
-  RUN EXECUTABLE BYTECODE STRING
-*/
-exp_byte_run:
-    RUN STRING { run_bytestring($2); }
 ;
 
 /*

@@ -35,13 +35,13 @@
 
 #include <vector>
 
+//  XCS Libraries
+#include "typedefs.h"
 
 #include <xcs/regstack/structs.h>
 
 #include <xcs/ident/functions/structs.h>
 #include <xcs/ident/types/structs.h>
-
-#include "typedefs.h"
 
 
 using namespace std;
@@ -83,31 +83,6 @@ typedef struct operands_t
 } operands;
 
 
-/*
-  8.) Internal Memory Allocation
-*/
-
-/*
-  8.a) Infrastructure
-*/
-
-
-/*
-  8.b) Memory Blocks
-*/
-
-/* 8.b.1) Memory Node
-
-*/
-struct node_memory
-{
-  struct node_memory* left;
-  struct node_memory* right;
-  unsigned int height;
-  Address addr;
-  unsigned long size;
-  void* data;
-};
 
 
 

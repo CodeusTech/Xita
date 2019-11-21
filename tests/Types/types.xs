@@ -68,4 +68,4 @@ type tree a =
 Off 5;;
 
 --  Invoke a Tree
-Leaf
+Node (left = Leaf, value = 1, right = Leaf)
