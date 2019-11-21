@@ -112,4 +112,23 @@ ErrorCode decl_constructor(Identifier ident)
   return 0;
 }
 
+/*
+  decl_record(ident)
+    ident: Identifier, representitive of a data structure's element name
+
+    returns:
+      0, if Successful
+*/
+ErrorCode decl_record(Identifier ident)
+{
+  printf("Added record: %s\n", ident);
+  
+  unsigned long n = types.back().count_struct();
+  types.back().get_constructor(n-1).add_record(ident, last_type);
+
+  //  Return Success
+  return 0;
+}
+
+
 #endif

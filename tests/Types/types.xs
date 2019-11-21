@@ -27,7 +27,7 @@
   declaring module and any importing modules.
 *)
 
-type flow = int;;
+type flow = int | real;;
 type dog = Bulldog | Poodle;;
 type switch =
     On of flow
@@ -43,10 +43,19 @@ type node a =
     TYPE EXPRESSIONS are instances of a declared type/constructor
 *)
 
-(*let search a = 
-  if U8 5 is I32
-  then 1
-  else 2
+type person = 
+  Person of 
+    age of int,
+    name of string,
+    height of int;;
+
+
+type tree a = 
+  Leaf |
+  Node of 
+    left of (tree a), 
+    value of a,
+    right of (tree a);;
 
 (*
   2.) Typeclasses
@@ -56,4 +65,7 @@ type node a =
   2.a) Typeclass Declarations
 *)
 
-Off 5
+Off 5;;
+
+--  Invoke a Tree
+Leaf

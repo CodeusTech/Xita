@@ -717,16 +717,19 @@ exp_type:
   5.b) Constructors
 */
 
+pre_struct:
+  CONSTRUCTOR  { decl_constructor($1); }
+;
 
 /*
   CONSTRUCTOR IDENTIFIERS
 */
 decl_struct:
     decl_struct BIT_OR decl_struct
-  | CONSTRUCTOR OF decl_record  { decl_constructor($1); }
-  | CONSTRUCTOR OF exp_type     { decl_constructor($1); }
-  | CONSTRUCTOR                 { decl_constructor($1); }
-  | exp_type                    { decl_type_alias(last_type); }
+  | pre_struct OF decl_record 
+  | pre_struct OF exp_type     
+  | pre_struct                 
+  | exp_type   { decl_type_alias(last_type); }
 ;
 
 exp_struct:
@@ -745,7 +748,7 @@ exp_struct:
 */
 decl_record:
     decl_record OP_COMMA decl_record
-  | IDENTIFIER OF exp_type      { decl_element($1); }
+  | IDENTIFIER OF exp_type      { decl_record($1); }
 ;
 
 exp_record:
