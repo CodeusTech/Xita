@@ -50,4 +50,20 @@ ErrorCode _xcs_alloc(unsigned long _size)
 }
 
 
+ErrorCode _xcs_dealloc()
+{
+
+  //  Return Success
+  return 0;
+}
+
+
+ErrorCode _xcs_realloc()
+{
+
+  //  Return Success
+  return 0;
+}
+
+
 #endif
