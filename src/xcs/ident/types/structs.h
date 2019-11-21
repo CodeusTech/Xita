@@ -43,6 +43,7 @@ struct RecordNode
 {
   Identifier ident;
   TypeID     type;
+  vector<TypeID> extra; //  For type parameters, tuples
 };
 
 
@@ -80,8 +81,8 @@ public:
     records.push_back(rec);
 
     free(ident);
+    return 0;
   }
-
 };
 
 
@@ -99,6 +100,7 @@ class TypeNode
   vector<TypeParameterNode> parameters;   //  Type Parameters
   vector<ConstructorNode>   constructors; //  Type Constructors
   vector<TypeID>            aliases;      //  Type Aliases
+  vector<vector<TypeID> >   extra_alias;  //  For Handling Tuples and Parameterized Types
 
 public: 
 
@@ -118,6 +120,7 @@ public:
 /*
   ACCESSORS
 */
+  Identifier get_ident() { return ident; }
   unsigned long count_param()  { return parameters.size();   }
   unsigned long count_struct() { return constructors.size(); }
   ConstructorID get_enum_term(){ return enum_term; }
@@ -150,6 +153,23 @@ public:
     parameters.push_back(node);
 
     free(ident);
+
+    //  Return Success
+    return 0;
+  }
+
+  /*
+    add_alias(tid)
+      tid: Type ID
+
+      Allows this type identifier to serve as an alias
+  */
+  ErrorCode add_alias(TypeID tid)
+  {
+    if (tid <= 0)
+      return 1;
+
+    aliases.push_back(tid);
 
     //  Return Success
     return 0;

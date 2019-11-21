@@ -709,7 +709,7 @@ exp_type:
   | CHAR_T          { last_type = 15; } 
   | STRING_T        { last_type = 16; } 
   | LIST_T      
-  | IDENTIFIER      { free($1); }
+  | IDENTIFIER      { last_type = find_type($1); }
   | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
 ;
 
@@ -723,19 +723,17 @@ exp_type:
 */
 decl_struct:
     decl_struct BIT_OR decl_struct
-  | CONSTRUCTOR OF exp_type     { decl_constructor($1); }
   | CONSTRUCTOR OF decl_record  { decl_constructor($1); }
+  | CONSTRUCTOR OF exp_type     { decl_constructor($1); }
   | CONSTRUCTOR                 { decl_constructor($1); }
-  | exp_type                    { printf("TODO: Implement Type Aliases\n"); }
+  | exp_type                    { decl_type_alias(last_type); }
 ;
 
 exp_struct:
     exp_struct exp 
-  | CONSTRUCTOR { exp_constructor($1); }
-  | CONSTRUCTOR PAR_LEFT arg_record  PAR_RIGHT
-;
-
-
+  | CONSTRUCTOR                 { exp_constructor($1); }
+  | CONSTRUCTOR PAR_LEFT arg_record PAR_RIGHT
+; 
 
 
 /*
@@ -751,8 +749,8 @@ decl_record:
 ;
 
 exp_record:
-    exp OP_ELEMENT exp_record  {}
-  | IDENTIFIER                  { exp_element($1); }
+    exp OP_ELEMENT exp_record { }
+  | IDENTIFIER                { exp_element($1); }
 ;
 
 arg_record: 
@@ -784,28 +782,28 @@ exp_typeclass:
   PROTOTYPE EXPRESSIONS
 */
 prototype:
-  IDENTIFIER  { decl_proto($1); }
-  | OP_ADD_O     { decl_proto("(+)"); }
-  | OP_SUB_O     { decl_proto("(-)"); }
-  | OP_MUL_O     { decl_proto("(*)"); }
-  | OP_DIV_O     { decl_proto("(/)"); }
-  | OP_MOD_O     { decl_proto("(%)"); }
-  | BOOL_AND_O   { decl_proto("(&&)"); }
-  | BOOL_OR_O    { decl_proto("(||)"); }
-  | BOOL_XOR_O   { decl_proto("(^^)"); }
-  | BIT_AND_O    { decl_proto("(&)"); }
-  | BIT_OR_O     { decl_proto("(|)"); }
-  | BIT_XOR_O    { decl_proto("(^)"); }
-  | BIT_SHL_O    { decl_proto("(<<)"); }
-  | BIT_SHR_O    { decl_proto("(>>)"); }
-  | OP_LT_O      { decl_proto("(<)"); }
-  | OP_LTE_O     { decl_proto("(<=)"); }
-  | OP_GT_O      { decl_proto("(>)"); }
-  | OP_GTE_O     { decl_proto("(>=)"); }
-  | OP_EQ_O      { decl_proto("(==)"); }
-  | OP_NEQ_O     { decl_proto("(!=)"); }
-  | OP_APPEND_O  { decl_proto("(++)"); }
-  | OP_LIST_CON_O{ decl_proto("(:)"); }
+    IDENTIFIER    { decl_proto($1); }
+  | OP_ADD_O      { decl_proto("(+)"); }
+  | OP_SUB_O      { decl_proto("(-)"); }
+  | OP_MUL_O      { decl_proto("(*)"); }
+  | OP_DIV_O      { decl_proto("(/)"); }
+  | OP_MOD_O      { decl_proto("(%)"); }
+  | BOOL_AND_O    { decl_proto("(&&)"); }
+  | BOOL_OR_O     { decl_proto("(||)"); }
+  | BOOL_XOR_O    { decl_proto("(^^)"); }
+  | BIT_AND_O     { decl_proto("(&)"); }
+  | BIT_OR_O      { decl_proto("(|)"); }
+  | BIT_XOR_O     { decl_proto("(^)"); }
+  | BIT_SHL_O     { decl_proto("(<<)"); }
+  | BIT_SHR_O     { decl_proto("(>>)"); }
+  | OP_LT_O       { decl_proto("(<)"); }
+  | OP_LTE_O      { decl_proto("(<=)"); }
+  | OP_GT_O       { decl_proto("(>)"); }
+  | OP_GTE_O      { decl_proto("(>=)"); }
+  | OP_EQ_O       { decl_proto("(==)"); }
+  | OP_NEQ_O      { decl_proto("(!=)"); }
+  | OP_APPEND_O   { decl_proto("(++)"); }
+  | OP_LIST_CON_O { decl_proto("(:)"); }
 ;
 
 proto_comma:

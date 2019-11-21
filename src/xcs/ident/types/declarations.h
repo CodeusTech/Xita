@@ -26,6 +26,8 @@
 #include <xcs/std/structs.h>
 #include <xcs/std/buffers.h>
 
+#include "expressions.h"
+
 extern void yyerror(const char*);
 
 /*
@@ -49,14 +51,65 @@ ErrorCode decl_type (Identifier ident)
   return 0;
 }
 
-ErrorCode decl_type_param(Identifier ident)
+
+/*
+  decl_type_alias(tid)
+    tid: Type ID #
+
+    Allows type expression, referenced by 'tid', as valid constructor of type declaration
+
+    Returns:
+      0, if Successful
+*/
+ErrorCode decl_type_alias(TypeID tid)
 {
-  types.back().add_parameter(ident);
+  /*
+    TODO: ERROR CHECK
+  */
+  types.back().add_alias(tid);
+
+  //  Return Success
+  return 0;
 }
 
+
+/*
+  decl_type_param(ident)
+    ident: Identifier, representative of an arbitrary type expression
+
+    Adds a type parameter of name 'ident' to the current type declaration
+
+    returns:
+      0, if Successful
+*/
+ErrorCode decl_type_param(Identifier ident)
+{
+  /*
+    TODO: ERROR CHECK
+  */
+  types.back().add_parameter(ident);
+
+  return 0;
+}
+
+/*
+  decl_constructor(ident)
+    ident: Capitalized Identifier, representative of type constructor
+
+    Declares a constructor as part of the current type declaration
+
+    returns:
+      0, if Successful
+*/
 ErrorCode decl_constructor(Identifier ident)
 {
+  /*
+    TODO: ERROR CHECK
+  */
   types.back().add_constructor(ident);
+  
+  //  Return Success
+  return 0;
 }
 
 #endif

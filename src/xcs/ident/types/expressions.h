@@ -21,6 +21,12 @@
 extern void yyerror();
 
 
+#include <cstdlib>
+
+
+#include <xcs/std/typedefs.h>
+
+
 
 /*
   find_type()
@@ -57,8 +63,8 @@ ErrorCode exp_type (Identifier ident)
 ConstructorID find_constructor (Identifier ident)
 {
   //  TODO: Optimize This
-  for (int i = 0; i < types.size(); i++)
-    for (int j = 0; j < types[i].count_struct(); j++)
+  for (unsigned long i = 0; i < types.size(); i++)
+    for (unsigned long j = 0; j < types[i].count_struct(); j++)
       if (strcmp(types[i].get_constructor(j).get_ident(), ident) == 0)
         
         //  TODO: Check if given arguments match constructor's expected layout
