@@ -22,7 +22,7 @@
 using namespace std;
 
 //  Number of Arbitrary Data Registers is Architecture Dependent
-#define NUMBER_OF_ADRS 54
+#define NUMBER_OF_ADRS 55
 
 class RegisterStack
 {
@@ -36,8 +36,8 @@ class RegisterStack
   */
   bool isActive(ADR test)
   {
-    for (vector<ADR>::iterator iter = registers.begin(); iter != registers.end(); ++iter)
-      if ((*iter) == test) return true;
+    for (unsigned long i = 0; i < registers.size(); i++)
+      if ((registers[i]) == (test+1)) return true;
     return false;
   }
 
@@ -56,9 +56,10 @@ public:
     ADR check = (ADR) (get_mangle() % NUMBER_OF_ADRS) + 1;
 
     //  If the test register is not in use, add it to active ADRs vector
-    if (!isActive(check)) { registers.push_back(check); }
+    while (isActive(check)) check = (ADR) (get_mangle() % NUMBER_OF_ADRS) + 1;
 
-    //  If all else is kosher, track the data type
+    //  If all else is kosher, Add the entry and type
+    registers.push_back(check);
     types.push_back(tid);
 
     return check;

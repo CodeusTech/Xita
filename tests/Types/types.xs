@@ -33,10 +33,10 @@ type switch =
     On of flow
   | Off;;
 
-(*
+
 type node a = 
     Leaf 
-  | Tree of (node a), a, (node a);;
+  | Tree of node a; a; node a;;
 
 (* 1.b) Type Expressions
 
@@ -53,9 +53,9 @@ type person =
 type tree a = 
   Leaf |
   Node of 
-    left of (tree a), 
+    left of tree a, 
     value of a,
-    right of (tree a);;
+    right of tree a;;
 
 (*
   2.) Typeclasses
@@ -68,4 +68,18 @@ type tree a =
 Off 5;;
 
 --  Invoke a Tree
-Node (left = Leaf, value = 1, right = Leaf)
+--debug "Build an integer tree, with one right-side branch"
+let some_tree = Node (left=Node (left=Leaf, value=2, right=Leaf), value=1, right=Leaf)
+
+--  Syntactically identical structure
+(*Node (
+  left = Leaf, 
+  value = 1, 
+  right = Node (
+    left = Leaf, 
+    value = 1, 
+    right = Leaf
+  ) 
+)*)
+
+

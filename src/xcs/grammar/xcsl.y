@@ -690,7 +690,7 @@ param_type:
   TYPE EXPRESSIONS
 */
 exp_type:
-    PAR_LEFT exp_type exp_type PAR_RIGHT  {printf("Parameterized Type Found\n");}
+    exp_type exp_type  {printf("Parameterized Type Found\n");}
   | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
   | INT_T           { last_type = 2;  }    
   | U8_T            { last_type = 3;  } 
@@ -737,8 +737,8 @@ pre_exp_struct:
 ;
 
 exp_struct:
-    exp_struct exp 
-  | pre_exp_struct PAR_LEFT arg_record PAR_RIGHT
+    pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
+  | exp_struct exp 
   | CONSTRUCTOR                               { exp_constructor($1); }   
 ; 
 
@@ -763,6 +763,7 @@ exp_record:
 arg_record: 
     arg_record OP_COMMA arg_record
   | IDENTIFIER OP_ASSIGN exp
+  | exp
 ;
 
 /*

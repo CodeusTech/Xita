@@ -47,6 +47,10 @@ ErrorCode decl_type (Identifier ident)
   //  Add to Buffers
   types.push_back(node);
 
+  char* str = (char*) malloc(270);
+  sprintf(str, "bl    __decl_type");
+  add_command(str);
+
   //  Return Success
   return 0;
 }
