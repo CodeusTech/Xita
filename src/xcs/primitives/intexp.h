@@ -52,6 +52,7 @@
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
 #include <xcs/regstack/utils.h>
+#include <xcs/asm/text.h>
 
 
 extern unsigned int grammar_status;
@@ -117,10 +118,18 @@ int push_int(long long lit)
   char* str = (char*) malloc(50);
   char* reg_top = get_reg(rs_top(), bits);
 
-
-  //  Add to Queue for File Printing
-  sprintf(str, "mov   %s, #%llu", reg_top, lit);
-  add_command(str);
+  if (rs_top() > 27) 
+  {
+    sprintf(str, "mov  w16, #%llu", lit);
+    add_command(str);
+    sprintf(str, "mov   %s, w16", reg_top);
+    add_command(str);
+  } else
+  {
+    //  Add to Queue for File Printing
+    sprintf(str, "mov   %s, #%llu", reg_top, lit);
+    add_command(str);
+  }
 
   //  Free allocated memory and move to next register on stack
 

@@ -34,6 +34,7 @@
 #include "../grammar/status.h"
 #include "../regstack/regstack.h"
 #include <xcs/regstack/utils.h>
+#include <xcs/asm/text.h>
 
 extern unsigned int grammar_status;
 
@@ -67,19 +68,29 @@ int pop_char()
 int push_char_lit(unsigned char lit)
 {
   ADR reg = rs_push(TYPE_CHAR);
-
-  char* top = get_reg(rs_top(), 32);
-
-  //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  sprintf(str, "mov   %s, #%d\n", top, lit);
+
+  char* reg_top = get_reg(rs_top(), 32);
+
+  if (rs_top() > 27) 
+  {
+    sprintf(str, "mov  w16, #%llu", lit);
+    add_command(str);
+    sprintf(str, "mov   %s, w16", reg_top);
+    add_command(str);
+  } else
+  {
+    //  Add to Queue for File Printing
+    sprintf(str, "mov   %s, #%llu", reg_top, lit);
+    add_command(str);
+  }
 
   //  Add to Queue for File Printing
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
-  free(top);
+  free(reg_top);
 
   return 0;
 }
@@ -115,8 +126,6 @@ int char_from_int(int i)
 
   //  Push to Register Stack
   ADR reg = rs_push(TYPE_CHAR);
-  
-  return 0;
 
   return 0;
 }

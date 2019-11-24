@@ -34,8 +34,8 @@ char* get_reg(ADR i, unsigned char bits)
   */
   if (i < 14) sprintf(str, "w%u", i-1); else
   if (i < 28) sprintf(str, "w%u", i+3); else
-  if (i < 41) sprintf(str, "v%u", i-28); else
-              sprintf(str, "v%u", i-24);
+  if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
+              sprintf(str, "v%u.s[0]", i-24);
 
   return str;
 }
