@@ -27,24 +27,17 @@
 char* get_reg(ADR i, unsigned char bits)
 {
   char* str = (char*) malloc(5);
-  switch (bits)
-  {
-    case 8:
-      sprintf(str, "%c%u", 'b', i);
-      return str;
-    case 16:
-      sprintf(str, "%c%u", 'h', i);
-      return str;
-    case 32:
-      sprintf(str, "%c%u", 'w', i);
-      return str;
-    case 64:
-      sprintf(str, "%c%u", 'x', i);
-      return str;
-    default:
-      //  ERROR
-      return NULL;
-  }
+  
+  /*
+    TODO: 
+      * Reconnect 'bits' functionality to size registers to best fit
+  */
+  if (i < 14) sprintf(str, "w%u", i-1); else
+  if (i < 28) sprintf(str, "w%u", i+3); else
+  if (i < 41) sprintf(str, "v%u", i-28); else
+              sprintf(str, "v%u", i-24);
+
+  return str;
 }
 
 #endif

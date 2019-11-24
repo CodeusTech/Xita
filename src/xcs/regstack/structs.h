@@ -37,7 +37,7 @@ class RegisterStack
   bool isActive(ADR test)
   {
     for (unsigned long i = 0; i < registers.size(); i++)
-      if ((registers[i]) == (test+1)) return true;
+      if ((registers[i]) == (test)) return true;
     return false;
   }
 
