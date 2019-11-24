@@ -120,7 +120,7 @@ int push_int(long long lit)
 
   if (rs_top() > 27) 
   {
-    sprintf(str, "mov  w16, #%llu", lit);
+    sprintf(str, "mov   w16, #%llu", lit);
     add_command(str);
     sprintf(str, "mov   %s, w16", reg_top);
     add_command(str);

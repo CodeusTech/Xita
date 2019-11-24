@@ -93,6 +93,14 @@ ErrorCode decl_constant(Identifier ident)
   asm_data.push_back(strdup(str));
   constants.push_back(cnst);
 
+  /*
+    TODO:
+      * Initialize ConstantNode, as according to XCS Tech Spec
+      * Ensure all data that needs to be pushed to data stack is so
+  */
+  sprintf(str, "bl    __decl_const");
+  add_command(str);
+
   //  Free Local String Buffers
   free(str);
   free(size);
@@ -123,9 +131,19 @@ ErrorCode decl_function (Identifier ident)
 
   
   //  Print Function Identifier to Assembly File
-  char comm[300];
-  sprintf(comm, "\n__%lu_%s:", fnode.get_ID() , fnode.get_identifier());
-  add_command(comm);
+  char* str = (char*) malloc(50);
+  sprintf(str, "\n__%lu_%s:", fnode.get_ID() , fnode.get_identifier());
+  add_command(str);
+
+  /*
+    TODO:
+      * Initialize ConstantNode, as according to XCS Tech Spec
+      * Ensure all data that needs to be pushed to data stack is so
+  */
+  sprintf(str, "bl    __decl_funct");
+  add_command(str);
+
+  free(str);
 
   return 0;
 }
