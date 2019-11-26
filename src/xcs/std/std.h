@@ -12,7 +12,11 @@
 #ifndef XCS_GLOBALS_H
 #define XCS_GLOBALS_H
 
+#include "typedefs.h"
 #include "structs.h"
 #include "buffers.h"
+
+#include "optimize.h"
+#include "scope.h"
 
 #endif

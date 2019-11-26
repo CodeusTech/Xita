@@ -74,14 +74,14 @@ int push_char_lit(unsigned char lit)
 
   if (rs_top() > 27) 
   {
-    sprintf(str, "mov  w16, #%llu", lit);
+    sprintf(str, "mov  w16, #%d", lit);
     add_command(str);
     sprintf(str, "mov   %s, w16", reg_top);
     add_command(str);
   } else
   {
     //  Add to Queue for File Printing
-    sprintf(str, "mov   %s, #%llu", reg_top, lit);
+    sprintf(str, "mov   %s, #%d", reg_top, lit);
     add_command(str);
   }
 

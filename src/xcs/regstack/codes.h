@@ -32,10 +32,34 @@ char* get_reg(ADR i, unsigned char bits)
     TODO: 
       * Reconnect 'bits' functionality to size registers to best fit
   */
-  if (i < 14) sprintf(str, "w%u", i-1); else
-  if (i < 28) sprintf(str, "w%u", i+3); else
-  if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-              sprintf(str, "v%u.s[0]", i-24);
+  switch(bits)
+  {
+    case (8):
+      if (i < 14) sprintf(str, "b%u", i-1); else
+      if (i < 28) sprintf(str, "b%u", i+3); else
+      if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
+                  sprintf(str, "v%u.s[0]", i-24);
+      break;
+    case (16):
+      if (i < 14) sprintf(str, "s%u", i-1); else
+      if (i < 28) sprintf(str, "s%u", i+3); else
+      if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
+                  sprintf(str, "v%u.s[0]", i-24);
+      break;
+    case (32):
+      if (i < 14) sprintf(str, "w%u", i-1); else
+      if (i < 28) sprintf(str, "w%u", i+3); else
+      if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
+                  sprintf(str, "v%u.s[0]", i-24);
+      break;
+    case (64):
+      if (i < 14) sprintf(str, "x%u", i-1); else
+      if (i < 28) sprintf(str, "x%u", i+3); else
+      if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
+                  sprintf(str, "v%u.s[0]", i-24);
+      break;
+  }
+
 
   return str;
 }

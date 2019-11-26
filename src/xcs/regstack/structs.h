@@ -17,12 +17,10 @@
 
 //  XCS Libraries
 #include <xcs/std/typedefs.h>
+#include <xcs/std/optimize.h>
 #include <xcs/utils/mangle.h>
 
 using namespace std;
-
-//  Number of Arbitrary Data Registers is Architecture Dependent
-#define NUMBER_OF_ADRS 55
 
 class RegisterStack
 {
