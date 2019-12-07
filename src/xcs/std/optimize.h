@@ -25,6 +25,9 @@ enum xcs_optimization_scheme
   a64sr = 55,
 };
 
+
+xcs_optimization_scheme _scheme = xcs_optimization_scheme::DEFAULT;
+
 //  Number of Arbitrary Data Registers is Architecture Dependent
 unsigned long NUMBER_OF_ADRS = xcs_optimization_scheme::DEFAULT;
 /*
@@ -37,5 +40,15 @@ unsigned long NUMBER_OF_ADRS = xcs_optimization_scheme::DEFAULT;
   TODO: 
     * Set 'NUMBER_OF_ADRS' procedurally, based on optimization scheme setting
 */
+
+ErrorCode set_optimization(xcs_optimization_scheme scheme) 
+{ 
+  _scheme = scheme; 
+  NUMBER_OF_ADRS = scheme;
+  
+  //  Return Success
+  return 0;
+}
+xcs_optimization_scheme get_optimization() { return _scheme; }
 
 #endif

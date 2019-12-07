@@ -73,25 +73,25 @@ int main(int argc, char** argv)
 		else if (strcmp(argv[i], "-a32i") == 0) 
 		{
 			printf("Enabling 32-bit Integer Optimization\n");
-			NUMBER_OF_ADRS = xcs_optimization_scheme::a32i;
+			set_optimization(xcs_optimization_scheme::a32i);
 		}
 		//  Optimization Option: a32f
 		else if (strcmp(argv[i], "-a32f") == 0) 
 		{
 			printf("Enabling 32-bit Floating-Point Optimization\n");
-			NUMBER_OF_ADRS = xcs_optimization_scheme::a32f;
+			set_optimization(xcs_optimization_scheme::a32f);
 		}
 		//  Optimization Option: a48sr
 		else if (strcmp(argv[i], "-a48sr") == 0) 
 		{
 			printf("Enabling 48-Wide Tuple Returns\n");
-			NUMBER_OF_ADRS = xcs_optimization_scheme::a48sr;
+			set_optimization(xcs_optimization_scheme::a48sr);
 		}
 		//  Optimization Option: a64sr
 		else if (strcmp(argv[i], "-a64sr") == 0) 
 		{
 			printf("Enabling 64-Wide Tuple Returns\n");
-			NUMBER_OF_ADRS = xcs_optimization_scheme::a64sr;
+			set_optimization(xcs_optimization_scheme::a64sr);
 		}
 
 		//  Assume Input File

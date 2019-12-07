@@ -11,21 +11,22 @@
 
 
 let sum x y = x + y;;
-let sum x y z = x + y + z;;
+--let sum x y z = x + y + z;;
 let prod x y = x * y;;
 
 sum 1 2;;
-prod 1 2;;
-sum 1 2;;
+prod 1 2
+--sum 1 2;;
 
 --  Test Parameter Overloading
-sum 1 2 3;;
+--sum 1 2 3;;
 
 --  Test Nested Functions
-debug "Test Unparameterized Functions"
-let test = 
-    1;;
+--debug "Test Unparameterized Functions"
+--let test = 
+    --1;;
 
-@test
+--@test
 
 
+type compass = North | South | East | West

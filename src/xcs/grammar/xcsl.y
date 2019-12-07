@@ -343,6 +343,7 @@ exp:
   | DELAY exp exp  
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
 //  | IDENTIFIER arg_funct                    { resolve_function( find_function($1) );   }
+  | decl
   | exp_primitive
   | exp_arith
   | exp_logical
