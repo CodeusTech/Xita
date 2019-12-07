@@ -850,13 +850,15 @@ exp_memIO:
 ;
 
 
-read:
+memread:
   exp MEM_READ {  }
 ;
 
 exp_memread:
-    read IDENTIFIER IN exp { memory_read_exp($2); }
-  | read THIS { memory_read_exp(); }
+    memread THIS INT { memory_read_this(); }
+  | memread THIS     { memory_read_this(); }
+  | memread IDENTIFIER INT IN exp { memory_read_exp($2); }
+  | memread IDENTIFIER     IN exp { memory_read_exp($2); }
 ;
 
 /*
@@ -864,6 +866,7 @@ exp_memread:
 */
 exp_memwrite:
     exp MEM_SET exp { memory_write_exp(); }
+  | exp MEM_SET exp INT {memory_write_exp(); }
 ;
 
 

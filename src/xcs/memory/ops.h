@@ -54,7 +54,7 @@ int memory_read_exp(char* ident)
   memory_read_exp()
     
 */
-int memory_read_exp()
+int memory_read_this()
 {
   //  Make Room on Register Stack for new entry
   rs_push(2);
