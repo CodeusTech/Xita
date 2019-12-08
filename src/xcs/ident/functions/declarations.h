@@ -163,7 +163,7 @@ ErrorCode ret_function ()
      * Set Current Scope to Parent Context Scope
   */
 
-  for (int i = 0; i < (functions.back().count_reg() - functions.back().count_param()); i++)
+  for (unsigned int i = 0; i < (functions.back().count_reg() - functions.back().count_param()); i++)
   {
     ADR top = functions.back().get_top();
     TypeID top_tid = functions.back().get_top_type();

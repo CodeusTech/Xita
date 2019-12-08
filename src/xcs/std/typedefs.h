@@ -41,6 +41,7 @@ typedef unsigned long TypeclassID;
 typedef unsigned int PrototypeID;
 
 //  Processes
+typedef unsigned long ModuleID;
 typedef unsigned long ProcessID;
 typedef unsigned long OfferID;
 

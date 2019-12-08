@@ -97,13 +97,15 @@ int main(int argc, char** argv)
 		//  Assume Input File
 		else
 		{
-			
-
 			interpreted = false;
 
 			//  Init Text Buffer
 			list<string> tmp;
 			asm_text.push_back(tmp);
+
+			//  Init Module Tree
+			root = ModuleNode();
+			context = root;
 
 			//  Set Parser File Pointer
 			yyin = fopen(argv[i], "r");

@@ -25,8 +25,7 @@
 #ifndef XCS_MODULES_H
 #define XCS_MODULES_H
 
-#include "header.h"
-#include "source.h"
-#include "tether.h"
+#include "structs.h"
+
 
 #endif

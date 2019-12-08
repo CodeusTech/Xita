@@ -45,7 +45,7 @@ ErrorCode decl_type (Identifier ident)
   TypeNode node = TypeNode(ident);
 
   //  Add to Buffers
-  types.push_back(node);
+  context.add_type(node);
 
   char* str = (char*) malloc(270);
   sprintf(str, "bl    __decl_type");
@@ -70,7 +70,8 @@ ErrorCode decl_type_alias(TypeID tid)
   /*
     TODO: ERROR CHECK
   */
-  types.back().add_alias(tid);
+  context.get_last_type().add_alias(tid);
+			printf("Check!!!\n");
 
   //  Return Success
   return 0;
@@ -91,7 +92,7 @@ ErrorCode decl_type_param(Identifier ident)
   /*
     TODO: ERROR CHECK
   */
-  types.back().add_parameter(ident);
+  context.get_last_type().add_parameter(ident);
 
   return 0;
 }
@@ -110,7 +111,7 @@ ErrorCode decl_constructor(Identifier ident)
   /*
     TODO: ERROR CHECK
   */
-  types.back().add_constructor(ident);
+  context.add_constructor(ident);
   
   //  Return Success
   return 0;
@@ -125,10 +126,9 @@ ErrorCode decl_constructor(Identifier ident)
 */
 ErrorCode decl_record(Identifier ident)
 {
-  printf("Added record: %s\n", ident);
+  //printf("Added Record: %s\n", ident);
   
-  unsigned long n = types.back().count_struct();
-  types.back().get_constructor(n-1).add_record(ident, last_type);
+  context.add_record(ident, last_type);
 
   //  Return Success
   return 0;
