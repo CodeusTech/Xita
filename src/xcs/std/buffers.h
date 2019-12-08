@@ -99,23 +99,18 @@ Scope* scope_parents;  //  Parent (Return) Scope
 TypeID last_type = 0;
 ConstructorID last_constructor = 0;
 
-/*
-  4.) Functional Buffers
-*/
-
-vector<ConstantNode> constants;
-vector<FunctionNode> functions;
 
 bool pfunct = false;  //  DEPRECATED
 vector<TypeID> argt;
 Scope args = 0;
 
-/*
-  5.) Type Buffers
-*/
+  //  TODO: Move these to 'modules'
+  //        Fix the numerous bugs that will be triggered
+  vector<ConstantNode> constants;
+  vector<FunctionNode> functions;
 
-//  5.a) Type Data
-vector<TypeNode> types;
+ModuleNode root;
+ModuleNode context;
 
 
 //  5.c) Typeclasses 

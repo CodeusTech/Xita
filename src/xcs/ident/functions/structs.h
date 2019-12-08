@@ -239,14 +239,14 @@ public:
   ErrorCode clear() 
   { 
     //  Clear Returns
-    for (int i = 0; i < return_count(); i++)
+    for (unsigned int i = 0; i < return_count(); i++)
     {
       rtn_reg.pop_back();
       rtn_tid.pop_back();
     }
 
     //  Clear Active Registers in Stack
-    for (int i = 0; i < reg_stack.size(); i++)
+    for (unsigned int i = 0; i < reg_stack.size(); i++)
     {
       reg_stack.pop();
     }
