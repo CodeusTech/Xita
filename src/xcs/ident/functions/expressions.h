@@ -45,13 +45,15 @@
 */
 ConstantID find_constant(Identifier ident)
 {
-  for (vector<ConstantNode>::iterator it = constants.begin(); it != constants.end(); it++)
-    if (strcmp((*it).get_identifier(), ident) == 0) 
+  for (vector<ConstantNode>::iterator it = context.get_constants().begin(); it != context.get_constants().end(); it++)
+  
+  for (int i = 0; i < context.count_constants(); i++)
+    if (strcmp(context.get_constant(i).get_identifier(), ident) == 0) 
     {
       found = true;
       free(ident);
 
-      return (*it).get_ID();
+      return context.get_constant(i).get_ID();
     }
 
   return (ConstantID) NULL;
@@ -70,7 +72,7 @@ ErrorCode resolve_constant(ConstantID _const)
   char* rtop = get_reg(rs_top(), 32);
 
   //  Add to Queue for File Printing
-  sprintf(str, "ldr   %s, %s", rtop, constants.at(_const-1).get_identifier());
+  sprintf(str, "ldr   %s, %s", rtop, context.get_constants().at(_const-1).get_identifier());
   add_command(str);
 
   //  Deallocate Strings

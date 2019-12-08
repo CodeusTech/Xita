@@ -43,7 +43,8 @@ class ModuleNode
   /*
     Identifier Bindings
   */
-  //  TODO: Move constants, functions, etc. here
+  vector<ConstantNode> constants;
+  vector<FunctionNode> functions;
   vector<TypeNode> types;
 
  /*
@@ -57,10 +58,22 @@ public:
 //  ACCESSORS
   ModuleType get_module_type() { return mod_type; }
 
+  //  Constants
+  vector<ConstantNode> get_constants() { return constants; }
+  ConstantNode get_constant(ConstantID cid) { return constants[cid]; }
+  unsigned int count_constants() { return constants.size(); }
+
+  // Functions
+  vector<FunctionNode> get_functions() { return functions; }
+  FunctionNode get_function(FunctionID fid) { return functions[fid]; }
+  FunctionNode get_last_function() { return functions.back(); }
+  unsigned int count_functions() { return constants.size(); }
+
   //  Types
   vector<TypeNode> get_types() { return types;  }
   TypeNode get_type(TypeID tid) {return types[tid]; }
   TypeNode get_last_type() { return types.back(); }
+  unsigned int count_types() { return constants.size(); }
 
   ConstructorNode get_last_constructor() { return types.back().get_constructor(types.back().count_struct()-1); }
 
@@ -71,6 +84,11 @@ public:
   ErrorCode add_constructor(Identifier ident) { types.back().add_constructor(ident); return 0; }
   ErrorCode add_record(Identifier ident, TypeID tid) 
     { int st = types.back().count_struct(); types.back().get_constructor(st-1).add_record(ident, tid); return 0; }
+
+  //  Constants
+  ErrorCode add_constant(ConstantNode cnst) { constants.push_back(cnst); return 0; }
+
+  //  Functions
 
 
   ErrorCode open_header(char* fname)

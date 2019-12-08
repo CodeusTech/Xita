@@ -91,7 +91,7 @@ ErrorCode decl_constant(Identifier ident)
     
   //  Commit to .data Section
   asm_data.push_back(strdup(str));
-  constants.push_back(cnst);
+  context.add_constant(cnst);
 
   /*
     TODO:

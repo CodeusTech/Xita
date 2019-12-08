@@ -106,7 +106,6 @@ Scope args = 0;
 
   //  TODO: Move these to 'modules'
   //        Fix the numerous bugs that will be triggered
-  vector<ConstantNode> constants;
   vector<FunctionNode> functions;
 
 ModuleNode root;
