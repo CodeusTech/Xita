@@ -134,14 +134,22 @@ public:
 */
 class FunctionNode
 {
+  //  General Properties
   FunctionID fid;
   Identifier identifier;
   Scope parent;
+
+  //  Function Properties
   Scope scope;
-  TypeID rtn_type = TYPE_ARBITRARY;
+  RegisterStack reg_stack;
+
+  //  Return Properties
+  vector<TypeID> rtn_tid;
+  vector<ADR>    rtn_reg;
+
+  //  Parameters
   vector<FunctionParameterNode> parameters;
   ParameterID param_index;
-  RegisterStack reg_stack;
 
 public:
 
@@ -165,23 +173,38 @@ public:
   Scope get_parent() const { return parent; }
   FunctionID get_ID() const { return fid; }
   Identifier get_identifier() const { return identifier; }
-  TypeID get_type() const { return rtn_type; }
+  bool is_active(ADR r) const  { return reg_stack.isActive(r); }
 
+  //  Parameters
   unsigned int count_param() const { return parameters.size(); }
   FunctionParameterNode get_param(int p) { return parameters[p]; }
   TypeID get_param_type(int p) { return parameters[p].get_type(); }
   ADR get_param_reg(int p) { return parameters[p].get_reg(); }
   
+  //  Returns
+  ADR return_register(int i) { return rtn_reg[i]; }
+  TypeID return_type(int i) const { return rtn_tid[i]; }
+
+
   //  Register Stack Accessors
   ADR get_top() { return reg_stack.top(); }
   ADR get_sec() { return reg_stack.sec(); }
   TypeID get_top_type() { return reg_stack.top_type(); }
   TypeID get_sec_type() { return reg_stack.sec_type(); }
+  unsigned int count_reg() const { return reg_stack.size(); }
 
 //  MUTATORS
   ErrorCode push(TypeID tid) { return reg_stack.push(tid); }
+  ErrorCode push_reg(TypeID tid, ADR reg) { return reg_stack.push_reg(tid, reg); }
+  ErrorCode push_rtn(TypeID tid, ADR reg) { rtn_reg.push_back(reg); rtn_tid.push_back(tid); return 0; }
   ErrorCode pop() { return reg_stack.pop(); }
 
+  
+  /* Add Parameter 
+
+    Returns:
+      0, if Successful
+  */
   ErrorCode add_parameter(Identifier ident)
   {
     printf("Added Parameter ( %s ) to function ( %s )\n", ident, get_identifier());
@@ -196,33 +219,40 @@ public:
     return 0;
   }
 
-  /* 2.) Serialize Register Stack
 
-    Returns:
-      0, if Successful
-  */
-  /*ErrorCode serialize()
+
+  unsigned int return_count()
   {
-    unsigned long long reg1 = (unsigned long long) 0;
+    return rtn_reg.size();
+  }
 
-    //  Create Serial Integers
-    for (int i = 0; i < active; i++)
+
+  /*
+    TODO: Implement this
+  */
+  ErrorCode serialize()
+  {
+    //  Return Success
+    return 0;
+  }
+
+  ErrorCode clear() 
+  { 
+    //  Clear Returns
+    for (int i = 0; i < return_count(); i++)
     {
-      unsigned long long test = (unsigned long long) rs[scope_curr].rs_code[rs_sec()];
-      unsigned long long test2 = ((31 & test) << (i * 5));
-
-      reg1 |= test2;
-
-      ADR reg = rs_pop();
+      rtn_reg.pop_back();
+      rtn_tid.pop_back();
     }
 
-    char* str = (char*) malloc(50);
-    sprintf(str, "mov   W30, %llu\n", reg1);
+    //  Clear Active Registers in Stack
+    for (int i = 0; i < reg_stack.size(); i++)
+    {
+      reg_stack.pop();
+    }
 
-    add_command(str);
-
-    return 0;
-  }*/
+    return 0; 
+  }
 
 };
 

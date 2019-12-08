@@ -286,7 +286,7 @@ src2:
 ;
 
 src:
-    src2 OP_SEP src
+    src2 OP_SEP src {  }
   | src2  
 ;
 

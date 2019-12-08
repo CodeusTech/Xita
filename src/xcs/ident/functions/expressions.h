@@ -148,19 +148,59 @@ FunctionID find_function (Identifier ident)
 }
 
 
-
-
-ErrorCode resolve_function (FunctionID _funct)
+ErrorCode resolve_function (FunctionID fid)
 {
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
 
-  while (argt.size() > 0) { load_argument(_funct); }
+  //  If Arguments are waited to be loaded,
+  //    Load into the called function
+  while (argt.size() > 0) { load_argument(fid); }
 
   //  Add to Queue for File Printing
-  sprintf(str, "bl __%lu_%s", functions[_funct-1].get_ID(), functions[_funct-1].get_identifier());
+  sprintf(str, "bl __%lu_%s", functions[fid-1].get_ID(), functions[fid-1].get_identifier());
   add_command(str);
+
+  //  Handle Return Registers after function call
+  for (unsigned int i = 0; i < functions[fid-1].return_count(); i++)
+  {
+    if (get_scope_curr() == 0) 
+    {
+      if (rs_root.isActive(functions[fid-1].return_register(i)))
+      {
+        rs_push(functions[fid-1].return_type(i));
+
+        char* top = get_reg(rs_top(), 32);
+        char* rtn = get_reg(functions[fid-1].return_register(i), 32);
+
+        sprintf(str, "mov   %s, %s", top, rtn);
+        add_command(str);
+
+        free (top);
+        free (rtn);
+      }
+    }
+    else {
+      if (functions[get_scope_curr()].is_active(functions[fid-1].return_register(i)))
+      {
+        rs_push(functions[fid-1].return_type(i));
+
+        char* top = get_reg(rs_top(), 32);
+        char* rtn = get_reg(functions[fid-1].return_register(i), 32);
+
+        sprintf(str, "mov   %s, %s", top, rtn);
+        add_command(str);
+
+        free (top);
+        free (rtn);
+
+      } else 
+      {
+        rs_push_reg(functions[fid-1].return_type(i), functions[fid-1].return_register(i));
+      } 
+    }
+  }
   
   //  Deallocate Strings
   free(str);

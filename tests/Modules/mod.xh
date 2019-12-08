@@ -9,5 +9,6 @@
   STUB to be imported for testing
 *)
 
-let some_funct x y = x * y
+debug "Simple test of import capabilities"
+let test_sum x y = x + y
 

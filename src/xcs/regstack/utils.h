@@ -59,6 +59,14 @@ ErrorCode rs_push(TypeID tid)
   return functions[s-1].push(tid);
 }
 
+ErrorCode rs_push_reg(TypeID tid, ADR reg)
+{
+  Scope s = get_scope_curr();
+
+  if (s == 0) { return rs_root.push_reg(tid, reg); }
+  return functions[s-1].push_reg(tid, reg);
+}
+
 ErrorCode rs_pop()
 {
   Scope s = get_scope_curr();
@@ -73,7 +81,10 @@ ErrorCode end_scope()
   scope_curr = 0;
   last_type = 2;
 
-  rs_root = RegisterStack();
+  for (unsigned int i = 0; i < rs_root.size(); i++)
+  {
+    rs_root.pop();
+  }
 
   return 0;
 }

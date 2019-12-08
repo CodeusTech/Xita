@@ -28,21 +28,21 @@ class RegisterStack
   vector<TypeID> types;
 
 
-  /*  PRIVATE FUNCTION
+public:
+
+//  CONSTRUCTORS
+  RegisterStack() {}
+
+  /*
     isActive(test)
       Returns true if the test ADR is already active
   */
-  bool isActive(ADR test)
+  bool isActive(ADR test) const
   {
     for (unsigned long i = 0; i < registers.size(); i++)
       if ((registers[i]) == (test)) return true;
     return false;
   }
-
-public:
-
-//  CONSTRUCTORS
-  RegisterStack() {}
 
 //  MUTATORS
   ADR push(TypeID tid)
@@ -63,6 +63,18 @@ public:
     return check;
   }
 
+  ADR push_reg(TypeID tid, ADR reg)
+  {
+    //  If all registers are in use, reroute to extended stack space
+    if (registers.size() >= NUMBER_OF_ADRS) { return NUMBER_OF_ADRS + 1; } 
+
+    //  If all else is kosher, Add the entry and type
+    registers.push_back(reg);
+    types.push_back(tid);
+
+    return reg;
+  }
+
   ErrorCode pop()
   {
     registers.pop_back();
@@ -74,6 +86,8 @@ public:
 
   ADR top_type() { return types.back(); }
   ADR sec_type() { return types.at(types.size()-2); }
+
+  unsigned int size() const { return registers.size(); }
 };
 
 

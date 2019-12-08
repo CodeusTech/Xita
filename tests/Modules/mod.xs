@@ -11,4 +11,4 @@
 
 open Header "mod.xh";;
 
-1
+sum_funct 1 2
