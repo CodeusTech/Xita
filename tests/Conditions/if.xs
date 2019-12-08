@@ -11,5 +11,9 @@
 
 if 1 < 5
 then 3
-else 4
+else 4;;
+
+if False
+then 50
+else 70
 

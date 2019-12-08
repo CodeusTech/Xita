@@ -79,7 +79,7 @@ int infer_subtraction()
   TypeID lhsT = rs_sec_type();
   TypeID rhsT = rs_top_type();
 
-  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_subtraction();
+  if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return integer_subtraction();
 
   return 0;
 }
@@ -95,7 +95,7 @@ int infer_multiplication()
   TypeID lhsT = rs_sec_type();
   TypeID rhsT = rs_top_type();
 
-  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_multiplication();
+  if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return integer_multiplication();
 
   return 0;
 }
@@ -112,7 +112,7 @@ int infer_division()
   TypeID lhsT = rs_sec_type();
   TypeID rhsT = rs_top_type();
 
-  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_division();
+  if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return integer_division();
 
   return 0;
 }
@@ -129,7 +129,7 @@ int infer_modulus()
   TypeID lhsT = rs_sec_type();
   TypeID rhsT = rs_top_type();
 
-  if ((lhsT>1 && lhsT<11) && (rhsT>1 && rhsT<11)) return integer_modulo();
+  if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return integer_modulo();
 
   return 0;
 }

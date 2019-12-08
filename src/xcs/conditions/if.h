@@ -68,9 +68,6 @@ unsigned int exp_if(unsigned int mang)
   //  TODO:  Error Check
   //           * TOP
 
-  //  Pop TOP
-  rs_pop();
-
   //  Allocate Memory for String
   char* str = (char*) malloc (70);
   char* top = get_reg(rs_top(), 32);
@@ -108,7 +105,6 @@ int exp_then(unsigned int mang)
   add_command(str);
 
   free(str);
-  rs_pop();
 
   return mang;
 }
@@ -144,9 +140,16 @@ ErrorCode exp_else(unsigned int mang)
 {
   char* str = (char*) malloc (80);
 
+  char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
+
+  sprintf(str, "mov   %s, %s", sec, top);
+  add_command(str);
+
   sprintf(str, "finish_%u:", mang);
   add_command(str);
 
+  rs_pop();
   free(str);
 
   //  Return Success
