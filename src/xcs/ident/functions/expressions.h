@@ -179,6 +179,9 @@ ErrorCode resolve_function (FunctionID fid)
 
         free (top);
         free (rtn);
+      } else 
+      {
+        rs_push_reg(functions[fid-1].return_type(i), functions[fid-1].return_register(i));
       }
     }
     else {
@@ -198,9 +201,11 @@ ErrorCode resolve_function (FunctionID fid)
       } else 
       {
         rs_push_reg(functions[fid-1].return_type(i), functions[fid-1].return_register(i));
-      } 
+      }
     }
   }
+
+  printf("Size: %d\n", rs_root.size());
   
   //  Deallocate Strings
   free(str);

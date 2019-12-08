@@ -78,6 +78,7 @@ public:
   ErrorCode pop()
   {
     registers.pop_back();
+    types.pop_back();
     return 0;
   }
 
