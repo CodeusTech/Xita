@@ -240,7 +240,6 @@ extern Scope xcs_args;
 %left MEM_READ_O MEM_SET_O ARROW_L_O ARROW_R_O 
 
 //  Literal Operations
-%left IDENTIFIER
 %left REAL INT TRUE FALSE
 %left BOOL_AND BOOL_OR BOOL_XOR OP_LT OP_GT OP_LTE OP_GTE OP_EQ OP_NEQ IS
 
@@ -248,6 +247,7 @@ extern Scope xcs_args;
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
+%left IDENTIFIER
 
 %left IN
 
@@ -342,13 +342,12 @@ exp:
     PAR_LEFT exp PAR_RIGHT
   | DELAY exp exp  
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
-//  | IDENTIFIER arg_funct                    { resolve_function( find_function($1) );   }
-  | decl
-  | exp_primitive
-  | exp_arith
-  | exp_logical
-  | exp_conditional
-  | exp_funct                                
+  | decl  
+  | exp_literal      
+  | exp_arith    
+  | exp_logical      
+  | exp_conditional  
+  | exp_struct     
   | exp_regex       
   | exp_request   
   | exp_memIO
@@ -363,6 +362,13 @@ exp:
   2.) Primitive Expressions
 */
 
+exp_literal:
+    exp_primitive
+  | PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { resolve_function( find_function($2) ); }
+  | IDENTIFIER arg_funct  {resolve_function( find_function( $1 ) ); }
+  | IDENTIFIER            {resolve_expression($1);}
+;
+
 exp_primitive:
     exp_integer         { last_type = TYPE_INTEGER; }
   | exp_boolean         { last_type = TYPE_BOOLEAN; }
@@ -371,8 +377,6 @@ exp_primitive:
   | exp_string          { last_type = TYPE_STRING;  }
   | exp_list            { }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
-  | exp_struct
-  | IDENTIFIER          { resolve_expression($1); /* TODO: Type Check here */ }
 ;
 
 /*
@@ -620,8 +624,8 @@ decl_funct:
 ;
 
 exp_param:
-    exp_param IDENTIFIER { functions.back().add_parameter($2); }
-  | IDENTIFIER { functions.back().add_parameter($1); }
+    exp_param IDENTIFIER { context.add_parameter($2); }
+  | IDENTIFIER { context.add_parameter($1); }
 ;
 
 exp_inline:
@@ -633,17 +637,13 @@ exp_inline:
   FUNCTION EXPRESSIONS (INVOCATIONS)
 */
 
-exp_funct:
-    IDENTIFIER arg_funct  { resolve_function( find_function($1) ); }
-;
-
 
 /*
   ARGUMENT EXPRESSIONS (INVOCATIONS)
 */
 arg_funct:
-    arg_funct arg_funct {  }
-  | exp_primitive           { argt.push_back(last_type); }
+    arg_funct arg_funct 
+  | exp_literal           { argt.push_back(last_type); }
 ;
 
 

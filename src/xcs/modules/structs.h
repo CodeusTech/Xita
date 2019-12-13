@@ -44,7 +44,7 @@ class ModuleNode
     Identifier Bindings
   */
   vector<ConstantNode> constants;
-  vector<FunctionNode> functions;
+  vector<FunctionNode> functions = vector<FunctionNode>();
   vector<TypeNode> types;
 
  /*
@@ -52,7 +52,7 @@ class ModuleNode
  */
 public: 
 //  Constructors
-  ModuleNode() {  }
+  ModuleNode() { }
   ModuleNode(ModuleType mtype) { mod_type = mtype; }
 
 //  ACCESSORS
@@ -67,7 +67,36 @@ public:
   vector<FunctionNode> get_functions() { return functions; }
   FunctionNode get_function(FunctionID fid) { return functions[fid]; }
   FunctionNode get_last_function() { return functions.back(); }
-  unsigned int count_functions() { return constants.size(); }
+  ErrorCode remove_last_function() { functions.pop_back(); return 0; }
+  unsigned int count_functions() { return functions.size(); }
+
+    Identifier get_function_identifier(FunctionID fid) { return functions[fid].get_identifier(); }
+
+    //  Functional Register Stacks
+    ErrorCode push(FunctionID fid, TypeID tid) { return functions[fid].push(tid); }
+    ErrorCode push_reg(FunctionID fid, TypeID tid, ADR reg) { return functions[fid].push_reg(tid, reg); }
+    ErrorCode push_rtn(FunctionID fid, TypeID tid, ADR reg) { return functions[fid].push_rtn(tid, reg); }
+    ErrorCode pop(FunctionID fid) { return functions[fid].pop(); }
+
+    ADR get_top(FunctionID fid) { return functions[fid].get_top(); }
+    ADR get_sec(FunctionID fid) { return functions[fid].get_sec(); }
+    ADR get_rtn(FunctionID fid, int rtn_index) { return functions[fid].return_register(rtn_index); }
+
+    TypeID get_top_type(FunctionID fid) { return functions[fid].get_top_type(); }
+    TypeID get_sec_type(FunctionID fid) { return functions[fid].get_sec_type(); }
+    TypeID get_rtn_type(FunctionID fid, int rtn_index) { return functions[fid].return_type(rtn_index); }
+
+    unsigned int count_ADRs(FunctionID fid) const { return functions[fid].count_reg(); }
+    unsigned int count_param(FunctionID fid) const { return functions[fid].count_param(); }
+    unsigned int count_rtn(FunctionID fid) const { return functions[fid].count_rtn(); }
+
+    FunctionID get_parent(FunctionID fid) const { return functions[fid].get_parent(); }
+    bool is_active(FunctionID fid, ADR reg) const { return functions[fid].is_active(reg); }
+
+    //  Parameters
+    ADR get_param_reg(FunctionID fid, ParameterID p) { return functions[fid].get_param_reg(p); }
+
+
 
   //  Types
   vector<TypeNode> get_types() { return types;  }
@@ -89,7 +118,8 @@ public:
   ErrorCode add_constant(ConstantNode cnst) { constants.push_back(cnst); return 0; }
 
   //  Functions
-
+  ErrorCode add_function(FunctionNode fnode) { functions.push_back(fnode); return 0; }
+  ErrorCode add_parameter(Identifier ident) { return functions.back().add_parameter(ident); }
 
   ErrorCode open_header(char* fname)
   {

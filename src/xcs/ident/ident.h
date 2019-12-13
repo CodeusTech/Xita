@@ -58,7 +58,8 @@ ErrorCode resolve_expression(char* ident)
   rtn = find_constant(ident);
   if (rtn) { return resolve_constant(rtn); }
 
-  printf("Unable to resolve Identifier: %s\n", ident);
+
+  yyerror("Unable to resolve Identifier");
   return 1;
 }
 

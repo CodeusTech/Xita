@@ -47,7 +47,7 @@ ConstantID find_constant(Identifier ident)
 {
   for (vector<ConstantNode>::iterator it = context.get_constants().begin(); it != context.get_constants().end(); it++)
   
-  for (int i = 0; i < context.count_constants(); i++)
+  for (unsigned int i = 0; i < context.count_constants(); i++)
     if (strcmp(context.get_constant(i).get_identifier(), ident) == 0) 
     {
       found = true;
@@ -98,25 +98,15 @@ ErrorCode load_argument(Scope scope)
 {
   char* str = (char*) malloc(50);
 
-  ADR adr = functions[scope-1].get_param_reg(argt.size()-1);
+  ADR adr = context.get_param_reg(scope, argt.size()-1);
   argt.pop_back();
   
   char* tgt = get_reg(adr, 32);
-  char* src;
+  char* src = get_reg(context.get_top(get_scope_curr()), 32);
 
-  switch (get_scope_curr())
-  {
-    case 0:
-      //  Move from current scope's stack to function argument registers 'tgt'
-      src = get_reg(rs_root.top(), 32);
-      rs_root.pop();
-      sprintf(str, "mov   %s, %s", tgt, src);
-      add_command(str);
-      break;
-    default:
-      src = get_reg(functions[get_scope_curr()-1].get_top(), 32);
-      functions[get_scope_curr()-1].pop();
-  }
+  context.pop(get_scope_curr());
+  sprintf(str, "mov   %s, %s", tgt, src);
+  add_command(str);
       
   //  Deallocate Strings
   free(tgt); free(src);
@@ -133,15 +123,15 @@ ErrorCode load_argument(Scope scope)
 */
 FunctionID find_function (Identifier ident)
 {
-  for (unsigned long i = 0; i < functions.size(); i++)
-    if (strcmp(functions[i].get_identifier(), ident) == 0) 
+  for (unsigned long i = 0; i < context.count_functions(); i++)
+    if (strcmp(context.get_function_identifier(i), ident) == 0) 
     {
-      if (functions[i].count_param() == argt.size())
+      if (context.count_param(i) == argt.size())
       {
         found = true;
         free(ident);
 
-        return functions[i].get_ID();
+        return i;
       }
     }
 
@@ -153,6 +143,8 @@ FunctionID find_function (Identifier ident)
 ErrorCode resolve_function (FunctionID fid)
 {
 
+  printf("Resolving Function: %s\n", context.get_function_identifier(fid));
+
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
 
@@ -161,53 +153,27 @@ ErrorCode resolve_function (FunctionID fid)
   while (argt.size() > 0) { load_argument(fid); }
 
   //  Add to Queue for File Printing
-  sprintf(str, "bl __%lu_%s", functions[fid-1].get_ID(), functions[fid-1].get_identifier());
+  sprintf(str, "bl __%lu_%s", fid, context.get_function_identifier(fid));
   add_command(str);
 
   //  Handle Return Registers after function call
-  for (unsigned int i = 0; i < functions[fid-1].return_count(); i++)
+  for (unsigned int i = 0; i < context.count_rtn(fid); i++)
   {
-    if (get_scope_curr() == 0) 
+    if (context.is_active(get_scope_curr(), context.get_rtn(fid, i)))
     {
-      if (rs_root.isActive(functions[fid-1].return_register(i)))
-      {
-        rs_push(functions[fid-1].return_type(i));
+      rs_push(context.get_rtn_type(fid, i));
 
-        char* top = get_reg(rs_top(), 32);
-        char* rtn = get_reg(functions[fid-1].return_register(i), 32);
+      char* top = get_reg(rs_top(), 32);
+      char* rtn = get_reg(context.get_rtn(fid, i), 32);
 
-        sprintf(str, "mov   %s, %s", top, rtn);
-        add_command(str);
+      sprintf(str, "mov   %s, %s", top, rtn);
+      add_command(str);
 
-        free (top);
-        free (rtn);
-      } else 
-      {
-        rs_push_reg(functions[fid-1].return_type(i), functions[fid-1].return_register(i));
-      }
+      free (top);
+      free (rtn);
     }
-    else {
-      if (functions[get_scope_curr()].is_active(functions[fid-1].return_register(i)))
-      {
-        rs_push(functions[fid-1].return_type(i));
-
-        char* top = get_reg(rs_top(), 32);
-        char* rtn = get_reg(functions[fid-1].return_register(i), 32);
-
-        sprintf(str, "mov   %s, %s", top, rtn);
-        add_command(str);
-
-        free (top);
-        free (rtn);
-
-      } else 
-      {
-        rs_push_reg(functions[fid-1].return_type(i), functions[fid-1].return_register(i));
-      }
-    }
+    rs_push_reg(context.get_rtn_type(fid, i), context.get_rtn(fid, i));
   }
-
-  printf("Size: %d\n", rs_root.size());
   
   //  Deallocate Strings
   free(str);
@@ -233,17 +199,20 @@ bool resolve_parameter(Identifier ident)
       * Parent Function Scope
       * Recursive Parent Checks until Scope 0 (Root) is hit
   */
-  if (functions.size() == 0) { return 0; }
+  if (context.count_functions() < 2) { return 0; }
 
   char* str = (char*) malloc(50);
 
-  FunctionNode fnode = functions.back();
+  printf("Resolving Parameter: %s\n", ident);
+
+  FunctionNode fnode = context.get_last_function();
 
   for (unsigned int i = 0; i < fnode.count_param(); i++)
   {
     if (strcmp(fnode.get_param(i).get_identifier(), ident) == 0)
     { 
       rs_push(fnode.get_param_type(i));
+      last_type = fnode.get_param_type(i);
 
       char* src = get_reg(fnode.get_param_reg(i), 32);
       char* rtop = get_reg(rs_top(), 32);

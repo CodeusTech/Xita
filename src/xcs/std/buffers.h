@@ -85,8 +85,6 @@ list<string> asm_data;
   3.) Register Stack
 */
 
-RegisterStack rs_root;
-
 
 //  3.b) Extended Register Stack
 unsigned int rse_next = 1;  //  Next Extended Register Stack
@@ -103,10 +101,6 @@ ConstructorID last_constructor = 0;
 bool pfunct = false;  //  DEPRECATED
 vector<TypeID> argt;
 Scope args = 0;
-
-  //  TODO: Move these to 'modules'
-  //        Fix the numerous bugs that will be triggered
-  vector<FunctionNode> functions;
 
 ModuleNode root;
 ModuleNode context;

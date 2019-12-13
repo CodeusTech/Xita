@@ -33,6 +33,7 @@
 #include <xcs/std/buffers.h>
 
 #include "structs.h"
+#include <xcs/modules/structs.h>
 
 /*
   1.) Constant Declarations
@@ -122,26 +123,27 @@ ErrorCode decl_constant(Identifier ident)
 */
 ErrorCode decl_function (Identifier ident)
 {
-
   FunctionNode fnode = FunctionNode(ident);
-  functions.push_back(fnode);
 
-  list<string> new_comms;
-  asm_text.push_back(new_comms);
-
+  fnode.set_parent(get_scope_curr());
+  fnode.set_scope(get_scope_next());
+  
+  context.add_function(fnode);
+  
+  asm_text.push_back(list<string>());
   
   //  Print Function Identifier to Assembly File
   char* str = (char*) malloc(50);
-  sprintf(str, "\n__%lu_%s:", fnode.get_ID() , fnode.get_identifier());
+  sprintf(str, "\n__%lu_%s:", context.count_functions()-1, context.get_function_identifier(context.count_functions()-1));
   add_command(str);
 
   /*
     TODO:
       * Initialize ConstantNode, as according to XCS Tech Spec
       * Ensure all data that needs to be pushed to data stack is so
-  */
+  
   sprintf(str, "bl    __decl_funct");
-  add_command(str);
+  add_command(str);*/
 
   free(str);
 
@@ -163,11 +165,15 @@ ErrorCode ret_function ()
      * Set Current Scope to Parent Context Scope
   */
 
-  for (unsigned int i = 0; i < (functions.back().count_reg() - functions.back().count_param()); i++)
+ printf("End of Function Reached\n");
+
+  //printf("End of Function Declaration\n");
+
+  for (unsigned int i = 0; i < ( context.count_ADRs(get_scope_curr()) - context.count_param(get_scope_curr()) ); i++)
   {
-    ADR top = functions.back().get_top();
-    TypeID top_tid = functions.back().get_top_type();
-    functions.back().push_rtn(top_tid, top);
+    ADR top = context.get_top(get_scope_curr());
+    TypeID top_tid = context.get_top_type(get_scope_curr());
+    context.push_rtn(get_scope_curr(), top_tid, top);
   }
 
   //  Return to Parent Context Scope
@@ -175,7 +181,7 @@ ErrorCode ret_function ()
   sprintf(comm, "bx lr");
   add_command(comm);
 
-  set_scope_curr(functions.back().get_parent());
+  set_scope_curr( context.get_parent(get_scope_curr()) );
 
   return 0;
 }
@@ -188,17 +194,16 @@ ErrorCode ret_function ()
 ErrorCode undecl_function()
 {
   /*
-    TODO:
+    TODO:+
      * Error Check
      * Reset Scope and Associated Metadata
       + Identifier Buffers
       + Type Buffers
       + etc.
   */
+  scope_curr = context.get_parent(get_scope_curr());
 
-  scope_curr = functions.back().get_parent();
-
-  functions.pop_back();
+  context.remove_last_function();
 
   //  Return Success
   return 0;

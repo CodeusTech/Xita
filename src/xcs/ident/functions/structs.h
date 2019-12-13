@@ -157,9 +157,6 @@ public:
   FunctionNode(Identifier name)
   { 
     fid = get_next_function();
-    parent = get_scope_curr();
-    scope = get_scope_next(); 
-    set_scope_curr(scope);
     identifier = strdup(name);
     free(name);
     param_index = parameter_index;
@@ -184,6 +181,7 @@ public:
   //  Returns
   ADR return_register(int i) { return rtn_reg[i]; }
   TypeID return_type(int i) const { return rtn_tid[i]; }
+  unsigned int count_rtn() const { return rtn_reg.size(); }
 
 
   //  Register Stack Accessors
@@ -198,6 +196,9 @@ public:
   ErrorCode push_reg(TypeID tid, ADR reg) { return reg_stack.push_reg(tid, reg); }
   ErrorCode push_rtn(TypeID tid, ADR reg) { rtn_reg.push_back(reg); rtn_tid.push_back(tid); return 0; }
   ErrorCode pop() { return reg_stack.pop(); }
+
+  ErrorCode set_scope(Scope s)  { scope = s; return 0; }
+  ErrorCode set_parent(Scope s) { parent = s; return 0; }
 
   
   /* Add Parameter 

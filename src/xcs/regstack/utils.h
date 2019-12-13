@@ -19,61 +19,17 @@
 
 #include "structs.h"
 
-ADR rs_top()
-{
-  Scope s = get_scope_curr();
 
-  if (s == 0) { return rs_root.top(); }
-  return functions[s-1].get_top();
-}
+//   Get Top/Second of Current Scope's Register Stack
+ADR rs_top() { return context.get_top(get_scope_curr()); }
+ADR rs_sec() { return context.get_sec(get_scope_curr()); }
 
-ADR rs_sec()
-{
-  Scope s = get_scope_curr();
+TypeID rs_top_type() { return context.get_top_type(get_scope_curr()); }
+TypeID rs_sec_type() { return context.get_sec_type(get_scope_curr()); }
 
-  if (s == 0) { return rs_root.sec(); }
-  return functions[s-1].get_sec();
-}
-
-TypeID rs_top_type()
-{
-  Scope s = get_scope_curr();
-
-  if (s == 0) { return rs_root.top_type(); }
-  return functions[s-1].get_top_type();
-}
-
-TypeID rs_sec_type()
-{
-  Scope s = get_scope_curr();
-
-  if (s == 0) { return rs_root.sec_type(); }
-  return functions[s-1].get_sec_type();
-}
-
-ErrorCode rs_push(TypeID tid)
-{
-  Scope s = get_scope_curr();
-
-  if (s == 0) { return rs_root.push(tid); }
-  return functions[s-1].push(tid);
-}
-
-ErrorCode rs_push_reg(TypeID tid, ADR reg)
-{
-  Scope s = get_scope_curr();
-
-  if (s == 0) { return rs_root.push_reg(tid, reg); }
-  return functions[s-1].push_reg(tid, reg);
-}
-
-ErrorCode rs_pop()
-{
-  Scope s = get_scope_curr();
-
-  if (s == 0) { return rs_root.pop(); }
-  return functions[s-1].pop();
-}
+ErrorCode rs_push(TypeID tid) { return context.push(get_scope_curr(), tid); }
+ErrorCode rs_push_reg(TypeID tid, ADR reg) { return context.push_reg(get_scope_curr(), tid, reg); }
+ErrorCode rs_pop() { return context.pop(get_scope_curr()); }
 
 ErrorCode end_scope()
 {
@@ -81,12 +37,16 @@ ErrorCode end_scope()
   scope_curr = 0;
   last_type = 2;
 
-  for (unsigned int i = 0; i < rs_root.size(); i++)
-  {
-    rs_root.pop();
-  }
+  for (unsigned int i = 0; i < context.count_ADRs(0); i++) context.pop(0);
 
   return 0;
+}
+
+ErrorCode add_function(Identifier ident) 
+{
+  list<string> tmp;
+  asm_text.push_back(tmp);
+  context.add_function(FunctionNode(ident));
 }
 
 
