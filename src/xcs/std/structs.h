@@ -43,6 +43,8 @@
 #include <xcs/ident/functions/structs.h>
 #include <xcs/ident/types/structs.h>
 
+#include <xcs/memory/structs.h>
+
 #include <xcs/modules/structs.h>
 
 

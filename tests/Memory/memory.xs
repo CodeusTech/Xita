@@ -36,5 +36,7 @@ let read_int offset =
 
 
 let read_ offset = 
-  offset *-> this
+  offset *-> this;;
+
+(read_int 10) + 5
     

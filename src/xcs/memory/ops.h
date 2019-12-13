@@ -17,37 +17,18 @@
 
 #include <xcs/regstack/utils.h>
 
+#include "utils.h"
+
 
 
 
 /* 1.) Read Expression from Memory
-
   Returns:
     0, if Successful
 */
 int memory_read_exp(char* ident)
 {
-  //  Make Room on Register Stack for new entry
-  rs_push(last_type);
-
-  //  Create ARM Assembly Command
-  char* str = (char*) malloc(50);
-  char* top = get_reg(rs_top(), 32);
-  char* sec = get_reg(rs_sec(), 32);
-  rs_pop();
-
-  sprintf(str, "ldr %s,[%s,0]", top, sec);
-
-  //  Add to Queue for File Printing
-  add_command(str);
-
-  //  Free allocated memory and move to next register on stack
-  free(str);
-  free(top);
-  free(sec);
-  free(ident);
-
-  return 0;
+  decl_memory_variable(ident);
 }
 
 /*
@@ -81,7 +62,6 @@ int memory_read_this()
 
 /*
   2.) Write Expression to Memory
-
   Returns:
     0, if Successful
 */

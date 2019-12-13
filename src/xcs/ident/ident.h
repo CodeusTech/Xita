@@ -32,6 +32,7 @@
 #include "functions/functions.h"
 #include "types/types.h"
 #include "typeclass/typeclass.h"
+#include <xcs/memory/utils.h>
 
 /*
   1.) Identifier Resolution
@@ -57,6 +58,9 @@ ErrorCode resolve_expression(char* ident)
   //  1.c) Check for Constant
   rtn = find_constant(ident);
   if (rtn) { return resolve_constant(rtn); }
+
+  rtn = find_memory_variable(ident);
+  if (rtn) { printf("Memory Variable found: %s\n", ident); free(ident); return 0; }
 
 
   yyerror("Unable to resolve Identifier");

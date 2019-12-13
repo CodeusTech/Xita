@@ -854,11 +854,15 @@ memread:
   exp MEM_READ {  }
 ;
 
+memread_ident:
+  memread IDENTIFIER { decl_memory_variable($2); }
+;
+
 exp_memread:
     memread THIS INT { memory_read_this(); }
   | memread THIS     { memory_read_this(); }
-  | memread IDENTIFIER INT IN exp { memory_read_exp($2); }
-  | memread IDENTIFIER     IN exp { memory_read_exp($2); }
+  | memread_ident INT IN exp {  }
+  | memread_ident     IN exp {  }
 ;
 
 /*

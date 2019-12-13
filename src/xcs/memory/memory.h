@@ -15,5 +15,7 @@
 
 #include "alloc.h"
 #include "ops.h"
+#include "utils.h"
+#include "structs.h"
 
 #endif

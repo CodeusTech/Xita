@@ -30,6 +30,7 @@ typedef unsigned long ID_NUMBER;
 typedef unsigned long ConstantID;
 typedef unsigned long FunctionID;
 typedef unsigned int ParameterID;
+typedef unsigned int MemoryVariableID;
 
 //  Types
 typedef unsigned long TypeID;
