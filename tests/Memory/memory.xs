@@ -22,9 +22,9 @@
 
 (*
   2.) Write Memory
-*)
+
 let write_entry entry offset = 
-  offset <-* entry;;
+  offset <-* entry;;*)
 
 
 --write_entry 10 5;;
@@ -32,11 +32,13 @@ let write_entry entry offset =
 
 let read_int offset = 
   offset *-> entry in
-    entry;;
-
-
-let read_ offset = 
-  offset *-> this;;
+  offset+4 *-> entry2 in
+    entry + entry2;;
 
 (read_int 10) + 5
+
+
+(*let read_ offset = 
+  offset *-> this;;
+*)
     

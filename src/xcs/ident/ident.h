@@ -49,6 +49,10 @@ ErrorCode resolve_expression(char* ident)
   //      NOTE: Parameters are found/resolved in one function to minimize lookup latency
   if (resolve_parameter(ident)) { return 0; }
 
+  //  Check for Memory Variable
+  rtn = find_memory_variable(ident);
+  if (rtn) { return resolve_memory_variable(rtn); }
+
 
   //  1.b) Check for Function
   rtn = find_function(ident);
@@ -58,9 +62,6 @@ ErrorCode resolve_expression(char* ident)
   //  1.c) Check for Constant
   rtn = find_constant(ident);
   if (rtn) { return resolve_constant(rtn); }
-
-  rtn = find_memory_variable(ident);
-  if (rtn) { printf("Memory Variable found: %s\n", ident); free(ident); return 0; }
 
 
   yyerror("Unable to resolve Identifier");

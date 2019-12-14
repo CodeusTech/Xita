@@ -216,6 +216,7 @@ extern Scope xcs_args;
 %left OP_ASSIGN OP_INLINE
 %left BUILD CLEAR
 %left LET
+%left IN
 %left TYPE TYPECLASS REQUIRES
 %left FILEK
 
@@ -248,8 +249,6 @@ extern Scope xcs_args;
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
 %left IDENTIFIER
-
-%left IN
 
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
@@ -861,8 +860,8 @@ memread_ident:
 exp_memread:
     memread THIS INT { memory_read_this(); }
   | memread THIS     { memory_read_this(); }
-  | memread_ident INT IN exp {  }
-  | memread_ident     IN exp {  }
+  | memread_ident INT IN exp { undecl_memory_variable(); }
+  | memread_ident     IN exp { undecl_memory_variable(); }
 ;
 
 /*

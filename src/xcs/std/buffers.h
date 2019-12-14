@@ -102,7 +102,7 @@ bool pfunct = false;  //  DEPRECATED
 vector<TypeID> argt;
 Scope args = 0;
 
-MemoryVariableNode* memory_variables;
+vector<MemoryVariableNode> memory_variables;
 
 ModuleNode root;
 ModuleNode context;

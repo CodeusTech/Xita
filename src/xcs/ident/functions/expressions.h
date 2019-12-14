@@ -203,14 +203,13 @@ bool resolve_parameter(Identifier ident)
 
   char* str = (char*) malloc(50);
 
-  printf("Resolving Parameter: %s\n", ident);
-
   FunctionNode fnode = context.get_last_function();
 
   for (unsigned int i = 0; i < fnode.count_param(); i++)
   {
     if (strcmp(fnode.get_param(i).get_identifier(), ident) == 0)
     { 
+      printf("Resolving Parameter: %s\n", ident);
       rs_push(fnode.get_param_type(i));
       last_type = fnode.get_param_type(i);
 

@@ -16,35 +16,33 @@
 #include <xcs/std/buffers.h>
 
 #include <xcs/asm/text.h>
+#include <xcs/regstack/utils.h>
 
 #include "structs.h"
 
 ErrorCode decl_memory_variable(Identifier ident)
 {
-  //  Make Room on Register Stack for new entry
-  rs_push(last_type);
-
-  if (memory_variables == NULL)
-    memory_variables = new MemoryVariableNode(ident, rs_top(), NULL);
-  else
-    memory_variables->add_variable(ident, rs_top());
-
-  //  Create ARM Assembly Command
-  char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
-  char* sec = get_reg(rs_sec(), 32);
+
   rs_pop();
 
-  sprintf(str, "ldr %s,[%s,0]", top, sec);
+  rs_push(2);
 
-  //  Add to Queue for File Printing
+  MemoryVariableNode mvnode = MemoryVariableNode(ident, rs_top());
+
+  memory_variables.push_back(mvnode);
+
+  char* memreg = get_reg(memory_variables.back().get_register(), 32);
+
+  char* str = (char*) malloc (50);
+  sprintf(str, "ldr   %s, [%s]", memreg, top);
   add_command(str);
 
-  //  Free allocated memory and move to next register on stack
   free(str);
   free(top);
-  free(sec);
+  free(memreg);
 
+  //  Return Success
   return 0;
 }
 
@@ -54,24 +52,56 @@ ErrorCode decl_memory_variable(Identifier ident)
     0, if Successful
 
 */
-ErrorCode undecl_memory_variable(Identifier ident)
+ErrorCode undecl_memory_variable()
 {
-  if (memory_variables == NULL) return -1;
+  if (memory_variables.size() == 0) return -1;
 
-  MemoryVariableNode* node = memory_variables;
+  memory_variables.pop_back();
+  rs_pop();
 
   return 0;
 }
 
 
-ADR find_memory_variable(Identifier ident)
+MemoryVariableID find_memory_variable(Identifier ident)
 {
-  if (memory_variables == NULL) return 0;
+  /*
+    TODO: Error Check Inputs
+  */
 
-  MemoryVariableNode* node = memory_variables->find(ident);
+  for (unsigned int i = 0; i < memory_variables.size(); i++)
+    if (strcmp(ident, memory_variables[i].get_identifier()) == 0)
+      { free(ident); return (i + 1); }
 
-  if (node) return node->get_register();
+  return 0;
+}
 
+ADR memory_variable_register(MemoryVariableID mvid)
+{
+  /*
+    TODO: Error Check Inputs
+  */
+
+  return memory_variables[mvid-1].get_register();
+}
+
+TypeID memory_variable_type(MemoryVariableID mvid)
+{
+  /*
+    TODO: Error Check Inputs
+  */
+
+  return memory_variables[mvid-1].get_type();
+}
+
+ErrorCode resolve_memory_variable(MemoryVariableID mvid)
+{
+  printf("Resolving Memory Variable: %s\n", memory_variables[mvid-1].get_identifier());
+  
+  context.push_reg(get_scope_curr(), memory_variable_type(mvid), memory_variable_register(mvid));
+
+
+  //  Return Success
   return 0;
 }
 
