@@ -46,6 +46,14 @@ ErrorCode decl_memory_variable(Identifier ident)
   return 0;
 }
 
+ErrorCode decl_memory_variable_this() 
+{
+  char* str = (char*) malloc(6);
+  sprintf(str, "this");
+
+  return decl_memory_variable(str);
+}
+
 /*
   Returns:
    -1, if Node doesn't exist

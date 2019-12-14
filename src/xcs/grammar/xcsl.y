@@ -853,15 +853,15 @@ memread:
   exp MEM_READ {  }
 ;
 
-memread_ident:
-  memread IDENTIFIER { decl_memory_variable($2); }
+pre_memread:
+    memread IDENTIFIER { decl_memory_variable($2); }
+  | memread THIS       { decl_memory_variable_this(); }
 ;
 
 exp_memread:
-    memread THIS INT { memory_read_this(); }
-  | memread THIS     { memory_read_this(); }
-  | memread_ident INT IN exp { undecl_memory_variable(); }
-  | memread_ident     IN exp { undecl_memory_variable(); }
+  | pre_memread INT IN exp { undecl_memory_variable(); }
+  | pre_memread     IN exp { undecl_memory_variable(); }
+  | memread THIS      { decl_memory_variable_this(); }
 ;
 
 /*
