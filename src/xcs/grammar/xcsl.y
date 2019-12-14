@@ -149,8 +149,8 @@ extern Scope xcs_args;
 %token OP_SEP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
 
 //  List Operators/Keywords
-%token OP_LIST_L OP_LIST_R LIST_C LIST_T OP_APPEND OP_LIST_CON
-%token LIST_HEAD LIST_TAIL
+%token LIST_C LIST_T OP_APPEND OP_LIST_CON
+%token LIST_HEAD LIST_TAIL LIST_LENGTH
 
 //  Conditional Keywords
 %token IF THEN ELSE
@@ -341,7 +341,9 @@ exp:
     PAR_LEFT exp PAR_RIGHT
   | DELAY exp exp  
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
+  | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }
   | decl  
+  | LIST_HEAD exp_list
   | exp_literal      
   | exp_arith    
   | exp_logical      
@@ -371,15 +373,16 @@ exp_identifier:
   | PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { resolve_function( find_function($2) ); }
   | IDENTIFIER arg_funct  {resolve_function( find_function( $1 ) ); }
   | IDENTIFIER            {resolve_expression($1);}
+;
 
 
 exp_primitive:
-    exp_integer         { last_type = TYPE_INTEGER; }
+    exp_list            { last_type = 32; /*TODO: FIX THIS*/ }
+  | exp_integer         { last_type = TYPE_INTEGER; }
   | exp_boolean         { last_type = TYPE_BOOLEAN; }
   | exp_real            { last_type = TYPE_REAL;    }
   | exp_char            { last_type = TYPE_CHAR;    }
   | exp_string          { last_type = TYPE_STRING;  }
-  | exp_list            { }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
 ;
 
@@ -387,7 +390,8 @@ exp_primitive:
   2.a) Integer Expressions
 */
 exp_integer:
-    RNG             { /*rng();*/ }
+    LIST_LENGTH exp_list { printf("List of Length determined\n"); }
+  | RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
   | INT             { push_int((long long) $1); }
 ;
@@ -428,16 +432,14 @@ exp_string:
 /*
   2.f) List Expressions
 */
-pre_list:
-    OP_LIST_L {  }
-;
 
 exp_list:
-    pre_list param_list OP_LIST_R { }
-  | exp OP_LIST_CON exp           { }
-  | LIST_TAIL exp_list            { list_tail(); }
-  | OP_LIST_L OP_LIST_R           { }
-  | exp OP_APPEND exp             { infer_append(); }
+    OP_LIST_L OP_LIST_R               { printf("Empty List\n"); }
+  | OP_LIST_L param_list OP_LIST_R    {  printf("List Initialized\n"); }
+  | LIST_TAIL exp_list
+  | exp_list OP_APPEND exp_list   { printf("Lists Concatenated\n"); }
+  | IDENTIFIER { resolve_expression($1); }
+  | PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { resolve_function( find_function($2) ); }
 ;
 
 /*
@@ -445,7 +447,7 @@ exp_list:
 */
 param_list:
     param_list OP_COMMA param_list
-  | exp { decl_list(); }
+  | exp { }
 ;
 
 /*

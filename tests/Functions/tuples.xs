@@ -14,4 +14,4 @@ let return_three x y z =
   y ; z ; x  ;;
 
 --  Return second return value of 'return_three' (z) (3)
-(return_three 1 2 3).{0}
+(return_three 1 2 3).{1}

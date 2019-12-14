@@ -132,7 +132,7 @@ extern int yylex();
 "(->)"    { return ARROW_R_O; }   //  RIGHT FACING ARROW
 
 "(++)" { return OP_APPEND_O; }   //  APPEND LISTS
-"(:)"  { return OP_LIST_CON_O; } //  CONSTRUCT LISTS
+"(::)"  { return OP_LIST_CON_O; } //  CONSTRUCT LISTS
 
 "(+)" { return OP_ADD_O; } //  ADDITION OPERATOR
 "(-)" { return OP_SUB_O; } //  SUBTRACTION OPERATOR  
@@ -171,9 +171,10 @@ extern int yylex();
 "->"    { return ARROW_R; }   //  RIGHT FACING ARROW
 
 "++" { return OP_APPEND; }   //  APPEND LISTS
-":"  { return OP_LIST_CON; } //  CONSTRUCT LISTS
+"::"  { return OP_LIST_CON; } //  CONSTRUCT LISTS
 "hd" { return LIST_HEAD; }   //  HEAD OF LIST
 "tl" { return LIST_TAIL; }   //  TAIL OF LIST
+"len" { return LIST_LENGTH;}  // LENGTH OF LIST
 
 "+" { return OP_ADD; } //  ADDITION OPERATOR
 "-" { return OP_SUB; } //  SUBTRACTION OPERATOR  
