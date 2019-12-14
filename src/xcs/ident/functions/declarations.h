@@ -1,8 +1,8 @@
 /*
   declarations.h
   Cody Fagley
-  Authored on     July 11, 2019
-  Last Modified August  7, 2019
+  Authored on       July 11, 2019
+  Last Modified December 13, 2019
 */
 
 /*
@@ -171,9 +171,10 @@ ErrorCode ret_function ()
 
   for (unsigned int i = 0; i < ( context.count_ADRs(get_scope_curr()) - context.count_param(get_scope_curr()) ); i++)
   {
-    ADR top = context.get_top(get_scope_curr());
-    TypeID top_tid = context.get_top_type(get_scope_curr());
-    context.push_rtn(get_scope_curr(), top_tid, top);
+    ADR reg = context.get_from_top(get_scope_curr(), i);
+    TypeID tid = context.get_from_top_type(get_scope_curr(), i);
+
+    context.push_rtn(get_scope_curr(), tid, reg);
   }
 
   //  Return to Parent Context Scope

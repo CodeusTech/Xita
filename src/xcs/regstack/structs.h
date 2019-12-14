@@ -82,9 +82,11 @@ public:
     return 0;
   }
 
+  ADR from_top(int i) { return registers.at(registers.size()-(i+1)); }
   ADR top() { return registers.back(); }
   ADR sec() { return registers.at(registers.size()-2); }
 
+  ADR from_top_type(int i) { return types.at(types.size()-(i+1)); }
   ADR top_type() { return types.back(); }
   ADR sec_type() { return types.at(types.size()-2); }
 

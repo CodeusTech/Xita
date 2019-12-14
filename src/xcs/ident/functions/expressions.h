@@ -1,8 +1,8 @@
 /*
   expressions.h
   Cody Fagley
-  Authored on   August 7, 2019
-  Last Modified August 7, 2019
+  Authored on       August 7, 2019
+  Last Modified  December 13, 2019
 */
 
 /*
@@ -130,6 +130,7 @@ FunctionID find_function (Identifier ident)
       {
         found = true;
         free(ident);
+        scope_invoked = i;
 
         return i;
       }
@@ -241,6 +242,25 @@ bool resolve_parameter(Identifier ident)
   return false;
 }
 
+
+
+ErrorCode return_function(int rtn)
+{
+  if (scope_invoked == 0) return 0;
+
+  rs_push(context.get_rtn_type(scope_invoked, rtn));
+
+  char* str = (char*) malloc(50);
+  char* top = get_reg(rs_top(), 32);
+  char* reg = get_reg(context.get_rtn(scope_invoked, rtn), 32);
+
+  sprintf(str, "mov   %s, %s", top, reg);
+  add_command(str);
+
+
+  //  Return Success
+  return 0;
+}
 
 
 #endif

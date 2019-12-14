@@ -68,5 +68,4 @@ ErrorCode resolve_expression(char* ident)
   return 1;
 }
 
-
 #endif

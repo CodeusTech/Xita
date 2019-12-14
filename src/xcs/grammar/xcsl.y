@@ -363,10 +363,15 @@ exp:
 
 exp_literal:
     exp_primitive
+  | exp_identifier
+;
+
+exp_identifier:
+    exp_identifier OP_ELEMENT OP_REC_L INT OP_REC_R   { return_function($4); }
   | PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { resolve_function( find_function($2) ); }
   | IDENTIFIER arg_funct  {resolve_function( find_function( $1 ) ); }
   | IDENTIFIER            {resolve_expression($1);}
-;
+
 
 exp_primitive:
     exp_integer         { last_type = TYPE_INTEGER; }

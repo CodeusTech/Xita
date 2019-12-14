@@ -1,8 +1,8 @@
 /*
   structs.h (functions)
   Codeus Tech
-  Authored on   October 29, 2019
-  Last Modified October 29, 2019
+  Authored on    October 29, 2019
+  Last Modified December 13, 2019
 */
 
 /*
@@ -185,8 +185,10 @@ public:
 
 
   //  Register Stack Accessors
+  ADR from_top(int i){ return reg_stack.from_top(i); }
   ADR get_top() { return reg_stack.top(); }
   ADR get_sec() { return reg_stack.sec(); }
+  TypeID from_top_type(int i){ return reg_stack.from_top_type(i); }
   TypeID get_top_type() { return reg_stack.top_type(); }
   TypeID get_sec_type() { return reg_stack.sec_type(); }
   unsigned int count_reg() const { return reg_stack.size(); }

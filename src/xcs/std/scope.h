@@ -21,6 +21,7 @@
 #include "typedefs.h"
 
 //  Scope Trackers
+Scope scope_invoked;
 Scope scope_curr = 0;  //  Function/Register Stack Scope
 Scope scope_next = 1;  //  Next Function Scope
 

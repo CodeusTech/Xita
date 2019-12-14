@@ -1,8 +1,8 @@
 /*
   functions.h
-  Cody Fagley
+  Codeus Tech
   Authored on   February 13, 2019
-  Last Modified   August  7, 2019
+  Last Modified December 13, 2019
 */
 
 /*
@@ -14,10 +14,10 @@
 
 
 //  Function Headers
+#include "structs.h"
 #include "declarations.h"
 #include "expressions.h"
 #include "recursion.h"
-#include "structs.h"
 
 
 #endif

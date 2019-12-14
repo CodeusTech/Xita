@@ -78,10 +78,12 @@ public:
     ErrorCode push_rtn(FunctionID fid, TypeID tid, ADR reg) { return functions[fid].push_rtn(tid, reg); }
     ErrorCode pop(FunctionID fid) { return functions[fid].pop(); }
 
+    ADR get_from_top(FunctionID fid, int index) { return functions[fid].from_top(index); }
     ADR get_top(FunctionID fid) { return functions[fid].get_top(); }
     ADR get_sec(FunctionID fid) { return functions[fid].get_sec(); }
     ADR get_rtn(FunctionID fid, int rtn_index) { return functions[fid].return_register(rtn_index); }
 
+    TypeID get_from_top_type(FunctionID fid, int index) { return functions[fid].from_top_type(index); }
     TypeID get_top_type(FunctionID fid) { return functions[fid].get_top_type(); }
     TypeID get_sec_type(FunctionID fid) { return functions[fid].get_sec_type(); }
     TypeID get_rtn_type(FunctionID fid, int rtn_index) { return functions[fid].return_type(rtn_index); }
