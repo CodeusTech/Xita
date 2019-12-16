@@ -20,8 +20,6 @@
 typedef int ErrorCode;
 typedef char* Command;
 
-
-
 /*
   ID NUMBERS
 */

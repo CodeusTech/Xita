@@ -16,6 +16,7 @@
 #include <xcs/std/typedefs.h>
 #include <xcs/std/scope.h>
 #include <xcs/std/buffers.h>
+#include <xcs/std/error.h>
 
 #include "structs.h"
 
@@ -39,7 +40,7 @@ ErrorCode end_scope()
 
   for (unsigned int i = 0; i < context.count_ADRs(0); i++) context.pop(0);
 
-  return 0;
+  return SUCCESS;
 }
 
 ErrorCode add_function(Identifier ident) 
@@ -47,6 +48,8 @@ ErrorCode add_function(Identifier ident)
   list<string> tmp;
   asm_text.push_back(tmp);
   context.add_function(FunctionNode(ident));
+
+  return SUCCESS;
 }
 
 

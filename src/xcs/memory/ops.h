@@ -15,6 +15,8 @@
 #include <cstdlib>
 #include <string>
 
+#include <xcs/std/error.h>
+
 #include <xcs/regstack/utils.h>
 
 #include "utils.h"
@@ -26,9 +28,11 @@
   Returns:
     0, if Successful
 */
-int memory_read_exp(char* ident)
+ErrorCode memory_read_exp(char* ident)
 {
   decl_memory_variable(ident);
+
+  return SUCCESS;
 }
 
 /*
@@ -56,7 +60,7 @@ int memory_read_this()
   free(top);
   free(sec);
 
-  return 0;
+  return SUCCESS;
 }
 
 
@@ -83,7 +87,7 @@ int memory_write_exp()
   free(top);
   free(sec);
 
-  return 0;
+  return SUCCESS;
 }
 
 

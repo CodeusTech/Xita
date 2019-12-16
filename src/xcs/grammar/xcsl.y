@@ -203,7 +203,7 @@ extern Scope xcs_args;
 %token DEBUG DEBUG_PRINT 
 
 //  Module Operations
-%token OPEN SOURCE_M HEADER_M TETHER_M
+%token SOURCE_M HEADER_M TETHER_M SYSTEM_M OPEN
 %token SOURCE_H HEADER_H TETHER_H 
 
 //  Tether Module-Specific Operations
@@ -314,18 +314,23 @@ decl_open:
     open_source
   | open_tether
   | open_header
+  | open_system
   ;
 
 open_source:
-  OPEN SOURCE_M STRING { context.open_source($3); }
+  OPEN SOURCE_M STRING { open_source($3); }
 ;
 
 open_tether:
-  OPEN TETHER_M STRING { context.open_tether($3); }
+  OPEN TETHER_M STRING { open_tether($3); }
 ;
 
 open_header:
-  OPEN HEADER_M STRING { context.open_header($3); }
+  OPEN HEADER_M STRING { open_header($3); }
+;
+
+open_system:
+  OPEN SYSTEM_M STRING { open_system($3); }
 ;
 
 

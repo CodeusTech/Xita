@@ -104,9 +104,9 @@ Scope args = 0;
 
 vector<MemoryVariableNode> memory_variables;
 
-ModuleNode root;
+//vector<ModuleNode> modules;
+//ModuleID current_context = 0;
 ModuleNode context;
-
 
 //  5.c) Typeclasses 
 Identifier* ident_typeclasses; //  Typeclass Identifiers

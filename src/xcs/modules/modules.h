@@ -26,6 +26,6 @@
 #define XCS_MODULES_H
 
 #include "structs.h"
-
+#include "utils.h"
 
 #endif

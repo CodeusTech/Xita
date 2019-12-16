@@ -12,10 +12,14 @@
 #ifndef MODULES_STRUCTS_H
 #define MODULES_STRUCTS_H
 
+#include <vector>
 
 #include <xcs/std/typedefs.h>
-#include <xcs/ident/functions/structs.h>
 
+#include <xcs/ident/functions/structs.h>
+#include <xcs/ident/types/structs.h>
+
+using namespace std;
 
 enum ModuleType
 {
@@ -122,33 +126,6 @@ public:
   //  Functions
   ErrorCode add_function(FunctionNode fnode) { functions.push_back(fnode); return 0; }
   ErrorCode add_parameter(Identifier ident) { return functions.back().add_parameter(ident); }
-
-  ErrorCode open_header(char* fname)
-  {
-    //  STUB STUB STUB
-    free (fname);
-
-    //  Return Success
-    return 0;
-  }
-
-  ErrorCode open_source(char* fname)
-  {
-    //  STUB STUB STUB
-    free (fname);
-
-    //  Return Success
-    return 0;
-  }
-
-  ErrorCode open_tether(char* fname)
-  {
-    //  STUB STUB STUB
-    free (fname);
-
-    //  Return Success
-    return 0;
-  }
 
 };
 

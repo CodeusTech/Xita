@@ -134,7 +134,7 @@ ErrorCode decl_function (Identifier ident)
   
   //  Print Function Identifier to Assembly File
   char* str = (char*) malloc(50);
-  sprintf(str, "\n__%lu_%s:", context.count_functions()-1, context.get_function_identifier(context.count_functions()-1));
+  sprintf(str, "\n__%u_%s:", context.count_functions()-1, context.get_function_identifier(context.count_functions()-1));
   add_command(str);
 
   /*

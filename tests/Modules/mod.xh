@@ -10,5 +10,5 @@
 *)
 
 debug "Simple test of import capabilities"
-let test_sum x y = x + y
+let test_function x y = x + y
 

@@ -11,4 +11,4 @@
 
 open Header "mod.xh";;
 
-sum_funct 1 2
+(test_function 1 2)

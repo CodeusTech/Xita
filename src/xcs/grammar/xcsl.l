@@ -286,6 +286,7 @@ extern int yylex();
 
 "open"    { return OPEN; }
 "Tether"  { return TETHER_M; }
+"System"  { return SYSTEM_M; }
 "Source"  { return SOURCE_M; }
 "Header"  { return HEADER_M; }
 
