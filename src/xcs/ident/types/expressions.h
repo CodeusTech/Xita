@@ -66,13 +66,13 @@ ErrorCode exp_type (Identifier ident)
 ConstructorID find_constructor (Identifier ident)
 {
   //  TODO: Optimize This
-  for (unsigned long i = 0; i < context.get_types().size(); i++)
-    for (unsigned long j = 0; j < context.get_type(i).count_struct(); j++)
-      if (strcmp(context.get_type(i).get_constructor(j).get_ident(), ident) == 0)
+  for (unsigned long i = 0; i < context->get_types().size(); i++)
+    for (unsigned long j = 0; j < context->get_type(i).count_struct(); j++)
+      if (strcmp(context->get_type(i).get_constructor(j).get_ident(), ident) == 0)
         
         //  TODO: Check if given arguments match constructor's expected layout
 
-        return context.get_type(i).get_constructor(j).get_cid();
+        return context->get_type(i).get_constructor(j).get_cid();
 
   return 0;
 }
@@ -80,13 +80,13 @@ ConstructorID find_constructor (Identifier ident)
 unsigned int get_constructor_size(Identifier ident)
 {
   //  TODO: Optimize This
-  for (unsigned long i = 0; i < context.get_types().size(); i++)
-    for (unsigned long j = 0; j < context.get_type(i).count_struct(); j++)
-      if (strcmp(context.get_type(i).get_constructor(j).get_ident(), ident) == 0)
+  for (unsigned long i = 0; i < context->get_types().size(); i++)
+    for (unsigned long j = 0; j < context->get_type(i).count_struct(); j++)
+      if (strcmp(context->get_type(i).get_constructor(j).get_ident(), ident) == 0)
         
         //  TODO: Check if given arguments match constructor's expected layout
 
-        return context.get_type(i).get_constructor(j).get_size();
+        return context->get_type(i).get_constructor(j).get_size();
 
   return 0;
 }

@@ -100,15 +100,19 @@ int main(int argc, char** argv)
 			interpreted = false;
 
 			//  Init Module Tree
-			context = ModuleNode();
+			modules.push_back(ModuleNode());
+			context = &modules[0];
 
 			char* str = (char*) malloc(50);
 			sprintf(str, " ");
 
 			add_function(str);
+			
+			yyin = fopen(argv[i], "r");
+			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
 
 			//  Set Parser File Pointer
-			yyin = fopen(argv[i], "r");
+			//yypush_buffer_state(YY_CURRENT_BUFFER);
 			while(!feof(yyin)) yyparse();
 
 			//  Create Assembly File
