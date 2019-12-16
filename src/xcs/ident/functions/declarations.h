@@ -92,7 +92,7 @@ ErrorCode decl_constant(Identifier ident)
     
   //  Commit to .data Section
   asm_data.push_back(strdup(str));
-  context.add_constant(cnst);
+  context->add_constant(cnst);
 
   /*
     TODO:
@@ -123,18 +123,19 @@ ErrorCode decl_constant(Identifier ident)
 */
 ErrorCode decl_function (Identifier ident)
 {
+  printf("Declared Function: %s\n", ident);
   FunctionNode fnode = FunctionNode(ident);
 
   fnode.set_parent(get_scope_curr());
   fnode.set_scope(get_scope_next());
   
-  context.add_function(fnode);
+  context->add_function(fnode);
   
   asm_text.push_back(list<string>());
   
   //  Print Function Identifier to Assembly File
   char* str = (char*) malloc(50);
-  sprintf(str, "\n__%u_%s:", context.count_functions()-1, context.get_function_identifier(context.count_functions()-1));
+  sprintf(str, "\n__%u_%s:", context->count_functions()-1, context->get_function_identifier(context->count_functions()-1));
   add_command(str);
 
   /*
@@ -169,12 +170,12 @@ ErrorCode ret_function ()
 
   //printf("End of Function Declaration\n");
 
-  for (unsigned int i = 0; i < ( context.count_ADRs(get_scope_curr()) - context.count_param(get_scope_curr()) ); i++)
+  for (unsigned int i = 0; i < ( context->count_ADRs(get_scope_curr()) - context->count_param(get_scope_curr()) ); i++)
   {
-    ADR reg = context.get_from_top(get_scope_curr(), i);
-    TypeID tid = context.get_from_top_type(get_scope_curr(), i);
+    ADR reg = context->get_from_top(get_scope_curr(), i);
+    TypeID tid = context->get_from_top_type(get_scope_curr(), i);
 
-    context.push_rtn(get_scope_curr(), tid, reg);
+    context->push_rtn(get_scope_curr(), tid, reg);
   }
 
   //  Return to Parent Context Scope
@@ -182,7 +183,7 @@ ErrorCode ret_function ()
   sprintf(comm, "bx lr");
   add_command(comm);
 
-  set_scope_curr( context.get_parent(get_scope_curr()) );
+  set_scope_curr( context->get_parent(get_scope_curr()) );
 
   return 0;
 }
@@ -202,9 +203,9 @@ ErrorCode undecl_function()
       + Type Buffers
       + etc.
   */
-  scope_curr = context.get_parent(get_scope_curr());
+  scope_curr = context->get_parent(get_scope_curr());
 
-  context.remove_last_function();
+  context->remove_last_function();
 
   //  Return Success
   return 0;

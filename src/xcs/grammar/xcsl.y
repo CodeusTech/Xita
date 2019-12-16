@@ -302,36 +302,36 @@ decl:
   | decl_funct   
   | decl_type           
   | decl_typeclass      
-  | decl_open
+//  | decl_open
   | decl_fnew
   | DEBUG STRING                             { printf("%s\n", $2); }
 ;
 
 /*
   4.) External Module Declarations
-*/
-decl_open:
-    open_source
-  | open_tether
-  | open_header
-  | open_system
+  decl_open:
+      open_source
+    | open_tether
+    | open_header
+    | open_system
+    ;
+
+  open_source:
+    OPEN SOURCE_M STRING { open_source($3); }
   ;
 
-open_source:
-  OPEN SOURCE_M STRING { open_source($3); }
-;
+  open_tether:
+    OPEN TETHER_M STRING { open_tether($3); }
+  ;
 
-open_tether:
-  OPEN TETHER_M STRING { open_tether($3); }
-;
+  open_header:
+    OPEN HEADER_M STRING { open_header($3); }
+  ;
 
-open_header:
-  OPEN HEADER_M STRING { open_header($3); }
-;
-
-open_system:
-  OPEN SYSTEM_M STRING { open_system($3); }
-;
+  open_system:
+    OPEN SYSTEM_M STRING { open_system($3); }
+  ;
+*/
 
 
 
@@ -635,8 +635,8 @@ decl_funct:
 ;
 
 exp_param:
-    exp_param IDENTIFIER { context.add_parameter($2); }
-  | IDENTIFIER { context.add_parameter($1); }
+    exp_param IDENTIFIER { context->add_parameter($2); }
+  | IDENTIFIER { context->add_parameter($1); }
 ;
 
 exp_inline:

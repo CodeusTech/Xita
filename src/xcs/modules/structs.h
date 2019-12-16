@@ -15,9 +15,13 @@
 #include <vector>
 
 #include <xcs/std/typedefs.h>
+#include <xcs/std/status.h>
+#include <xcs/std/error.h>
 
 #include <xcs/ident/functions/structs.h>
 #include <xcs/ident/types/structs.h>
+
+extern ModuleID next_context;
 
 using namespace std;
 
@@ -35,10 +39,10 @@ class ModuleNode
  /*
    Private Properties
  */
-
-  //  Module Properties
-  ModuleType mod_type = XCSL_HEADER;  //  Default to HEADER Type
+  //  Meta Properties
+  ParserStatus status = ParserStatus::Running;
   ModuleID _id;
+  ModuleType mod_type = XCSL_HEADER;  //  Default to HEADER Type
 
   //  Relationships
   ModuleID parent;
@@ -57,10 +61,17 @@ class ModuleNode
 public: 
 //  Constructors
   ModuleNode() { }
-  ModuleNode(ModuleType mtype) { mod_type = mtype; }
+  ModuleNode(ModuleType mtype, ModuleID _parent) 
+  { 
+    mod_type = mtype; 
+    parent = _parent; 
+    _id = next_context++;
+  }
 
 //  ACCESSORS
+  ModuleID get_ID() { return _id; }
   ModuleType get_module_type() { return mod_type; }
+  ParserStatus get_status() { return status; }
 
   //  Constants
   vector<ConstantNode> get_constants() { return constants; }
@@ -113,6 +124,9 @@ public:
   ConstructorNode get_last_constructor() { return types.back().get_constructor(types.back().count_struct()-1); }
 
 //  MUTATORS
+
+  // Meta Properties
+  ErrorCode set_status(ParserStatus stat) { status = stat; return SUCCESS; }
 
   //  Types
   ErrorCode add_type(TypeNode node) { types.push_back(node); return 0; }

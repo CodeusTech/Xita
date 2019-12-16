@@ -106,7 +106,7 @@ ErrorCode resolve_memory_variable(MemoryVariableID mvid)
 {
   printf("Resolving Memory Variable: %s\n", memory_variables[mvid-1].get_identifier());
   
-  context.push_reg(get_scope_curr(), memory_variable_type(mvid), memory_variable_register(mvid));
+  context->push_reg(get_scope_curr(), memory_variable_type(mvid), memory_variable_register(mvid));
 
 
   //  Return Success

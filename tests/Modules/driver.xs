@@ -9,6 +9,9 @@
   Contains a source script to open the header for testing
 *)
 
-open Header "mod.xh";;
+  let parameter = 55;;
 
-(test_function 1 2)
+  open tests/Modules/header_one.xh
+  open tests/Modules/header_two.xh
+
+  (test_function test2 55) + 1

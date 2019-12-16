@@ -30,6 +30,8 @@ extern int yylex();
 
 #include "string.h"
 
+
+
 %}
 %option noyywrap
 %option yylineno
@@ -37,9 +39,10 @@ extern int yylex();
 %x DOC_COMMENT
 %x STR
 %x CHR
+%x OPEN
 %%
 [ \t\n] ;           // Eliminate Whitespace
-
+open       BEGIN(OPEN);
 
 "!SOURCE\n" { return SOURCE_H; }  // SOURCE PREAMBLE
 "!HEADER\n" { return HEADER_H; }  // HEADER PREAMBLE
@@ -284,7 +287,6 @@ extern int yylex();
 
 "regex"   { return REGEX; }
 
-"open"    { return OPEN; }
 "Tether"  { return TETHER_M; }
 "System"  { return SYSTEM_M; }
 "Source"  { return SOURCE_M; }
@@ -338,3 +340,29 @@ extern int yylex();
 
 [A-Z][a-zA-Z0-9_]*\'?   { yylval.val_ident = strdup(yytext); return CONSTRUCTOR; }
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }
+
+
+
+"open"          BEGIN(OPEN);
+<OPEN>[ \t"]* /*Eat Whitespace*/
+<OPEN>[^ \t\n]+ {
+  
+  printf("%s\n", yytext);
+
+  FILE* fmod = fopen(yytext, "r");
+
+  if (!fmod) yyerror("Invalid Input File");
+  yypush_buffer_state(yy_create_buffer( fmod, YY_BUF_SIZE ));
+}
+<OPEN>[\n]      BEGIN(INITIAL);
+
+
+<<EOF>> {
+  yypop_buffer_state();
+    if ( !YY_CURRENT_BUFFER )
+      {
+        yyterminate();
+      } 
+  }
+
+    
