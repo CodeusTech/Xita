@@ -36,7 +36,8 @@ type switch =
 
 type node a = 
     Leaf 
-  | Tree of node a; a; node a;;
+  | Tree of 
+      node a; a; node a;;
 
 (* 1.b) Type Expressions
 
@@ -45,17 +46,17 @@ type node a =
 
 type person = 
   Person of 
-    age of int,
-    name of string,
-    height of int;;
+    age     : int     = 10,
+    name    : string  = "Person",
+    height  : int;;
 
 
 type tree a = 
   Leaf |
   Node of 
-    left of tree a, 
-    value of a,
-    right of tree a;;
+    left  : tree a, 
+    value : a,
+    right : tree a;;
 
 (*
   2.) Typeclasses

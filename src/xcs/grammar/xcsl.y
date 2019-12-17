@@ -163,7 +163,7 @@ extern Scope xcs_args;
 //  Datatype Keywords
 %token TYPE TYPECLASS
 %token IS OF REQ IMPL SIZEOF
-%token OP_REC_L OP_REC_R OP_ELEMENT
+%token OP_REC_L OP_REC_R OP_ELEMENT OP_TYPE
 
 //  Static Memory Manipulation
 %token MEM_READ MEM_SET THIS
@@ -764,7 +764,8 @@ exp_struct:
 */
 decl_record:
     decl_record OP_COMMA decl_record
-  | IDENTIFIER OF exp_type      { decl_record($1); }
+  | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp_literal { decl_record($1); }
+  | IDENTIFIER OP_TYPE exp_type      { decl_record($1); }
 ;
 
 exp_record:

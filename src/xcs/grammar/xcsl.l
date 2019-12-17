@@ -186,6 +186,7 @@ open       BEGIN(OPEN);
 "%" { return OP_MOD; } //  MODULUS OPERATOR
 
 ":=" { return OP_INLINE; } //  INLINE OPERATOR
+":"  { return OP_TYPE; }
 
 "<=" { return OP_LTE; } // LESS THAN OR EQUAL TO
 ">=" { return OP_GTE; } // GREATER THAN OR EQUAL TO
