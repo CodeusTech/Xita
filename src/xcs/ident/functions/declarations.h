@@ -66,18 +66,18 @@ ErrorCode decl_constant(Identifier ident)
   {
     case 1: //  1-Byte Alignment
       sprintf(size, "byte");
-      sprintf(str, "%s: .%s #llu", ident, size, (unsigned long long) last_data);
-      cnst.set_value((Arbitrary) (unsigned long long) last_data);
+      sprintf(str, "%s: .%s %lu", ident, size, (unsigned long) last_data);
+      cnst.set_value((Arbitrary) (unsigned long) last_data);
       break;
     case 2: //  2-Byte Alignment
       sprintf(size, "hword");
-      sprintf(str, "%s: .%s %llu", ident, size, (unsigned long long) last_data);
-      cnst.set_value((Arbitrary) (unsigned long long) last_data);
+      sprintf(str, "%s: .%s %lu", ident, size, (unsigned long) last_data);
+      cnst.set_value((Arbitrary) (unsigned long) last_data);
       break;
     case 4: //  4-Byte Alignment
       sprintf(size, "word");
-      sprintf(str, "%s: .%s %llu", ident, size, (unsigned long long) last_data);
-      cnst.set_value((Arbitrary) (unsigned long long) last_data);
+      sprintf(str, "%s: .%s %lu", ident, size, (unsigned long) last_data);
+      cnst.set_value((Arbitrary) (unsigned long) last_data);
       break;
     case 8: //  8-Byte Alignment
       sprintf(size, "dword");

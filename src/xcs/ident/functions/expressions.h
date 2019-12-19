@@ -45,9 +45,7 @@
     * Returns ConstantID of the matched constant identifier
 */
 ConstantID find_constant(Identifier ident)
-{
-  for (vector<ConstantNode>::iterator it = context->get_constants().begin(); it != context->get_constants().end(); it++)
-  
+{ 
   for (unsigned int i = 0; i < context->count_constants(); i++)
     if (strcmp(context->get_constant(i).get_identifier(), ident) == 0) 
     {
@@ -60,6 +58,9 @@ ConstantID find_constant(Identifier ident)
   return (ConstantID) NULL;
 }
 
+Arbitrary const_value(ConstantID cid)
+{ return context->get_constant_value(cid); }
+
 /*
 
 */
@@ -67,6 +68,7 @@ ErrorCode resolve_constant(ConstantID _const)
 {
   //  Push Constant 
   rs_push(TYPE_ARBITRARY);
+  last_data = context->get_constant_value(_const); 
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);

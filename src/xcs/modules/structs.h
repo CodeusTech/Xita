@@ -80,6 +80,7 @@ public:
   vector<ConstantNode> get_constants() { return constants; }
   ConstantNode get_constant(ConstantID cid) { return constants[cid]; }
   unsigned int count_constants() { return constants.size(); }
+  Arbitrary get_constant_value(ConstantID cid) { return constants[cid-1].get_value(); }
 
   // Functions
   vector<FunctionNode> get_functions() { return functions; }

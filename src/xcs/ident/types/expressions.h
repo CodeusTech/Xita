@@ -69,10 +69,14 @@ ConstructorID find_constructor (Identifier ident)
   for (unsigned long i = 0; i < context->get_types().size(); i++)
     for (unsigned long j = 0; j < context->get_type(i).count_struct(); j++)
       if (strcmp(context->get_type(i).get_constructor(j).get_ident(), ident) == 0)
-        
-        //  TODO: Check if given arguments match constructor's expected layout
+        {
+          //  TODO: Check if given arguments match constructor's expected layout
+          last_type = i+1;
+          last_constructor = j+1;
 
-        return context->get_type(i).get_constructor(j).get_cid();
+          return context->get_type(i).get_constructor(j).get_cid();
+
+        }
 
   return 0;
 }
