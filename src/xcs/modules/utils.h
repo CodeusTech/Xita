@@ -24,11 +24,22 @@
 extern YY_BUFFER_STATE yy_create_buffer(FILE* file, int size);
 extern void yy_switch_to_buffer( YY_BUFFER_STATE new_buffer );
 extern FILE* yyin;
+extern int yylineno;
 
 
 ModuleID get_next_context() { return next_context++; }
 ModuleID get_current_context() { return current_context; }
 
+
+ErrorCode set_line_number() 
+{ 
+  int _line_number = yylineno;
+  for (unsigned int i = 0 ; i < modules.size(); i++)
+    if (i != context->get_ID()) _line_number -= modules[i].get_line_number();
+
+  context->set_line_number(_line_number);
+  return SUCCESS;  
+}
 
 
 /*
@@ -36,7 +47,8 @@ ModuleID get_current_context() { return current_context; }
 */
 ErrorCode open_header(char* module)
 {
-  context->set_status(ParserStatus::Waiting);
+  set_line_number();
+  
   printf("Header File Opened: %s\n", module);
 
   modules.push_back(ModuleNode(XCSL_HEADER, current_context));
@@ -55,6 +67,7 @@ ErrorCode open_header(char* module)
   yypush_buffer_state(yy_create_buffer( mod_file, YY_BUF_SIZE ));
 
   printf("Header file Closed: %s\n", module);
+
 
 
   //  Return Success

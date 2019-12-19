@@ -29,6 +29,7 @@
 //  XCS Libraries
 #include <xcs/std/buffers.h>
 #include <xcs/std/scope.h>
+#include <xcs/std/typecodes.h>
 #include <xcs/grammar/status.h>
 
 #include <xcs/regstack/regstack.h>

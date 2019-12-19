@@ -74,7 +74,7 @@ int memory_write_exp()
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
-  char* sec = get_reg(rs_sec(), 32);
+  char* sec = get_reg(rs_sec(), 64);
   rs_pop();
 
   sprintf(str, "str %s,[%s,0]", top, sec);

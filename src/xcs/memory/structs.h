@@ -18,6 +18,7 @@
 
 //  XCS Libraries
 #include <xcs/std/typedefs.h>
+#include <xcs/std/typecodes.h>
 
 extern void yyerror(const char* error);
 

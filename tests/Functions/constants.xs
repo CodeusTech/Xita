@@ -15,8 +15,6 @@
   3.) Functional Expressions
 *)
 
-type int8 = Int;;
-
 (*
   1.) Constant Declarations
 *)

@@ -28,7 +28,6 @@
 #define FUNCTIONS_DECLARATIONS_H
 
 #include <xcs/std/typedefs.h>
-#include <xcs/std/typecodes.h>
 #include <xcs/std/scope.h>
 #include <xcs/std/buffers.h>
 
@@ -67,22 +66,22 @@ ErrorCode decl_constant(Identifier ident)
   {
     case 1: //  1-Byte Alignment
       sprintf(size, "byte");
-      sprintf(str, "%s: .%s #%llu", ident, size, (unsigned long long) last_data);
+      sprintf(str, "%s: .%s #llu", ident, size, (unsigned long long) last_data);
       cnst.set_value((Arbitrary) (unsigned long long) last_data);
       break;
     case 2: //  2-Byte Alignment
       sprintf(size, "hword");
-      sprintf(str, "%s: .%s #%llu", ident, size, (unsigned long long) last_data);
+      sprintf(str, "%s: .%s %llu", ident, size, (unsigned long long) last_data);
       cnst.set_value((Arbitrary) (unsigned long long) last_data);
       break;
     case 4: //  4-Byte Alignment
       sprintf(size, "word");
-      sprintf(str, "%s: .%s #%llu", ident, size, (unsigned long long) last_data);
+      sprintf(str, "%s: .%s %llu", ident, size, (unsigned long long) last_data);
       cnst.set_value((Arbitrary) (unsigned long long) last_data);
       break;
     case 8: //  8-Byte Alignment
       sprintf(size, "dword");
-      sprintf(str, "%s: .%s #%llu", ident, size, (unsigned long long) last_data);
+      sprintf(str, "%s: .%s %llu", ident, size, (unsigned long long) last_data);
       cnst.set_value((Arbitrary) (unsigned long long) last_data);
       break;
     default:  
@@ -99,8 +98,8 @@ ErrorCode decl_constant(Identifier ident)
       * Initialize ConstantNode, as according to XCS Tech Spec
       * Ensure all data that needs to be pushed to data stack is so
   */
-  sprintf(str, "bl    __decl_const");
-  add_command(str);
+  //sprintf(str, "bl    __decl_const");
+  //add_command(str);
 
   //  Free Local String Buffers
   free(str);
@@ -180,7 +179,7 @@ ErrorCode ret_function ()
 
   //  Return to Parent Context Scope
   char comm[9];
-  sprintf(comm, "bx lr");
+  sprintf(comm, "ret");
   add_command(comm);
 
   set_scope_curr( context->get_parent(get_scope_curr()) );
