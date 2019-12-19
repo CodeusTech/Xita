@@ -581,11 +581,11 @@ decl_const:
 exp_const:
     INT     { last_data = (void*) (unsigned long long) $1; }
   | exp_struct
-  | IDENTIFIER { last_data = (void*) find_constant($1); }
-  | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long) last_data + $3); }
-  | exp_const OP_SUB INT {last_data = (void*) ((unsigned long long) last_data - $3); }
-  | exp_const OP_MUL INT {last_data = (void*) ((unsigned long long) last_data * $3); }
-  | exp_const OP_DIV INT {last_data = (void*) ((unsigned long long) last_data / $3); }
+  | IDENTIFIER { last_data = (void*) (unsigned long long)context->get_constant_value(find_constant($1)); }
+  | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long)last_data + $3); }
+  | exp_const OP_SUB INT {last_data = (void*) ((unsigned long long)last_data - $3); }
+  | exp_const OP_MUL INT {last_data = (void*) ((unsigned long long)last_data * $3); }
+  | exp_const OP_DIV INT {last_data = (void*) ((unsigned long long)last_data / $3); }
 ;
 
 /*
