@@ -18,6 +18,8 @@
 #include "inference.h"
 #include "complex/complex.h"
 
+#include "init.h"
+
 
 
 #endif

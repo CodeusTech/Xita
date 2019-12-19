@@ -53,7 +53,7 @@ int decl_list()
   */
 
   //  Calculate Node Size
-  unsigned long nsize = _xcs_get_size(last_type);
+  unsigned long nsize = 0; //_xcs_get_size(last_type);
   nsize += 8; //  Add Pointer to Next Node
 
   //  Move Node Size to OSP for memory allocation
@@ -122,7 +122,7 @@ int list_tail()
   */
 
   //  Acquire List Type Size
-  unsigned long offset = _xcs_get_size(last_type); // Shift to pointer
+  unsigned long offset = 0; //TODO: FIX THIS: _xcs_get_size(last_type); // Shift to pointer
 
   //  Allocate Space for Command
   char* str = (char*) malloc(50);
@@ -173,7 +173,7 @@ int list_append()
   char* str = (char*) malloc(50);
   char* top64 = get_reg(rs_top(), 64);
   char* sec64 = get_reg(rs_sec(), 64);
-  unsigned long offset = _xcs_get_size(last_type); //  Shift to 
+  unsigned long offset = 0;//_xcs_get_size(last_type); //  Shift to 
 
   //  Temporarily store pointer in OSP
   sprintf(str, "  mov x28, %s\n", sec64);

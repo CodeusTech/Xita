@@ -163,7 +163,7 @@ extern Scope xcs_args;
 //  Datatype Keywords
 %token TYPE TYPECLASS
 %token IS OF REQ IMPL SIZEOF
-%token OP_REC_L OP_REC_R OP_ELEMENT
+%token OP_REC_L OP_REC_R OP_ELEMENT OP_TYPE
 
 //  Static Memory Manipulation
 %token MEM_READ MEM_SET THIS
@@ -207,7 +207,7 @@ extern Scope xcs_args;
 %token SOURCE_H HEADER_H TETHER_H 
 
 //  Tether Module-Specific Operations
-%token OFFER REQUEST
+%token OFFER REQUEST XCS_UNDEF
 
 /*
   B.) Order of Operations
@@ -362,6 +362,7 @@ exp:
   | exp OP_TUP exp                           { add_to_tuple(); }
   | DEBUG_PRINT IDENTIFIER                   { print_debug_message($2); }
   | CLEAR                                    { clear_terminal(); }
+  | XCS_UNDEF
 ;
 
 /*
@@ -370,6 +371,7 @@ exp:
 
 exp_literal:
     exp_primitive
+  | exp_struct
   | exp_identifier
 ;
 
@@ -630,13 +632,19 @@ __decl_funct:
 ;
 
 decl_funct:
-    __decl_funct IN exp   { undecl_function(); }
+    decl_funct IMPL decl_prototypes
+  | __decl_funct IN exp   { undecl_function(); }
   | __decl_funct
 ;
 
 exp_param:
     exp_param IDENTIFIER { context->add_parameter($2); }
   | IDENTIFIER { context->add_parameter($1); }
+;
+
+decl_prototypes:
+    decl_prototypes OP_COMMA decl_prototypes
+  | IDENTIFIER OP_ASSIGN exp
 ;
 
 exp_inline:
@@ -689,7 +697,7 @@ implements:
 
 l_typeclass:
     l_typeclass OP_COMMA l_typeclass
-//  | IDENTIFIER  { impl_typeclass($1); }
+  | IDENTIFIER  {/* impl_typeclass($1); */}
 ;
 
 param_type:
@@ -704,24 +712,13 @@ param_type:
 exp_type:
     exp_type exp_type  {printf("Parameterized Type Found\n");}
   | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
-  | INT_T           { last_type = 2;  }    
-  | U8_T            { last_type = 3;  } 
-  | I8_T            { last_type = 4;  }  
-  | U16_T           { last_type = 5;  } 
-  | I16_T           { last_type = 6;  } 
-  | U32_T           { last_type = 7;  } 
-  | I32_T           { last_type = 8;  } 
-  | U64_T           { last_type = 9;  } 
-  | I64_T           { last_type = 10; } 
-  | REAL_T          { last_type = 11; } 
-  | FLOAT_T         { last_type = 12; } 
-  | DOUBLE_T        { last_type = 13; } 
   | BOOL_T          { last_type = 14; } 
   | CHAR_T          { last_type = 15; } 
   | STRING_T        { last_type = 16; } 
   | LIST_T      
   | IDENTIFIER      { last_type = find_type($1); }
-  | exp_type OP_TUP exp_type { printf("Implement Me\n"); }
+  | OFFER         { printf("Implement Offers as Types\n"); }
+  | exp_type OP_TUP exp_type { printf("Implement Tuples\n"); }
 ;
 
 /*
@@ -764,7 +761,8 @@ exp_struct:
 */
 decl_record:
     decl_record OP_COMMA decl_record
-  | IDENTIFIER OF exp_type      { decl_record($1); }
+  | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp { decl_record($1); }
+  | IDENTIFIER OP_TYPE exp_type               { decl_record($1); }
 ;
 
 exp_record:
@@ -841,6 +839,7 @@ exp_prototype:
 param_prototype:
     param_prototype param_prototype 
   | exp_type      {/* param_proto($1); */}
+  | {/* DO NOTHING */}
 ;
     
 
@@ -1067,7 +1066,8 @@ arg_request:
   GENERIC ERROR MESSAGE
 */
 void yyerror(const char* error) {
-	fprintf(stderr, "\nParse error in line %d: %s\n\n", yylineno, error);
+  set_line_number();
+	fprintf(stderr, "\nParse error in line %d: %s\n\n", context->get_line_number(), error);
 
   //  TODO: DEALLOCATE ALL BUFFERS
   

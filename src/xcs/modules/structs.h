@@ -22,6 +22,7 @@
 #include <xcs/ident/types/structs.h>
 
 extern ModuleID next_context;
+extern int yylineno;
 
 using namespace std;
 
@@ -43,6 +44,7 @@ class ModuleNode
   ParserStatus status = ParserStatus::Running;
   ModuleID _id;
   ModuleType mod_type = XCSL_HEADER;  //  Default to HEADER Type
+  int line_number = 0;
 
   //  Relationships
   ModuleID parent;
@@ -72,6 +74,7 @@ public:
   ModuleID get_ID() { return _id; }
   ModuleType get_module_type() { return mod_type; }
   ParserStatus get_status() { return status; }
+  int get_line_number() { return line_number; }
 
   //  Constants
   vector<ConstantNode> get_constants() { return constants; }
@@ -127,6 +130,7 @@ public:
 
   // Meta Properties
   ErrorCode set_status(ParserStatus stat) { status = stat; return SUCCESS; }
+  ErrorCode set_line_number(int _line) { line_number = _line; return SUCCESS; }
 
   //  Types
   ErrorCode add_type(TypeNode node) { types.push_back(node); return 0; }

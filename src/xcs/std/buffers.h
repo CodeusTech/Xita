@@ -150,16 +150,4 @@ operands* operands_append;
 operands* operands_list_con;
 
 
-
-/*
-  Initialize Buffers
-*/
-ErrorCode init_buffers()
-{
-
-  return 0;
-}
-
-
-
 #endif

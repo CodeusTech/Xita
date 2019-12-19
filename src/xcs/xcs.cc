@@ -28,6 +28,7 @@
 //  XCS Libraries
 #include <xcs/std/std.h>
 #include <xcs/asm/asm.h>
+#include <xcs/ident/ident.h>
 
 //  Import Grammar Libraries
 #include "../../lex.yy.c"
@@ -103,10 +104,9 @@ int main(int argc, char** argv)
 			modules.push_back(ModuleNode());
 			context = &modules[0];
 
-			char* str = (char*) malloc(50);
-			sprintf(str, " ");
-
-			add_function(str);
+			//  Initialize Buffers
+			initialize_types();
+			initialize_functions();
 			
 			yyin = fopen(argv[i], "r");
 			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));

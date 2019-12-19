@@ -19,6 +19,7 @@
 #include "expressions.h"
 #include "recursion.h"
 
+#include "init.h"
 
 #endif
 

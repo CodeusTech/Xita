@@ -79,28 +79,11 @@ open       BEGIN(OPEN);
 */
 %}
 
-
-"int" { return INT_T;  }  //  INFERRED INTEGER TYPE
-"u8" { return U8_T; }     //  8-Bit UNSIGNED INTEGER TYPE
-"i8" { return I8_T; }     //  8-Bit SIGNED INTEGER TYPE
-"u16" { return U16_T; }   //  16-Bit UNSIGNED INTEGER TYPE
-"i16" { return I16_T; }   //  16-Bit SIGNED INTEGER TYPE
-"u32" { return U32_T; }   //  32-Bit UNSIGNED INTEGER TYPE
-"i32" { return I32_T; }   //  32-Bit SIGNED INTEGER TYPE
-"u64" { return U64_T; }   //  64-Bit UNSIGNED INTEGER TYPE
-"i64" { return I64_T; }   //  64-Bit SIGNED INTEGER TYPE
-
 "rng" { return RNG; } //  RANDOM NUMBER GENERATOR
 
 "bool" { return BOOL_T; }   //  BOOLEAN TYPE
 "True" { return TRUE; }     //  BOOLEAN PRIMITIVE
 "False" { return FALSE; }   //  BOOLEAN PRIMITIVE
-
-"real" { return REAL_T; }       //  INFERRED REAL NUMBER TYPE
-"float" { return FLOAT_T; }     //  FLOATING POINT TYPE
-"Float" { return FLOAT_C; }     //  FLOATING POINT CONSTRUCTOR
-"double" { return DOUBLE_T; }   //  DOUBLE PRECISION TYPE
-"Double" { return DOUBLE_C; }   //  DOUBLE PRECISION CONSTRUCTOR
 
 "char" { return CHAR_T; }  //  CHARACTER TYPE
 "Char" { return CHAR_C; }  //  CHARACTER CONSTRUCTOR 
@@ -186,6 +169,7 @@ open       BEGIN(OPEN);
 "%" { return OP_MOD; } //  MODULUS OPERATOR
 
 ":=" { return OP_INLINE; } //  INLINE OPERATOR
+":"  { return OP_TYPE; }
 
 "<=" { return OP_LTE; } // LESS THAN OR EQUAL TO
 ">=" { return OP_GTE; } // GREATER THAN OR EQUAL TO
@@ -314,6 +298,7 @@ open       BEGIN(OPEN);
 "debug"  { return DEBUG; }
 "@"      { return DEBUG_PRINT; }
 
+"undef"   { return XCS_UNDEF; }
 
 
 
@@ -358,6 +343,7 @@ open       BEGIN(OPEN);
 
 
 <<EOF>> {
+  set_line_number();
   yypop_buffer_state();
     if ( !YY_CURRENT_BUFFER )
       {
