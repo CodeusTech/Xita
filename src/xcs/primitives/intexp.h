@@ -296,20 +296,22 @@ int integer_modulo()
   Returns:
     1, if Succcessful
 */
-int bitwise_shl(int val)
+int bitwise_shl()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
-  sprintf(str, "lsr   %s, #%d", top, val);
-
-  //  Add to Queue for File Printing
+  sprintf(str, "lsr   %s, %s, %s", sec, sec, top);
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
   free(top);
+  free(sec);
+  
+  rs_pop();
 
   return 0;
 }
@@ -320,20 +322,22 @@ int bitwise_shl(int val)
   Returns:
     0, if Successful
 */
-int bitwise_shr(int val)
+int bitwise_shr()
 {
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
   char* top = get_reg(rs_top(), 32);
+  char* sec = get_reg(rs_sec(), 32);
 
-  sprintf(str, "rsr   %s, #%d", top, val);
-
-  //  Add to Queue for File Printing
+  sprintf(str, "rsr   %s, %s, %s", sec, sec, top);
   add_command(str);
 
   //  Free allocated memory and move to next register on stack
   free(str);
   free(top);
+  free(sec);
+
+  rs_pop();
 
   return 0;
 }

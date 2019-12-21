@@ -196,13 +196,13 @@ int infer_bit_xor()
     0, if Successful
     1, if Invalid Type Operand
 */
-int infer_bit_shl(int val)
+int infer_bit_shl()
 {
 
   //  Check LHS/RHS Types
   TypeID lhsT = rs_top_type();
 
-  if ((lhsT>0 && lhsT<11)) return bitwise_shl(val);
+  if ((lhsT>0 && lhsT<11)) return bitwise_shl();
 
   return 1;
 }
@@ -213,14 +213,28 @@ int infer_bit_shl(int val)
     0, if Successful
     1, if Invalid Type Operand
 */
-int infer_bit_shr(int val)
+int infer_bit_shr()
 {
   //  Check LHS/RHS Types
   TypeID lhsT = rs_top_type();
 
-  if ((lhsT>0 && lhsT<11)) return bitwise_shr(val);
+  if ((lhsT>0 && lhsT<11)) return bitwise_shr();
 
   return 1;
+}
+
+ErrorCode infer_bit_not()
+{
+  char* str = (char*) malloc(50);
+  char* reg = get_reg(rs_top(),32);
+
+  sprintf(str, "mvn   %s, %s", reg, reg);
+  add_command(str);
+
+  free(str);
+  free(reg);
+
+  return SUCCESS;
 }
 
 /*
@@ -260,6 +274,13 @@ int infer_bool_xor()
   boolean_xor();
 
   return 0;
+}
+
+ErrorCode infer_bool_not()
+{
+  boolean_not();
+
+  return SUCCESS;
 }
 
 

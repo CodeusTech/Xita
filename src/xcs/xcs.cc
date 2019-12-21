@@ -26,6 +26,7 @@
 #include "stdlib.h"
 
 //  XCS Libraries
+#include "admin.h"
 #include <xcs/std/std.h>
 #include <xcs/asm/asm.h>
 #include <xcs/ident/ident.h>
@@ -52,13 +53,15 @@ int main(int argc, char** argv)
 	for (int i = 1; i < argc; i++)
 	{
 
+		if (strcmp(argv[i], "--version") == 0) { printf("XCSL Cross-Compiler: v%s\n", XCSL_VERSION); return 0; }
+
 	/*
 		ASSEMBLY OPTIONS:
 			* -a || --keep-assembly
 	*/
 
 		//  Keep Assembly Option
-		if (strncmp(argv[i], "-a\0", 3) == 0 || strncmp(argv[i], "--keep-assembly", 15) == 0) 
+		if (strcmp(argv[i], "-a") == 0 || strcmp(argv[i], "--keep-assembly") == 0) 
 		{
 			keep_assembly = true;
 		}

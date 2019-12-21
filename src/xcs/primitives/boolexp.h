@@ -152,6 +152,32 @@ int boolean_xor()
   return 0;
 }
 
+ErrorCode boolean_not()
+{
+  //  Get Register Codes
+  char* top = get_reg(rs_top(), 32);
+  char* str = (char*) malloc(50);
+  unsigned long long mang = get_mangle();
+
+  //  Compare against false
+  sprintf(str, "cmp   %s, #0", top); add_command(str);
+  sprintf(str, "bgt   not__%llu", mang); add_command(str);
+
+  sprintf(str, "mov   %s, #1", top); add_command(str);
+
+  sprintf(str, "b     finish__%llu", mang); add_command(str);
+  sprintf(str, "not__%llu:", mang); add_command(str);
+
+  sprintf(str, "mov   %s, #0", top); add_command(str);
+
+  sprintf(str, "finish__%llu:", mang); add_command(str);
+
+  free(str);
+  free(top);
+
+  return SUCCESS;
+}
+
 
 /*
   3.) Ordered Comparisons

@@ -72,7 +72,7 @@ ErrorCode resolve_constant(ConstantID _const)
 
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
-  char* rtop = get_reg(rs_top(), 32);
+  char* rtop = get_reg(rs_top(), 64);
 
   //  Add to Queue for File Printing
   sprintf(str, "ldr   %s, %s", rtop, context->get_constants().at(_const-1).get_identifier());

@@ -149,6 +149,7 @@ open       BEGIN(OPEN);
 "&"  { return BIT_AND; } // BITWISE AND
 "|"  { return BIT_OR;  } // BITWISE OR
 "^"  { return BIT_XOR; } // BITWISE XOR
+"~"  { return BIT_NOT; } // BITWISE NOT
 
 "*->"   { return MEM_READ; }  //  READ FROM MEMORY
 "<-*"   { return MEM_SET; }   //  SET MEMORY
@@ -192,6 +193,8 @@ open       BEGIN(OPEN);
 
 "{"  { return OP_REC_L; }
 "}"  { return OP_REC_R; }
+
+"!"  { return BOOL_NOT; }
 
 %{
 /*
