@@ -91,6 +91,7 @@
 #include <xcs/regex/regex.h>
 #include <xcs/regstack/regstack.h>
 #include <xcs/utils/clear.h>
+#include <xcs/utils/delay.h>
 
 extern int yylex();
 extern int yyparse();
@@ -135,7 +136,7 @@ extern Scope xcs_args;
 %token OP_ADD_O OP_SUB_O OP_MUL_O OP_DIV_O OP_MOD_O  // INTEGER ARITHMETIC
 %token OP_GTE_O OP_GT_O OP_EQ_O OP_NEQ_O OP_LTE_O OP_LT_O // INTEGER COMPARISON
 %token BIT_AND_O BIT_OR_O BIT_XOR_O BIT_SHR_O BIT_SHL_O // BITWISE MANIPULATION
-%token BOOL_OR_O BOOL_AND_O BOOL_XOR_O                  // BOOLEAN COMPARISON
+%token BOOL_OR_O BOOL_AND_O BOOL_XOR_O          // BOOLEAN COMPARISON
 %token ARROW_L_O ARROW_R_O
 %token OP_APPEND_O OP_LIST_CON_O
 %token MEM_READ_O MEM_SET_O
@@ -143,8 +144,8 @@ extern Scope xcs_args;
 //  Syntactic Operators
 %token OP_ADD OP_SUB OP_MUL OP_DIV OP_MOD       // INTEGER ARITHMETIC
 %token OP_GTE OP_GT OP_EQ OP_NEQ OP_LTE OP_LT   // INTEGER COMPARISON
-%token BIT_AND BIT_OR BIT_XOR BIT_SHR BIT_SHL   // BITWISE MANIPULATION
-%token BOOL_OR BOOL_AND BOOL_XOR                // BOOLEAN COMPARISON
+%token BIT_AND BIT_OR BIT_XOR BIT_SHR BIT_SHL BIT_NOT   // BITWISE MANIPULATION
+%token BOOL_OR BOOL_AND BOOL_XOR BOOL_NOT               // BOOLEAN COMPARISON
 %token ARROW_L ARROW_R
 %token OP_SEP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
 
@@ -344,7 +345,7 @@ decl:
 */
 exp:
     PAR_LEFT exp PAR_RIGHT
-  | DELAY exp exp  
+  | exp_delay exp   
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
   | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }
   | decl  
@@ -364,6 +365,9 @@ exp:
   | CLEAR                                    { clear_terminal(); }
   | XCS_UNDEF
 ;
+
+exp_delay:
+  DELAY exp { exp_delay(); }
 
 /*
   2.) Primitive Expressions
@@ -470,20 +474,22 @@ exp_arith:
   | exp OP_MUL exp      { infer_multiplication(); }
   | exp OP_DIV exp      { infer_division(); }
   | exp OP_MOD exp      { infer_modulus(); }
+  | BIT_NOT exp         { infer_bit_not(); }
   | exp BIT_AND exp     { infer_bit_and(); }
-  | exp BIT_OR exp      { infer_bit_or(); }
+  | exp BIT_OR exp      { infer_bit_or();  }
   | exp BIT_XOR exp     { infer_bit_xor(); }
-  | exp BIT_SHL INT     { infer_bit_shl($3); }
-  | exp BIT_SHR INT     { infer_bit_shr($3); }
+  | exp BIT_SHL exp     { infer_bit_shl(); }
+  | exp BIT_SHR exp     { infer_bit_shr(); }
 ;
 
 /*
   3.b) Logical Expressions
 */
 exp_logical:
-  | exp BOOL_AND exp    { infer_bool_and(); }
+    exp BOOL_AND exp    { infer_bool_and(); }
   | exp BOOL_OR exp     { infer_bool_or();  }
   | exp BOOL_XOR exp    { infer_bool_xor(); }
+  | BOOL_NOT exp        { infer_bool_not(); }
   | exp OP_LT exp       { infer_bool_lt(); }
   | exp OP_LTE exp      { infer_bool_lte(); }
   | exp OP_GT exp       { infer_bool_gt(); }

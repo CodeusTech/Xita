@@ -22,17 +22,13 @@
 
 ErrorCode decl_memory_variable(Identifier ident)
 {
-  char* top = get_reg(rs_top(), 32);
-
-  rs_pop();
-
-  rs_push(2);
+  char* top = get_reg(rs_top(), 64);
 
   MemoryVariableNode mvnode = MemoryVariableNode(ident, rs_top());
 
   memory_variables.push_back(mvnode);
 
-  char* memreg = get_reg(memory_variables.back().get_register(), 32);
+  char* memreg = get_reg(memory_variables.back().get_register(), 64);
 
   char* str = (char*) malloc (50);
   sprintf(str, "ldr   %s, [%s]", memreg, top);
