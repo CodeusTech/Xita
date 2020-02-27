@@ -18,7 +18,7 @@
 
 enum xcs_optimization_scheme 
 {
-  DEFAULT = 27,
+  DEFAULT = 13, // SHOULD BE 27
   a32i = 144,
   a32f = 87,
   a48sr = 55,

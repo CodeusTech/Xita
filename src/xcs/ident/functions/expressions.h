@@ -108,7 +108,7 @@ ErrorCode load_argument(Scope scope)
   char* src = get_reg(context->get_top(get_scope_curr()), 32);
 
   context->pop(get_scope_curr());
-  sprintf(str, "mov   %s, %s", tgt, src);
+  sprintf(str, "mov  %s, %s", tgt, src);
   add_command(str);
       
   //  Deallocate Strings
@@ -148,7 +148,7 @@ ErrorCode resolve_function (FunctionID fid)
 {
 
   printf("Resolving Function: %s\n", context->get_function_identifier(fid));
-
+  
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
 
@@ -170,7 +170,7 @@ ErrorCode resolve_function (FunctionID fid)
       char* top = get_reg(rs_top(), 32);
       char* rtn = get_reg(context->get_rtn(fid, i), 32);
 
-      sprintf(str, "mov   %s, %s", top, rtn);
+      sprintf(str, "mov  %s, %s", top, rtn);
       add_command(str);
 
       free (top);
@@ -213,14 +213,14 @@ bool resolve_parameter(Identifier ident)
   {
     if (strcmp(fnode.get_param(i).get_identifier(), ident) == 0)
     { 
-      printf("Resolving Parameter: %s\n", ident);
+      printf("Resolving Parameter %s\n", ident);
       rs_push(fnode.get_param_type(i));
       last_type = fnode.get_param_type(i);
 
       char* src = get_reg(fnode.get_param_reg(i), 32);
       char* rtop = get_reg(rs_top(), 32);
 
-      sprintf(str, "mov   %s, %s", rtop, src);
+      sprintf(str, "mov  %s, %s", rtop, src);
       add_command(str);
 
       free(str);
@@ -257,7 +257,7 @@ ErrorCode return_function(int rtn)
   char* top = get_reg(rs_top(), 32);
   char* reg = get_reg(context->get_rtn(scope_invoked, rtn), 32);
 
-  sprintf(str, "mov   %s, %s", top, reg);
+  sprintf(str, "mov  %s, %s", top, reg);
   add_command(str);
 
 

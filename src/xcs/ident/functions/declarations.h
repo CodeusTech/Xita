@@ -134,8 +134,15 @@ ErrorCode decl_function (Identifier ident)
   
   //  Print Function Identifier to Assembly File
   char* str = (char*) malloc(50);
+  char reg[] = "x30";
+  char stp[] = "[sp, #-16]!";
+ 
+  char* str1 = (char*) malloc(50);
   sprintf(str, "\n__%u_%s:", context->count_functions()-1, context->get_function_identifier(context->count_functions()-1));
   add_command(str);
+
+  sprintf(str1, "str %s, %s", reg, stp);
+  add_command(str1);
 
   /*
     TODO:
@@ -146,6 +153,7 @@ ErrorCode decl_function (Identifier ident)
   add_command(str);*/
 
   free(str);
+  free(str1);
 
   return 0;
 }
@@ -179,11 +187,18 @@ ErrorCode ret_function ()
 
   //  Return to Parent Context Scope
   char comm[9];
+  char reg[] = "x30";
+   // ldr x30, [sp], #4
+  char stp[] = "[sp], #16";
+  char* str1 = (char*) malloc(50);
+  sprintf(str1, "ldr %s, %s", reg, stp);
+  add_command(str1);
   sprintf(comm, "ret");
   add_command(comm);
 
   set_scope_curr( context->get_parent(get_scope_curr()) );
 
+  free(str1);
   return 0;
 }
 
