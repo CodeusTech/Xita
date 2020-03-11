@@ -46,13 +46,13 @@
 */
 ConstantID find_constant(Identifier ident)
 { 
-  for (unsigned int i = 0; i < context->count_constants(); i++)
-    if (strcmp(context->get_constant(i).get_identifier(), ident) == 0) 
+  for (ConstantID i = 0; i < context->count_constants(); i++)
+    if (strcmp(context->get_constant_identifier(i), ident) == 0) 
     {
       found = true;
       free(ident);
 
-      return context->get_constant(i).get_ID();
+      return i;
     }
 
   return (ConstantID) NULL;

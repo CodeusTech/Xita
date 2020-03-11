@@ -578,20 +578,24 @@ exp_is:
   4.a) Constants
 */
 decl_const:
-    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); decl_constant($4); }
-  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); decl_constant($5); }
-  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { decl_constant($2); }
-  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { decl_constant($3); }
+    DEBUG STRING CONST IDENTIFIER OF exp_type pre_const exp_const { add_debug_message($4, $2); decl_constant($4); }
+  | DEBUG STRING CONST exp_struct IDENTIFIER  pre_const exp_const { add_debug_message($5, $2); decl_constant($5); }
+  | CONST IDENTIFIER OF exp_type pre_const exp_const { decl_constant($2); }
+  | CONST exp_struct IDENTIFIER  pre_const exp_const { decl_constant($3); }
+;
+
+pre_const:
+  OP_ASSIGN {last_data = 0;}
 ;
 
 exp_const:
-    INT     { last_data = (void*) (unsigned long long) $1; }
-  | exp_struct
-  | IDENTIFIER { last_data = (void*) (unsigned long long)context->get_constant_value(find_constant($1)); }
+    exp_struct
   | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long)last_data + $3); }
   | exp_const OP_SUB INT {last_data = (void*) ((unsigned long long)last_data - $3); }
   | exp_const OP_MUL INT {last_data = (void*) ((unsigned long long)last_data * $3); }
   | exp_const OP_DIV INT {last_data = (void*) ((unsigned long long)last_data / $3); }
+  | IDENTIFIER { last_data = (void*) (unsigned long long)const_value(find_constant($1)); }
+  | INT     {last_data = (void*) ((unsigned long long)last_data + $1); }
 ;
 
 /*

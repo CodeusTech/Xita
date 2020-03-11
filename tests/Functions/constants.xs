@@ -20,6 +20,7 @@
 *)
 
 const Int pi = 314;;
+const Int pi2 = pi + 3;;
 
 
 (*
