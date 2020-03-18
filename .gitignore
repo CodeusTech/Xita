@@ -19,6 +19,7 @@ _build
 
 #  Generated Assembly Test Files
 tests/**/*.s
+tests/**/*.o
 
 
 #  Generated Memory Leak Testing Files
