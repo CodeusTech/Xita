@@ -39,14 +39,14 @@ extern int yylex();
 %x DOC_COMMENT
 %x STR
 %x CHR
-%x OPEN
+%x OPEN 
+%x RUN 
+%x IMPORT
 %%
 [ \t\n] ;           // Eliminate Whitespace
 open       BEGIN(OPEN);
-
-"!SOURCE\n" { return SOURCE_H; }  // SOURCE PREAMBLE
-"!HEADER\n" { return HEADER_H; }  // HEADER PREAMBLE
-"!TETHER\n" { return TETHER_H; }  // TETHER PREAMBLE
+run        BEGIN(RUN);
+import     BEGIN(IMPORT);
 
 
 %{
@@ -266,7 +266,6 @@ open       BEGIN(OPEN);
 %}
 
 "build"   { return BUILD; }
-"run"     { return RUN;   }
 "tether"  { return TETHER;}
 
 "send"    { return SEND;    }
@@ -330,8 +329,6 @@ open       BEGIN(OPEN);
 [a-z_][a-zA-Z0-9_]*\'?  { yylval.val_ident = strdup(yytext); return IDENTIFIER;  }
 
 
-
-"open"          BEGIN(OPEN);
 <OPEN>[ \t"]* /*Eat Whitespace*/
 <OPEN>[^ \t\n]+ {
   
@@ -341,8 +338,33 @@ open       BEGIN(OPEN);
 
   if (!fmod) yyerror("Invalid Input File");
   yypush_buffer_state(yy_create_buffer( fmod, YY_BUF_SIZE ));
+
 }
 <OPEN>[\n]      BEGIN(INITIAL);
+
+<RUN>[ \t"]* /*Eat Whitespace*/
+<RUN>[^ \t\n]+ {
+  
+  printf("%s\n", yytext);
+
+  FILE* fmod = fopen(yytext, "r");
+
+  if (!fmod) yyerror("Invalid Input File");
+  yypush_buffer_state(yy_create_buffer( fmod, YY_BUF_SIZE ));
+}
+<RUN>[\n]      BEGIN(INITIAL);
+
+<IMPORT>[ \t"]* /*Eat Whitespace*/
+<IMPORT>[^ \t\n]+ {
+  
+  printf("%s\n", yytext);
+
+  FILE* fmod = fopen(yytext, "r");
+
+  if (!fmod) yyerror("Invalid Input File");
+  yypush_buffer_state(yy_create_buffer( fmod, YY_BUF_SIZE ));
+}
+<IMPORT>[\n]      BEGIN(INITIAL);
 
 
 <<EOF>> {

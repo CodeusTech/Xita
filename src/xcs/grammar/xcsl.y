@@ -195,7 +195,7 @@ extern Scope xcs_args;
 %token COPY MOVE RETAG
 
 //  Special Operations
-%token BUILD RUN            //  Bytecode Operations
+%token BUILD                //  Bytecode Operations
 %token REGEX                //  Regular Expressions
 %token TETHER SEND RECEIVE  //  Interprocess Communication
 
@@ -204,8 +204,9 @@ extern Scope xcs_args;
 %token DEBUG DEBUG_PRINT 
 
 //  Module Operations
-%token SOURCE_M HEADER_M TETHER_M SYSTEM_M OPEN
+%token SOURCE_M HEADER_M TETHER_M SYSTEM_M
 %token SOURCE_H HEADER_H TETHER_H 
+%token OPEN RUN IMPORT
 
 //  Tether Module-Specific Operations
 %token OFFER REQUEST XCS_UNDEF
@@ -232,7 +233,7 @@ extern Scope xcs_args;
 //  Constructors
 %left CONSTRUCTOR
 %left U8 I8 U16 I16 U32 I32 U64 I64 FLOAT_C DOUBLE_C STRING_C CHAR_C
-
+%left IDENTIFIER
 
 
 //  Override Operators
@@ -249,7 +250,6 @@ extern Scope xcs_args;
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
-%left IDENTIFIER
 
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
@@ -308,31 +308,11 @@ decl:
   | DEBUG STRING                             { printf("%s\n", $2); }
 ;
 
-/*
-  4.) External Module Declarations
-  decl_open:
-      open_source
-    | open_tether
-    | open_header
-    | open_system
-    ;
-
-  open_source:
-    OPEN SOURCE_M STRING { open_source($3); }
-  ;
-
-  open_tether:
-    OPEN TETHER_M STRING { open_tether($3); }
-  ;
-
-  open_header:
-    OPEN HEADER_M STRING { open_header($3); }
-  ;
-
-  open_system:
-    OPEN SYSTEM_M STRING { open_system($3); }
-  ;
-*/
+decl_open:
+    OPEN
+  | RUN 
+  | IMPORT
+;
 
 
 
@@ -578,24 +558,20 @@ exp_is:
   4.a) Constants
 */
 decl_const:
-    DEBUG STRING CONST IDENTIFIER OF exp_type pre_const exp_const { add_debug_message($4, $2); decl_constant($4); }
-  | DEBUG STRING CONST exp_struct IDENTIFIER  pre_const exp_const { add_debug_message($5, $2); decl_constant($5); }
-  | CONST IDENTIFIER OF exp_type pre_const exp_const { decl_constant($2); }
-  | CONST exp_struct IDENTIFIER  pre_const exp_const { decl_constant($3); }
-;
-
-pre_const:
-  OP_ASSIGN {last_data = 0;}
+    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); decl_constant($4); }
+  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); decl_constant($5); }
+  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { decl_constant($2); }
+  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { decl_constant($3); }
 ;
 
 exp_const:
-    exp_struct
+    INT     { last_data = (void*) (unsigned long long) $1; }
+  | exp_struct
+  | IDENTIFIER { last_data = (void*) (unsigned long long)context->get_constant_value(find_constant($1)); }
   | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long)last_data + $3); }
   | exp_const OP_SUB INT {last_data = (void*) ((unsigned long long)last_data - $3); }
   | exp_const OP_MUL INT {last_data = (void*) ((unsigned long long)last_data * $3); }
   | exp_const OP_DIV INT {last_data = (void*) ((unsigned long long)last_data / $3); }
-  | IDENTIFIER { last_data = (void*) (unsigned long long)const_value(find_constant($1)); }
-  | INT     {last_data = (void*) ((unsigned long long)last_data + $1); }
 ;
 
 /*

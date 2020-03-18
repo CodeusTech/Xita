@@ -124,9 +124,27 @@ int main(int argc, char** argv)
 			strncpy(asm_fname, argv[i], strlen(argv[i]));
 			strncat(asm_fname, ".s", 3);
 
+			char* obj_fname = (char*) malloc(strlen(argv[i])+3);
+			obj_fname[strlen(argv[i])] = 0;
+			strncpy(obj_fname, argv[i], strlen(argv[i]));
+			strncat(obj_fname, ".o", 3);
+
 
 			//  Populate Assembly File
 			write_asm_file(asm_fname);
+			
+			//  Generate Object File using Cross Assembler
+			char* _argc    = getenv("HOME");
+			strcat(_argc, "/.opt/cross/bin/aarch64-elf-as");
+			char _argv2[2][3]= {"-c", "-o"};
+
+			printf ("Check:   %s\n", _argc);
+
+			char* _argv[6] = {_argc, _argv2[0], asm_fname, _argv2[1], obj_fname, NULL};
+
+			execvp(_argc, _argv);
+
+			//  If `-a` option is not active, remove generated assembly file (TODO)
 
 			free (asm_fname);
 
