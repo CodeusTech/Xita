@@ -41,7 +41,7 @@ class ModuleNode
    Private Properties
  */
   //  Meta Properties
-  ParserStatus status = ParserStatus::Running;
+  ParserStatus status = Running;
   ModuleID _id;
   ModuleType mod_type = XCSL_HEADER;  //  Default to HEADER Type
   int line_number = 0;

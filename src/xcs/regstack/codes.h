@@ -78,7 +78,7 @@ char* get_reg(ADR i, unsigned char bits)
   /* TODO: Replace optimization if conditions with #IFDEF and #DEFINE statements  */
 
   //  Route a32i Register Name Request
-  if (get_optimization() == xcs_optimization_scheme::a32i) return get_reg_a32i(i, bits);
+  if (get_optimization() == a32i) return get_reg_a32i(i, bits);
 
   char* str = (char*) malloc(10);
   

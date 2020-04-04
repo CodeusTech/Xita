@@ -51,7 +51,7 @@ ErrorCode generate_text(FILE* filename)
 
   fprintf(filename, ".global __start\n__start:\n");
 
-  for (vector<list<string>>::iterator scope = asm_text.begin(); scope < asm_text.end(); ++scope)
+  for (vector<list<string> >::iterator scope = asm_text.begin(); scope < asm_text.end(); ++scope)
   {
     /* Print TEXT Buffer Contents to File */
     for (list<string>::iterator it = (*scope).begin(); it != (*scope).end(); it++)

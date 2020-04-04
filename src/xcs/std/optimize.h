@@ -26,10 +26,10 @@ enum xcs_optimization_scheme
 };
 
 
-xcs_optimization_scheme _scheme = xcs_optimization_scheme::DEFAULT;
+xcs_optimization_scheme _scheme = DEFAULT;
 
 //  Number of Arbitrary Data Registers is Architecture Dependent
-unsigned long NUMBER_OF_ADRS = xcs_optimization_scheme::DEFAULT;
+unsigned long NUMBER_OF_ADRS = DEFAULT;
 /*
   NOTE:
     * Setting 'NUMBER_OF_ADRS' to  27 disables use of AArch64's NEON registers
