@@ -75,7 +75,7 @@ ErrorCode resolve_constant(ConstantID _const)
   char* rtop = get_reg(rs_top(), 64);
 
   //  Add to Queue for File Printing
-  sprintf(str, "ldr   %s, %s", rtop, context->get_constants().at(_const-1).get_identifier());
+  sprintf(str, "ldr   %s, =%s", rtop, context->get_constants().at(_const).get_identifier());
   add_command(str);
 
   //  Deallocate Strings

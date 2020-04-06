@@ -26,7 +26,7 @@ let write_entry entry offset =
   offset <-* entry;;
 
 
---write_entry 10 5;;
+(write_entry 10 5);;
 
 
 let read_int offset = 
