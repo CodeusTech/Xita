@@ -261,6 +261,7 @@ extern Scope xcs_args;
 %left OP_SEQ
 
 %type <val_int> if if1 then else1
+%type <val_int> lit_integer
 
 /*
   C.) Start of Grammar
@@ -380,11 +381,26 @@ exp_primitive:
 /*
   2.a) Integer Expressions
 */
+lit_integer:
+    PAR_LEFT lit_integer PAR_RIGHT  { $$ = $2; }
+  | lit_integer BIT_AND lit_integer { $$ = $1 & $3; }
+  | lit_integer BIT_OR lit_integer  { $$ = $1 | $3; }
+  | lit_integer BIT_XOR lit_integer { $$ = $1 ^ $3; }
+  | lit_integer BIT_SHL lit_integer { $$ = $1 << $3; }
+  | lit_integer BIT_SHR lit_integer { $$ = $1 >> $3; }
+  | lit_integer OP_MUL lit_integer  { $$ = $1 * $3; }
+  | lit_integer OP_DIV lit_integer  { $$ = $1 / $3; }
+  | lit_integer OP_MOD lit_integer  { $$ = $1 % $3; }
+  | lit_integer OP_ADD lit_integer  { $$ = $1 + $3; }
+  | lit_integer OP_SUB lit_integer  { $$ = $1 - $3; }
+  | INT                             { $$ = $1; }
+;
+
 exp_integer:
     LIST_LENGTH exp_list { printf("List of Length determined\n"); }
   | RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
-  | INT             { push_int((long long) $1); }
+  | lit_integer     { push_int((long long) $1); }
 ;
 
 /*

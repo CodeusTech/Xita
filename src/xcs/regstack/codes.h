@@ -85,22 +85,22 @@ char* get_reg(ADR i, unsigned char bits)
   switch(bits)
   {
     case (8):
-      if (i < 28) sprintf(str, "b%u", i); else
+      if (i < 29) sprintf(str, "b%u", i); else
       if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
                   sprintf(str, "v%u.s[0]", i-24);
       break;
     case (16):
-      if (i < 28) sprintf(str, "s%u", i); else
+      if (i < 29) sprintf(str, "s%u", i); else
       if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
                   sprintf(str, "v%u.s[0]", i-24);
       break;
     case (32):
-      if (i < 28) sprintf(str, "w%u", i); else
+      if (i < 29) sprintf(str, "w%u", i); else
       if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
                   sprintf(str, "v%u.s[0]", i-24);
       break;
     case (64):
-      if (i < 28) sprintf(str, "x%u", i); else
+      if (i < 29) sprintf(str, "x%u", i); else
       if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
                   sprintf(str, "v%u.s[0]", i-24);
       break;
