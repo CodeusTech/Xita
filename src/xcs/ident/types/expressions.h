@@ -107,7 +107,11 @@ ErrorCode exp_constructor (Identifier ident)
   if (!cid) { yyerror("Undeclared Constructor\n"); }
 
   last_constructor = cid;
-  printf("Invoked Constructor: %s\n", ident);
+  std:: string identName ="invoked Constructor: ";
+
+  identName += ident;
+  l.log("Debug","Debug", identName);
+  //printf("Invoked Constructor: %s\n", ident);
   
   //  Free Buffers
   free(ident);

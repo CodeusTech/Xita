@@ -43,6 +43,7 @@
   Returns:
     0, if Successful
 */
+
 ErrorCode decl_constant(Identifier ident)
 {
   //  Allocate Command Buffers
@@ -122,7 +123,13 @@ ErrorCode decl_constant(Identifier ident)
 */
 ErrorCode decl_function (Identifier ident)
 {
-  printf("Declared Function: %s\n", ident);
+  std:: string funName ="Declared Function ";
+
+  funName += ident;
+  l.log("Debug","Debug", funName);
+  
+  //printf("Declared Function: %s\n", ident);
+
   FunctionNode fnode = FunctionNode(ident);
 
   fnode.set_parent(get_scope_curr());
@@ -173,7 +180,12 @@ ErrorCode ret_function ()
      * Set Current Scope to Parent Context Scope
   */
 
- printf("End of Function Reached\n");
+std:: string funName ="Declared Function ";
+
+ 
+  l.log("Debug","Debug", "End of Function Reached");
+   
+ //printf("End of Function Reached\n");
 
   //printf("End of Function Declaration\n");
 

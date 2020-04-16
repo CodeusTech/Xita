@@ -146,8 +146,12 @@ FunctionID find_function (Identifier ident)
 
 ErrorCode resolve_function (FunctionID fid)
 {
+  std::string funcName="Resolving Function: ";
+  funcName+= context->get_function_identifier(fid);
 
-  printf("Resolving Function: %s\n", context->get_function_identifier(fid));
+  l.log("Resolve","R", funcName);
+
+  //printf("Resolving Function: %s\n", context->get_function_identifier(fid));
   
   //  Create ARM Assembly Command
   char* str = (char*) malloc(50);
@@ -213,7 +217,12 @@ bool resolve_parameter(Identifier ident)
   {
     if (strcmp(fnode.get_param(i).get_identifier(), ident) == 0)
     { 
-      printf("Resolving Parameter %s\n", ident);
+      std:: string parameterName ="Resolving Parameter ";
+
+     parameterName += ident;
+     l.log("Debug","Debug", parameterName);
+
+      //printf("Resolving Parameter %s\n", ident);
       rs_push(fnode.get_param_type(i));
       last_type = fnode.get_param_type(i);
 

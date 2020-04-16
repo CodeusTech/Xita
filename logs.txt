@@ -1,0 +1,27 @@
+[Apr  6 13:40:33 2020][D]Verify: Check!
+[Apr  6 13:40:33 2020][D]Debug: Declared Function sum
+[Apr  6 13:40:33 2020][D]Debug: Resolving Parameter x
+[Apr  6 13:40:33 2020][D]Debug: Resolving Parameter y
+[Apr  6 13:40:33 2020][D]Debug: Check Addition 1, 1
+[Apr  6 13:40:33 2020][D]Debug: End of Function Reached
+[Apr  6 13:40:33 2020][D]Debug: Declared Function sum
+[Apr  6 13:40:33 2020][D]Debug: Resolving Parameter x
+[Apr  6 13:40:33 2020][D]Debug: Resolving Parameter y
+[Apr  6 13:40:33 2020][D]Debug: Check Addition 1, 1
+[Apr  6 13:40:33 2020][D]Debug: Resolving Parameter z
+[Apr  6 13:40:33 2020][D]Debug: Check Addition 1, 1
+[Apr  6 13:40:33 2020][D]Debug: End of Function Reached
+[Apr  6 13:40:33 2020][D]Debug: Declared Function prod
+[Apr  6 13:40:33 2020][D]Debug: Resolving Parameter x
+[Apr  6 13:40:33 2020][D]Debug: Resolving Parameter y
+[Apr  6 13:40:33 2020][D]Debug: End of Function Reached
+[Apr  6 13:40:33 2020][R]R: Resolving Function: sum
+[Apr  6 13:40:33 2020][D]Debug: Check Addition 1, 2
+[Apr  6 13:40:33 2020][R]R: Resolving Function: prod
+[Apr  6 13:40:33 2020][R]R: Resolving Function: sum
+[Apr  6 13:40:33 2020][R]R: Resolving Function: sum
+[Apr  6 13:40:33 2020][D]Debug: Declared Function test
+[Apr  6 13:40:33 2020][D]Debug: End of Function Reached
+[Apr  6 13:40:33 2020][D]Debug: .bss Section Generated
+[Apr  6 13:40:33 2020][D]Debug: .data Section Generated
+[Apr  6 13:40:33 2020][d]debug: .text Section Generated

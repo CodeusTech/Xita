@@ -15,7 +15,9 @@
 
 int add_to_tuple()
 {
-  printf("Tuple Operator Invoked.\n");
+  
+  l.log("Debug","Debug", "Tuple Operator Invoked.");
+  //printf("Tuple Operator Invoked.\n");
 
   return 0;
 }

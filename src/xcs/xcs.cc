@@ -30,6 +30,7 @@
 #include <xcs/std/std.h>
 #include <xcs/asm/asm.h>
 #include <xcs/ident/ident.h>
+#include "xcs/std/logger.h"
 
 //  Import Grammar Libraries
 #include "../../lex.yy.c"
@@ -46,6 +47,9 @@ bool keep_assembly 	= false;
 int main(int argc, char** argv) 
 {
 
+
+ 
+ 
 	/*
 		2.) Handle Compiler Options
 	*/
@@ -130,6 +134,8 @@ int main(int argc, char** argv)
 
 			free (asm_fname);
 
+			l.printLogs();
+ 			l.write();
 			return 0;
 		}
 	}
@@ -143,6 +149,9 @@ int main(int argc, char** argv)
 
 	while (!feof(yyin)) yyparse();
 
+	l.printLogs();
+ 	l.write();
+	 
 	return 0;
 }
 

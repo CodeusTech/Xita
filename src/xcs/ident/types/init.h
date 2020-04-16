@@ -69,7 +69,8 @@ ErrorCode initialize_types()
   sprintf(str, "string"); context->add_type(TypeNode(str));  str = (char*) malloc(50);
   sprintf(str, "String"); context->add_constructor(str);  str = (char*) malloc(50);
 
-  printf("Check!\n");
+  l.log("Debug","Verify", "Check!");
+  //printf("Check!\n");
 
   return SUCCESS;
 }
