@@ -1070,7 +1070,7 @@ arg_request:
 void yyerror(const char* error) {
   set_line_number();
 	fprintf(stderr, "\nParse error in line %d: %s\n\n", context->get_line_number(), error);
-
+  
   //  TODO: DEALLOCATE ALL BUFFERS
   
   //rs_end();

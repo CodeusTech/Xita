@@ -28,6 +28,7 @@
 #include <xcs/std/typecodes.h>
 #include <xcs/std/scope.h>
 
+
 #include <xcs/regstack/regstack.h>
 
 using namespace std;
@@ -210,7 +211,7 @@ public:
   */
   ErrorCode add_parameter(Identifier ident)
   {
-    printf("Added Parameter ( %s ) to function ( %s )\n", ident, get_identifier());
+    
 
     FunctionParameterNode node = FunctionParameterNode(ident);
 

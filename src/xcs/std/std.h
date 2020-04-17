@@ -15,6 +15,7 @@
 #include "typedefs.h"
 #include "structs.h"
 #include "buffers.h"
+#include "logger.h"
 
 #include "optimize.h"
 #include "scope.h"

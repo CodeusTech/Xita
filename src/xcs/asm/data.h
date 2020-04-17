@@ -58,7 +58,8 @@ ErrorCode generate_data(FILE* filename)
   fprintf(filename, "\n\n");
 
   //  Stub Stub Stub
-  printf(".data Section Generated\n");
+  l.log("Debug","Debug",".data Section Generated");
+  //printf(".data Section Generated\n");
 
   //  Return Success
   return 0;

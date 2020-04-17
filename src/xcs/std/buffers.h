@@ -48,6 +48,7 @@
 //  XCS Libraries
 #include "typedefs.h"
 #include "structs.h"
+#include "logger.h"
 
 
 using namespace std;
@@ -59,7 +60,9 @@ using std::string;
 /*
   1.) Compiler Utilities
 */
-
+ Logger l;
+ //l.printLogs();
+ //l.write();
 
 // 1.b) Last Encountered Value
 void* last_data;

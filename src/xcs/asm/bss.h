@@ -43,7 +43,8 @@ using std::string;
 ErrorCode generate_bss(FILE* filename)
 {
   //  STUB STUB STUB
-  printf(".bss Section Generated\n");
+  l.log("Debug","Debug", ".bss Section Generated");
+  //printf(".bss Section Generated\n");
 
   //  Print TEXT Segment Name into File
   fprintf(filename, ".section .bss.xcs:\n");

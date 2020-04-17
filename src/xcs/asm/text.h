@@ -61,7 +61,8 @@ ErrorCode generate_text(FILE* filename)
   fprintf(filename, "\n\n");
 
   //  Report Success to Terminal
-  printf(".text Section Generated\n");
+  l.log("debug","debug",".text Section Generated");
+  //printf(".text Section Generated\n");
 
   //  Return Success
   return 0;

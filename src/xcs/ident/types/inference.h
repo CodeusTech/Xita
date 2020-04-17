@@ -59,8 +59,16 @@ int infer_addition()
   //  Check LHS/RHS Types
   TypeID rhsT = rs_top_type();
   TypeID lhsT = rs_sec_type();
+  int left, right;
+  left = lhsT;
+  right = rhsT;
 
-  printf("Check Addition: %lu, %lu\n", lhsT, rhsT);
+  std::string add = "Check Addition ";
+  add += std::to_string(left) + ", " + std::to_string(right); 
+
+  l.log("Debug", "Debug", add);
+
+  //printf("Check Addition: %lu, %lu\n", lhsT, rhsT);
 
 
   if ((lhsT>0 && lhsT<11) && (rhsT>0 && rhsT<11)) return integer_addition();
