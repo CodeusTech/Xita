@@ -106,7 +106,7 @@ public:
   TypeID rsType() { return _context->rsType(); }
   TypeID rsType(int from_top) { return _context->rsType(from_top); }
     //  Operations
-  ADR rsPush(TypeID tid) { printf("Context Manager rsPushed"); return _context->rsPush(tid); }
+  ADR rsPush(TypeID tid) { printf("Context Manager rsPushed\n"); return _context->rsPush(tid); }
   ErrorCode rsPushRegister(TypeID tid, ADR reg) { return _context->rsPushRegister(tid, reg); }
   ErrorCode rsPop() { return _context->rsPop(); }
 

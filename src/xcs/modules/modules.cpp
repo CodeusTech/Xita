@@ -30,6 +30,8 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
   _mid = mid;
   _mtype = mtype;
   _parent = parent;
+
+  register_stacks.push_back(RegisterStack());
 }
 
 
