@@ -26,16 +26,20 @@
 #include "stdlib.h"
 
 //  XCS Libraries
-#include "admin.h"
+#include "meta.h"
 #include <xcs/std/std.h>
 #include <xcs/asm/asm.h>
 #include <xcs/ident/ident.h>
-#include "xcs/std/logger.h"
+#include <xcs/std/buffers.h>
+
+#include <xcs/context/manager.h>
 
 //  Import Grammar Libraries
 #include "../../lex.yy.c"
 
 extern FILE* yyin;
+
+ContextManager context;
 
 /*
 	1.) Default Compiler Options
@@ -45,10 +49,7 @@ bool keep_assembly 	= false;
 
 //  Driver File
 int main(int argc, char** argv) 
-{
-
-
- 
+{ 
  
 	/*
 		2.) Handle Compiler Options
@@ -106,14 +107,6 @@ int main(int argc, char** argv)
 		else
 		{
 			interpreted = false;
-
-			//  Init Module Tree
-			modules.push_back(ModuleNode());
-			context = &modules[0];
-
-			//  Initialize Buffers
-			initialize_types();
-			initialize_functions();
 			
 			yyin = fopen(argv[i], "r");
 			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
@@ -136,6 +129,9 @@ int main(int argc, char** argv)
 
 			//  Populate Assembly File
 			write_asm_file(asm_fname);
+
+			l.printLogs();
+ 			l.write();
 			
 			//  Generate Object File using Cross Assembler
 			char* _argc    = getenv("HOME");
@@ -146,14 +142,12 @@ int main(int argc, char** argv)
 
 			char* _argv[6] = {_argc, _argv2[0], asm_fname, _argv2[1], obj_fname, NULL};
 
-			execvp(_argc, _argv);
-
 			//  If `-a` option is not active, remove generated assembly file (TODO)
 
 			free (asm_fname);
 
-			l.printLogs();
- 			l.write();
+			execvp(_argc, _argv);
+
 			return 0;
 		}
 	}

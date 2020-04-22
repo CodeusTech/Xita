@@ -31,7 +31,9 @@ class RegisterStack
 public:
 
 //  CONSTRUCTORS
-  RegisterStack() {}
+  RegisterStack() 
+  {
+  }
 
   /*
     isActive(test)
@@ -50,6 +52,7 @@ public:
     //  If all registers are in use, reroute to extended stack space
     if (registers.size() >= NUMBER_OF_ADRS) { return NUMBER_OF_ADRS + 1; } 
     //  TODO: FIX THE ABOVE LINE!!!
+    printf("Check\n");
 
     //  Acquire a mangled random number in ADR range
     ADR check = (ADR) (get_mangle() % NUMBER_OF_ADRS) + 1;

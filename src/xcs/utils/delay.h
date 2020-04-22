@@ -22,14 +22,13 @@
 
 #include "mangle.h"
 #include <xcs/asm/text.h>
-#include <xcs/regstack/utils.h>
 
 ErrorCode exp_delay()
 {
   char* str = (char*) malloc(50);
   unsigned long long mang = get_mangle();
 
-  char* reg = get_reg(rs_top(), 32);
+  char* reg = get_reg(context.rsTop(), 32);
 
   sprintf(str, "__delay_%llu:", mang);
   add_command(str);

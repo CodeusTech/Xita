@@ -30,6 +30,10 @@ extern int yylex();
 
 #include "string.h"
 
+#include <xcs/context/manager.h>
+
+extern ContextManager context;
+
 
 
 %}
@@ -322,7 +326,7 @@ import     BEGIN(IMPORT);
 <STR>\"         BEGIN(INITIAL);
 
 '              BEGIN(CHR);
-<CHR>([^']){0,2}  { yylval.val_char = get_char_code(yytext); return CHAR; }  //  CHARACTER PRIMITIVE
+<CHR>([^']){0,2}  { yylval.val_char = yytext[0]; return CHAR; }  //  CHARACTER PRIMITIVE
 <CHR>'         BEGIN(INITIAL);
 
 [A-Z][a-zA-Z0-9_]*\'?   { yylval.val_ident = strdup(yytext); return CONSTRUCTOR; }
@@ -368,7 +372,6 @@ import     BEGIN(IMPORT);
 
 
 <<EOF>> {
-  set_line_number();
   yypop_buffer_state();
     if ( !YY_CURRENT_BUFFER )
       {

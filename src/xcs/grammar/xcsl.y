@@ -81,12 +81,8 @@
 //  XCS Libraries
 #include <xcs/comments/comments.h>
 #include <xcs/conditions/conditions.h>
+#include <xcs/context/manager.h>
 #include <xcs/grammar/status.h>
-#include <xcs/ident/ident.h>
-#include <xcs/memory/memory.h>
-#include <xcs/modules/modules.h>
-#include <xcs/operator/operator.h>
-#include <xcs/primitives/primitives.h>
 #include <xcs/proc/proc.h>
 #include <xcs/regex/regex.h>
 #include <xcs/regstack/regstack.h>
@@ -102,6 +98,8 @@ void yyerror(const char* error);
 unsigned int grammar_status = GRAMMAR_RUNNING;
 
 extern Scope xcs_args;
+
+extern ContextManager context;
 
 
 %}
@@ -282,8 +280,8 @@ xcs:
   D.) Source Modules
 */
 src2:
-    decl    { end_scope();  }
-  | exp     { end_scope();  } 
+    decl    { context.concludeExpression();  }
+  | exp     { printf("Super Check\n"); context.concludeExpression();  } 
 ;
 
 src:
@@ -338,10 +336,10 @@ exp:
   | exp_struct     
   | exp_regex       
   | exp_request   
-  | exp_memIO
+ // | exp_memIO
   | exp_ipcIO
   | exp_fileIO
-  | exp OP_TUP exp                           { add_to_tuple(); }
+//  | exp OP_TUP exp                           { add_to_tuple(); }
   | DEBUG_PRINT IDENTIFIER                   { print_debug_message($2); }
   | CLEAR                                    { clear_terminal(); }
   | XCS_UNDEF
@@ -361,20 +359,20 @@ exp_literal:
 ;
 
 exp_identifier:
-    exp_identifier OP_ELEMENT OP_REC_L INT OP_REC_R   { return_function($4); }
-  | PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { resolve_function( find_function($2) ); }
-  | IDENTIFIER arg_funct  {resolve_function( find_function( $1 ) ); }
-  | IDENTIFIER            {resolve_expression($1);}
+ //   exp_identifier OP_ELEMENT OP_REC_L INT OP_REC_R   { return_function($4); }
+    PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { context.resolveFunction($2); }
+  | IDENTIFIER arg_funct  { context.resolveFunction($1); }
+  | IDENTIFIER            { context.resolveExpression($1); }
 ;
 
 
 exp_primitive:
-    exp_list            { last_type = 32; /*TODO: FIX THIS*/ }
-  | exp_integer         { last_type = TYPE_INTEGER; }
-  | exp_boolean         { last_type = TYPE_BOOLEAN; }
-  | exp_real            { last_type = TYPE_REAL;    }
-  | exp_char            { last_type = TYPE_CHAR;    }
-  | exp_string          { last_type = TYPE_STRING;  }
+    exp_list            { context.LastType(TYPE_LIST);    }
+  | exp_integer         { context.LastType(TYPE_INTEGER); }
+  | exp_boolean         { context.LastType(TYPE_BOOLEAN); }
+//  | exp_real            { context.LastType(TYPE_REAL);    }
+  | exp_char            { context.LastType(TYPE_CHAR);    }
+//  | exp_string          { context.LastType(TYPE_STRING);  }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
 ;
 
@@ -382,7 +380,7 @@ exp_primitive:
   2.a) Integer Expressions
 */
 lit_integer:
-    PAR_LEFT lit_integer PAR_RIGHT  { $$ = $2; }
+    PAR_LEFT lit_integer PAR_RIGHT  { l.log('d', "Primitives", "Integer Found"); $$ = $2; }
   | lit_integer BIT_AND lit_integer { $$ = $1 & $3; }
   | lit_integer BIT_OR lit_integer  { $$ = $1 | $3; }
   | lit_integer BIT_XOR lit_integer { $$ = $1 ^ $3; }
@@ -400,41 +398,43 @@ exp_integer:
     LIST_LENGTH exp_list { printf("List of Length determined\n"); }
   | RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
-  | lit_integer     { push_int((long long) $1); }
+  | lit_integer     { pushData(TYPE_INTEGER, (Arbitrary) (long long) $1); printf("Data Pushed\n");  }
 ;
 
 /*
   2.b) Boolean Expressions
 */
 exp_boolean:
-    TRUE   { push_int(1); }
-  | FALSE  { push_int(0); }
+    TRUE   { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
+  | FALSE  { pushData(TYPE_BOOLEAN, (Arbitrary) 0); }
 ;
 
 /*
   2.c) Real Expressions
 */
+/* NEEDS INTERVENTION!
 exp_real:
     FLOAT_C REAL  { push_real_lit($2); }
   | DOUBLE_C REAL { push_real_lit($2); }
   | REAL          { push_real_lit($1); }
 ;
+*/
 
 /*
   2.d) Character Expressions
 */
 exp_char:
-    CHAR        { last_data = (void*) (unsigned long) $1; push_char_lit((unsigned char) $1); }
-  | CHAR_C INT  { last_data = (void*) (unsigned long) $2; push_char_int((unsigned char) $2); }
+    CHAR        { pushData(TYPE_CHAR, (void*) $1); }
+  | CHAR_C INT  { pushData(TYPE_CHAR, (void*) $2); }
 ;
 
 /*
   2.e) String Expressions
-*/
 exp_string:
     exp_string OP_APPEND exp_string { string_append(); }
-  | STRING  { last_data = $1; push_int(1); /*Push String to Register Stack*/ }
+  | STRING  { pushData(TYPE_STRING, (void*) $1); }
 ;
+*/
 
 /*
   2.f) List Expressions
@@ -445,8 +445,8 @@ exp_list:
   | OP_LIST_L param_list OP_LIST_R    {  printf("List Initialized\n"); }
   | LIST_TAIL exp_list
   | exp_list OP_APPEND exp_list   { printf("Lists Concatenated\n"); }
-  | IDENTIFIER { resolve_expression($1); }
-  | PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { resolve_function( find_function($2) ); }
+  | IDENTIFIER { context.resolveExpression($1); }
+  | PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { context.resolveFunction($2); }
 ;
 
 /*
@@ -465,6 +465,7 @@ param_list:
   3.a) Arithmetic Expressions
 */
 exp_arith:
+/*
     exp OP_ADD exp      { infer_addition(); }
   | exp OP_SUB exp      { infer_subtraction(); }
   | exp OP_MUL exp      { infer_multiplication(); }
@@ -475,13 +476,14 @@ exp_arith:
   | exp BIT_OR exp      { infer_bit_or();  }
   | exp BIT_XOR exp     { infer_bit_xor(); }
   | exp BIT_SHL exp     { infer_bit_shl(); }
-  | exp BIT_SHR exp     { infer_bit_shr(); }
+  | exp BIT_SHR exp     { infer_bit_shr(); } */
 ;
 
 /*
   3.b) Logical Expressions
 */
 exp_logical:
+/*
     exp BOOL_AND exp    { infer_bool_and(); }
   | exp BOOL_OR exp     { infer_bool_or();  }
   | exp BOOL_XOR exp    { infer_bool_xor(); }
@@ -492,7 +494,7 @@ exp_logical:
   | exp OP_GTE exp      { infer_bool_gte(); }
   | exp OP_EQ exp       { infer_bool_eq(); }
   | exp OP_NEQ exp      { infer_bool_neq(); }
-  | exp_is              { }
+  | exp_is              { } */
 ;
 
 /*
@@ -574,20 +576,20 @@ exp_is:
   4.a) Constants
 */
 decl_const:
-    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); decl_constant($4); }
-  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); decl_constant($5); }
-  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { decl_constant($2); }
-  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { decl_constant($3); }
+    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); context.declareConstant($4); }
+  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); context.declareConstant($5); }
+  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { context.declareConstant($2); }
+  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { context.declareConstant($3); }
 ;
 
 exp_const:
-    INT     { last_data = (void*) (unsigned long long) $1; }
+    INT     { context.LastData((void*) (unsigned long long) $1); }
   | exp_struct
-  | IDENTIFIER { last_data = (void*) (unsigned long long)context->get_constant_value(find_constant($1)); }
-  | exp_const OP_ADD INT {last_data = (void*) ((unsigned long long)last_data + $3); }
-  | exp_const OP_SUB INT {last_data = (void*) ((unsigned long long)last_data - $3); }
-  | exp_const OP_MUL INT {last_data = (void*) ((unsigned long long)last_data * $3); }
-  | exp_const OP_DIV INT {last_data = (void*) ((unsigned long long)last_data / $3); }
+  | IDENTIFIER { context.resolveConstant($1); }
+  | exp_const OP_ADD INT { context.LastData((void*) ((unsigned long long)context.LastData() + $3)); }
+  | exp_const OP_SUB INT { context.LastData((void*) ((unsigned long long)context.LastData() - $3)); }
+  | exp_const OP_MUL INT { context.LastData((void*) ((unsigned long long)context.LastData() * $3)); }
+  | exp_const OP_DIV INT { context.LastData((void*) ((unsigned long long)context.LastData() / $3)); }
 ;
 
 /*
@@ -599,9 +601,10 @@ pre_let:
 ;
 
 let:
-    DEBUG STRING LET IDENTIFIER { add_debug_message($4, $2); decl_function($4); }
-  | LET IDENTIFIER OF exp_type  { decl_function($2); }
-  | LET IDENTIFIER              { decl_function($2); }
+    DEBUG STRING LET IDENTIFIER { add_debug_message($4, $2); context.declareFunction($4); }
+  | LET IDENTIFIER OF exp_type  { context.declareFunction($2); }
+  | LET IDENTIFIER              { context.declareFunction($2); }
+  /*
   | LET OP_ADD_O                { override_add(); }
   | LET OP_SUB_O                { override_sub(); }
   | LET OP_MUL_O                { override_mul(); }
@@ -622,26 +625,26 @@ let:
   | LET OP_EQ_O                 { override_eq(); }
   | LET OP_NEQ_O                { override_neq(); }
   | LET OP_APPEND_O             { override_append(); }
-  | LET OP_LIST_CON_O           { override_list_con(); }
+  | LET OP_LIST_CON_O           { override_list_con(); }*/
 ;
 
 /*
   FUNCTION DECLARATIONS
 */
 __decl_funct:
-    pre_let exp_param OP_ASSIGN exp  { ret_function(); }
-  | pre_let           OP_ASSIGN exp  { ret_function(); }
+    pre_let exp_param OP_ASSIGN exp  { context.endDeclareFunction(); }
+  | pre_let           OP_ASSIGN exp  { context.endDeclareFunction(); }
 ;
 
 decl_funct:
     decl_funct IMPL decl_prototypes
-  | __decl_funct IN exp   { undecl_function(); }
+  | __decl_funct IN exp   { context.undeclareFunction(); }
   | __decl_funct
 ;
 
 exp_param:
-    exp_param IDENTIFIER { context->add_parameter($2); }
-  | IDENTIFIER { context->add_parameter($1); }
+    exp_param IDENTIFIER { context.declareFunctionParameter($2); }
+  | IDENTIFIER { context.declareFunctionParameter($1); }
 ;
 
 decl_prototypes:
@@ -664,7 +667,7 @@ exp_inline:
 */
 arg_funct:
     arg_funct arg_funct 
-  | exp_literal           { argt.push_back(last_type); }
+  | exp_literal           { }
 ;
 
 
@@ -682,8 +685,8 @@ arg_funct:
 */
 
 dinit_type: 
-    DEBUG STRING TYPE IDENTIFIER { add_debug_message($4, $2); decl_type($4); }
-  | TYPE IDENTIFIER  { decl_type($2); }
+    DEBUG STRING TYPE IDENTIFIER { add_debug_message($4, $2); context.declareType($4); }
+  | TYPE IDENTIFIER  { context.declareType($2); }
 ;
 
 decl_type:
@@ -704,7 +707,7 @@ l_typeclass:
 
 param_type:
     param_type param_type 
-  | IDENTIFIER            { decl_type_param($1); }
+  | IDENTIFIER            { context.declareTypeParameter($1); }
 ;
 
 
@@ -714,11 +717,11 @@ param_type:
 exp_type:
     exp_type exp_type  {printf("Parameterized Type Found\n");}
   | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
-  | BOOL_T          { last_type = 14; } 
-  | CHAR_T          { last_type = 15; } 
-  | STRING_T        { last_type = 16; } 
+  | BOOL_T          { context.LastType(14); } 
+  | CHAR_T          { context.LastType(15); } 
+  | STRING_T        { context.LastType(16); } 
   | LIST_T      
-  | IDENTIFIER      { last_type = find_type($1); }
+  | IDENTIFIER      { context.LastType(context.resolveType($1)); }
   | OFFER         { printf("Implement Offers as Types\n"); }
   | exp_type OP_TUP exp_type { printf("Implement Tuples\n"); }
 ;
@@ -728,7 +731,7 @@ exp_type:
 */
 
 pre_decl_struct:
-  CONSTRUCTOR  { decl_constructor($1); }
+  CONSTRUCTOR  { context.declareTypeConstructor($1); }
 ;
 
 /*
@@ -739,18 +742,18 @@ decl_struct:
   | pre_decl_struct OF decl_record 
   | pre_decl_struct OF exp_type     
   | pre_decl_struct                 
-  | exp_type   { decl_type_alias(last_type); }
+  | exp_type   { context.declareTypeAlias(context.LastType()); }
 ;
 
 
 pre_exp_struct:
-  CONSTRUCTOR { exp_constructor_alloc($1); }
+  CONSTRUCTOR { context.resolveConstructor($1); }
 ;
 
 exp_struct:
     pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
   | exp_struct exp 
-  | CONSTRUCTOR                               { exp_constructor($1); }   
+  | CONSTRUCTOR                               { context.resolveConstructor($1); }   
 ; 
 
 
@@ -763,13 +766,13 @@ exp_struct:
 */
 decl_record:
     decl_record OP_COMMA decl_record
-  | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp { decl_record($1); }
-  | IDENTIFIER OP_TYPE exp_type               { decl_record($1); }
+  | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp { context.declareTypeElement($1, context.LastType()); }
+  | IDENTIFIER OP_TYPE exp_type               { context.declareTypeElement($1, context.LastType()); }
 ;
 
 exp_record:
     exp OP_ELEMENT exp_record { }
-  | IDENTIFIER                { exp_element($1); }
+  | IDENTIFIER                { context.resolveTypeElement($1); }
 ;
 
 arg_record: 
@@ -786,7 +789,7 @@ arg_record:
   TYPECLASS DECLARATIONS
 */
 typeclass:
-    TYPECLASS IDENTIFIER { decl_typeclass($2); }
+    TYPECLASS IDENTIFIER { context.declareTypeclass($2); }
 ;
 
 decl_typeclass:
@@ -802,28 +805,29 @@ exp_typeclass:
   PROTOTYPE EXPRESSIONS
 */
 prototype:
-    IDENTIFIER    { decl_proto($1); }
-  | OP_ADD_O      { decl_proto("(+)"); }
-  | OP_SUB_O      { decl_proto("(-)"); }
-  | OP_MUL_O      { decl_proto("(*)"); }
-  | OP_DIV_O      { decl_proto("(/)"); }
-  | OP_MOD_O      { decl_proto("(%)"); }
-  | BOOL_AND_O    { decl_proto("(&&)"); }
-  | BOOL_OR_O     { decl_proto("(||)"); }
-  | BOOL_XOR_O    { decl_proto("(^^)"); }
-  | BIT_AND_O     { decl_proto("(&)"); }
-  | BIT_OR_O      { decl_proto("(|)"); }
-  | BIT_XOR_O     { decl_proto("(^)"); }
-  | BIT_SHL_O     { decl_proto("(<<)"); }
-  | BIT_SHR_O     { decl_proto("(>>)"); }
-  | OP_LT_O       { decl_proto("(<)"); }
-  | OP_LTE_O      { decl_proto("(<=)"); }
-  | OP_GT_O       { decl_proto("(>)"); }
-  | OP_GTE_O      { decl_proto("(>=)"); }
-  | OP_EQ_O       { decl_proto("(==)"); }
-  | OP_NEQ_O      { decl_proto("(!=)"); }
-  | OP_APPEND_O   { decl_proto("(++)"); }
-  | OP_LIST_CON_O { decl_proto("(:)"); }
+    IDENTIFIER    { context.declareTypeclassPrototype($1); }
+  /*
+  | OP_ADD_O      { context.declareTypeclassPrototype("(+)"); }
+  | OP_SUB_O      { context.declareTypeclassPrototype("(-)"); }
+  | OP_MUL_O      { context.declareTypeclassPrototype("(*)"); }
+  | OP_DIV_O      { context.declareTypeclassPrototype("(/)"); }
+  | OP_MOD_O      { context.declareTypeclassPrototype("(%)"); }
+  | BOOL_AND_O    { context.declareTypeclassPrototype("(&&)"); }
+  | BOOL_OR_O     { context.declareTypeclassPrototype("(||)"); }
+  | BOOL_XOR_O    { context.declareTypeclassPrototype("(^^)"); }
+  | BIT_AND_O     { context.declareTypeclassPrototype("(&)"); }
+  | BIT_OR_O      { context.declareTypeclassPrototype("(|)"); }
+  | BIT_XOR_O     { context.declareTypeclassPrototype("(^)"); }
+  | BIT_SHL_O     { context.declareTypeclassPrototype("(<<)"); }
+  | BIT_SHR_O     { context.declareTypeclassPrototype("(>>)"); }
+  | OP_LT_O       { context.declareTypeclassPrototype("(<)"); }
+  | OP_LTE_O      { context.declareTypeclassPrototype("(<=)"); }
+  | OP_GT_O       { context.declareTypeclassPrototype("(>)"); }
+  | OP_GTE_O      { context.declareTypeclassPrototype("(>=)"); }
+  | OP_EQ_O       { context.declareTypeclassPrototype("(==)"); }
+  | OP_NEQ_O      { context.declareTypeclassPrototype("(!=)"); }
+  | OP_APPEND_O   { context.declareTypeclassPrototype("(++)"); }
+  | OP_LIST_CON_O { context.declareTypeclassPrototype("(:)"); } */
 ;
 
 proto_comma:
@@ -856,6 +860,7 @@ param_prototype:
 /*
   6.a) Read Expression from Memory
 */
+/*
 exp_memIO:
     exp_memread         { }
   | exp_memwrite        { }
@@ -865,7 +870,6 @@ exp_memIO:
 memread:
   exp MEM_READ {  }
 ;
-
 pre_memread:
     memread IDENTIFIER { decl_memory_variable($2); }
   | memread THIS       { decl_memory_variable_this(); }
@@ -881,8 +885,8 @@ exp_memread:
   6.b) Write Expression to Memory
 */
 exp_memwrite:
-    exp MEM_SET exp { memory_write_exp(); }
-  | exp MEM_SET exp INT {memory_write_exp(); }
+    exp MEM_SET exp { /*memory_write_exp();*/ }
+  | exp MEM_SET exp INT {/*memory_write_exp();*/ }
 ;
 
 
@@ -1068,10 +1072,13 @@ arg_request:
   GENERIC ERROR MESSAGE
 */
 void yyerror(const char* error) {
-  set_line_number();
-	fprintf(stderr, "\nParse error in line %d: %s\n\n", context->get_line_number(), error);
+	fprintf(stderr, "\nParse error in line %d: %s\n\n", context.LineNumber(), error);
   
   //  TODO: DEALLOCATE ALL BUFFERS
+
+  l.log('C', "CRITICAL", "Error occurred.  Printing Logs....");
+  l.printLogs();
+  l.write();
   
   //rs_end();
 

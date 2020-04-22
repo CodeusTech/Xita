@@ -38,21 +38,16 @@
 //  XCS Libraries
 #include "typedefs.h"
 
-#include <xcs/regstack/structs.h>
-
-#include <xcs/ident/functions/structs.h>
-#include <xcs/ident/types/structs.h>
-
-#include <xcs/memory/structs.h>
-
-#include <xcs/modules/structs.h>
-
 
 using namespace std;
 
 using std::vector;
 
 
+
+/*
+  Debug Messages
+*/
 
 struct DebugMessageNode
 {
@@ -63,6 +58,10 @@ struct DebugMessageNode
 vector<DebugMessageNode> debug;
 
 
+/*
+  Register Stacks
+*/
+
 struct regstack
 {
   //  UNSAFE:  Assumes stack size < 26
@@ -70,6 +69,7 @@ struct regstack
   vector<TypeID> rs_type;
   vector<ConstructorID> rs_struct;
 };
+
 
 
 

@@ -1,5 +1,5 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef XCS_LOGGER_H
+#define XCS_LOGGER_H
 #include <ctime> 
 #include <fstream>
 #include <iterator>
@@ -19,14 +19,18 @@ Logger()
   
   records.resize(0);
 }
+
+ //  Writes the logs to local file
  void write()
  {
-   std::ofstream f("logs.txt");
-    for(std::vector<std::string>::const_iterator i = records.begin(); i != records.end(); ++i) 
-    {
-      f << *i << '\n';
-    }
-    f.close();
+   FILE* file;
+
+   file = fopen("xcs.log", "w");
+
+    for (unsigned long i = 0; i < records.size(); ++i) 
+      fprintf(file, "%s\n", records[i].c_str());
+
+   fclose(file);
  }
  void write(std::string fileName)
  {
@@ -73,10 +77,10 @@ std::string removeDay(std::string date)
 {
   return date.erase(0,4);
 }
+
+//  Test function for printing contents of the logs
 void printLogs()
 {
-
-
  for(std::vector<std::string>::const_iterator i = records.begin(); i != records.end(); ++i) 
     {
      // std::cout<< *i << '\n';
