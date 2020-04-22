@@ -43,7 +43,7 @@ using std::string;
 ErrorCode generate_bss(FILE* filename)
 {
   //  STUB STUB STUB
-  l.log("Debug","Debug", ".bss Section Generated");
+  l.log('D',"Assembly", ".bss Section Generated");
   //printf(".bss Section Generated\n");
 
   //  Print TEXT Segment Name into File

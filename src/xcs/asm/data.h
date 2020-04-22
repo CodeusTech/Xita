@@ -58,7 +58,7 @@ ErrorCode generate_data(FILE* filename)
   fprintf(filename, "\n\n");
 
   //  Stub Stub Stub
-  l.log("Debug","Debug",".data Section Generated");
+  l.log('D',"Assembly",".data Section Generated");
   //printf(".data Section Generated\n");
 
   //  Return Success

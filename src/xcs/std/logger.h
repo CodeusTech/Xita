@@ -44,13 +44,37 @@ Logger()
  }
  void log(char urgency, std::string category, std::string message){
     std::string record ="";
+    std::string _urgency;
+
+      switch(urgency)
+      {
+        case 'v':
+        case 'V':
+          _urgency = "VERBOSE";
+          break;
+        case 'd':
+        case 'D':
+          _urgency = "DEBUG";
+          break;
+        case 'e':
+        case 'E':
+          _urgency = "ERROR";
+          break; 
+        case 'c':
+        case 'C':
+          _urgency = "CRITICAL";
+          break;
+        default:
+          //  Do Nothing
+          break;
+      }
 
       std::time_t myTime = time(NULL); 
       std:: string time = ctime(&myTime);
       time.pop_back();
       time = removeDay(time);
       
-    record+= "[" + time + "][" + urgency + "]" + category + ": "+ message;
+    record+= "[" + time + "][" + _urgency + "]" + category + ": "+ message;
     
     records.push_back(record);
  }

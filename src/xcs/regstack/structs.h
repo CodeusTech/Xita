@@ -52,7 +52,6 @@ public:
     //  If all registers are in use, reroute to extended stack space
     if (registers.size() >= NUMBER_OF_ADRS) { return NUMBER_OF_ADRS + 1; } 
     //  TODO: FIX THE ABOVE LINE!!!
-    printf("Check\n");
 
     //  Acquire a mangled random number in ADR range
     ADR check = (ADR) (get_mangle() % NUMBER_OF_ADRS) + 1;
@@ -63,6 +62,10 @@ public:
     //  If all else is kosher, Add the entry and type
     registers.push_back(check);
     types.push_back(tid);
+
+    std::string str = "Pushed register " + std::to_string(check) + " with TypeID: " + std::to_string(tid);
+
+    l.log('D', "RegisterStacks", str);
 
     return check;
   }

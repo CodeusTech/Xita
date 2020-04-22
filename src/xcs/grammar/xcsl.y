@@ -464,8 +464,7 @@ param_list:
 /*
   3.a) Arithmetic Expressions
 */
-exp_arith:
-/*
+exp_arith:/*
     exp OP_ADD exp      { infer_addition(); }
   | exp OP_SUB exp      { infer_subtraction(); }
   | exp OP_MUL exp      { infer_multiplication(); }
@@ -752,8 +751,8 @@ pre_exp_struct:
 
 exp_struct:
     pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
-  | exp_struct exp 
-  | CONSTRUCTOR                               { context.resolveConstructor($1); }   
+  | CONSTRUCTOR exp   { context.resolveConstructor($1); } 
+  | CONSTRUCTOR       { context.resolveConstructor($1); }   
 ; 
 
 

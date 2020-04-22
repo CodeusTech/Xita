@@ -22,8 +22,6 @@ extern ContextManager context;
 //  2.a) Push Integer Literal
 ErrorCode pushData(TypeID tid, Arbitrary value)
 {
-  printf("Check\n");
-  printf("Context ID: %lu\n",  context.CurrentContext());
   context.rsPush(tid);
   context.LastType(tid);
   context.LastData(value);

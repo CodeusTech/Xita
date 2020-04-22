@@ -83,9 +83,16 @@ ErrorCode ContextManager::executeModule() { /* Down the Road */ return SUCCESS; 
      LastType(rtn[0]);
      LastConstructor(rtn[1]);
 
+     std::string str = "Resolved Constructor: " + string(ident);
+
+     l.log('D', "Constructors", str);
+
      free(rtn);
      return LastConstructor();
    }
+
+   std::string str = "Failed to Resolve Constructor: " + string(ident);
+   l.log('E', "Constructors", str);
 
    return 0;
  }

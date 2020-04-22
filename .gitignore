@@ -21,7 +21,9 @@ _build
 tests/**/*.s
 tests/**/*.o
 
+#  Generated Log Files
+xcs.log
+
 
 #  Generated Memory Leak Testing Files
 vgcore*
-

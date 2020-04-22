@@ -96,7 +96,7 @@ public:
   TypeID rsType() { return register_stacks[scope].top_type(); }
   TypeID rsType(int from_top) { return register_stacks[scope].from_top_type(from_top); }
 
-  ADR rsPush(TypeID tid) { printf("rsPushed\n"); return register_stacks[scope].push(tid); }
+  ADR rsPush(TypeID tid) { return register_stacks[scope].push(tid); }
   ErrorCode rsPushRegister(TypeID tid, ADR reg) { return register_stacks[scope].push_reg(tid, reg); }
   ErrorCode rsPop() { return register_stacks[scope].pop(); }
   

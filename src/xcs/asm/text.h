@@ -61,7 +61,7 @@ ErrorCode generate_text(FILE* filename)
   fprintf(filename, "\n\n");
 
   //  Report Success to Terminal
-  l.log("debug","debug",".text Section Generated");
+  l.log('D',"Assembly",".text Section Generated");
   //printf(".text Section Generated\n");
 
   //  Return Success
