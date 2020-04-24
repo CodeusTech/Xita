@@ -369,7 +369,7 @@ exp_identifier:
 
 exp_primitive:
     exp_list            { context.LastType(TYPE_LIST);    }
-  | exp_integer         { context.LastType(TYPE_INTEGER); }
+  | exp_integer         {  }
   | exp_boolean         { context.LastType(TYPE_BOOLEAN); }
 //  | exp_real            { context.LastType(TYPE_REAL);    }
   | exp_char            { context.LastType(TYPE_CHAR);    }
