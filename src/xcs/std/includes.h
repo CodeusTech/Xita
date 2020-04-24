@@ -19,9 +19,10 @@
 #include "logger.h"
 #include "buffers.h"
 
-#include <xcs/asm/text.h>
+#include <xcs/regstack/codes.h>
 
 #include <xcs/types/constants.h>
 
+#include <xcs/expressions/operators/constants.h>
 
 #endif

@@ -2,7 +2,7 @@
   manager.h (context)
   Codeus Tech
   Authored on   April 15, 2020
-  Last Modified April 16, 2020
+  Last Modified April 24, 2020
 */
 
 /*
@@ -14,8 +14,9 @@
   1.) Private Variable Access
   2.) Public Operations
     2.a) Module Operations
-    2.b) Register Stack Operations
-    2.c) Scope Handling
+    2.b) Assembly Operations
+    2.c) Register Stack Operations
+    2.d) Scope Handling
   3.) Identifier Handling
     3.a) Type Operations
     3.b) Typeclass Operations
@@ -29,8 +30,11 @@
 #include <vector>
 
 #include <xcs/std/includes.h>
+#include <xcs/std/scope.h>
 
+#include <xcs/asm/manager.h>
 #include <xcs/modules/modules.h>
+#include <xcs/expressions/operators/manager.h>
 
 extern int yylineno;
 
@@ -50,6 +54,9 @@ class ContextManager
 
 protected:
 
+  //  Assembly Data
+  AssemblyManager assembly;
+
   //  Module Data
   vector<ModuleNode> modules;    //  All Imported Module Contexts
   ModuleNode* _context;          //  Current Module Context
@@ -65,6 +72,7 @@ protected:
   ConstructorID _last_constructor;  //  Last Encountered Type Constructor
   Arbitrary _last_data;             //  Last Encountered Data (of Arbitrary Type)
 
+  OperatorManager operators;
   
 
 public:
@@ -78,11 +86,11 @@ public:
 
   //  Getter/Setter: _last_type
   TypeID LastType() { return _last_type; }
-  TypeID LastType(TypeID type) { _last_type = type; return type; }
+  TypeID LastType(TypeID type) { _last_type = type; return _last_type; }
   ConstructorID LastConstructor() { return _last_constructor; }
-  ConstructorID LastConstructor(ConstructorID cid) { _last_constructor = cid; return cid; }
+  ConstructorID LastConstructor(ConstructorID cid) { _last_constructor = cid; return _last_constructor; }
   Arbitrary LastData() { return _last_data; }
-  Arbitrary LastData(Arbitrary data) { _last_data = data; return data; }
+  Arbitrary LastData(Arbitrary data) { _last_data = data; return _last_data; }
 
   //  Contextual Line Number
   int LineNumber() { return _context->LineNumber(); }
@@ -97,7 +105,12 @@ public:
   ErrorCode importModule(ModuleType mtype);
   ErrorCode executeModule();
 
-  //  2.b) Register Stack Operations
+  //  2.b) Assembly Operations
+  ErrorCode generateAssembly(FILE* file) { return assembly.generateAssembly(file); }
+  ErrorCode addInstruction(char* instruction) { return assembly.addInstruction(instruction); }
+  ErrorCode popLastInstruction() { return assembly.popLastInstruction(); }
+
+  //  2.c) Register Stack Operations
     //  Accessors
   ADR rsSec() { return _context->rsSec(); }
   ADR rsTop() { return _context->rsTop(); }
@@ -107,12 +120,14 @@ public:
   TypeID rsType(int from_top) { return _context->rsType(from_top); }
     //  Operations
   ADR rsPush(TypeID tid) { return _context->rsPush(tid); }
-  ErrorCode rsPushRegister(TypeID tid, ADR reg) { return _context->rsPushRegister(tid, reg); }
+  ErrorCode rsPushRegister(TypeID tid, ADR reg);
   ErrorCode rsPop() { return _context->rsPop(); }
 
-  // 3.c) Scope Handling
-  ErrorCode concludeExpression() { LastType(TYPE_ARBITRARY); LastData((Arbitrary) 0); return _context->concludeExpression(); }
+  // 2.d) Scope Handling
+  ErrorCode concludeExpression();
 
+  //  2.e) Operators
+  ErrorCode solveOperator(OperatorID oid);
 
   /*
     3.) Identifier Handling
@@ -127,6 +142,7 @@ public:
   ErrorCode declareTypeAlias(TypeID tid) { return _context->declareTypeAlias(tid); }
 
   TypeID resolveType(Identifier ident);
+  Identifier resolveTypeIdentifier(TypeID tid) { return _context->resolveTypeIdentifier(tid); }
   ConstructorID resolveConstructor(Identifier ident);
   TypeID resolveTypeElement(Identifier ident);
 
@@ -141,19 +157,20 @@ public:
   ConstantID resolveConstant(Identifier ident) { return _context->resolveConstant(ident); }
 
   //  3.d) Function Operations
-  ErrorCode declareFunction(Identifier ident) { return _context->declareFunction(_next_fid++, ident); }
+  ErrorCode declareFunction(Identifier ident);
   ErrorCode declareFunctionParameter(Identifier ident) { return _context->declareFunctionParameter(ident); }
 
   ErrorCode endDeclareFunction() { return _context->endDeclareFunction(); }
   ErrorCode undeclareFunction() { return _context->undeclareFunction(); }
 
-  FunctionID resolveFunction(Identifier ident) { return _context->resolveFunction(ident); }
+  FunctionID resolveFunction(Identifier ident);
+  TypeID resolveFunctionParameter(Identifier ident);
 
 
   /*
     3.) Complex Operations
   */
-  unsigned long resolveExpression(Identifier ident) { return _context->resolveExpression(ident); }
+  unsigned long resolveExpression(Identifier ident);
   
 };
 

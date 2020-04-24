@@ -44,7 +44,7 @@ ErrorCode is_construct()
 
   //  Compare Type IDs
   sprintf(str, "cmp   %s, %s\n", sec, top);
-  add_command(str);
+  context.addInstruction(str);
 
   //  Create New Mangle Number
   for (int i = 0; i < 3; i++) mangle += rand();
@@ -56,22 +56,22 @@ ErrorCode is_construct()
 
   //  Branch if Equal to set
   sprintf(str, "beq   set_%llu\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "mov   %s, #0\n", sec64);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "b     finish_%llu\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "set_%llu:\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "mov   %s, #1\n", sec);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "finish_%llu:\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   rs_push(TYPE_BOOLEAN);
 
@@ -93,7 +93,7 @@ ErrorCode is_construct()
 ErrorCode is_type()
 {
   //  Remove the last expression getting pushed to stack
-  get_last_command();
+  context.popLastInstruction();
 
   /*
     Compare TOP Type vs SECOND Type
@@ -119,7 +119,7 @@ ErrorCode is_type()
 
   //  Compare Type IDs
   sprintf(str, "cmp   %s, %s\n", sec, top);
-  add_command(str);
+  context.addInstruction(str);
 
   //  Create New Mangle Number
   for (int i = 0; i < 3; i++) mangle += rand();
@@ -131,22 +131,22 @@ ErrorCode is_type()
 
   //  Branch if Equal to set
   sprintf(str, "beq   set_%llu\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "mov   %s, #0\n", sec64);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "b     finish_%llu\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "set_%llu:\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "mov   %s, #1\n", sec);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "finish_%llu:\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   context.rsPush(TYPE_BOOLEAN);
 

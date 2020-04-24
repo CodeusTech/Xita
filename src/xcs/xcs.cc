@@ -33,6 +33,7 @@
 #include <xcs/std/buffers.h>
 
 #include <xcs/context/manager.h>
+#include <xcs/expressions/primitives/primitives.h>
 
 //  Import Grammar Libraries
 #include "../../lex.yy.c"
@@ -111,6 +112,8 @@ int main(int argc, char** argv)
 			yyin = fopen(argv[i], "r");
 			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
 
+			initializePrimitives();
+
 			//  Set Parser File Pointer
 			//yypush_buffer_state(YY_CURRENT_BUFFER);
 			while(!feof(yyin)) yyparse();
@@ -127,8 +130,10 @@ int main(int argc, char** argv)
 			strncat(obj_fname, ".o", 3);
 
 
-			//  Populate Assembly File
-			write_asm_file(asm_fname);
+			//  Produce Assembly File
+			FILE* asm_file = fopen(asm_fname, "w");
+			context.generateAssembly(asm_file);
+			fclose(asm_file);
 
 			l.printLogs();
  			l.write();

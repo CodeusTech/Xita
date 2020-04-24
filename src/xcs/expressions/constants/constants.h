@@ -37,8 +37,9 @@ public:
     _value = value;
 
 
-    std::string _str = "Constant "; _str.append(_ident); _str += " declared";
-    l.log('D', "Constants", _str);
+
+  std::string str = "Constant " + string(ident) + " has been Initialized";
+    l.log('D', "Constants", str);
   }
 
   /*

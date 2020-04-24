@@ -61,7 +61,7 @@ public:
     _tid = tid;
     _context = context;
     _size = 0;
-    _ident = strdup(ident); free(ident);
+    _ident = strdup(ident);
   }
 
 

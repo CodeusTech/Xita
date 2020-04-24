@@ -22,6 +22,8 @@
 
 using namespace std;
 
+extern void yyerror(const char* str);
+
 class RegisterStack
 {
   vector<ADR> registers;
@@ -33,6 +35,7 @@ public:
 //  CONSTRUCTORS
   RegisterStack() 
   {
+    l.log('d', "RegStack", "Initialized New Register Stack");
   }
 
   /*
@@ -63,23 +66,11 @@ public:
     registers.push_back(check);
     types.push_back(tid);
 
-    std::string str = "Pushed register " + std::to_string(check) + " with TypeID: " + std::to_string(tid);
+    string str = "Pushed register " + to_string(check) + " with TypeID: " + to_string(tid);
 
-    l.log('D', "RegisterStacks", str);
+    //l.log('D', "RegStack", str);
 
     return check;
-  }
-
-  ADR push_reg(TypeID tid, ADR reg)
-  {
-    //  If all registers are in use, reroute to extended stack space
-    if (registers.size() >= NUMBER_OF_ADRS) { return NUMBER_OF_ADRS + 1; } 
-
-    //  If all else is kosher, Add the entry and type
-    registers.push_back(reg);
-    types.push_back(tid);
-
-    return reg;
   }
 
   ErrorCode pop()

@@ -88,6 +88,7 @@
 #include <xcs/regstack/regstack.h>
 #include <xcs/utils/clear.h>
 #include <xcs/utils/delay.h>
+#include <xcs/expressions/primitives/primitives.h>
 
 extern int yylex();
 extern int yyparse();
@@ -281,7 +282,7 @@ xcs:
 */
 src2:
     decl    { context.concludeExpression();  }
-  | exp     { printf("Super Check\n"); context.concludeExpression();  } 
+  | exp     { context.concludeExpression();  } 
 ;
 
 src:
@@ -380,7 +381,7 @@ exp_primitive:
   2.a) Integer Expressions
 */
 lit_integer:
-    PAR_LEFT lit_integer PAR_RIGHT  { l.log('d', "Primitives", "Integer Found"); $$ = $2; }
+    PAR_LEFT lit_integer PAR_RIGHT  { $$ = $2; }
   | lit_integer BIT_AND lit_integer { $$ = $1 & $3; }
   | lit_integer BIT_OR lit_integer  { $$ = $1 | $3; }
   | lit_integer BIT_XOR lit_integer { $$ = $1 ^ $3; }
@@ -391,14 +392,14 @@ lit_integer:
   | lit_integer OP_MOD lit_integer  { $$ = $1 % $3; }
   | lit_integer OP_ADD lit_integer  { $$ = $1 + $3; }
   | lit_integer OP_SUB lit_integer  { $$ = $1 - $3; }
-  | INT                             { $$ = $1; }
+  | INT   { $$=$1; }
 ;
 
 exp_integer:
     LIST_LENGTH exp_list { printf("List of Length determined\n"); }
   | RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
-  | lit_integer     { pushData(TYPE_INTEGER, (Arbitrary) (long long) $1); printf("Data Pushed\n");  }
+  | lit_integer     {  pushInteger((Arbitrary) $1); }
 ;
 
 /*
@@ -407,6 +408,7 @@ exp_integer:
 exp_boolean:
     TRUE   { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
   | FALSE  { pushData(TYPE_BOOLEAN, (Arbitrary) 0); }
+  | exp OP_LT exp {  }
 ;
 
 /*
@@ -464,12 +466,12 @@ param_list:
 /*
   3.a) Arithmetic Expressions
 */
-exp_arith:/*
-    exp OP_ADD exp      { infer_addition(); }
-  | exp OP_SUB exp      { infer_subtraction(); }
-  | exp OP_MUL exp      { infer_multiplication(); }
-  | exp OP_DIV exp      { infer_division(); }
-  | exp OP_MOD exp      { infer_modulus(); }
+exp_arith:
+    exp OP_ADD exp      { context.solveOperator(OPERATOR_ADDITION); }
+  | exp OP_SUB exp      { context.solveOperator(OPERATOR_SUBTRACT); }
+  | exp OP_MUL exp      { context.solveOperator(OPERATOR_MULTIPLY); }
+  | exp OP_DIV exp      { context.solveOperator(OPERATOR_DIVISION); }
+  | exp OP_MOD exp      { context.solveOperator(OPERATOR_MODULUS); }/*
   | BIT_NOT exp         { infer_bit_not(); }
   | exp BIT_AND exp     { infer_bit_and(); }
   | exp BIT_OR exp      { infer_bit_or();  }
@@ -482,8 +484,7 @@ exp_arith:/*
   3.b) Logical Expressions
 */
 exp_logical:
-/*
-    exp BOOL_AND exp    { infer_bool_and(); }
+ /*   exp BOOL_AND exp    { infer_bool_and(); }
   | exp BOOL_OR exp     { infer_bool_or();  }
   | exp BOOL_XOR exp    { infer_bool_xor(); }
   | BOOL_NOT exp        { infer_bool_not(); }
@@ -493,7 +494,7 @@ exp_logical:
   | exp OP_GTE exp      { infer_bool_gte(); }
   | exp OP_EQ exp       { infer_bool_eq(); }
   | exp OP_NEQ exp      { infer_bool_neq(); }
-  | exp_is              { } */
+  | exp_is              { }*/
 ;
 
 /*
@@ -602,7 +603,7 @@ pre_let:
 let:
     DEBUG STRING LET IDENTIFIER { add_debug_message($4, $2); context.declareFunction($4); }
   | LET IDENTIFIER OF exp_type  { context.declareFunction($2); }
-  | LET IDENTIFIER              { context.declareFunction($2); }
+  | LET IDENTIFIER              { context.declareFunction($2);  }
   /*
   | LET OP_ADD_O                { override_add(); }
   | LET OP_SUB_O                { override_sub(); }
@@ -751,8 +752,8 @@ pre_exp_struct:
 
 exp_struct:
     pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
-  | CONSTRUCTOR exp   { context.resolveConstructor($1); } 
-  | CONSTRUCTOR       { context.resolveConstructor($1); }   
+  | pre_exp_struct exp  { } 
+  | CONSTRUCTOR         { context.resolveConstructor($1); }   
 ; 
 
 
@@ -1071,11 +1072,11 @@ arg_request:
   GENERIC ERROR MESSAGE
 */
 void yyerror(const char* error) {
-	fprintf(stderr, "\nParse error in line %d: %s\n\n", context.LineNumber(), error);
+	fprintf(stderr, "\nParse error in line %d: %s\n\n", yylineno, error);
   
   //  TODO: DEALLOCATE ALL BUFFERS
-
-  l.log('C', "CRITICAL", "Error occurred.  Printing Logs....");
+  l.log('E', "Crash", error);
+  l.log('C', "Crash", "Error occurred.  Printing Logs....");
   l.printLogs();
   l.write();
   

@@ -21,7 +21,6 @@
 #include <xcs/std/error.h>
 
 #include "mangle.h"
-#include <xcs/asm/text.h>
 
 ErrorCode exp_delay()
 {
@@ -31,23 +30,23 @@ ErrorCode exp_delay()
   char* reg = get_reg(context.rsTop(), 32);
 
   sprintf(str, "__delay_%llu:", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "subs  %s, %s, #1", reg, reg);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "cmp   %s, #1", reg);
-  add_command(str);
+  context.addInstruction(str);
 
   //  Jump if Less Than
   sprintf(str, "blt   finish_%llu", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "b    __delay_%llu", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "finish_%llu:", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   return SUCCESS;
 }

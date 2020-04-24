@@ -40,40 +40,15 @@
 #define XCS_BUFFERS_H
 
 //  Linux Libraries
-#include <iostream>
-#include <string>
-#include <vector>
-#include <list>
 
 //  XCS Libraries
-#include "typedefs.h"
-#include "structs.h"
 #include "logger.h"
-
-
-using namespace std;
-
-using std::list;
-using std::vector;
-using std::string;
 
 /*
   1.) Compiler Utilities
 */
  Logger l;
 
-/*
-  2.) Assembly Buffers
-*/
-
-//  2.a) .text Buffers
-vector<list<string> > asm_text;
-
-//  2.b) .bss Buffers
-list<string> asm_bss;
-
-//  2.c) .data Buffers
-list<string> asm_data;
 
 
 

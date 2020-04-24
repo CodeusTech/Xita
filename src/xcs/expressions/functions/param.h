@@ -34,6 +34,9 @@ public:
   TypeID Type(){ return tid; }
   TypeID Type(TypeID _tid){ tid = _tid; return tid; }
 
+  ADR Register() { return reg; }
+  ADR Register(ADR _reg) { reg = _reg; return reg; }
+
 };
 
 

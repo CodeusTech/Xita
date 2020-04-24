@@ -21,15 +21,21 @@ TypeNode::TypeNode(TypeID tid, ModuleID context, Identifier ident)
 {
   _tid = tid;
   _context = context;
-  _ident = strdup(ident); free(ident);
+  _ident = strdup(ident);
   _size = 0;
+
+  if (tid > 2)
+  {
+    std::string str = "Type " + string(ident) + " has been Initialized";
+    l.log('d', "Types", str);
+  }
 }
 //  This constructor is used for primitives
 TypeNode::TypeNode(TypeID tid, ModuleID context, Identifier ident, unsigned long size)
 {
   _tid = tid;
   _context = context;
-  _ident = strdup(ident); free(ident);
+  _ident = strdup(ident);
   _size = size;
 }
 

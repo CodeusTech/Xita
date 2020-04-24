@@ -32,12 +32,27 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
   _parent = parent;
 
   register_stacks.push_back(RegisterStack());
+  l.log('d', "Modules", "Initialized Module");
 }
 
 
 /*
   2.) Operations/Accessors
 */
+
+//  2.b) Register Stacks
+char* ModuleNode::rsPushRegister(TypeID tid, ADR reg) 
+  {
+    //  If all registers are in use, reroute to extended stack space
+    ADR src = rsTop();
+    ADR dest = rsPush(tid);
+
+    //  Copy Data from src to dest
+    char* str = (char*) malloc(50);
+    sprintf(str, "  mov   %s, %s", get_reg(dest, 8*TypeSize(rsSecType())), get_reg(src, 8*TypeSize(rsType())));  
+
+    return str;
+  }
 
 
 //  2.c) Scope Handling
@@ -57,13 +72,13 @@ ErrorCode ModuleNode::endScope()
   return SUCCESS;
 }
 
-
-//  2.b) Register Stacks
 ErrorCode ModuleNode::concludeExpression()
 {
   setScope(0);
   for (unsigned long i = 0; i < register_stacks[0].size(); ++i)
     register_stacks[0].pop();
+
+  l.log('D', "Scoping", "Concluded current expression");
 
   return SUCCESS;
 }
@@ -93,6 +108,22 @@ ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident, unsigned long si
   { return types.back().declareElement(ident, tid); }
 
 
+
+unsigned long ModuleNode::TypeSize(TypeID tid)
+{
+  for (unsigned long i = 0; i < types.size(); ++i)
+    if (tid == types[i].Id())
+      return types[i].Size();
+  return 0;
+}
+unsigned long ModuleNode::TypeSize(Identifier ident)
+{
+  for (unsigned long i = 0; i < types.size(); ++i)
+    if (strcmp(ident, types[i].Ident()))
+      return types[i].Size();
+  return 0;
+}
+
   //  Invocations
 TypeID ModuleNode::resolveType(Identifier ident)
 {
@@ -103,12 +134,21 @@ TypeID ModuleNode::resolveType(Identifier ident)
   return 0;
 }
 
+Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
+{
+  for (unsigned long i = 0; i < types.size(); ++i)
+    if (tid == types[i].Id())
+      return types[i].Ident();
+
+  return NULL;
+}
+
   unsigned long* ModuleNode::resolveTypeConstructor(Identifier ident)
   {
     unsigned long* rtn = (unsigned long*) malloc(sizeof(unsigned long)*2);
     ConstructorID cid;
     for (unsigned long i = 0; i < types.size(); ++i)
-      if (cid = types[i].resolveConstructor(ident))
+      if ((cid = types[i].resolveConstructor(ident)))
       {
         rtn[0] = types[i].Id();
         rtn[1] = cid;
@@ -170,7 +210,12 @@ ConstantID ModuleNode::resolveConstant(Identifier ident)
 //  3.d) Functions
   //  Declare Function
 ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
-{ functions.push_back( FunctionNode(fid, _mid, ident) ); return SUCCESS; }
+{ 
+  register_stacks.push_back(RegisterStack());             //  Add new Register Stack for the Function
+  scope_stack.push_back(scope); scope = next_scope++;     //  Manipulate Relavent Scope Variables
+  functions.push_back( FunctionNode(fid, _mid, ident) );  //  Add Function Node
+  return SUCCESS; 
+}
 
   //  Declare Parameter
   ErrorCode ModuleNode::declareFunctionParameter(Identifier ident)
@@ -200,23 +245,28 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
     return SUCCESS;
   }
 
+
   //  Attempt to Resolve Function by Identifier
   FunctionID ModuleNode::resolveFunction(Identifier ident)
   {
     for (unsigned long i = 0; i < functions.size(); ++i)
       if (strcmp(functions[i].Ident(), ident) == 0)
-        return functions[i].resolve();
-    
+      {
+        std::string _str = "Function " + std::string(ident) + " has been resolved as type " + string(resolveTypeIdentifier(functions[i].Type()));
+        l.log('D', "Functions", _str);
+        return functions[i].Id();
+      }
     return 0;
+  }
+
+  FunctionParameterNode* ModuleNode::resolveFunctionParameter(Identifier ident)
+  {
+    return functions.back().resolveParameter(ident);
   }
 
 
 unsigned long ModuleNode::resolveExpression(Identifier ident)
 {
-
-  std::string _str = "Identifier "; _str.append(ident); _str += " resolved";
-  l.log('D', "Identifiers", _str);
-
-  return 0;
+  return SUCCESS; //  STUB DEPRECATED
 }
 

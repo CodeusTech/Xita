@@ -22,6 +22,8 @@ FunctionNode::FunctionNode(FunctionID fid, ModuleID context, Identifier ident)
 
   _rtn_type = TYPE_ARBITRARY;
 
+  std::string str = "Function " + string(_ident) + " has been Initialized";
+  l.log('d', "Functions", str);
 }
 
 
@@ -33,7 +35,7 @@ ErrorCode FunctionNode::declareParameter(Identifier ident, ADR reg)
 { 
   parameters.push_back( FunctionParameterNode(ident, reg) ); 
 
-  std::string _str = "Parameter "; _str.append(_ident); _str += " declared";
+  std::string _str = "Parameter "; _str.append(parameters.back().Ident()); _str += " declared";
   l.log('D', "Functions", _str);
 
   return SUCCESS; 
@@ -43,37 +45,12 @@ ErrorCode FunctionNode::declareParameter(Identifier ident, ADR reg)
 /*
   Resolutions
 */
-//  Resolve Function
-FunctionID FunctionNode::resolve()
+
+FunctionParameterNode* FunctionNode::resolveParameter(Identifier ident)
 {
-  //  Executed when function is called
-  char* str = (char*) malloc(50);
-
-  /*
-    TODO: Load Parameters Here
-  */
-
-  sprintf(str, "  bl    __%lu_%s", _fid, _ident);
-  add_command(str);
-  
-  /*
-    TODO: Handle Return Value Registers
-  */
-
-  std::string _str = "Function "; _str.append(_ident); _str += " resolved";
-  l.log('D', "Functions", _str);
-
-  free (str);
-  return _fid;
-}
-
-
-unsigned long FunctionNode::resolveParameter(Identifier ident)
-{
-
-  std::string _str = "Parameter "; _str.append(_ident); _str += " resolved";
-  l.log('D', "Functions", _str);
-
-  return 0; //  STUB
+  for (unsigned long i = 0; i < parameters.size(); ++i)
+    if (strcmp(ident, parameters[i].Ident()) == 0)
+      return &parameters[i];
+  return 0;
 }
 

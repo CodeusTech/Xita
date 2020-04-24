@@ -10,23 +10,35 @@
 *)
 
 
+
+(*
+  Declarations
+*)
+
+let five = 5;;
 let sum x y = x + y;;
 let sum x y z = x + y + z;;
-let prod x y = x * y;;
-
-(sum 1 2) + 2;;
-(prod 1 2);;
-(sum 1 2);;
+let prod x y = y * x
 
 
---  Test Parameter Overloading
-(sum 1 2 3);;
+(*
+  Invocations
+*)
+
+--five             --  Primitive Function Testing
+(*
+(sum 1 2);;      --  Parameterized Function Testing
+(sum 1 2 3);;    --  Overloaded Function Testing
+(prod 1 2) + five;; --  Test Functions as Expressions
+
+
 
 --  Test Nested Functions
 
 debug "Test Unparameterized Functions"
 let test = 
-    1;;
+    1
 
-@test
+
+*)
 

@@ -18,6 +18,5 @@
 #include "logger.h"
 
 #include "optimize.h"
-#include "scope.h"
 
 #endif

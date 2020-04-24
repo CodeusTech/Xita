@@ -97,7 +97,7 @@ public:
   TypeID rsType(int from_top) { return register_stacks[scope].from_top_type(from_top); }
 
   ADR rsPush(TypeID tid) { return register_stacks[scope].push(tid); }
-  ErrorCode rsPushRegister(TypeID tid, ADR reg) { return register_stacks[scope].push_reg(tid, reg); }
+  char* rsPushRegister(TypeID tid, ADR reg);
   ErrorCode rsPop() { return register_stacks[scope].pop(); }
   
   //  2.b) Scope Handling
@@ -123,7 +123,11 @@ public:
     ErrorCode declareTypeElement(Identifier ident, TypeID tid);
     ErrorCode declareTypeAlias(TypeID alias) { return types.back().declareAlias(alias); }
 
+    unsigned long TypeSize(TypeID tid); //  In Bytes
+    unsigned long TypeSize(Identifier ident); //  In Bytes
+    
     TypeID resolveType(Identifier ident);
+    Identifier resolveTypeIdentifier(TypeID tid);
     unsigned long* resolveTypeConstructor(Identifier ident);
     TypeID resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid);
 
@@ -146,7 +150,7 @@ public:
     ErrorCode undeclareFunction();
 
     FunctionID resolveFunction(Identifier ident);
-    unsigned long resolveFunctionParameter(Identifier ident);
+    FunctionParameterNode* resolveFunctionParameter(Identifier ident);
 
 
   //  Resolve Arbitrary Identifiers

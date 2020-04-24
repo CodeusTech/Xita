@@ -54,8 +54,7 @@ public:
   /*
     Resolutions
   */
-  FunctionID resolve();
-  unsigned long resolveParameter(Identifier ident);
+  FunctionParameterNode* resolveParameter(Identifier ident);
 
 };
 
