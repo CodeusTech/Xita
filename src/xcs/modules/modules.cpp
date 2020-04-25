@@ -41,15 +41,14 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
 */
 
 //  2.b) Register Stacks
-char* ModuleNode::rsPushRegister(TypeID tid, ADR reg) 
+char* ModuleNode::rsPushRegister(TypeID tid, ADR src) 
   {
     //  If all registers are in use, reroute to extended stack space
-    ADR src = rsTop();
     ADR dest = rsPush(tid);
 
     //  Copy Data from src to dest
     char* str = (char*) malloc(50);
-    sprintf(str, "  mov   %s, %s", get_reg(dest, 8*TypeSize(rsSecType())), get_reg(src, 8*TypeSize(rsType())));  
+    sprintf(str, "  mov   %s, %s", get_reg(dest, 8*TypeSize(tid)), get_reg(src, 8*TypeSize(tid)));  
 
     return str;
   }
@@ -247,15 +246,11 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
 
 
   //  Attempt to Resolve Function by Identifier
-  FunctionID ModuleNode::resolveFunction(Identifier ident)
+  FunctionNode* ModuleNode::resolveFunction(Identifier ident)
   {
     for (unsigned long i = 0; i < functions.size(); ++i)
       if (strcmp(functions[i].Ident(), ident) == 0)
-      {
-        std::string _str = "Function " + std::string(ident) + " has been resolved as type " + string(resolveTypeIdentifier(functions[i].Type()));
-        l.log('D', "Functions", _str);
-        return functions[i].Id();
-      }
+        return &functions[i];
     return 0;
   }
 

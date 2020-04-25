@@ -39,7 +39,7 @@ private:
   typedef OperatorNode super;
 public:
   AdditionOperator();
-  ErrorCode resolve() override;
+  char* resolve(RegisterStack* rs) override;
 };
 
 /*
@@ -51,7 +51,7 @@ private:
   typedef OperatorNode super;
 public:
   SubtractOperator();
-  ErrorCode resolve() override;
+  char* resolve(RegisterStack* rs) override;
 };
 
 /*
@@ -63,7 +63,7 @@ private:
   typedef OperatorNode super;
 public:
   MultiplyOperator();
-  ErrorCode resolve() override;
+  char* resolve(RegisterStack* rs) override;
 };
 
 /*
@@ -75,7 +75,7 @@ private:
   typedef OperatorNode super;
 public:
   DivisionOperator();
-  ErrorCode resolve() override;
+  char* resolve(RegisterStack* rs) override;
 };
 
 /*
@@ -87,7 +87,7 @@ private:
   typedef OperatorNode super;
 public:
   ModulusOperator();
-  ErrorCode resolve() override;
+  char* resolve(RegisterStack* rs) override;
 };
 
 

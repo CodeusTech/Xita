@@ -85,18 +85,6 @@ import     BEGIN(IMPORT);
 
 "rng" { return RNG; } //  RANDOM NUMBER GENERATOR
 
-"bool" { return BOOL_T; }   //  BOOLEAN TYPE
-"True" { return TRUE; }     //  BOOLEAN PRIMITIVE
-"False" { return FALSE; }   //  BOOLEAN PRIMITIVE
-
-"char" { return CHAR_T; }  //  CHARACTER TYPE
-"Char" { return CHAR_C; }  //  CHARACTER CONSTRUCTOR 
-"string" { return STRING_T; }  //  STRING TYPE
-"String" { return STRING_C; }  //  STRING CONSTRUCTOR
-
-"list" { return LIST_T; } //  LIST TYPE
-"List" { return LIST_C; } //  LIST CONSTRUCTOR
-
 
 %{
 /*

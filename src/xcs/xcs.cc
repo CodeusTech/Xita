@@ -143,15 +143,13 @@ int main(int argc, char** argv)
 			strcat(_argc, "/.opt/cross/bin/aarch64-elf-as");
 			char _argv2[2][3]= {"-c", "-o"};
 
-			printf ("Check:   %s\n", _argc);
-
 			char* _argv[6] = {_argc, _argv2[0], asm_fname, _argv2[1], obj_fname, NULL};
 
 			//  If `-a` option is not active, remove generated assembly file (TODO)
 
-			free (asm_fname);
-
 			execvp(_argc, _argv);
+
+			free (asm_fname);
 
 			return 0;
 		}

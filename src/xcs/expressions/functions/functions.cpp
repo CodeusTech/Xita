@@ -35,7 +35,7 @@ ErrorCode FunctionNode::declareParameter(Identifier ident, ADR reg)
 { 
   parameters.push_back( FunctionParameterNode(ident, reg) ); 
 
-  std::string _str = "Parameter "; _str.append(parameters.back().Ident()); _str += " declared";
+  std::string _str = "Parameter " + string(parameters.back().Ident()) + " declared, using register: " + to_string(reg);
   l.log('D', "Functions", _str);
 
   return SUCCESS; 

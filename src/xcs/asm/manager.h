@@ -52,7 +52,7 @@ protected:
     //printf(".bss Section Generated\n");
 
     //  Print TEXT Segment Name into File
-    fprintf(filename, ".section .bss.xcs:\n");
+    fprintf(filename, ".section .bss:\n");
 
     /* Print TEXT Buffer Contents to File */
     for (list<string>::iterator it = asm_bss.begin(); it != asm_bss.end(); it++)
@@ -69,7 +69,7 @@ protected:
   ErrorCode generate_data(FILE* filename)
   {
     //  Print TEXT Segment Name into File
-    fprintf(filename, ".section .data.xcs:\n");
+    fprintf(filename, ".section .data:\n");
 
       /* Print TEXT Buffer Contents to File */
       for (list<string>::iterator it = asm_data.begin(); it != asm_data.end(); it++)
@@ -90,7 +90,7 @@ protected:
   ErrorCode generate_text(FILE* filename)
   {
     //  Print TEXT Segment Name into File
-    fprintf(filename, ".section .text.xcs:\n\n");
+    fprintf(filename, ".section .text:\n\n");
 
     fprintf(filename, ".global __start\n__start:\n");
 
@@ -157,6 +157,12 @@ public:
   ErrorCode popLastInstruction()
   {
     asm_text[get_scope_curr()].pop_back();
+    return SUCCESS;
+  }
+
+  ErrorCode concludeExpression()
+  {
+    scope_curr = 0;
     return SUCCESS;
   }
 

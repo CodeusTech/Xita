@@ -12,6 +12,7 @@
 #pragma once
 
 #include <xcs/std/includes.h>
+#include <xcs/regstack/structs.h>
 
 
 class OperatorNode
@@ -32,14 +33,14 @@ public:
   */
   Identifier Ident() { return op; }
 
-  virtual ErrorCode resolve()
+  virtual char* resolve(RegisterStack* rs)
   {
     /*
       TODO: Type Check the Operator in question here
     */
     l.log('w', "Operators", "Unexpected Operator Function Call");
 
-    return SUCCESS;
+    return NULL;
   }
 
 };

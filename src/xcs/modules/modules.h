@@ -89,6 +89,7 @@ public:
   */
 
   //  2.a) Register Stacks
+  RegisterStack* rsCurrent() { return &register_stacks[scope]; }
   ADR rsSec() { return register_stacks[scope].sec(); }
   ADR rsTop() { return register_stacks[scope].top(); }
   ADR rsTop(int from_top) { return register_stacks[scope].from_top(from_top); }
@@ -149,7 +150,7 @@ public:
     ErrorCode endDeclareFunction();
     ErrorCode undeclareFunction();
 
-    FunctionID resolveFunction(Identifier ident);
+    FunctionNode* resolveFunction(Identifier ident);
     FunctionParameterNode* resolveFunctionParameter(Identifier ident);
 
 

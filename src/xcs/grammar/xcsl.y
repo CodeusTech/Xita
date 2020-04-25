@@ -149,7 +149,7 @@ extern ContextManager context;
 %token OP_SEP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
 
 //  List Operators/Keywords
-%token LIST_C LIST_T OP_APPEND OP_LIST_CON
+%token OP_APPEND OP_LIST_CON
 %token LIST_HEAD LIST_TAIL LIST_LENGTH
 
 //  Conditional Keywords
@@ -169,23 +169,7 @@ extern ContextManager context;
 %token MEM_READ MEM_SET THIS
 
 // Integers
-%token INT_T RNG
-%token U8_T U8_C I8_T I8_C 
-%token U16_T U16_C I16_T I16_C
-%token U32_T U32_C I32_T I32_C
-%token U64_T U64_C I64_T I64_C
-
-// Booleans
-%token BOOL_T BOOL_C
-
-// Real Numbers
-%token REAL_T
-%token FLOAT_T FLOAT_C DOUBLE_T DOUBLE_C
-
-// Characters/Strings
-%token CHAR_T CHAR_C
-%token STRING_T STRING_C
-%token BYTE_STRING  /* DEPRECATED */
+%token RNG
 
 //  Filesystem Operations
 %token FILEK REMOVE
@@ -214,14 +198,14 @@ extern ContextManager context;
   B.) Order of Operations
 */
 //  High-Order Operations
-%left OP_ASSIGN OP_INLINE
+%left OP_ASSIGN
+%left OP_ELEMENT OP_COMMA
 %left BUILD CLEAR
+%left FILEK
+
 %left LET
 %left IN
 %left TYPE TYPECLASS REQUIRES
-%left FILEK
-
-%left OP_ELEMENT OP_COMMA
 
 //  Memory Operations
 %left MEM_READ MEM_SET
@@ -229,9 +213,13 @@ extern ContextManager context;
 //  List Operations
 %left OP_APPEND LIST_HEAD LIST_TAIL
 
+
 //  Constructors
+%left U8_C I8_C U16_C I16_C U32_C I32_C U64_C I64_C FLOAT_C DOUBLE_C STRING_C CHAR_C
 %left CONSTRUCTOR
-%left U8 I8 U16 I16 U32 I32 U64 I64 FLOAT_C DOUBLE_C STRING_C CHAR_C
+
+//  Literal Operations
+%left REAL INT TRUE FALSE
 %left IDENTIFIER
 
 
@@ -241,19 +229,21 @@ extern ContextManager context;
 %left OP_ADD_O OP_SUB_O OP_DIV_O OP_MUL_O OP_MOD_O OP_APPEND_O OP_LIST_CON_O
 %left MEM_READ_O MEM_SET_O ARROW_L_O ARROW_R_O 
 
-//  Literal Operations
-%left REAL INT TRUE FALSE
+//  Operators
+  //  Logical
 %left BOOL_AND BOOL_OR BOOL_XOR OP_LT OP_GT OP_LTE OP_GTE OP_EQ OP_NEQ IS
-
-//  Operator Arithmetic
+  //  Arithmetic
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
+
+
 
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
 %left OP_REC_L OP_REC_R
 %left PAR_LEFT PAR_RIGHT
+
 
 //  Seperators
 %left OP_TUP
@@ -330,8 +320,8 @@ exp:
   | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }
   | decl  
   | LIST_HEAD exp_list
-  | exp_literal      
   | exp_arith    
+  | exp_literal      
   | exp_logical      
   | exp_conditional  
   | exp_struct     
@@ -354,9 +344,9 @@ exp_delay:
 */
 
 exp_literal:
-    exp_primitive
-  | exp_struct
+    exp_struct
   | exp_identifier
+  | exp_primitive
 ;
 
 exp_identifier:
@@ -717,10 +707,6 @@ param_type:
 exp_type:
     exp_type exp_type  {printf("Parameterized Type Found\n");}
   | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
-  | BOOL_T          { context.LastType(14); } 
-  | CHAR_T          { context.LastType(15); } 
-  | STRING_T        { context.LastType(16); } 
-  | LIST_T      
   | IDENTIFIER      { context.LastType(context.resolveType($1)); }
   | OFFER         { printf("Implement Offers as Types\n"); }
   | exp_type OP_TUP exp_type { printf("Implement Tuples\n"); }
@@ -752,8 +738,8 @@ pre_exp_struct:
 
 exp_struct:
     pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
-  | pre_exp_struct exp  { } 
-  | CONSTRUCTOR         { context.resolveConstructor($1); }   
+  | CONSTRUCTOR exp  { context.resolveConstructor($1); } 
+  | CONSTRUCTOR      { context.resolveConstructor($1); }   
 ; 
 
 

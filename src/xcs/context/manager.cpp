@@ -78,14 +78,20 @@ ErrorCode ContextManager::executeModule() { /* Down the Road */ return SUCCESS; 
 ErrorCode ContextManager::concludeExpression()
 { 
   LastType(TYPE_ARBITRARY); 
-  LastData((Arbitrary) TYPE_ARBITRARY); 
+  LastData((Arbitrary) TYPE_ARBITRARY);
 
+  assembly.concludeExpression();
   return _context->concludeExpression(); 
 }
 
 
 // 2.e) Operators
-ErrorCode ContextManager::solveOperator(OperatorID oid) { return operators.solveOperator(oid); }
+ErrorCode ContextManager::solveOperator(OperatorID oid) 
+{ 
+  char* ret = operators.solveOperator(oid, _context->rsCurrent()); 
+  if (ret) { addInstruction(ret); free(ret); rsPop(); }
+  return SUCCESS;
+}
 
 
 /*
@@ -181,25 +187,27 @@ FunctionID ContextManager::resolveFunction(Identifier ident)
   char* str = (char*) malloc(50);
 
   //  First check current context
-  FunctionID fid = _context->resolveFunction(ident);
-  if (fid)
+  FunctionNode* node = _context->resolveFunction(ident);
+  if (node)
   {
+    LastType(node->Type());
+
     /*
       TODO: Load Parameters Here
     */
 
-    sprintf(str, "  bl    __%lu_%s", fid, ident);
+    sprintf(str, "bl    __%lu_%s", node->Id(), ident);
     addInstruction(str);
     
     /*
       TODO: Handle Return Value Registers
     */
 
-    std::string _str = "Function "; _str.append(ident); _str += " resolved";
+    std::string _str = "Resolved function "; _str.append(ident); _str += " resolved as type " + string(resolveTypeIdentifier(LastType()));
     l.log('D', "Functions", _str);
 
     free (str);
-    return fid;
+    return node->Id();
   }
 
   //  TODO: Check Child (Imported) Module Nodes
@@ -215,11 +223,10 @@ TypeID ContextManager::resolveFunctionParameter(Identifier ident)
   FunctionParameterNode* param = _context->resolveFunctionParameter(ident); 
   if (param)
   {
-
     LastType(param->Type());
     rsPushRegister(LastType(), param->Register());
-
-    string str = "Resolved parameter " + string(ident) + " of type " + resolveTypeIdentifier(LastType());
+    
+    string str = "Resolved parameter " + string(ident) + " of type " + resolveTypeIdentifier(LastType()) + " in register: " + to_string(param->Register());
     l.log('d', "Functions", str);
     return LastType();
   }
@@ -227,14 +234,14 @@ TypeID ContextManager::resolveFunctionParameter(Identifier ident)
 }
 
 
-
+/*
+  Resolve Arbitrary Identifier Expression
+*/
 unsigned long ContextManager::resolveExpression(Identifier ident) 
 {
   unsigned long _id;
 
-  printf("Check\n");
-
-  if (( _id = resolveFunctionParameter(ident)))
+  if ((_id = resolveFunctionParameter(ident)))
     return _id;
 
   if ((_id = resolveFunction(ident)))

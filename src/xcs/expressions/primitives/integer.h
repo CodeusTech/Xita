@@ -71,35 +71,16 @@ ErrorCode initializeIntegerPrimitives()
 ErrorCode pushInteger(Arbitrary value)
 {
   TypeID tid = context.LastType();
-  int bytes = 0;
-  char suffix;
+  int bytes = 4;
 
   switch(tid)
   {
-    case 1: //  a
-      context.LastType(TYPE_INTEGER);
-    case 2: // Int 
-    case 7: //  U32
-    case 8: //  I32
-      bytes = 4;
-      suffix = ' ';
-      break;
-    case 3: //  U8
-    case 4: //  I8
-      bytes = 4;
-      suffix = 'b';
-      break;
-    case 5: //  U16
-    case 6: //  I16
-      bytes = 4;
-      suffix = 'h';
-      break;
     case 9: //  U64
     case 10://  I64
       bytes = 8;
-      suffix = 'd';
       break;
     default:
+      break; //  Remove when Type Checking is finished
       yyerror("Attempted to add non-integer data casted as integer type");
       return 1;
   }
@@ -108,10 +89,10 @@ ErrorCode pushInteger(Arbitrary value)
   char* reg = get_reg(context.rsPush(tid), bytes*8);
 
   char* str = (char*) malloc(50);
-  sprintf(str, "  mov%c  %s, #%lld", suffix, reg, (long long) value);
+  sprintf(str, "  mov   %s, #%lld", reg, (long long) value);
   context.addInstruction(str);
 
-  std::string sLog = string(context.resolveTypeIdentifier(context.LastType())) + " pushed into register: " + std::to_string(context.rsTop());
+  string sLog = string(context.resolveTypeIdentifier(context.LastType())) + " pushed into register: " + to_string(context.rsTop());
   l.log('d', "RegStack", sLog);
 
   free(str);

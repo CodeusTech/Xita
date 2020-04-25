@@ -12,6 +12,7 @@
 #pragma once
 
 #include <xcs/std/includes.h>
+#include <xcs/regstack/structs.h>
 
 #include "arithmetic.h"
 #include "logical.h"
@@ -40,30 +41,22 @@ public:
   */
   OperatorManager() { l.log('d', "Operators", "Initialized Operator Manager"); }
 
-  ErrorCode solveOperator(OperatorID oid)
+  char* solveOperator(OperatorID oid, RegisterStack* rs)
 { 
   switch (oid)
   {
     //  2.e.I) Arithmetic
     case OPERATOR_ADDITION:
-
-      l.log('d', "Operators", "Resolved Addition Operation");
-      return SUCCESS;
-
+      return addition.resolve(rs);
+      
     case OPERATOR_SUBTRACT:
-
-      l.log('d', "Operators", "Resolved Subtraction Operation");
-      return SUCCESS;
+      return subtract.resolve(rs);
     
     case OPERATOR_MULTIPLY:
-
-      l.log('d', "Operators", "Resolved Multiplication Operation");
-      return SUCCESS;
+      return multiply.resolve(rs);
     
     case OPERATOR_DIVISION:
-
-      l.log('d', "Operators", "Resolved Division Operation");
-      return SUCCESS;
+      return division.resolve(rs);
 
     case OPERATOR_MODULUS:
 
@@ -77,7 +70,7 @@ public:
     default:
       //  Default Operator
       l.log('e', "Operators", "Unrecognized operator node resolved");  
-      return 1; 
+      return NULL; 
   }
 }
 

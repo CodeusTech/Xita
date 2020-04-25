@@ -17,6 +17,8 @@
 
 #include "arithmetic.h"
 
+#include <xcs/regstack/structs.h>
+
 
 
 /*
@@ -34,16 +36,23 @@
     is_communitive = true;
   }
 
-  ErrorCode AdditionOperator::resolve()
+  char* AdditionOperator::resolve(RegisterStack* rs)
   {
     /*
       Get top 2 registers
       Add together (according to type sizes)
     */
 
-    l.log('d', "Operators", "Addition operation has been resolved");
+    char* top = get_reg(rs->top(), 32);
+    char* sec = get_reg(rs->sec(), 32);
 
-    return SUCCESS;
+    char* str = (char*) malloc(50);
+    sprintf(str, "  adds  %s, %s, %s", sec, sec, top);
+
+    free(top);
+    free(sec);
+
+    return str;
   }
 
   /*
@@ -56,21 +65,23 @@
     op = strdup(string("(-)").c_str());
   }
 
-  ErrorCode SubtractOperator::resolve()
+  char* SubtractOperator::resolve(RegisterStack* rs)
   {
-    /*
-      Type Check Operands
-    */
-    if (super::resolve()) return 1; //  Type Check Failed
-
     /*
       Get top 2 registers
       Add together (according to type sizes)
     */
 
-    l.log('d', "Operators", "Subtraction operation has been resolved");
+    char* top = get_reg(rs->top(), 32);
+    char* sec = get_reg(rs->sec(), 32);
 
-    return SUCCESS;
+    char* str = (char*) malloc(50);
+    sprintf(str, "  subs  %s, %s, %s", sec, sec, top);
+
+    free(top);
+    free(sec);
+
+    return str;
   }
 
   /*
@@ -84,21 +95,27 @@
     is_communitive = true;
   }
 
-  ErrorCode MultiplyOperator::resolve()
+  char* MultiplyOperator::resolve(RegisterStack* rs)
   {
     /*
       Type Check Operands
     */
-    if (super::resolve()) return 1; //  Type Check Failed
 
     /*
       Get top 2 registers
       Add together (according to type sizes)
     */
 
-    l.log('d', "Operators", "Multiplication operation has been resolved");
+    char* top = get_reg(rs->top(), 32);
+    char* sec = get_reg(rs->sec(), 32);
 
-    return SUCCESS;
+    char* str = (char*) malloc(50);
+    sprintf(str, "  mul   %s, %s, %s", sec, sec, top);
+
+    free(top);
+    free(sec);
+
+    return str;
   }
 
   /*
@@ -111,21 +128,27 @@
     op = strdup(string("(/)").c_str());
   }
 
-  ErrorCode DivisionOperator::resolve()
+  char* DivisionOperator::resolve(RegisterStack* rs)
   {
     /*
       Type Check Operands
     */
-    if (super::resolve()) return 1; //  Type Check Failed
 
     /*
       Get top 2 registers
       Add together (according to type sizes)
     */
 
-    l.log('d', "Operators", "Division operation has been resolved");
+    char* top = get_reg(rs->top(), 32);
+    char* sec = get_reg(rs->sec(), 32);
 
-    return SUCCESS;
+    char* str = (char*) malloc(50);
+    sprintf(str, "  div   %s, %s, %s", sec, sec, top);
+
+    free(top);
+    free(sec);
+
+    return str;
   }
 
   /*
@@ -138,17 +161,18 @@
     op = strdup(string("(%)").c_str());
   }
 
-  ErrorCode ModulusOperator::resolve()
+  char* ModulusOperator::resolve(RegisterStack* rs)
   {
     /*
       Type Check Operands
     */
-    if (super::resolve()) return 1; //  Type Check Failed
 
     /*
       Get top 2 registers
       Add together (according to type sizes)
     */
+
+    //  TODO: This one is weird
 
     l.log('d', "Operators", "Modulus operation has been resolved");
 
