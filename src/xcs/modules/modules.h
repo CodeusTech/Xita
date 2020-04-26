@@ -30,6 +30,7 @@
 #include <xcs/regstack/structs.h>
 #include <xcs/expressions/constants/constants.h>
 #include <xcs/expressions/functions/functions.h>
+#include <xcs/expressions/argument.h>
 
 extern int yylineno;
 
@@ -99,6 +100,7 @@ public:
 
   ADR rsPush(TypeID tid) { return register_stacks[scope].push(tid); }
   char* rsPushRegister(TypeID tid, ADR reg);
+  ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return register_stacks[scope].pop(); }
   
   //  2.b) Scope Handling
@@ -150,7 +152,7 @@ public:
     ErrorCode endDeclareFunction();
     ErrorCode undeclareFunction();
 
-    FunctionNode* resolveFunction(Identifier ident);
+    FunctionNode* resolveFunction(Identifier ident, list<ArgumentNode> args);
     FunctionParameterNode* resolveFunctionParameter(Identifier ident);
 
 

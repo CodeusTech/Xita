@@ -45,7 +45,6 @@ ErrorCode FunctionNode::declareParameter(Identifier ident, ADR reg)
 /*
   Resolutions
 */
-
 FunctionParameterNode* FunctionNode::resolveParameter(Identifier ident)
 {
   for (unsigned long i = 0; i < parameters.size(); ++i)
@@ -53,4 +52,5 @@ FunctionParameterNode* FunctionNode::resolveParameter(Identifier ident)
       return &parameters[i];
   return 0;
 }
+
 

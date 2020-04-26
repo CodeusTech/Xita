@@ -35,3 +35,4 @@ ErrorCode initializeSpecialPrimitives()
   free(name);
   return SUCCESS;
 }
+

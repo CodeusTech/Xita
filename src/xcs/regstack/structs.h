@@ -73,6 +73,18 @@ public:
     return check;
   }
 
+  ADR merge(TypeID tid, ADR reg)
+  {
+    /*
+      TODO: Check if 'reg' is already active
+    */
+
+    registers.push_back(reg);
+    types.push_back(tid);
+
+    return reg; //  Should return merged register (if 'reg' is active)
+  }
+
   ErrorCode pop()
   {
     registers.pop_back();

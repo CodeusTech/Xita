@@ -29,6 +29,8 @@ class FunctionNode
 protected:
 
   TypeID _rtn_type;
+  ADR _rtn_reg;
+
   vector<FunctionParameterNode> parameters;
 
 
@@ -44,6 +46,10 @@ public:
   Identifier Ident() { return _ident; }
 
   TypeID Type() { return _rtn_type; }
+  ADR Register() { return _rtn_reg; }
+  ADR Register(ADR reg) { _rtn_reg = reg; return _rtn_reg; }
+  unsigned long CountParameters() { return parameters.size(); }
+  TypeID ParameterRegister(unsigned long index) { return parameters[index].Register(); }
 
 
   /*

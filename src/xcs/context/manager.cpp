@@ -65,6 +65,7 @@ ErrorCode ContextManager::executeModule() { /* Down the Road */ return SUCCESS; 
 
   ErrorCode ContextManager::rsPushRegister(TypeID tid, ADR reg) 
   { 
+    LastType(tid);
     char* str = _context->rsPushRegister(tid, reg); 
 
     addInstruction(str);
@@ -72,6 +73,11 @@ ErrorCode ContextManager::executeModule() { /* Down the Road */ return SUCCESS; 
     return SUCCESS; 
   }
 
+  ADR ContextManager::rsMerge(TypeID tid, ADR reg)
+  {
+    LastType(tid);
+    return _context->rsMerge(tid, reg);
+  }
 
 
 //  2.d) Scope Handling
@@ -187,21 +193,32 @@ FunctionID ContextManager::resolveFunction(Identifier ident)
   char* str = (char*) malloc(50);
 
   //  First check current context
-  FunctionNode* node = _context->resolveFunction(ident);
+  FunctionNode* node = _context->resolveFunction(ident, arguments);
   if (node)
   {
-    LastType(node->Type());
-
     /*
-      TODO: Load Parameters Here
+      TODO: Compare Parameter/Argument Count/Types for handling overloaded functions
     */
 
-    sprintf(str, "bl    __%lu_%s", node->Id(), ident);
+    //  Handle Arguments
+    char* arg_reg; char* param_reg; int i = 0;
+    while (!arguments.empty())
+    {
+      ArgumentNode arg = resolveArgument();
+      arg_reg = get_reg(arg.reg, 8*4);                      /* TODO: Replace w/ Type Size */
+      param_reg = get_reg(node->ParameterRegister(i), 8*4); /* TODO: Replace w/ Type Size */
+
+      sprintf (str, "  mov   %s, %s", param_reg, arg_reg);
+      addInstruction(str);
+      i++;
+    
+      free(arg_reg); free(param_reg);
+    }
+
+    sprintf(str, "  bl    __%lu_%s", node->Id(), ident);
     addInstruction(str);
     
-    /*
-      TODO: Handle Return Value Registers
-    */
+    rsMerge(node->Type(), node->Register());
 
     std::string _str = "Resolved function "; _str.append(ident); _str += " resolved as type " + string(resolveTypeIdentifier(LastType()));
     l.log('D', "Functions", _str);

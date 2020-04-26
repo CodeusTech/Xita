@@ -25,16 +25,15 @@ let prod x y = y * x;;
   Invocations
 *)
 
-five                --  Primitive Function Testing
-(*
+five;;              --  Primitive Function Testing
 (sum 1 2);;         --  Parameterized Function Testing
 (sum 1 2 3);;       --  Overloaded Function Testing
-(prod 1 2) + five;; --  Test Functions as Expressions
+(prod 1 2) + five   --  Test Functions as Expressions
 
 
 
 --  Test Nested Functions
-
+(*
 debug "Test Unparameterized Functions"
 let test = 
     1

@@ -657,7 +657,7 @@ exp_inline:
 */
 arg_funct:
     arg_funct arg_funct 
-  | exp_literal           { }
+  | exp_literal           { context.loadArgument(context.LastType(), context.rsTop()); }
 ;
 
 

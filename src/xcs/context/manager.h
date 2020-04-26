@@ -2,7 +2,7 @@
   manager.h (context)
   Codeus Tech
   Authored on   April 15, 2020
-  Last Modified April 24, 2020
+  Last Modified April 26, 2020
 */
 
 /*
@@ -28,13 +28,15 @@
 #define CONTEXT_MANAGER_H
 
 #include <vector>
+#include <list>
 
 #include <xcs/std/includes.h>
 #include <xcs/std/scope.h>
 
 #include <xcs/asm/manager.h>
-#include <xcs/modules/modules.h>
 #include <xcs/expressions/operators/manager.h>
+#include <xcs/modules/modules.h>
+#include <xcs/expressions/argument.h>
 
 extern int yylineno;
 
@@ -54,43 +56,49 @@ class ContextManager
 
 protected:
 
-  //  Assembly Data
-  AssemblyManager assembly;
+  //  Managers
+  AssemblyManager assembly;       //  Manages Buffers for producing Assembly Files
+  OperatorManager operators;      //  Manages Active Operator Semantics (e.g. Addition)
 
-  //  Module Data
-  vector<ModuleNode> modules;    //  All Imported Module Contexts
-  ModuleNode* _context;          //  Current Module Context
+  //  Modules
+  vector<ModuleNode> modules;     //  All Imported Module Contexts
+  ModuleNode* _context;           //  Current Module Context
+
+  //  Context IDs
   ModuleID _next_mid = 1;         //  Next Module Node Index
-
-  //  Type Data
-  TypeID _next_tid = 0;               //  Indexing starts @ 0 for NULL Type
+  TypeID _next_tid = 0;           //  Indexing starts @ 0 for NULL Type/Constructor
   ConstructorID _next_constructor = 0; 
-  ConstantID _next_cid = 1;
-  FunctionID _next_fid = 1;
+  ConstantID _next_cid = 1;       //  Next Constant ID
+  FunctionID _next_fid = 1;       //  Next Function ID
 
+  //  Active Compiler Data
+    //  Last Encountered Data
   TypeID _last_type;                //  Last Encountered Type ID
   ConstructorID _last_constructor;  //  Last Encountered Type Constructor
   Arbitrary _last_data;             //  Last Encountered Data (of Arbitrary Type)
+    //  Loaded Arguments
+  list<ArgumentNode> arguments;   //  Arguments loaded for an expression (e.g. function)
 
-  OperatorManager operators;
-  
 
 public:
   //  Constructors
   ContextManager();
 
   /*
-    1.) Private Variable Access
+    1.) Accessors
   */
   ModuleID CurrentContext() { return _context->Id(); }
 
-  //  Getter/Setter: _last_type
+  //  Last Encountered Info
   TypeID LastType() { return _last_type; }
   TypeID LastType(TypeID type) { _last_type = type; return _last_type; }
   ConstructorID LastConstructor() { return _last_constructor; }
   ConstructorID LastConstructor(ConstructorID cid) { _last_constructor = cid; return _last_constructor; }
   Arbitrary LastData() { return _last_data; }
   Arbitrary LastData(Arbitrary data) { _last_data = data; return _last_data; }
+  
+  //  Loaded Arguments
+  unsigned long CountArguments() { return arguments.size(); }
 
   //  Contextual Line Number
   int LineNumber() { return _context->LineNumber(); }
@@ -121,6 +129,7 @@ public:
     //  Operations
   ADR rsPush(TypeID tid) { return _context->rsPush(tid); }
   ErrorCode rsPushRegister(TypeID tid, ADR reg);
+  ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return _context->rsPop(); }
 
   // 2.d) Scope Handling
@@ -166,6 +175,10 @@ public:
   FunctionID resolveFunction(Identifier ident);
   TypeID resolveFunctionParameter(Identifier ident);
 
+  //  3.e) Argument Operations
+  ErrorCode loadArgument(TypeID tid, ADR reg) { arguments.push_back(ArgumentNode(tid, reg)); return SUCCESS; }
+  ArgumentNode resolveArgument() { ArgumentNode arg = arguments.front(); arguments.pop_front(); return arg; }
+
 
   /*
     3.) Complex Operations
@@ -173,6 +186,7 @@ public:
   unsigned long resolveExpression(Identifier ident);
   
 };
+
 
 #include "manager.cpp"
 #endif

@@ -42,16 +42,21 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
 
 //  2.b) Register Stacks
 char* ModuleNode::rsPushRegister(TypeID tid, ADR src) 
-  {
-    //  If all registers are in use, reroute to extended stack space
-    ADR dest = rsPush(tid);
+{
+  //  If all registers are in use, reroute to extended stack space
+  ADR dest = rsPush(tid);
 
-    //  Copy Data from src to dest
-    char* str = (char*) malloc(50);
-    sprintf(str, "  mov   %s, %s", get_reg(dest, 8*TypeSize(tid)), get_reg(src, 8*TypeSize(tid)));  
+  //  Copy Data from src to dest
+  char* str = (char*) malloc(50);
+  sprintf(str, "  mov   %s, %s", get_reg(dest, 8*TypeSize(tid)), get_reg(src, 8*TypeSize(tid)));  
 
-    return str;
-  }
+  return str;
+}
+
+ADR ModuleNode::rsMerge(TypeID tid, ADR reg)
+{
+  return register_stacks[scope].merge(tid, reg);
+}
 
 
 //  2.c) Scope Handling
@@ -226,6 +231,8 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   //  End Function Declaration
   ErrorCode ModuleNode::endDeclareFunction()
   {
+    functions.back().Register(rsTop());
+
     //  Return to Parent Scope
     scope = scope_stack.back(); scope_stack.pop_back();
 
@@ -246,11 +253,13 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
 
 
   //  Attempt to Resolve Function by Identifier
-  FunctionNode* ModuleNode::resolveFunction(Identifier ident)
+  FunctionNode* ModuleNode::resolveFunction(Identifier ident, list<ArgumentNode> args)
   {
-    for (unsigned long i = 0; i < functions.size(); ++i)
-      if (strcmp(functions[i].Ident(), ident) == 0)
-        return &functions[i];
+    for (unsigned long fi = 0; fi < functions.size(); ++fi)
+      if (strcmp(functions[fi].Ident(), ident) == 0)
+        if (args.size() == functions[fi].CountParameters())
+          //  Type Check Argument/Parameter Types Here
+            return &functions[fi];
     return 0;
   }
 
