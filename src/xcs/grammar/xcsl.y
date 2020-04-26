@@ -216,12 +216,12 @@ extern ContextManager context;
 
 //  Constructors
 %left U8_C I8_C U16_C I16_C U32_C I32_C U64_C I64_C FLOAT_C DOUBLE_C STRING_C CHAR_C
-%left CONSTRUCTOR
+//%left CONSTRUCTOR
 
 //  Literal Operations
 %left REAL INT TRUE FALSE
 %left IDENTIFIER
-
+%left CONSTRUCTOR
 
 //  Override Operators
 %left OP_LT_O OP_LTE_O OP_GT_O OP_GTE_O OP_EQ_O OP_NEQ_O BOOL_AND_O BOOL_OR_O BOOL_XOR_O 
@@ -237,7 +237,8 @@ extern ContextManager context;
 %left OP_MUL OP_DIV OP_MOD
 %left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
 
-
+//  Keywords
+%left CONST 
 
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
@@ -738,8 +739,8 @@ pre_exp_struct:
 
 exp_struct:
     pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
-  | CONSTRUCTOR exp  { context.resolveConstructor($1); } 
-  | CONSTRUCTOR      { context.resolveConstructor($1); }   
+  | CONSTRUCTOR exp  { printf("Checkers\n"); context.resolveConstructor($1); } 
+  | CONSTRUCTOR      { printf("Checkers\n"); context.resolveConstructor($1); }   
 ; 
 
 

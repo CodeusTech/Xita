@@ -36,9 +36,7 @@ public:
     _ident = strdup(ident); free(ident);
     _value = value;
 
-
-
-  std::string str = "Constant " + string(ident) + " has been Initialized";
+    std::string str = "Constant " + string(ident) + " has been Initialized";
     l.log('D', "Constants", str);
   }
 

@@ -19,7 +19,7 @@
   1.) Constant Declarations
 *)
 
-const Float pi = 3.14;;
+const Int pi = 314;;
 const Int pi2 = pi + 3;;
 
 
@@ -29,7 +29,7 @@ const Int pi2 = pi + 3;;
 
 pi * 32;;
 
-let pi_2 = 314;;
+--let pi_2 = 314;;
 
-pi_2
+--pi_2
 
