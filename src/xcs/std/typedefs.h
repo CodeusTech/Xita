@@ -19,6 +19,7 @@
 
 typedef int ErrorCode;
 typedef char* Command;
+typedef unsigned long Index;
 
 /*
   ID NUMBERS

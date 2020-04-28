@@ -23,9 +23,17 @@ FunctionNode::FunctionNode(FunctionID fid, ModuleID context, Identifier ident)
   _rtn_type = TYPE_ARBITRARY;
 
   std::string str = "Function " + string(_ident) + " has been Initialized";
-  l.log('d', "Functions", str);
+  l.log('d', "DeclFunct", str);
 }
 
+TypeID* FunctionNode::TypeSignature()
+{
+  TypeID* sig = (TypeID*) malloc(sizeof(TypeID)*(CountParameters()+1));
+  sig[0] = _rtn_type;
+  for (unsigned long i = 0; i < CountParameters(); ++i)
+    sig[i+1] = parameters[i].Type();
+  return sig;
+}
 
 /*
   Declarations
@@ -33,10 +41,11 @@ FunctionNode::FunctionNode(FunctionID fid, ModuleID context, Identifier ident)
 //  Parameters
 ErrorCode FunctionNode::declareParameter(Identifier ident, ADR reg)
 { 
-  parameters.push_back( FunctionParameterNode(ident, reg) ); 
+  Index i = parameters.size();
+  parameters.push_back( FunctionParameterNode(ident, reg, i) ); 
 
   std::string _str = "Parameter " + string(parameters.back().Ident()) + " declared, using register: " + to_string(reg);
-  l.log('D', "Functions", _str);
+  l.log('D', "DeclFunct", _str);
 
   return SUCCESS; 
 }
@@ -52,5 +61,6 @@ FunctionParameterNode* FunctionNode::resolveParameter(Identifier ident)
       return &parameters[i];
   return 0;
 }
+
 
 

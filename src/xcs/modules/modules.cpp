@@ -22,6 +22,7 @@
 */
 
 #include "modules.h"
+#include <xcs/regstack/structs.h>
 
 extern void yyerror(const char* error);
 
@@ -162,7 +163,14 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
     rtn[0] = 0; rtn[1] = 0;
     return rtn;
   }
-
+  Identifier ModuleNode::resolveConstructorIdentifier(ConstructorID cid)
+  {
+    char* str;
+    for (unsigned long i = 0; i < types.size(); ++i)
+      if ((str = types[i].resolveConstructorIdentifier(cid)))
+        return str;
+    return 0;
+  }
 
   TypeID ModuleNode::resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid)
   {
@@ -170,6 +178,20 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
       if (types[i].Id() == tid)
         return types[i].resolveElement(ident, cid);
     return 0;
+  }
+
+  ErrorCode ModuleNode::castType(TypeID tid)
+  {
+
+    string str = "Last data element has been type cast to " + string(resolveTypeIdentifier(tid));
+    l.log('D', "TypeCheck", str);
+    
+    return SUCCESS;
+  }
+
+  ErrorCode ModuleNode::castTypeConstructor(ConstructorID cid)
+  {
+    return SUCCESS;
   }
 
 
@@ -229,23 +251,21 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   }
 
   //  End Function Declaration
-  ErrorCode ModuleNode::endDeclareFunction()
+  char* ModuleNode::endDeclareFunction(TypeID tid)
   {
+    functions.back().Type(tid);
     functions.back().Register(rsTop());
 
     //  Return to Parent Scope
     scope = scope_stack.back(); scope_stack.pop_back();
 
-    std::string _str = "Function "; _str.append(functions.back().Ident()); _str += " declared";
-    l.log('D', "Functions", _str);
-
-    return SUCCESS;
+    return functions.back().Ident();
   }
 
   //  Undeclare Function (let ... in ...)
   ErrorCode ModuleNode::undeclareFunction()
   {
-    endDeclareFunction();
+    endDeclareFunction(TYPE_ARBITRARY);
     functions.pop_back();
 
     return SUCCESS;
@@ -264,9 +284,7 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   }
 
   FunctionParameterNode* ModuleNode::resolveFunctionParameter(Identifier ident)
-  {
-    return functions.back().resolveParameter(ident);
-  }
+  { return functions.back().resolveParameter(ident); }
 
 
 unsigned long ModuleNode::resolveExpression(Identifier ident)

@@ -33,6 +33,8 @@
 #include <xcs/std/includes.h>
 #include <xcs/std/scope.h>
 
+#include "expression.h"
+
 #include <xcs/asm/manager.h>
 #include <xcs/expressions/operators/manager.h>
 #include <xcs/modules/modules.h>
@@ -73,11 +75,14 @@ protected:
 
   //  Active Compiler Data
     //  Last Encountered Data
+  ExpressionType _last_expression;  //  Last Encountered Expression Type
   TypeID _last_type;                //  Last Encountered Type ID
   ConstructorID _last_constructor;  //  Last Encountered Type Constructor
   Arbitrary _last_data;             //  Last Encountered Data (of Arbitrary Type)
+  unsigned long _last_index;        //  Used Encountered Index 
     //  Loaded Arguments
   list<ArgumentNode> arguments;   //  Arguments loaded for an expression (e.g. function)
+
 
 
 public:
@@ -90,12 +95,16 @@ public:
   ModuleID CurrentContext() { return _context->Id(); }
 
   //  Last Encountered Info
+  ExpressionType LastExpression() { return _last_expression; }
+  ExpressionType LastExpression(ExpressionType exp) { _last_expression = exp; return _last_expression; }
   TypeID LastType() { return _last_type; }
   TypeID LastType(TypeID type) { _last_type = type; return _last_type; }
   ConstructorID LastConstructor() { return _last_constructor; }
   ConstructorID LastConstructor(ConstructorID cid) { _last_constructor = cid; return _last_constructor; }
   Arbitrary LastData() { return _last_data; }
   Arbitrary LastData(Arbitrary data) { _last_data = data; return _last_data; }
+  Index LastIndex() { return _last_index; }
+  Index LastIndex(Index i) { _last_index = i; return _last_index; }
   
   //  Loaded Arguments
   unsigned long CountArguments() { return arguments.size(); }
@@ -104,6 +113,8 @@ public:
   int LineNumber() { return _context->LineNumber(); }
   int LineNumber(int line) { return _context->LineNumber(line); }
 
+  string TypeSignature();
+  string TypeSignature(Identifier function);
 
   /*
     2.) Public Operations
@@ -153,6 +164,8 @@ public:
   TypeID resolveType(Identifier ident);
   Identifier resolveTypeIdentifier(TypeID tid) { return _context->resolveTypeIdentifier(tid); }
   ConstructorID resolveConstructor(Identifier ident);
+  Identifier resolveConstructorIdentifier(ConstructorID cid) { return _context->resolveConstructorIdentifier(cid); }
+  TypeID resolveConstructorType(ConstructorID cid);
   TypeID resolveTypeElement(Identifier ident);
 
   //  3.b) Typeclass Operations
@@ -169,7 +182,7 @@ public:
   ErrorCode declareFunction(Identifier ident);
   ErrorCode declareFunctionParameter(Identifier ident) { return _context->declareFunctionParameter(ident); }
 
-  ErrorCode endDeclareFunction() { return _context->endDeclareFunction(); }
+  ErrorCode endDeclareFunction();  //{ return _context->endDeclareFunction(); }
   ErrorCode undeclareFunction() { return _context->undeclareFunction(); }
 
   FunctionID resolveFunction(Identifier ident);
@@ -183,8 +196,9 @@ public:
   /*
     3.) Complex Operations
   */
+  //  Resolve Identifiers
   unsigned long resolveExpression(Identifier ident);
-  
+  unsigned long castExpression(Identifier ident);
 };
 
 

@@ -85,6 +85,7 @@ ErrorCode ContextManager::concludeExpression()
 { 
   LastType(TYPE_ARBITRARY); 
   LastData((Arbitrary) TYPE_ARBITRARY);
+  LastExpression(EXP_LITERAL);
 
   assembly.concludeExpression();
   return _context->concludeExpression(); 
@@ -94,6 +95,7 @@ ErrorCode ContextManager::concludeExpression()
 // 2.e) Operators
 ErrorCode ContextManager::solveOperator(OperatorID oid) 
 { 
+  LastExpression(EXP_LITERAL);
   char* ret = operators.solveOperator(oid, _context->rsCurrent()); 
   if (ret) { addInstruction(ret); free(ret); rsPop(); }
   return SUCCESS;
@@ -118,6 +120,9 @@ ErrorCode ContextManager::solveOperator(OperatorID oid)
   for (unsigned long i = 0; i < _context->imported.size(); ++i)
     if ((tid = modules[_context->imported[i]].resolveType(ident)))
       return LastType(tid);
+
+   std::string str = "Failed to Resolve Type: " + string(ident);
+   l.log('E', "ExpType", str);
   
   return 0;
  }
@@ -128,6 +133,7 @@ ErrorCode ContextManager::solveOperator(OperatorID oid)
    
    if (rtn[0])
    {
+     
      LastType(rtn[0]);
      LastConstructor(rtn[1]);
 
@@ -140,10 +146,11 @@ ErrorCode ContextManager::solveOperator(OperatorID oid)
    }
 
    std::string str = "Failed to Resolve Constructor: " + string(ident);
-   l.log('E', "Constructors", str);
+   l.log('E', "ExpStruct", str);
 
    return 0;
  }
+
 
  TypeID ContextManager::resolveTypeElement(Identifier ident)
  {
@@ -178,13 +185,28 @@ ErrorCode ContextManager::solveOperator(OperatorID oid)
 /*
   3.d) Function Operations
 */
-
-
+//  Declare Function
 ErrorCode ContextManager::declareFunction(Identifier ident) 
 {
   FunctionID fid = _next_fid++;
   assembly.initFunction(ident, fid);
   return _context->declareFunction(fid, ident);
+}
+
+//  Finish Declaration
+ErrorCode ContextManager::endDeclareFunction()
+{
+  char* ident;
+  string logstr;
+  if ((ident = _context->endDeclareFunction(LastType())))
+  {
+    logstr = "Function " + string(ident) + " declared, with Type Signature: " + TypeSignature();
+    l.log('D', "DeclFunct", logstr);
+  } else
+  {
+    yyerror(string("Function Declaration Failed").c_str());
+  }
+  return SUCCESS;
 }
 
 FunctionID ContextManager::resolveFunction(Identifier ident)
@@ -219,16 +241,16 @@ FunctionID ContextManager::resolveFunction(Identifier ident)
     addInstruction(str);
     
     rsMerge(node->Type(), node->Register());
+    LastExpression(EXP_FUNCTION);
 
     std::string _str = "Resolved function "; _str.append(ident); _str += " resolved as type " + string(resolveTypeIdentifier(LastType()));
-    l.log('D', "Functions", _str);
+    l.log('D', "ExpFunct", _str);
 
     free (str);
     return node->Id();
   }
 
   //  TODO: Check Child (Imported) Module Nodes
-
 
   free (str);
   return 0;
@@ -242,13 +264,49 @@ TypeID ContextManager::resolveFunctionParameter(Identifier ident)
   {
     LastType(param->Type());
     rsPushRegister(LastType(), param->Register());
+    LastExpression(EXP_PARAMETER);
+    LastIndex(param->getIndex());
     
     string str = "Resolved parameter " + string(ident) + " of type " + resolveTypeIdentifier(LastType()) + " in register: " + to_string(param->Register());
-    l.log('d', "Functions", str);
+    l.log('d', "ExpFunct", str);
     return LastType();
   }
   return 0;
 }
+
+/*
+  Function Type Signatures
+*/
+  //  Resolves Type Signature for Most Recent Function Declaration
+string ContextManager::TypeSignature()
+{
+  Index index;
+  string _str = "( ";
+  TypeID* tsig = _context->TypeSignature();
+
+  for (Index i = 0; i < _context->_CountFunctionParameters(); ++i)
+  {
+    index = i+1;  
+
+    ParameterRestrictions restrict = _context->_ParamRestrictions(i);
+    if (tsig[index] == TYPE_ARBITRARY )
+      if (!restrict.construct.empty())
+      {
+        _str += "(";
+        for (Index j = 0; j < restrict.construct.size(); ++j)
+        {
+          _str += string(resolveConstructorIdentifier(restrict.construct[j]));
+        }
+        _str += ")";
+      }
+    else
+      _str += string(resolveTypeIdentifier(tsig[index]));
+    _str += " -> ";
+  }
+  _str += string(resolveTypeIdentifier(tsig[0])) + " )";
+  return _str;
+}
+
 
 
 /*
@@ -267,8 +325,62 @@ unsigned long ContextManager::resolveExpression(Identifier ident)
   //  Resolve Constant
 
 
-  std::string _str = "Identifier "; _str.append(ident); _str += "Could not be resolved";
+  std::string _str = "Identifier " + string(ident) + "Could not be resolved";
   l.log('W', "Identifiers", _str);
 
   return 0;
 }
+
+
+/*
+  Resolve Expression as Identifier
+*/
+unsigned long ContextManager::castExpression(Identifier constructor)
+{
+  //  Grab Last Expression's Infromation
+  TypeID _tid = LastType();
+  ConstructorID _cid = LastConstructor();
+  Arbitrary _data = LastData();
+  ADR _reg = rsTop();
+
+  std::string _str;
+
+  ConstructorID cid = resolveConstructor(constructor);
+  if (cid)
+  {
+    switch(LastExpression())
+    {
+      case EXP_LITERAL:
+        /* TODO: Cast Literal */
+        
+        _str = "Literal";
+        break;
+      case EXP_FUNCTION:
+        /* TODO: Cast Function */
+        
+        _str = "Functional";
+        break;
+      case EXP_PARAMETER:
+        /* TODO: Cast Parameter */
+        _context->castParameter(cid, LastIndex());
+        
+        _str = "Parameter";
+        break;
+    }
+
+    _str += " expression has been cast to " + string(resolveTypeIdentifier(LastType()));
+    l.log('D', "TypeCast", _str);
+    return cid; //  Will probably change
+  }
+
+  /*
+    TODO: If previous_tid is compatible with cid's possible inputs
+          Currently assumes it is compatible.
+  */
+
+
+
+  return 0;
+}
+
+

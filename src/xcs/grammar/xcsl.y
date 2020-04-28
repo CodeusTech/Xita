@@ -131,6 +131,9 @@ extern ContextManager context;
 //  Comments
 %token COMMENT DOC_NEWLINE REFERENCE
 
+//  Constructors
+%token CHAR_C
+
 //  Override Operators
 %token OP_ADD_O OP_SUB_O OP_MUL_O OP_DIV_O OP_MOD_O  // INTEGER ARITHMETIC
 %token OP_GTE_O OP_GT_O OP_EQ_O OP_NEQ_O OP_LTE_O OP_LT_O // INTEGER COMPARISON
@@ -151,6 +154,7 @@ extern ContextManager context;
 //  List Operators/Keywords
 %token OP_APPEND OP_LIST_CON
 %token LIST_HEAD LIST_TAIL LIST_LENGTH
+%token OP_LIST_L OP_LIST_R
 
 //  Conditional Keywords
 %token IF THEN ELSE
@@ -197,58 +201,39 @@ extern ContextManager context;
 /*
   B.) Order of Operations
 */
-//  High-Order Operations
-%left OP_ASSIGN
-%left OP_ELEMENT OP_COMMA
-%left BUILD CLEAR
-%left FILEK
+/*
+  LOWEST-PRIORITY TOKEN
+*/
+//  Declaration Keywords
+%left TYPE TYPECLASS LET CONST
 
-%left LET
-%left IN
-%left TYPE TYPECLASS REQUIRES
-
-//  Memory Operations
-%left MEM_READ MEM_SET
-
-//  List Operations
-%left OP_APPEND LIST_HEAD LIST_TAIL
-
-
-//  Constructors
-%left U8_C I8_C U16_C I16_C U32_C I32_C U64_C I64_C FLOAT_C DOUBLE_C STRING_C CHAR_C
-//%left CONSTRUCTOR
-
-//  Literal Operations
-%left REAL INT TRUE FALSE
-%left IDENTIFIER
+//  Literal Values
 %left CONSTRUCTOR
+%left IDENTIFIER
+%left INT REAL TRUE FALSE CHAR STRING
 
-//  Override Operators
-%left OP_LT_O OP_LTE_O OP_GT_O OP_GTE_O OP_EQ_O OP_NEQ_O BOOL_AND_O BOOL_OR_O BOOL_XOR_O 
-%left BIT_AND_O BIT_OR_O BIT_XOR_O 
-%left OP_ADD_O OP_SUB_O OP_DIV_O OP_MUL_O OP_MOD_O OP_APPEND_O OP_LIST_CON_O
-%left MEM_READ_O MEM_SET_O ARROW_L_O ARROW_R_O 
 
-//  Operators
-  //  Logical
-%left BOOL_AND BOOL_OR BOOL_XOR OP_LT OP_GT OP_LTE OP_GTE OP_EQ OP_NEQ IS
-  //  Arithmetic
+//  Assignment Operators
+%left OP_ASSIGN IN
+
+//  Logical Operators
+%left BOOL_NOT BOOL_OR BOOL_AND
+%left OP_GT OP_GTE OP_LT OP_LTE OP_EQ OP_NEQ
+//  Numerical Operators
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
-%left BIT_AND BIT_OR BIT_SHL BIT_SHR BIT_XOR
 
-//  Keywords
-%left CONST 
 
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
-%left OP_REC_L OP_REC_R
 %left PAR_LEFT PAR_RIGHT
 
-
-//  Seperators
-%left OP_TUP
+//  Expression Seperator
 %left OP_SEQ
+/*
+  HIGHEST-PRIORITY TOKEN
+*/
+
 
 %type <val_int> if if1 then else1
 %type <val_int> lit_integer
@@ -321,11 +306,11 @@ exp:
   | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }
   | decl  
   | LIST_HEAD exp_list
-  | exp_arith    
-  | exp_literal      
-  | exp_logical      
   | exp_conditional  
   | exp_struct     
+  | exp_arith    
+  | exp_logical      
+  | exp_literal      
   | exp_regex       
   | exp_request   
  // | exp_memIO
@@ -339,6 +324,7 @@ exp:
 
 exp_delay:
   DELAY exp { exp_delay(); }
+;
 
 /*
   2.) Primitive Expressions
@@ -720,10 +706,6 @@ exp_type:
 pre_decl_struct:
   CONSTRUCTOR  { context.declareTypeConstructor($1); }
 ;
-
-/*
-  CONSTRUCTOR IDENTIFIERS
-*/
 decl_struct:
     decl_struct BIT_OR decl_struct
   | pre_decl_struct OF decl_record 
@@ -736,11 +718,10 @@ decl_struct:
 pre_exp_struct:
   CONSTRUCTOR { context.resolveConstructor($1); }
 ;
-
 exp_struct:
     pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
-  | CONSTRUCTOR exp  { printf("Checkers\n"); context.resolveConstructor($1); } 
-  | CONSTRUCTOR      { printf("Checkers\n"); context.resolveConstructor($1); }   
+  | CONSTRUCTOR exp    { context.castExpression($1); }
+  | CONSTRUCTOR        { context.resolveConstructor($1); }   
 ; 
 
 

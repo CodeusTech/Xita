@@ -28,6 +28,7 @@ class RegisterStack
 {
   vector<ADR> registers;
   vector<TypeID> types;
+	
 
 
 public:
@@ -89,7 +90,7 @@ public:
   {
     registers.pop_back();
     types.pop_back();
-    return 0;
+    return SUCCESS;
   }
 
   ADR from_top(int i) { return registers.at(registers.size()-(i+1)); }

@@ -39,6 +39,7 @@ extern ContextManager context;
 %}
 %option noyywrap
 %option yylineno
+%option nounput
 %x COMMENT
 %x DOC_COMMENT
 %x STR

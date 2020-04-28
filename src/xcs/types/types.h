@@ -59,6 +59,7 @@ public:
   ErrorCode declareAlias(TypeID alias) { aliases.push_back(alias); return SUCCESS; }
 
   ConstructorID resolveConstructor(Identifier ident);
+  Identifier resolveConstructorIdentifier(ConstructorID cid);
   TypeID resolveElement(Identifier ident, ConstructorID cid);
   TypeID resolveParameter(Identifier ident);
 

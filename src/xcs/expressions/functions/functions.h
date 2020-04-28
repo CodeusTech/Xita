@@ -44,13 +44,16 @@ public:
   FunctionID Id() { return _fid; }
   ModuleID Context() { return _context; }
   Identifier Ident() { return _ident; }
+  TypeID* TypeSignature();
 
   TypeID Type() { return _rtn_type; }
+  TypeID Type(TypeID tid) { _rtn_type = tid; return _rtn_type; }
   ADR Register() { return _rtn_reg; }
   ADR Register(ADR reg) { _rtn_reg = reg; return _rtn_reg; }
   unsigned long CountParameters() { return parameters.size(); }
   TypeID ParameterRegister(unsigned long index) { return parameters[index].Register(); }
-
+  TypeID ParameterType(unsigned long index) { return parameters[index].Type(); }
+  ParameterRestrictions ParamRestrictions(Index index) { return parameters[index].Restrictions(); }
 
   /*
     Declarations
@@ -61,6 +64,11 @@ public:
     Resolutions
   */
   FunctionParameterNode* resolveParameter(Identifier ident);
+
+  /*
+    Dynamic Operations
+  */
+  ErrorCode castConstructorParameter(ConstructorID cid, Index index) { return parameters[index].castConstructor(cid); }
 
 };
 

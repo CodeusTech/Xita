@@ -25,43 +25,14 @@
   1.) Operator Definitions
 */
 
-  /*
-    1.a) Addition Operator
-  */
 
-  AdditionOperator::AdditionOperator()
-  {
-    super();
-    op = strdup(string("(+)").c_str());
-    is_communitive = true;
-  }
-
-  char* AdditionOperator::resolve(RegisterStack* rs)
-  {
-    /*
-      Get top 2 registers
-      Add together (according to type sizes)
-    */
-
-    char* top = get_reg(rs->top(), 32);
-    char* sec = get_reg(rs->sec(), 32);
-
-    char* str = (char*) malloc(50);
-    sprintf(str, "  adds  %s, %s, %s", sec, sec, top);
-
-    free(top);
-    free(sec);
-
-    return str;
-  }
-
-  /*
-    1.b) Subtraction Operator
-  */
+/*
+  1.b) Subtraction Operator
+*/
 
   SubtractOperator::SubtractOperator()
   {
-    super();
+  
     op = strdup(string("(-)").c_str());
   }
 
@@ -90,7 +61,7 @@
 
   MultiplyOperator::MultiplyOperator()
   {
-    super();
+  
     op = strdup(string("(*)").c_str());
     is_communitive = true;
   }
@@ -124,7 +95,7 @@
 
   DivisionOperator::DivisionOperator()
   {
-    super();
+  
     op = strdup(string("(/)").c_str());
   }
 
@@ -157,7 +128,7 @@
 
   ModulusOperator::ModulusOperator()
   {
-    super();
+  
     op = strdup(string("(%)").c_str());
   }
 

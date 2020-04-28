@@ -132,7 +132,11 @@ public:
     TypeID resolveType(Identifier ident);
     Identifier resolveTypeIdentifier(TypeID tid);
     unsigned long* resolveTypeConstructor(Identifier ident);
+    Identifier resolveConstructorIdentifier(ConstructorID cid);
     TypeID resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid);
+
+    ErrorCode castType(TypeID tid);
+    ErrorCode castTypeConstructor(ConstructorID cid);
 
   //  2.b) Typeclasses
     ErrorCode declareTypeclass(TypeID tid, Identifier ident);
@@ -149,17 +153,18 @@ public:
     ErrorCode declareFunction(FunctionID fid, Identifier ident);
     ErrorCode declareFunctionParameter(Identifier ident);
 
-    ErrorCode endDeclareFunction();
+    char* endDeclareFunction(TypeID tid);
     ErrorCode undeclareFunction();
 
     FunctionNode* resolveFunction(Identifier ident, list<ArgumentNode> args);
     FunctionParameterNode* resolveFunctionParameter(Identifier ident);
-
+    TypeID* TypeSignature() { return functions.back().TypeSignature(); }
+    unsigned long _CountFunctionParameters() { return functions.back().CountParameters(); }
+    ErrorCode castParameter(ConstructorID cid, Index index) { return functions.back().castConstructorParameter(cid, index); }
+    ParameterRestrictions _ParamRestrictions(Index i) { return functions.back().ParamRestrictions(i); }
 
   //  Resolve Arbitrary Identifiers
   unsigned long resolveExpression(Identifier ident);
-
-  
 };
 
 

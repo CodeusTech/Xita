@@ -99,7 +99,9 @@ ErrorCode pushInteger(Arbitrary value)
   free(reg);
 
   //  Reset Type for next Expression
-  context.LastType(TYPE_ARBITRARY);
+  context.LastType(TYPE_INTEGER);
+  context.LastConstructor(TYPE_INTEGER);
+  context.LastExpression(EXP_LITERAL);
 
   return SUCCESS;
 }

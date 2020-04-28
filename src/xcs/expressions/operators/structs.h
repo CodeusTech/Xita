@@ -1,47 +1,34 @@
 /*
-  structs.h (Operator)
+  structs.h (Operators)
   Codeus Tech
   Authored on   April 22, 2020
-  Last Modified April 22, 2020
+  Last Modified April 28, 2020
 */
 
 /*
-  Contains base structures for contextual operator definitions
+  Contains structure/implementations for XCS Operands
 */
 
 #pragma once
 
 #include <xcs/std/includes.h>
-#include <xcs/regstack/structs.h>
 
 
-class OperatorNode
+class Operand
 {
 
-
 protected:
-  vector< vector<TypeID> > operands;
-  bool is_communitive = false;
-  Identifier op;
+  TypeID _rtn;
+  TypeID* _tids;
+
+  vector<char*> instructions;
+
 
 public:
+  Operand(TypeID rtn, TypeID* tids) { _tids = tids; _rtn = rtn; }
+  ErrorCode addInstruction(char* comm) { instructions.push_back(comm); return SUCCESS; }
 
-  OperatorNode() { }
-
-  /*
-    Private Accessors
-  */
-  Identifier Ident() { return op; }
-
-  virtual char* resolve(RegisterStack* rs)
-  {
-    /*
-      TODO: Type Check the Operator in question here
-    */
-    l.log('w', "Operators", "Unexpected Operator Function Call");
-
-    return NULL;
-  }
-
+  TypeID* OperandTypes() { return _tids; }
+  TypeID  ReturnType() { return _rtn; }
 };
 

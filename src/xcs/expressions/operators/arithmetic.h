@@ -25,69 +25,66 @@
 
 #include "structs.h"
 
+#include "arithmetic/addition.h"
 
 /*
   1.) Operator Definitions
 */
 
-/*
-  1.a) Addition Operator  --  (+)
-*/
-class AdditionOperator : public OperatorNode
-{
-private:
-  typedef OperatorNode super;
-public:
-  AdditionOperator();
-  char* resolve(RegisterStack* rs) override;
-};
 
 /*
   1.b) Subtraction Operator  --  (+)
 */
-class SubtractOperator : public OperatorNode
+class SubtractOperator
 {
 private:
-  typedef OperatorNode super;
+  char* op;
+  bool is_communitive = true;
 public:
   SubtractOperator();
-  char* resolve(RegisterStack* rs) override;
+  char* resolve(RegisterStack* rs);
 };
 
 /*
   1.c) Multiplication Operator  --  (+)
 */
-class MultiplyOperator : public OperatorNode
+class MultiplyOperator
 {
 private:
-  typedef OperatorNode super;
+  char* op;
+  bool is_communitive = true;
 public:
   MultiplyOperator();
-  char* resolve(RegisterStack* rs) override;
+  char* resolve(RegisterStack* rs);
+  ErrorCode override(TypeID rtn_type, TypeID left, TypeID right);
 };
 
 /*
   1.d) Division Operator  --  (+)
 */
-class DivisionOperator : public OperatorNode
+class DivisionOperator
 {
 private:
-  typedef OperatorNode super;
+  char* op;
+  bool is_communitive = true;
 public:
   DivisionOperator();
-  char* resolve(RegisterStack* rs) override;
+  char* resolve(RegisterStack* rs);
+  ErrorCode override(TypeID rtn_type, TypeID left, TypeID right);
 };
 
 /*
   1.e) Modulus Operator  --  (+)
 */
-class ModulusOperator : public OperatorNode
+class ModulusOperator
 {
 private:
-  typedef OperatorNode super;
+  char* op;
+  bool is_communitive = true;
 public:
   ModulusOperator();
-  char* resolve(RegisterStack* rs) override;
+  char* resolve(RegisterStack* rs);
+  ErrorCode override(TypeID rtn_type, TypeID left, TypeID right);
 };
 
 
