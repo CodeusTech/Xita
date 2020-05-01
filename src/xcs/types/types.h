@@ -48,6 +48,14 @@ public:
   ModuleID Context() { return _context; }
   Identifier Ident() { return _ident; }
   unsigned long Size() { return _size; }
+  
+  bool IsAliased(TypeID tid)
+  {
+    for (Index i = 0; i < aliases.size(); ++i)
+      if (aliases[i] == tid)
+        return true;
+    return false;
+  }
 
 
   /*

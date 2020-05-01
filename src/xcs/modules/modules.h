@@ -125,9 +125,11 @@ public:
     ErrorCode declareTypeConstructor(ConstructorID cid, Identifier ident);
     ErrorCode declareTypeElement(Identifier ident, TypeID tid);
     ErrorCode declareTypeAlias(TypeID alias) { return types.back().declareAlias(alias); }
+    ErrorCode declareTypeAlias(TypeID alias, TypeID declared) { return types[alias].declareAlias(declared); }
 
     unsigned long TypeSize(TypeID tid); //  In Bytes
     unsigned long TypeSize(Identifier ident); //  In Bytes
+    bool IsAliased(TypeID alias, TypeID checked);
     
     TypeID resolveType(Identifier ident);
     Identifier resolveTypeIdentifier(TypeID tid);

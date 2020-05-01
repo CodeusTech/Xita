@@ -207,6 +207,7 @@ extern ContextManager context;
 */
 //  Declaration Keywords
 %left TYPE TYPECLASS LET CONST
+%left IF THEN ELSE
 
 //  Literal Values
 %left CONSTRUCTOR
@@ -219,15 +220,15 @@ extern ContextManager context;
 
 //  Logical Operators
 %left BOOL_NOT BOOL_OR BOOL_AND
-%left OP_GT OP_GTE OP_LT OP_LTE OP_EQ OP_NEQ
+%left OP_GT OP_GTE OP_LT OP_LTE OP_EQ OP_NEQ IS
 //  Numerical Operators
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 
-
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
 %left PAR_LEFT PAR_RIGHT
+
 
 //  Expression Seperator
 %left OP_SEQ
@@ -481,6 +482,7 @@ exp_logical:
 exp_conditional:
     exp_if              { }
   | exp_match           { }
+  | exp_is              { }
 ;
 
 /*
@@ -543,7 +545,7 @@ param_match:
 
 exp_is:
     exp IS exp_struct { /*is_construct();*/ }
-  | exp IS exp_type   { is_type();      }
+  | exp IS exp_type   { isType(); }
 ;
 
 /*

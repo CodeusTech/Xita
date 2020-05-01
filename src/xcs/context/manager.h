@@ -105,6 +105,7 @@ public:
   Arbitrary LastData(Arbitrary data) { _last_data = data; return _last_data; }
   Index LastIndex() { return _last_index; }
   Index LastIndex(Index i) { _last_index = i; return _last_index; }
+  bool TypeCheck();
   
   //  Loaded Arguments
   unsigned long CountArguments() { return arguments.size(); }
@@ -159,7 +160,7 @@ public:
   ErrorCode declareTypeParameter(Identifier ident);
   ErrorCode declareTypeConstructor(Identifier ident) { return _context->declareTypeConstructor(_next_constructor++, ident); }
   ErrorCode declareTypeElement(Identifier ident, TypeID tid) { return _context->declareTypeElement(ident, tid); }
-  ErrorCode declareTypeAlias(TypeID tid) { return _context->declareTypeAlias(tid); }
+  ErrorCode declareTypeAlias(TypeID tid);
 
   TypeID resolveType(Identifier ident);
   Identifier resolveTypeIdentifier(TypeID tid) { return _context->resolveTypeIdentifier(tid); }

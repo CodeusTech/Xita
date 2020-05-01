@@ -100,7 +100,7 @@ ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident)
   types.push_back( TypeNode(tid, _mid, ident) ); 
   
   std::string str = "Declared Type: " + string(types.back().Ident());
-  l.log('D', "ExpType", str);
+  l.log('D', "DeclType", str);
   return SUCCESS; 
 }
 ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident, unsigned long size)
@@ -108,7 +108,7 @@ ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident, unsigned long si
   types.push_back( TypeNode(tid, _mid, ident, size) ); 
   
   std::string str = "Declared Type: " + string(types.back().Ident());
-  l.log('D', "ExpType", str);
+  l.log('D', "DeclType", str);
   return SUCCESS; 
 }
 
@@ -139,6 +139,13 @@ unsigned long ModuleNode::TypeSize(Identifier ident)
     if (strcmp(ident, types[i].Ident()))
       return types[i].Size();
   return 0;
+}
+
+bool ModuleNode::IsAliased(TypeID alias, TypeID checked)
+{
+  for (Index i = 0; i < types.size(); ++i)
+    if (types[i].Id() == alias)
+      return types[i].IsAliased(checked);
 }
 
   //  Invocations

@@ -69,6 +69,7 @@ unsigned int exp_if(unsigned int mang)
 {
   //  TODO:  Error Check
   //           * TOP
+  printf("check\n");
 
   //  Allocate Memory for String
   char* str = (char*) malloc (70);

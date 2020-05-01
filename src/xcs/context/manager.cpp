@@ -101,6 +101,25 @@ ErrorCode ContextManager::solveOperator(OperatorID oid)
   return SUCCESS;
 }
 
+bool ContextManager::TypeCheck()
+{
+  TypeID left;
+  TypeID right;
+
+  right = rsType();
+  left  = rsSecType();
+
+  if (left == right) return true;
+  if (_context->IsAliased(right, left)) 
+  {
+    string str = "Type check succeeded for " + string(resolveTypeIdentifier(left)) + " as type alias for:  " + string(resolveTypeIdentifier(right));
+    l.log('d', "TypeCheck", str);
+    return true;
+  }
+
+  return false;
+}
+
 
 /*
   3.) Identifier Operations
@@ -123,6 +142,12 @@ ErrorCode ContextManager::solveOperator(OperatorID oid)
       l.log('d',"DeclType", str);
     }
     return rtn; 
+  }
+
+  ErrorCode ContextManager::declareTypeAlias(TypeID tid) 
+  {
+    l.log('d', "DeclType", "Aliased current type declaration for: " + string(resolveTypeIdentifier(tid))); 
+    return _context->declareTypeAlias(tid); 
   }
 
  //  Resolutions
