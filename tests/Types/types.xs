@@ -43,7 +43,7 @@ type node a =
 
     TYPE EXPRESSIONS are instances of a declared type/constructor
 *)
-
+(*
 type person = 
   Person of 
     age     : int     = 10,
@@ -66,11 +66,11 @@ type tree a =
   2.a) Typeclass Declarations
 *)
 
-Off 5;;
+Off 5
 
 --  Invoke a Tree
 --debug "Build an integer tree, with one right-side branch"
-let some_tree = Node (left=Node (left=Leaf, value=2, right=Leaf), value=1, right=Leaf)
+--let some_tree = Node (left=Node (left=Leaf, value=2, right=Leaf), value=1, right=Leaf)
 
 --  Syntactically identical structure
 (*Node (

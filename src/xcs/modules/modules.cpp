@@ -96,9 +96,21 @@ ErrorCode ModuleNode::concludeExpression()
 //  3.a) Types
   //  Declarations
 ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident)
-{ types.push_back( TypeNode(tid, _mid, ident) ); return SUCCESS; }
+{ 
+  types.push_back( TypeNode(tid, _mid, ident) ); 
+  
+  std::string str = "Declared Type: " + string(types.back().Ident());
+  l.log('D', "ExpType", str);
+  return SUCCESS; 
+}
 ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident, unsigned long size)
-{ types.push_back( TypeNode(tid, _mid, ident, size) ); return SUCCESS; }
+{ 
+  types.push_back( TypeNode(tid, _mid, ident, size) ); 
+  
+  std::string str = "Declared Type: " + string(types.back().Ident());
+  l.log('D', "ExpType", str);
+  return SUCCESS; 
+}
 
   //  Declare Parameter
   ErrorCode ModuleNode::declareTypeParameter(TypeID tid, Identifier ident)
@@ -133,7 +145,7 @@ unsigned long ModuleNode::TypeSize(Identifier ident)
 TypeID ModuleNode::resolveType(Identifier ident)
 {
   for (unsigned long i = 0; i < types.size(); ++i)
-    if (strcmp(ident, types[i].Ident()))
+    if (strcmp(ident, types[i].Ident()) == 0)
       return types[i].Id();
 
   return 0;
