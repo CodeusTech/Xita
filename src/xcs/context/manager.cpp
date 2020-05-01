@@ -109,10 +109,29 @@ ErrorCode ContextManager::solveOperator(OperatorID oid)
 /*
   3.a) Type Operations
 */
+
+ //  Declarations
+
+
+  ErrorCode ContextManager::declareTypeParameter(Identifier ident) 
+  { 
+    string tmp = string(ident);
+    ErrorCode rtn = _context->declareTypeParameter(_next_tid++, ident);
+    if ((rtn == SUCCESS))
+    {
+      string str = "Declared Type Parameter: " + tmp;
+      l.log('d',"DeclType", str);
+    }
+    return rtn; 
+  }
+
  //  Resolutions
  TypeID ContextManager::resolveType(Identifier ident)
  {
   TypeID tid;
+
+  if ((tid = resolveTypeParameter(ident)))
+    return LastType(tid);
 
   if ((tid = _context->resolveType(ident)))
     return LastType(tid);
@@ -126,6 +145,18 @@ ErrorCode ContextManager::solveOperator(OperatorID oid)
   
   return 0;
  }
+
+TypeID ContextManager::resolveTypeParameter(Identifier ident) 
+{ 
+  TypeID tid = _context->resolveTypeParameter(ident);
+  if (tid)
+  {
+    string str = "Resolved Type Parameter: " + string(ident);
+    l.log('d', "ExpType", str);
+    return tid;
+  }
+  return 0;
+}
 
  ConstructorID ContextManager::resolveConstructor(Identifier ident)
  {

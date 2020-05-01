@@ -9,7 +9,7 @@
   Contains functionality for handling Bitwise AND operations
 */
 
-#pragma
+#pragma once
 
 #include <xcs/std/includes.h>
 #include "../structs.h"

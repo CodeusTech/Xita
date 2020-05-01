@@ -156,13 +156,14 @@ public:
   //  3.a) Type Operations
   ErrorCode declareType(Identifier ident) { return _context->declareType(_next_tid++, ident); }
   ErrorCode declareType(Identifier ident, unsigned long size) { return _context->declareType(_next_tid++, ident, size); }
-  ErrorCode declareTypeParameter(Identifier ident) { return _context->declareTypeParameter(_next_tid++, ident); }
+  ErrorCode declareTypeParameter(Identifier ident);
   ErrorCode declareTypeConstructor(Identifier ident) { return _context->declareTypeConstructor(_next_constructor++, ident); }
   ErrorCode declareTypeElement(Identifier ident, TypeID tid) { return _context->declareTypeElement(ident, tid); }
   ErrorCode declareTypeAlias(TypeID tid) { return _context->declareTypeAlias(tid); }
 
   TypeID resolveType(Identifier ident);
   Identifier resolveTypeIdentifier(TypeID tid) { return _context->resolveTypeIdentifier(tid); }
+  TypeID resolveTypeParameter(Identifier ident);
   ConstructorID resolveConstructor(Identifier ident);
   Identifier resolveConstructorIdentifier(ConstructorID cid) { return _context->resolveConstructorIdentifier(cid); }
   TypeID resolveConstructorType(ConstructorID cid);

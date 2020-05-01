@@ -48,7 +48,7 @@ protected:
 
 public:
 
-  virtual char* resolve(RegisterStack* rs) { l.log('d', "Operators", "Operator has been Resolved..."); }
+  virtual char* resolve(RegisterStack* rs) { l.log('E', "Operators", "Default 'resolve' function called for operator"); return NULL; }
 
 
 };

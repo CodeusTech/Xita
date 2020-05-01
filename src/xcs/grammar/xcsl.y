@@ -693,11 +693,11 @@ param_type:
   TYPE EXPRESSIONS
 */
 exp_type:
-    exp_type exp_type  {printf("Parameterized Type Found\n");}
+    exp_type exp_type  { }
   | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
   | IDENTIFIER      { context.resolveType($1); }
   | OFFER         { printf("Implement Offers as Types\n"); }
-  | exp_type OP_TUP exp_type { printf("Implement Tuples\n"); }
+  | exp_type OP_TUP exp_type {  }
 ;
 
 /*

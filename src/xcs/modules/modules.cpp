@@ -160,6 +160,15 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
   return NULL;
 }
 
+  TypeID ModuleNode::resolveTypeParameter(Identifier ident)
+  {
+    TypeID tid;
+    if ((tid = types.back().resolveParameter(ident)))
+      return tid;
+
+    return 0;
+  }
+
   unsigned long* ModuleNode::resolveTypeConstructor(Identifier ident)
   {
     unsigned long* rtn = (unsigned long*) malloc(sizeof(unsigned long)*2);

@@ -31,15 +31,12 @@ public:
     _ident = strdup(ident); free(ident);
   }
 
-  ~TypeParameterNode() { free(_ident); }
-
 
   /*
     Accessors
   */
   Identifier Ident() { return _ident; }
   TypeID Id() { return _tid; }
-
 
 
 };

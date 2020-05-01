@@ -131,6 +131,7 @@ public:
     
     TypeID resolveType(Identifier ident);
     Identifier resolveTypeIdentifier(TypeID tid);
+    TypeID resolveTypeParameter(Identifier ident);
     unsigned long* resolveTypeConstructor(Identifier ident);
     Identifier resolveConstructorIdentifier(ConstructorID cid);
     TypeID resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid);
