@@ -19,16 +19,13 @@
 /*
   1.a) Addition Operator  --  (+)
 */
-class AdditionOperator
+class AdditionOperator : public Operator
 {
 private:
-  vector<Operand> operands;
-  char* op;
-  bool is_communitive = true;
   
 public:
   AdditionOperator();
-  char* resolve(RegisterStack* rs);
+  char* resolve(RegisterStack* rs) override;
   ErrorCode override(TypeID rtn_type, TypeID left, TypeID right);
 };
 
@@ -55,7 +52,6 @@ char* AdditionOperator::resolve(RegisterStack* rs)
     Get top 2 registers
     Add together (according to type sizes)
   */
-
 
   char* top = get_reg(rs->top(), 32);
   char* sec = get_reg(rs->sec(), 32);

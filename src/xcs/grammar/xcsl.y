@@ -89,6 +89,7 @@
 #include <xcs/utils/clear.h>
 #include <xcs/utils/delay.h>
 #include <xcs/expressions/primitives/primitives.h>
+#include <xcs/expressions/operators/resolve.h>
 
 extern int yylex();
 extern int yyparse();
@@ -444,34 +445,34 @@ param_list:
   3.a) Arithmetic Expressions
 */
 exp_arith:
-    exp OP_ADD exp      { context.solveOperator(OPERATOR_ADDITION); }
+    exp OP_ADD exp      { resolveAddition(); }
   | exp OP_SUB exp      { context.solveOperator(OPERATOR_SUBTRACT); }
   | exp OP_MUL exp      { context.solveOperator(OPERATOR_MULTIPLY); }
   | exp OP_DIV exp      { context.solveOperator(OPERATOR_DIVISION); }
-  | exp OP_MOD exp      { context.solveOperator(OPERATOR_MODULUS); }/*
-  | BIT_NOT exp         { infer_bit_not(); }
-  | exp BIT_AND exp     { infer_bit_and(); }
-  | exp BIT_OR exp      { infer_bit_or();  }
-  | exp BIT_XOR exp     { infer_bit_xor(); }
-  | exp BIT_SHL exp     { infer_bit_shl(); }
-  | exp BIT_SHR exp     { infer_bit_shr(); } */
+  | exp OP_MOD exp      { context.solveOperator(OPERATOR_MODULUS); }
+  | exp BIT_AND exp     { context.solveOperator(OPERATOR_BIT_AND); }
+  | exp BIT_OR exp      { context.solveOperator(OPERATOR_BIT_OR);  }
+  //| BIT_NOT exp         { infer_bit_not(); }
+  | exp BIT_XOR exp     { context.solveOperator(OPERATOR_BIT_XOR); }
+  | exp BIT_SHL exp     { context.solveOperator(OPERATOR_BIT_SHL); }
+  | exp BIT_SHR exp     { context.solveOperator(OPERATOR_BIT_SHR); } 
 ;
 
 /*
   3.b) Logical Expressions
 */
 exp_logical:
- /*   exp BOOL_AND exp    { infer_bool_and(); }
-  | exp BOOL_OR exp     { infer_bool_or();  }
-  | exp BOOL_XOR exp    { infer_bool_xor(); }
-  | BOOL_NOT exp        { infer_bool_not(); }
-  | exp OP_LT exp       { infer_bool_lt(); }
-  | exp OP_LTE exp      { infer_bool_lte(); }
-  | exp OP_GT exp       { infer_bool_gt(); }
-  | exp OP_GTE exp      { infer_bool_gte(); }
-  | exp OP_EQ exp       { infer_bool_eq(); }
-  | exp OP_NEQ exp      { infer_bool_neq(); }
-  | exp_is              { }*/
+    exp BOOL_AND exp    { context.solveOperator(OPERATOR_AND); }
+  | exp BOOL_OR exp     { context.solveOperator(OPERATOR_OR);  }
+  | exp BOOL_XOR exp    { context.solveOperator(OPERATOR_XOR); }
+//  | BOOL_NOT exp        { context.solveOperator(OPERATOR_NOT); }
+  | exp OP_LT exp       { context.solveOperator(OPERATOR_LT);  }
+  | exp OP_LTE exp      { context.solveOperator(OPERATOR_LTE); }
+  | exp OP_GT exp       { context.solveOperator(OPERATOR_GT);  }
+  | exp OP_GTE exp      { context.solveOperator(OPERATOR_GTE); }
+  | exp OP_EQ exp       { context.solveOperator(OPERATOR_EQ);  }
+  | exp OP_NEQ exp      { context.solveOperator(OPERATOR_NEQ); }
+//  | exp_is              { }
 ;
 
 /*

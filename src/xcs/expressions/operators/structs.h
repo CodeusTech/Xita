@@ -12,6 +12,9 @@
 #pragma once
 
 #include <xcs/std/includes.h>
+#include <xcs/regstack/structs.h>
+
+
 
 
 class Operand
@@ -30,5 +33,23 @@ public:
 
   TypeID* OperandTypes() { return _tids; }
   TypeID  ReturnType() { return _rtn; }
+};
+
+
+
+class Operator
+{
+
+protected:
+  vector<Operand> operands;
+  char* op;
+  bool is_communitive = true;
+
+
+public:
+
+  virtual char* resolve(RegisterStack* rs) { l.log('d', "Operators", "Operator has been Resolved..."); }
+
+
 };
 

@@ -20,15 +20,37 @@ extern ContextManager context;
 
 ErrorCode resolveAddition()
 {
-
+  /*
+    Collect Data Types
+  */
   TypeID tid_left  = context.rsSecType();
   TypeID tid_right = context.rsType();
 
-  for (Index i = 0; i < operands.size(); ++i)
-    if ((operands[i].OpearandTypes()[0] == tid_left) && (operands[i].OpearandTypes()[1] == tid_right))
-    {
-      printf("Operand Match!!\n");
-    }
+  if (tid_left >= NUMBER_TYPES || tid_right >= NUMBER_TYPES)
+  {
+    /*
+      LHS or RHS has a user-defined type
+    */
+    printf("User Defined Type used in Addition\n");
+    return SUCCESS;
+  }
+
+  /*
+    At this point, both sides are using Primitive Literals
+  */
+
+  char* top = get_reg(context.rsTop(), 32);
+  char* sec = get_reg(context.rsSec(), 32);
+
+  char* str = (char*) malloc(50);
+  sprintf(str, "  adds  %s, %s, %s", sec, sec, top);
+
+  context.addInstruction(str);
+
+  free(top);
+  free(sec);
+
+  return SUCCESS;
 }
 
 

@@ -56,7 +56,6 @@ typedef char* Constructor;
 typedef unsigned long Address;
 
 
-
 /*
   Register Stacks
 */
