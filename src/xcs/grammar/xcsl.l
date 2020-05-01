@@ -30,11 +30,16 @@ extern int yylex();
 
 #include "string.h"
 
+#include <xcs/context/manager.h>
+
+extern ContextManager context;
+
 
 
 %}
 %option noyywrap
 %option yylineno
+%option nounput
 %x COMMENT
 %x DOC_COMMENT
 %x STR
@@ -80,18 +85,6 @@ import     BEGIN(IMPORT);
 %}
 
 "rng" { return RNG; } //  RANDOM NUMBER GENERATOR
-
-"bool" { return BOOL_T; }   //  BOOLEAN TYPE
-"True" { return TRUE; }     //  BOOLEAN PRIMITIVE
-"False" { return FALSE; }   //  BOOLEAN PRIMITIVE
-
-"char" { return CHAR_T; }  //  CHARACTER TYPE
-"Char" { return CHAR_C; }  //  CHARACTER CONSTRUCTOR 
-"string" { return STRING_T; }  //  STRING TYPE
-"String" { return STRING_C; }  //  STRING CONSTRUCTOR
-
-"list" { return LIST_T; } //  LIST TYPE
-"List" { return LIST_C; } //  LIST CONSTRUCTOR
 
 
 %{
@@ -322,7 +315,7 @@ import     BEGIN(IMPORT);
 <STR>\"         BEGIN(INITIAL);
 
 '              BEGIN(CHR);
-<CHR>([^']){0,2}  { yylval.val_char = get_char_code(yytext); return CHAR; }  //  CHARACTER PRIMITIVE
+<CHR>([^']){0,2}  { yylval.val_char = yytext[0]; return CHAR; }  //  CHARACTER PRIMITIVE
 <CHR>'         BEGIN(INITIAL);
 
 [A-Z][a-zA-Z0-9_]*\'?   { yylval.val_ident = strdup(yytext); return CONSTRUCTOR; }
@@ -368,7 +361,6 @@ import     BEGIN(IMPORT);
 
 
 <<EOF>> {
-  set_line_number();
   yypop_buffer_state();
     if ( !YY_CURRENT_BUFFER )
       {

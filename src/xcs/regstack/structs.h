@@ -22,16 +22,22 @@
 
 using namespace std;
 
+extern void yyerror(const char* str);
+
 class RegisterStack
 {
   vector<ADR> registers;
   vector<TypeID> types;
+	
 
 
 public:
 
 //  CONSTRUCTORS
-  RegisterStack() {}
+  RegisterStack() 
+  {
+    l.log('d', "RegStack", "Initialized New Register Stack");
+  }
 
   /*
     isActive(test)
@@ -61,26 +67,30 @@ public:
     registers.push_back(check);
     types.push_back(tid);
 
+    string str = "Pushed register " + to_string(check) + " with TypeID: " + to_string(tid);
+
+    //l.log('D', "RegStack", str);
+
     return check;
   }
 
-  ADR push_reg(TypeID tid, ADR reg)
+  ADR merge(TypeID tid, ADR reg)
   {
-    //  If all registers are in use, reroute to extended stack space
-    if (registers.size() >= NUMBER_OF_ADRS) { return NUMBER_OF_ADRS + 1; } 
+    /*
+      TODO: Check if 'reg' is already active
+    */
 
-    //  If all else is kosher, Add the entry and type
     registers.push_back(reg);
     types.push_back(tid);
 
-    return reg;
+    return reg; //  Should return merged register (if 'reg' is active)
   }
 
   ErrorCode pop()
   {
     registers.pop_back();
     types.pop_back();
-    return 0;
+    return SUCCESS;
   }
 
   ADR from_top(int i) { return registers.at(registers.size()-(i+1)); }

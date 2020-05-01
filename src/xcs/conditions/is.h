@@ -12,9 +12,8 @@
 #ifndef CONDITIONS_IS_H
 #define CONDITIONS_IS_H
 
-#include <xcs/ident/types/types.h>
-#include <xcs/regstack/regstack.h>
-#include <xcs/regstack/utils.h>
+#include <xcs/types/types.h>
+#include <xcs/std/operations.h>
 
 /*
   Returns:
@@ -45,7 +44,7 @@ ErrorCode is_construct()
 
   //  Compare Type IDs
   sprintf(str, "cmp   %s, %s\n", sec, top);
-  add_command(str);
+  context.addInstruction(str);
 
   //  Create New Mangle Number
   for (int i = 0; i < 3; i++) mangle += rand();
@@ -57,22 +56,22 @@ ErrorCode is_construct()
 
   //  Branch if Equal to set
   sprintf(str, "beq   set_%llu\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "mov   %s, #0\n", sec64);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "b     finish_%llu\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "set_%llu:\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "mov   %s, #1\n", sec);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "finish_%llu:\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   rs_push(TYPE_BOOLEAN);
 
@@ -94,21 +93,24 @@ ErrorCode is_construct()
 ErrorCode is_type()
 {
   //  Remove the last expression getting pushed to stack
-  get_last_command();
+  context.popLastInstruction();
 
   /*
     Compare TOP Type vs SECOND Type
   */
-  TypeID tSec = rs_sec_type();
+  TypeID tSec = context.rsSecType();
+  TypeID tTop = context.rsType();
 
-  push_int(tSec);
-  push_int(last_type);
+  context.rsPop();
 
-  rs_pop();
+  //  Push TypeID of top 2 elements to Register Stack
+  pushData(2, (Arbitrary) tSec);
+  pushData(2, (Arbitrary) tTop);
+
 
   //  Get Register Codes
-  ADR topreg = rs_top();
-  ADR secreg = rs_sec();
+  ADR topreg = context.rsTop();
+  ADR secreg = context.rsSec();
   char* top = get_reg(topreg, 32);
   char* sec = get_reg(secreg, 32);
   char* sec64 = get_reg(secreg, 64);
@@ -117,7 +119,7 @@ ErrorCode is_type()
 
   //  Compare Type IDs
   sprintf(str, "cmp   %s, %s\n", sec, top);
-  add_command(str);
+  context.addInstruction(str);
 
   //  Create New Mangle Number
   for (int i = 0; i < 3; i++) mangle += rand();
@@ -125,28 +127,28 @@ ErrorCode is_type()
   for (int i = 0; i < 4; i++) mangle += rand();
   unsigned long long mang = mangle;
 
-  rs_pop();
+  context.rsPop();
 
   //  Branch if Equal to set
   sprintf(str, "beq   set_%llu\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "mov   %s, #0\n", sec64);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "b     finish_%llu\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "set_%llu:\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "mov   %s, #1\n", sec);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "finish_%llu:\n", mang);
-  add_command(str);
+  context.addInstruction(str);
 
-  rs_push(TYPE_BOOLEAN);
+  context.rsPush(TYPE_BOOLEAN);
 
   free(str);
 

@@ -28,8 +28,10 @@
 
 //  XCS Libraries
 #include <xcs/asm/asm.h>
-#include <xcs/regstack/regstack.h>
-#include <xcs/regstack/utils.h>
+
+#include <xcs/context/manager.h>
+
+extern ContextManager context;
 
 
 /*
@@ -51,7 +53,7 @@ unsigned int decl_if()
   
   //  Add Mangle to Header
   sprintf(str, "if_%u:", (unsigned) mangle);
-  add_command(str);
+  context.addInstruction(str);
 
   free(str);
 
@@ -70,15 +72,15 @@ unsigned int exp_if(unsigned int mang)
 
   //  Allocate Memory for String
   char* str = (char*) malloc (70);
-  char* top = get_reg(rs_top(), 32);
+  char* top = get_reg(context.rsTop(), 32);
 
   //  Compare Top of Register Stack to 
   sprintf(str, "cmp   %s, #1", top);
-  add_command(str);
+  context.addInstruction(str);
 
   //  If False, Jump to else Block
   sprintf(str, "blt   else_%u", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   //  Free Memory
   free(top);
@@ -102,7 +104,7 @@ int exp_then(unsigned int mang)
   char* str = (char*) malloc (80);
 
   sprintf(str, "b     finish_%u", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   free(str);
 
@@ -124,7 +126,7 @@ unsigned int decl_else(unsigned int mang)
   char* str = (char*) malloc (80);
 
   sprintf(str, "else_%u:", mang);
-  add_command(str);
+  context.addInstruction(str);
 
   free(str);
 
@@ -140,16 +142,16 @@ ErrorCode exp_else(unsigned int mang)
 {
   char* str = (char*) malloc (80);
 
-  char* top = get_reg(rs_top(), 32);
-  char* sec = get_reg(rs_sec(), 32);
+  char* top = get_reg(context.rsTop(), 32);
+  char* sec = get_reg(context.rsSec(), 32);
 
   sprintf(str, "mov   %s, %s", sec, top);
-  add_command(str);
+  context.addInstruction(str);
 
   sprintf(str, "finish_%u:", mang);
-  add_command(str);
+  context.addInstruction(str);
 
-  rs_pop();
+  context.rsPop();
   free(str);
 
   //  Return Success

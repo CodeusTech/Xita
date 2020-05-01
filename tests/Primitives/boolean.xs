@@ -18,9 +18,9 @@
   1.) Boolean Comparisons
 *)
 
-True && False;;
-True || False;;
-True ^^ False;;
+1 && 2;;
+3 || 4;;
+1 ^^ 2;;
 
 (*
   2.) Integer Comparisons
@@ -30,5 +30,5 @@ True ^^ False;;
 1 <= 1;;
 2 >  1;;
 2 >= 1;;
-3 == 6;;
+--3 == 6;;
 3 != 4

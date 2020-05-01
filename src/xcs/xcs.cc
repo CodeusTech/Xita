@@ -26,16 +26,21 @@
 #include "stdlib.h"
 
 //  XCS Libraries
-#include "admin.h"
+#include "meta.h"
 #include <xcs/std/std.h>
 #include <xcs/asm/asm.h>
 #include <xcs/ident/ident.h>
-#include "xcs/std/logger.h"
+#include <xcs/std/buffers.h>
+
+#include <xcs/context/manager.h>
+#include <xcs/expressions/primitives/primitives.h>
 
 //  Import Grammar Libraries
 #include "../../lex.yy.c"
 
 extern FILE* yyin;
+
+ContextManager context;
 
 /*
 	1.) Default Compiler Options
@@ -45,10 +50,7 @@ bool keep_assembly 	= false;
 
 //  Driver File
 int main(int argc, char** argv) 
-{
-
-
- 
+{ 
  
 	/*
 		2.) Handle Compiler Options
@@ -106,17 +108,11 @@ int main(int argc, char** argv)
 		else
 		{
 			interpreted = false;
-
-			//  Init Module Tree
-			modules.push_back(ModuleNode());
-			context = &modules[0];
-
-			//  Initialize Buffers
-			initialize_types();
-			initialize_functions();
 			
 			yyin = fopen(argv[i], "r");
 			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
+
+			initializePrimitives();
 
 			//  Set Parser File Pointer
 			//yypush_buffer_state(YY_CURRENT_BUFFER);
@@ -134,26 +130,27 @@ int main(int argc, char** argv)
 			strncat(obj_fname, ".o", 3);
 
 
-			//  Populate Assembly File
-			write_asm_file(asm_fname);
+			//  Produce Assembly File
+			FILE* asm_file = fopen(asm_fname, "w");
+			context.generateAssembly(asm_file);
+			fclose(asm_file);
+
+			l.printLogs();
+ 			l.write();
 			
 			//  Generate Object File using Cross Assembler
 			char* _argc    = getenv("HOME");
 			strcat(_argc, "/.opt/cross/bin/aarch64-elf-as");
 			char _argv2[2][3]= {"-c", "-o"};
 
-			printf ("Check:   %s\n", _argc);
-
 			char* _argv[6] = {_argc, _argv2[0], asm_fname, _argv2[1], obj_fname, NULL};
-
-			execvp(_argc, _argv);
 
 			//  If `-a` option is not active, remove generated assembly file (TODO)
 
+			execvp(_argc, _argv);
+
 			free (asm_fname);
 
-			l.printLogs();
- 			l.write();
 			return 0;
 		}
 	}

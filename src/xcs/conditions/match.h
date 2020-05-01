@@ -46,7 +46,7 @@ ErrorCode decl_match()
   sprintf(str, "match_%u:", mangle);
 
   //  Print str to Assembly File
-  add_command(str);
+  context.addInstruction(str);
 
   return 0;
 }

@@ -19,6 +19,7 @@
 
 typedef int ErrorCode;
 typedef char* Command;
+typedef unsigned long Index;
 
 /*
   ID NUMBERS
@@ -29,6 +30,7 @@ typedef unsigned long ConstantID;
 typedef unsigned long FunctionID;
 typedef unsigned int ParameterID;
 typedef unsigned int MemoryVariableID;
+typedef unsigned int OperatorID;
 
 //  Types
 typedef unsigned long TypeID;
@@ -52,7 +54,6 @@ typedef void* Arbitrary;
 typedef char* Identifier;
 typedef char* Constructor;
 typedef unsigned long Address;
-
 
 
 /*

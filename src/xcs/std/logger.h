@@ -1,5 +1,5 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef XCS_LOGGER_H
+#define XCS_LOGGER_H
 #include <ctime> 
 #include <fstream>
 #include <iterator>
@@ -19,14 +19,18 @@ Logger()
   
   records.resize(0);
 }
+
+ //  Writes the logs to local file
  void write()
  {
-   std::ofstream f("logs.txt");
-    for(std::vector<std::string>::const_iterator i = records.begin(); i != records.end(); ++i) 
-    {
-      f << *i << '\n';
-    }
-    f.close();
+   FILE* file;
+
+   file = fopen("xcs.log", "w");
+
+    for (unsigned long i = 0; i < records.size(); ++i) 
+      fprintf(file, "%s\n", records[i].c_str());
+
+   fclose(file);
  }
  void write(std::string fileName)
  {
@@ -38,15 +42,47 @@ Logger()
     f.close();
 
  }
- void log(char urgency, std::string category, std::string message){
+ void log(char urgency, std::string category, std::string message)
+ {
     std::string record ="";
+    std::string _urgency;
 
-      std::time_t myTime = time(NULL); 
-      std:: string time = ctime(&myTime);
-      time.pop_back();
-      time = removeDay(time);
+    std::time_t myTime = time(NULL); 
+    std:: string time = ctime(&myTime);
+    time.pop_back();
+    time = removeDay(time);
+
+    switch(urgency)
+    {
+      case 'v':
+      case 'V':
+        _urgency = "VERBOSE";
+        break;
+      case 'd':
+      case 'D':
+        _urgency = "DEBUG";
+        break;
+      case 'e':
+      case 'E':
+        _urgency = "ERROR";
+        break; 
+      case 'c':
+      case 'C':
+        _urgency = "CRITICAL";
+        break;
+      case 'w':
+      case 'W':
+        _urgency = "WARNING";
+        break;
+      default:
+        _urgency = "WARNING";
+        record += "[" + time +"][WARNING]Logger: Unrecognized urgency: " + urgency + "\n" +
+                  "                                       Please use 'c', 'd', 'e', 'v', or 'w' for Log urgency";
+        records.push_back(record);
+        return;
+    }
       
-    record+= "[" + time + "][" + urgency + "]" + category + ": "+ message;
+    record+= "[" + time + "][" + _urgency + "]" + category + ": "+ message;
     
     records.push_back(record);
  }
@@ -73,10 +109,10 @@ std::string removeDay(std::string date)
 {
   return date.erase(0,4);
 }
+
+//  Test function for printing contents of the logs
 void printLogs()
 {
-
-
  for(std::vector<std::string>::const_iterator i = records.begin(); i != records.end(); ++i) 
     {
      // std::cout<< *i << '\n';

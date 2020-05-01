@@ -12,6 +12,9 @@
 #ifndef STD_TYPECODES_H
 #define STD_TYPECODES_H
 
+#define NUMBER_TYPES  17
+
+#define TYPE_NULL     0
 #define TYPE_ARBITRARY 1
 
 #define TYPE_INTEGER  2
@@ -32,5 +35,7 @@
 
 #define TYPE_CHAR     15
 #define TYPE_STRING   16
+
+#define TYPE_LIST     17
 
 #endif
