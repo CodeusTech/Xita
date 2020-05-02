@@ -146,6 +146,7 @@ bool ModuleNode::IsAliased(TypeID alias, TypeID checked)
   for (Index i = 0; i < types.size(); ++i)
     if (types[i].Id() == alias)
       return types[i].IsAliased(checked);
+  return false;
 }
 
   //  Invocations

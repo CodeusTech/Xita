@@ -225,6 +225,8 @@ extern ContextManager context;
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 
+%left OP_COMMA
+
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
 %left PAR_LEFT PAR_RIGHT
@@ -277,12 +279,12 @@ src:
   I.1.) Top-Level Declarations
 */
 decl:
-    decl_const          
-  | decl_funct   
-  | decl_type           
-  | decl_typeclass      
+    decl_type           
+  | decl_typeclass     
+  | decl_const          
+  | decl_funct    
 //  | decl_open
-  | decl_fnew
+//  | decl_fnew
   | DEBUG STRING                             { printf("%s\n", $2); }
 ;
 
@@ -292,6 +294,66 @@ decl_open:
   | IMPORT
 ;
 
+/*
+  I.1.a) Types
+*/
+
+/* Type Declarations */
+decl_type:
+    pre_decl_type param_type OP_ASSIGN decl_struct implements
+  | pre_decl_type            OP_ASSIGN decl_struct implements
+  | pre_decl_type param_type OP_ASSIGN decl_struct
+  | pre_decl_type            OP_ASSIGN decl_struct
+;
+
+  pre_decl_type: 
+      DEBUG STRING TYPE IDENTIFIER { add_debug_message($4, $2); context.declareType($4); }
+    | TYPE IDENTIFIER  { context.declareType($2); }
+  ;
+
+  param_type:
+      param_type param_type 
+    | IDENTIFIER            { context.declareTypeParameter($1); }
+  ;
+
+  implements:
+      IMPL l_typeclass
+  ;
+
+    l_typeclass:
+        l_typeclass OP_COMMA l_typeclass
+      | IDENTIFIER  {/* impl_typeclass($1); */}
+    ;
+
+  /* Type Constructor Declarations */
+  decl_struct:
+      decl_struct BIT_OR decl_struct
+    | pre_decl_struct OF decl_record 
+    | pre_decl_struct OF exp_type     
+    | pre_decl_struct                 
+    | exp_type   { context.declareTypeAlias(context.LastType()); }
+  ;
+
+    pre_decl_struct:
+      CONSTRUCTOR  { context.declareTypeConstructor($1); }
+    ;
+
+    decl_record:
+        decl_record OP_COMMA decl_record
+      | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp { context.declareTypeElement($1, context.LastType()); }
+      | IDENTIFIER OP_TYPE exp_type               { context.declareTypeElement($1, context.LastType()); }
+    ;
+
+
+/*
+  I.1.c) Constants
+*/
+decl_const:
+    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); context.declareConstant($4); }
+  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); context.declareConstant($5); }
+  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { context.declareConstant($2); }
+  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { context.declareConstant($3); }
+;
 
 
 /*
@@ -317,7 +379,7 @@ exp:
   | exp_request   
  // | exp_memIO
   | exp_ipcIO
-  | exp_fileIO
+//  | exp_fileIO
 //  | exp OP_TUP exp                           { add_to_tuple(); }
   | DEBUG_PRINT IDENTIFIER                   { print_debug_message($2); }
   | CLEAR                                    { clear_terminal(); }
@@ -352,7 +414,7 @@ exp_primitive:
   | exp_boolean         { context.LastType(TYPE_BOOLEAN); }
 //  | exp_real            { context.LastType(TYPE_REAL);    }
   | exp_char            { context.LastType(TYPE_CHAR);    }
-//  | exp_string          { context.LastType(TYPE_STRING);  }
+  | STRING              { context.LastType(TYPE_STRING);  }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
 ;
 
@@ -476,6 +538,138 @@ exp_logical:
 //  | exp_is              { }
 ;
 
+
+/*
+  5.) Datatype Expressions
+*/
+
+
+/*
+    5.a) Types
+*/
+
+
+
+
+/*
+  TYPE EXPRESSIONS
+*/
+exp_type:
+    exp_type exp_type  { }
+  | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
+  | IDENTIFIER      { context.resolveType($1); }
+  | OFFER         { printf("Implement Offers as Types\n"); }
+  | exp_type OP_TUP exp_type {  }
+;
+
+/*
+  5.b) Constructors
+*/
+
+
+
+pre_exp_struct:
+  CONSTRUCTOR { context.resolveConstructor($1); }
+;
+exp_struct:
+    pre_exp_struct arg_record {  }
+  | CONSTRUCTOR exp    { context.castExpression($1); }
+  | CONSTRUCTOR        { context.resolveConstructor($1); }   
+; 
+
+
+/*
+  5.c) Records
+*/
+
+/*
+  TYPE RECORDS
+*/
+
+exp_record:
+    exp OP_ELEMENT exp_record { }
+  | IDENTIFIER                { context.resolveTypeElement($1); }
+;
+
+arg_record: 
+    arg_record OP_COMMA arg_record
+  | IDENTIFIER OP_ASSIGN exp
+  | exp   { l.log('D', "ExpConstruct", "Constructor Parameter Loaded"); }
+;
+
+/*
+  5.d) Typeclass/Prototypes
+*/
+
+/*
+  TYPECLASS DECLARATIONS
+*/
+typeclass:
+    TYPECLASS IDENTIFIER { context.declareTypeclass($2); }
+;
+
+decl_typeclass:
+    typeclass REQ exp_prototype
+; 
+
+exp_typeclass:
+    IDENTIFIER      { exp_typeclass($1); }
+;
+
+
+/*
+  PROTOTYPE EXPRESSIONS
+*/
+prototype:
+    IDENTIFIER    { context.declareTypeclassPrototype($1); }
+  /*
+  | OP_ADD_O      { context.declareTypeclassPrototype("(+)"); }
+  | OP_SUB_O      { context.declareTypeclassPrototype("(-)"); }
+  | OP_MUL_O      { context.declareTypeclassPrototype("(*)"); }
+  | OP_DIV_O      { context.declareTypeclassPrototype("(/)"); }
+  | OP_MOD_O      { context.declareTypeclassPrototype("(%)"); }
+  | BOOL_AND_O    { context.declareTypeclassPrototype("(&&)"); }
+  | BOOL_OR_O     { context.declareTypeclassPrototype("(||)"); }
+  | BOOL_XOR_O    { context.declareTypeclassPrototype("(^^)"); }
+  | BIT_AND_O     { context.declareTypeclassPrototype("(&)"); }
+  | BIT_OR_O      { context.declareTypeclassPrototype("(|)"); }
+  | BIT_XOR_O     { context.declareTypeclassPrototype("(^)"); }
+  | BIT_SHL_O     { context.declareTypeclassPrototype("(<<)"); }
+  | BIT_SHR_O     { context.declareTypeclassPrototype("(>>)"); }
+  | OP_LT_O       { context.declareTypeclassPrototype("(<)"); }
+  | OP_LTE_O      { context.declareTypeclassPrototype("(<=)"); }
+  | OP_GT_O       { context.declareTypeclassPrototype("(>)"); }
+  | OP_GTE_O      { context.declareTypeclassPrototype("(>=)"); }
+  | OP_EQ_O       { context.declareTypeclassPrototype("(==)"); }
+  | OP_NEQ_O      { context.declareTypeclassPrototype("(!=)"); }
+  | OP_APPEND_O   { context.declareTypeclassPrototype("(++)"); }
+  | OP_LIST_CON_O { context.declareTypeclassPrototype("(:)"); } */
+;
+
+proto_comma:
+  OP_COMMA { printf("\n"); }
+;
+
+exp_prototype:
+    exp_prototype proto_comma exp_prototype      { }
+  | prototype param_prototype OP_ASSIGN exp_type { printf("\n"); }
+;
+
+/*
+  PROTOTYPE PARAMETERS
+*/
+param_prototype:
+    param_prototype param_prototype 
+  | exp_type      {/* param_proto($1); */}
+  | {/* DO NOTHING */}
+;
+    
+
+/*
+  5.e) Primitive Typeclasses
+*/
+
+
 /*
   3.) Conditional Expressions
 */
@@ -555,12 +749,6 @@ exp_is:
 /*
   4.a) Constants
 */
-decl_const:
-    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); context.declareConstant($4); }
-  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); context.declareConstant($5); }
-  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { context.declareConstant($2); }
-  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { context.declareConstant($3); }
-;
 
 exp_const:
     INT     { context.LastData((void*) (unsigned long long) $1); }
@@ -651,178 +839,6 @@ arg_funct:
 ;
 
 
-/*
-  5.) Datatype Expressions
-*/
-
-
-/*
-    5.a) Types
-*/
-
-/*
-  TYPE DECLARATIONS
-*/
-
-dinit_type: 
-    DEBUG STRING TYPE IDENTIFIER { add_debug_message($4, $2); context.declareType($4); }
-  | TYPE IDENTIFIER  { context.declareType($2); }
-;
-
-decl_type:
-    dinit_type param_type OP_ASSIGN decl_struct implements
-  | dinit_type            OP_ASSIGN decl_struct implements
-  | dinit_type param_type OP_ASSIGN decl_struct
-  | dinit_type            OP_ASSIGN decl_struct
-;
-
-implements:
-    IMPL l_typeclass
-;
-
-l_typeclass:
-    l_typeclass OP_COMMA l_typeclass
-  | IDENTIFIER  {/* impl_typeclass($1); */}
-;
-
-param_type:
-    param_type param_type 
-  | IDENTIFIER            { context.declareTypeParameter($1); }
-;
-
-
-/*
-  TYPE EXPRESSIONS
-*/
-exp_type:
-    exp_type exp_type  { }
-  | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
-  | IDENTIFIER      { context.resolveType($1); }
-  | OFFER         { printf("Implement Offers as Types\n"); }
-  | exp_type OP_TUP exp_type {  }
-;
-
-/*
-  5.b) Constructors
-*/
-
-pre_decl_struct:
-  CONSTRUCTOR  { context.declareTypeConstructor($1); }
-;
-decl_struct:
-    decl_struct BIT_OR decl_struct
-  | pre_decl_struct OF decl_record 
-  | pre_decl_struct OF exp_type     
-  | pre_decl_struct                 
-  | exp_type   { context.declareTypeAlias(context.LastType()); }
-;
-
-
-pre_exp_struct:
-  CONSTRUCTOR { context.resolveConstructor($1); }
-;
-exp_struct:
-    pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
-  | CONSTRUCTOR exp    { context.castExpression($1); }
-  | CONSTRUCTOR        { context.resolveConstructor($1); }   
-; 
-
-
-/*
-  5.c) Records
-*/
-
-/*
-  TYPE RECORDS
-*/
-decl_record:
-    decl_record OP_COMMA decl_record
-  | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp { context.declareTypeElement($1, context.LastType()); }
-  | IDENTIFIER OP_TYPE exp_type               { context.declareTypeElement($1, context.LastType()); }
-;
-
-exp_record:
-    exp OP_ELEMENT exp_record { }
-  | IDENTIFIER                { context.resolveTypeElement($1); }
-;
-
-arg_record: 
-    arg_record OP_COMMA arg_record
-  | IDENTIFIER OP_ASSIGN exp
-  | exp
-;
-
-/*
-  5.d) Typeclass/Prototypes
-*/
-
-/*
-  TYPECLASS DECLARATIONS
-*/
-typeclass:
-    TYPECLASS IDENTIFIER { context.declareTypeclass($2); }
-;
-
-decl_typeclass:
-    typeclass REQ exp_prototype
-; 
-
-exp_typeclass:
-    IDENTIFIER      { exp_typeclass($1); }
-;
-
-
-/*
-  PROTOTYPE EXPRESSIONS
-*/
-prototype:
-    IDENTIFIER    { context.declareTypeclassPrototype($1); }
-  /*
-  | OP_ADD_O      { context.declareTypeclassPrototype("(+)"); }
-  | OP_SUB_O      { context.declareTypeclassPrototype("(-)"); }
-  | OP_MUL_O      { context.declareTypeclassPrototype("(*)"); }
-  | OP_DIV_O      { context.declareTypeclassPrototype("(/)"); }
-  | OP_MOD_O      { context.declareTypeclassPrototype("(%)"); }
-  | BOOL_AND_O    { context.declareTypeclassPrototype("(&&)"); }
-  | BOOL_OR_O     { context.declareTypeclassPrototype("(||)"); }
-  | BOOL_XOR_O    { context.declareTypeclassPrototype("(^^)"); }
-  | BIT_AND_O     { context.declareTypeclassPrototype("(&)"); }
-  | BIT_OR_O      { context.declareTypeclassPrototype("(|)"); }
-  | BIT_XOR_O     { context.declareTypeclassPrototype("(^)"); }
-  | BIT_SHL_O     { context.declareTypeclassPrototype("(<<)"); }
-  | BIT_SHR_O     { context.declareTypeclassPrototype("(>>)"); }
-  | OP_LT_O       { context.declareTypeclassPrototype("(<)"); }
-  | OP_LTE_O      { context.declareTypeclassPrototype("(<=)"); }
-  | OP_GT_O       { context.declareTypeclassPrototype("(>)"); }
-  | OP_GTE_O      { context.declareTypeclassPrototype("(>=)"); }
-  | OP_EQ_O       { context.declareTypeclassPrototype("(==)"); }
-  | OP_NEQ_O      { context.declareTypeclassPrototype("(!=)"); }
-  | OP_APPEND_O   { context.declareTypeclassPrototype("(++)"); }
-  | OP_LIST_CON_O { context.declareTypeclassPrototype("(:)"); } */
-;
-
-proto_comma:
-  OP_COMMA { printf("\n"); }
-;
-
-exp_prototype:
-    exp_prototype proto_comma exp_prototype      { }
-  | prototype param_prototype OP_ASSIGN exp_type { printf("\n"); }
-;
-
-/*
-  PROTOTYPE PARAMETERS
-*/
-param_prototype:
-    param_prototype param_prototype 
-  | exp_type      {/* param_proto($1); */}
-  | {/* DO NOTHING */}
-;
-    
-
-/*
-  5.e) Primitive Typeclasses
-*/
 
 /*
   7) Direct Memory Access (DMA)
@@ -910,6 +926,7 @@ exp_receive:
 /*
   8.) Filesystem Operations
 */
+/*
 exp_fileIO:
     exp_fread
   | exp_fwrite
@@ -941,25 +958,26 @@ exp_fname:
   | OP_ELEMENT CONSTRUCTOR { printf("Hidden File Name Encountered: %s\n", $2); free($2); }
 ;
 
-
+*/
 /*
   New File
 */
+/*
 decl_fnew:
   FILEK IDENTIFIER exp_fpath  { printf("File Declared: %s\n", $2); }
 ;
 
-
+*/
 /*
   Read File
-*/
+*//*
 exp_fread:
   READ IDENTIFIER           {printf("Return Contents of File: %s\n", $2); free($2);}
 ;
-
+*/
 /*
   Write File
-*/
+
 exp_fwrite:
     WRITE IDENTIFIER STRING   {printf("\"%s\" has been written to %s\n", $3, $2); free($3); free($2);}
   | APPEND IDENTIFIER STRING  {printf("\"%s\" has been appended to %s\n", $3, $2); free($3); free($2);}
@@ -967,7 +985,7 @@ exp_fwrite:
 
 /*
   Search for File
-*/
+
 exp_fsearch:
     TSEARCH exp_ffilter 
   | SEARCH exp_fpath

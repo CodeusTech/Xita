@@ -43,20 +43,20 @@ type node a =
 
     TYPE EXPRESSIONS are instances of a declared type/constructor
 *)
-(*
 type person = 
   Person of 
     age     : int     = 10,
     name    : string  = "Person",
     height  : int;;
 
-
+(*
+--  Test Double Declaration of Constructor 'Leaf'
 type tree a = 
-  Leaf |
-  Node of 
-    left  : tree a, 
-    value : a,
-    right : tree a;;
+    Leaf 
+  | Node of 
+      left  : tree a, 
+      value : a,
+      right : tree a;;
 
 (*
   2.) Typeclasses
@@ -66,21 +66,16 @@ type tree a =
   2.a) Typeclass Declarations
 *)
 
-Off 5
+Off 5;;
 
 --  Invoke a Tree
 --debug "Build an integer tree, with one right-side branch"
 --let some_tree = Node (left=Node (left=Leaf, value=2, right=Leaf), value=1, right=Leaf)
 
 --  Syntactically identical structure
-(*Node (
-  left = Leaf, 
-  value = 1, 
-  right = Node (
-    left = Leaf, 
-    value = 1, 
-    right = Leaf
-  ) 
-)*)
+Tree Leaf, 1, Leaf;;
 
+Tree 
+  Leaf, 1, Tree
+    Leaf, 5, Leaf
 

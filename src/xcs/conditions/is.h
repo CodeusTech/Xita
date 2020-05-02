@@ -107,7 +107,6 @@ ErrorCode isType()
     l.log('d', "TypeCheck", "Invoked Type Check Successful");
   } else
   {
-
     l.log('e', "TypeCheck", "Invoked Type Check Failed");
   }
 
