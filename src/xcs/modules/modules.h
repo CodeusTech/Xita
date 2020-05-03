@@ -142,10 +142,11 @@ public:
     ErrorCode castTypeConstructor(ConstructorID cid);
 
   //  2.b) Typeclasses
-    ErrorCode declareTypeclass(TypeID tid, Identifier ident);
+    ErrorCode declareTypeclass(TypeID tid, Identifier ident, Identifier param);
     ErrorCode declareTypeclassPrototype(PrototypeID pid, Identifier ident);
-    ErrorCode declareTypeclassParameter(Identifier ident, ADR reg);
 
+    TypeID resolveTypeclass(Identifier ident);
+    TypeID resolveTypeclassParameter(Identifier ident);
 
   //  2.c) Constants
     ErrorCode declareConstant(ConstantID cid, Identifier ident, TypeID type, Arbitrary value);

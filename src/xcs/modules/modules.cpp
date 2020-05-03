@@ -152,6 +152,9 @@ bool ModuleNode::IsAliased(TypeID alias, TypeID checked)
   //  Invocations
 TypeID ModuleNode::resolveType(Identifier ident)
 {
+  TypeID tid = resolveTypeclass(ident);
+  if (tid) return tid;
+
   for (unsigned long i = 0; i < types.size(); ++i)
     if (strcmp(ident, types[i].Ident()) == 0)
       return types[i].Id();
@@ -226,16 +229,40 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
 
 //  3.b) Typeclasses
   //  Declarations
-ErrorCode ModuleNode::declareTypeclass(TypeID tid, Identifier ident)
-{ typeclasses.push_back( TypeclassNode(tid, _mid, ident) ); return SUCCESS; }
+ErrorCode ModuleNode::declareTypeclass(TypeID tid, Identifier ident, Identifier param)
+{ 
+  string tmp = string(ident);
+  typeclasses.push_back( TypeclassNode(tid, _mid, ident, param) ); 
+
+  string str = "Declared Typeclass: " + tmp;
+  l.log('d', "DeclTypeclass", str);
+  return SUCCESS; 
+}
 
   //  Declare Prototype
   ErrorCode ModuleNode::declareTypeclassPrototype(PrototypeID pid, Identifier ident)
   { return typeclasses.back().declarePrototype(pid, ident); }
 
-  //  Declare Prototype Parameter
-  ErrorCode ModuleNode::declareTypeclassParameter(Identifier ident, ADR reg)
-  { return typeclasses.back().declarePrototypeParameter(ident, reg); }
+
+TypeID ModuleNode::resolveTypeclass(Identifier ident)
+{
+  TypeID tid;
+  if ((tid = resolveTypeclassParameter(ident)))
+  {
+    l.log('d', "ExpTypeclass", "Resolved typeclass parameter: " + string(ident));
+    return tid;
+  }
+
+  for (Index i = 0; i < typeclasses.size(); ++i)
+    if (strcmp(ident, typeclasses[i].Ident()) == 0)
+      return typeclasses[i].Id();
+  return 0;
+}
+
+  TypeID ModuleNode::resolveTypeclassParameter(Identifier ident)
+  {
+    return typeclasses.back().resolvePrototypeParameter(ident);
+  }
 
 
 //  3.c) Constants

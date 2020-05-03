@@ -171,9 +171,11 @@ public:
   TypeID resolveTypeElement(Identifier ident);
 
   //  3.b) Typeclass Operations
-  ErrorCode declareTypeclass(Identifier ident) { return _context->declareTypeclass(_next_tid++, ident); }
+  ErrorCode declareTypeclass(Identifier ident, Identifier param) { return _context->declareTypeclass(_next_tid++, ident, param); }
   ErrorCode declareTypeclassPrototype(Identifier ident) { return _context->declareTypeclassPrototype(_next_fid++, ident); }
-  ErrorCode declareTypeclassParameter(Identifier ident);
+
+  TypeID resolveTypeclass(Identifier ident);
+  ErrorCode implementTypeclass(Identifier ident);
 
   //  3.c) Constant Operations
   ErrorCode declareConstant(Identifier ident) { return _context->declareConstant(_next_cid++, ident, _last_type, _last_data); }

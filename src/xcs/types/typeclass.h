@@ -20,6 +20,7 @@ class TypeclassNode
   TypeID _tid;
   ModuleID _context;
   Identifier _ident;
+  Identifier _param;
 
   /*
     Protected Data
@@ -33,11 +34,12 @@ public:
   /*
     Constructors
   */
-  TypeclassNode(TypeID tid, ModuleID context, Identifier ident)
+  TypeclassNode(TypeID tid, ModuleID context, Identifier ident, Identifier param)
   {
     _tid = tid;
     _context = context;
     _ident = strdup(ident); free(ident);
+    _param = strdup(param); free(param);
   }
 
   /*
@@ -47,18 +49,25 @@ public:
   ModuleID Context() { return _context; }
   Identifier Ident() { return _ident; }
 
-
   /*
     Operations
   */
  ErrorCode declarePrototype(PrototypeID pid, Identifier ident)
  {
+   string str = "Declared Prototype Function:  " + string(ident);
+
    prototypes.push_back( TypeclassPrototypeNode(pid, ident) );
+
+   l.log('d', "DeclTypeclass", str);
    return SUCCESS;
  }
 
  ErrorCode declarePrototypeParameter(Identifier ident, ADR reg)
  { return prototypes.back().declarePrototypeParameter(ident, reg); }
+
+  TypeID resolvePrototypeParameter(Identifier ident)
+  { return prototypes.back().resolveParameter(ident); }
+
 
 };
 

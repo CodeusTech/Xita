@@ -158,6 +158,9 @@ bool ContextManager::TypeCheck()
   if ((tid = resolveTypeParameter(ident)))
     return LastType(tid);
 
+  if ((tid = _context->resolveTypeclass(ident)))
+    return LastType(tid);
+
   if ((tid = _context->resolveType(ident)))
     return LastType(tid);
 
@@ -221,17 +224,17 @@ TypeID ContextManager::resolveTypeParameter(Identifier ident)
  }
 
 
-
-
 /*
   3.b) Typeclass Operations
 */
- //  Declarations
- ErrorCode ContextManager::declareTypeclassParameter(Identifier ident)
- {
-   rsPush(TYPE_ARBITRARY);
-   return _context->declareTypeclassParameter(ident, rsTop());
- }
+
+ErrorCode ContextManager::implementTypeclass(Identifier ident)
+{
+  l.log('d', "ImplTypeclass", "Current Type Declaration implements " + string(ident));
+
+  return SUCCESS;
+}
+
 
 /*
   3.c) Constant Operations

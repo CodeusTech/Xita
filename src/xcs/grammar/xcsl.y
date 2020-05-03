@@ -21,7 +21,11 @@
   
   I. DECLARATIONS
 
-  1.) Top-Level Expressions
+  I.1.) Top-Level Declarations
+    I.1.a) Types
+    I.1.b) Typeclasses
+    I.1.c) Constants
+    I.1.d) Functions
 
   ----------------------
 
@@ -317,12 +321,26 @@ decl_type:
   ;
 
   implements:
-      IMPL l_typeclass
+      IMPL l_typeclass OP_TYPE impl_proto
   ;
 
     l_typeclass:
         l_typeclass OP_COMMA l_typeclass
-      | IDENTIFIER  {/* impl_typeclass($1); */}
+      | IDENTIFIER  { context.implementTypeclass($1); }
+    ;
+
+    impl_proto:
+        impl_proto OP_COMMA impl_proto
+      | impl_proto_decl impl_proto_param OP_ASSIGN exp
+    ;
+
+    impl_proto_decl:
+      IDENTIFIER  { l.log('d', "ImplProto", "Prototype declared: " + string($1)); }
+      ;
+
+    impl_proto_param:
+        impl_proto_param impl_proto_param
+      | IDENTIFIER        { l.log('d', "ImplProto", "Prototype Parameter declared: " + string($1) ); }
     ;
 
   /* Type Constructor Declarations */
@@ -343,7 +361,59 @@ decl_type:
       | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp { context.declareTypeElement($1, context.LastType()); }
       | IDENTIFIER OP_TYPE exp_type               { context.declareTypeElement($1, context.LastType()); }
     ;
+  
 
+/*
+  I.1.b) Typeclasses
+*/
+
+decl_typeclass:
+    pre_decl_typeclass REQ exp_prototype
+; 
+
+  pre_decl_typeclass:
+      TYPECLASS IDENTIFIER IDENTIFIER { context.declareTypeclass($2, $3); }
+  ;
+
+  exp_prototype:
+      exp_prototype proto_comma exp_prototype      { }
+    | prototype param_prototype OP_ASSIGN exp_type { }
+  ;
+
+  prototype:
+      IDENTIFIER    { context.declareTypeclassPrototype($1); }
+    /*
+    | OP_ADD_O      { context.declareTypeclassPrototype("(+)"); }
+    | OP_SUB_O      { context.declareTypeclassPrototype("(-)"); }
+    | OP_MUL_O      { context.declareTypeclassPrototype("(*)"); }
+    | OP_DIV_O      { context.declareTypeclassPrototype("(/)"); }
+    | OP_MOD_O      { context.declareTypeclassPrototype("(%)"); }
+    | BOOL_AND_O    { context.declareTypeclassPrototype("(&&)"); }
+    | BOOL_OR_O     { context.declareTypeclassPrototype("(||)"); }
+    | BOOL_XOR_O    { context.declareTypeclassPrototype("(^^)"); }
+    | BIT_AND_O     { context.declareTypeclassPrototype("(&)"); }
+    | BIT_OR_O      { context.declareTypeclassPrototype("(|)"); }
+    | BIT_XOR_O     { context.declareTypeclassPrototype("(^)"); }
+    | BIT_SHL_O     { context.declareTypeclassPrototype("(<<)"); }
+    | BIT_SHR_O     { context.declareTypeclassPrototype("(>>)"); }
+    | OP_LT_O       { context.declareTypeclassPrototype("(<)"); }
+    | OP_LTE_O      { context.declareTypeclassPrototype("(<=)"); }
+    | OP_GT_O       { context.declareTypeclassPrototype("(>)"); }
+    | OP_GTE_O      { context.declareTypeclassPrototype("(>=)"); }
+    | OP_EQ_O       { context.declareTypeclassPrototype("(==)"); }
+    | OP_NEQ_O      { context.declareTypeclassPrototype("(!=)"); }
+    | OP_APPEND_O   { context.declareTypeclassPrototype("(++)"); }
+    | OP_LIST_CON_O { context.declareTypeclassPrototype("(:)"); } */
+  ;
+
+  /*
+    PROTOTYPE PARAMETERS
+  */
+  param_prototype:
+      param_prototype param_prototype 
+    | exp_type      {/* param_proto($1); */}
+    | {/* DO NOTHING */}
+  ;
 
 /*
   I.1.c) Constants
@@ -601,16 +671,6 @@ arg_record:
   5.d) Typeclass/Prototypes
 */
 
-/*
-  TYPECLASS DECLARATIONS
-*/
-typeclass:
-    TYPECLASS IDENTIFIER { context.declareTypeclass($2); }
-;
-
-decl_typeclass:
-    typeclass REQ exp_prototype
-; 
 
 exp_typeclass:
     IDENTIFIER      { exp_typeclass($1); }
@@ -620,48 +680,9 @@ exp_typeclass:
 /*
   PROTOTYPE EXPRESSIONS
 */
-prototype:
-    IDENTIFIER    { context.declareTypeclassPrototype($1); }
-  /*
-  | OP_ADD_O      { context.declareTypeclassPrototype("(+)"); }
-  | OP_SUB_O      { context.declareTypeclassPrototype("(-)"); }
-  | OP_MUL_O      { context.declareTypeclassPrototype("(*)"); }
-  | OP_DIV_O      { context.declareTypeclassPrototype("(/)"); }
-  | OP_MOD_O      { context.declareTypeclassPrototype("(%)"); }
-  | BOOL_AND_O    { context.declareTypeclassPrototype("(&&)"); }
-  | BOOL_OR_O     { context.declareTypeclassPrototype("(||)"); }
-  | BOOL_XOR_O    { context.declareTypeclassPrototype("(^^)"); }
-  | BIT_AND_O     { context.declareTypeclassPrototype("(&)"); }
-  | BIT_OR_O      { context.declareTypeclassPrototype("(|)"); }
-  | BIT_XOR_O     { context.declareTypeclassPrototype("(^)"); }
-  | BIT_SHL_O     { context.declareTypeclassPrototype("(<<)"); }
-  | BIT_SHR_O     { context.declareTypeclassPrototype("(>>)"); }
-  | OP_LT_O       { context.declareTypeclassPrototype("(<)"); }
-  | OP_LTE_O      { context.declareTypeclassPrototype("(<=)"); }
-  | OP_GT_O       { context.declareTypeclassPrototype("(>)"); }
-  | OP_GTE_O      { context.declareTypeclassPrototype("(>=)"); }
-  | OP_EQ_O       { context.declareTypeclassPrototype("(==)"); }
-  | OP_NEQ_O      { context.declareTypeclassPrototype("(!=)"); }
-  | OP_APPEND_O   { context.declareTypeclassPrototype("(++)"); }
-  | OP_LIST_CON_O { context.declareTypeclassPrototype("(:)"); } */
-;
 
 proto_comma:
-  OP_COMMA { printf("\n"); }
-;
-
-exp_prototype:
-    exp_prototype proto_comma exp_prototype      { }
-  | prototype param_prototype OP_ASSIGN exp_type { printf("\n"); }
-;
-
-/*
-  PROTOTYPE PARAMETERS
-*/
-param_prototype:
-    param_prototype param_prototype 
-  | exp_type      {/* param_proto($1); */}
-  | {/* DO NOTHING */}
+  OP_COMMA {  }
 ;
     
 
