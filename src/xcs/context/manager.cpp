@@ -235,11 +235,42 @@ ErrorCode ContextManager::implementTypeclass(Identifier ident)
   return SUCCESS;
 }
 
+ErrorCode ContextManager::declareConstant(Identifier ident)
+{
+  //  Grab Value from Constant Address
+  //    and push into the Register Stack
+  char* str = (char*) malloc(300);
+  sprintf(str, "%s: .word %d", ident, 0);
+  addConstant(str);
+  free (str);
+
+  return _context->declareConstant(_next_cid++, ident, _last_type, _last_data);
+}
+
 
 /*
   3.c) Constant Operations
 */
+ConstantID ContextManager::resolveConstant(Identifier ident)
+{
+  //  TODO:  Check OTHER module contexts
+  ConstantID cid = _context->resolveConstant(ident);
+  if (!cid) return 0;
 
+  //  Constant Found -- Resolve Here
+  //  Push Type
+  rsPush(cid);
+  char* top = get_reg(rsTop(), 32); //  TODO: Fix Size (32), use type size instead
+
+  char* str = (char*) malloc(300);
+  sprintf(str, "  ldr   %s, =%s", top, ident);
+  addInstruction(str); free(str);
+
+  std::string _str = "Resolved constant "; _str.append(ident); _str += " as type " + string(resolveTypeIdentifier(LastType()));
+  l.log('D', "ExpConst", _str);
+
+  return cid;
+}
 
 /*
   3.d) Function Operations
@@ -375,16 +406,21 @@ unsigned long ContextManager::resolveExpression(Identifier ident)
 {
   unsigned long _id;
 
+
+  //  Resolve Parameter
   if ((_id = resolveFunctionParameter(ident)))
     return _id;
 
+  //  Resolve Function
   if ((_id = resolveFunction(ident)))
     return _id;
 
   //  Resolve Constant
+  if ((_id = resolveConstant(ident)))
+    return _id;
 
 
-  std::string _str = "Identifier " + string(ident) + "Could not be resolved";
+  std::string _str = "Identifier '" + string(ident) + "' could not be resolved";
   l.log('W', "Identifiers", _str);
 
   return 0;

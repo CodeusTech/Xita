@@ -136,9 +136,6 @@ extern ContextManager context;
 //  Comments
 %token COMMENT DOC_NEWLINE REFERENCE
 
-//  Constructors
-%token CHAR_C
-
 //  Override Operators
 %token OP_ADD_O OP_SUB_O OP_MUL_O OP_DIV_O OP_MOD_O  // INTEGER ARITHMETIC
 %token OP_GTE_O OP_GT_O OP_EQ_O OP_NEQ_O OP_LTE_O OP_LT_O // INTEGER COMPARISON
@@ -210,17 +207,13 @@ extern ContextManager context;
   LOWEST-PRIORITY TOKEN
 */
 //  Declaration Keywords
-%left TYPE TYPECLASS LET CONST
 %left IF THEN ELSE
 
 //  Literal Values
-%left CONSTRUCTOR
 %left IDENTIFIER
 %left INT REAL TRUE FALSE CHAR STRING
+%left CONSTRUCTOR
 
-
-//  Assignment Operators
-%left OP_ASSIGN IN
 
 //  Logical Operators
 %left BOOL_NOT BOOL_OR BOOL_AND
@@ -235,6 +228,11 @@ extern ContextManager context;
 %left OP_LIST_L OP_LIST_R
 %left PAR_LEFT PAR_RIGHT
 
+//  Assignment Operators
+%left OP_ASSIGN IN
+%left TYPE TYPECLASS LET CONST
+
+%left DEBUG
 
 //  Expression Seperator
 %left OP_SEQ
@@ -258,7 +256,6 @@ ref_com:
 xcs:
     ref_com xcs { }
   | src  { }
-  | xcs_tether  {/* Tether Module Structure */}
 ;
 
 /*
@@ -287,7 +284,7 @@ decl:
   | decl_typeclass     
   | decl_const          
   | decl_funct    
-//  | decl_open
+  | decl_open
 //  | decl_fnew
   | DEBUG STRING                             { printf("%s\n", $2); }
 ;
@@ -420,9 +417,9 @@ decl_typeclass:
 */
 decl_const:
     DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); context.declareConstant($4); }
-  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); context.declareConstant($5); }
+  | DEBUG STRING CONST ident_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); context.declareConstant($5); }
   | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { context.declareConstant($2); }
-  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { context.declareConstant($3); }
+  | CONST ident_struct IDENTIFIER  OP_ASSIGN exp_const { context.declareConstant($3); }
 ;
 
 
@@ -441,12 +438,10 @@ exp:
   | decl  
   | LIST_HEAD exp_list
   | exp_conditional  
-  | exp_struct     
-  | exp_arith    
-  | exp_logical      
+//  | exp_struct     
+  | exp_arith        
   | exp_literal      
   | exp_regex       
-  | exp_request   
  // | exp_memIO
   | exp_ipcIO
 //  | exp_fileIO
@@ -465,8 +460,7 @@ exp_delay:
 */
 
 exp_literal:
-    exp_struct
-  | exp_identifier
+    exp_identifier
   | exp_primitive
 ;
 
@@ -517,9 +511,17 @@ exp_integer:
   2.b) Boolean Expressions
 */
 exp_boolean:
-    TRUE   { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
+    exp OP_LT exp       { context.solveOperator(OPERATOR_LT);  }
+  | exp OP_LTE exp      { context.solveOperator(OPERATOR_LTE); }
+  | exp OP_GT exp       { context.solveOperator(OPERATOR_GT);  }
+  | exp OP_GTE exp      { context.solveOperator(OPERATOR_GTE); }
+  | exp OP_EQ exp       { context.solveOperator(OPERATOR_EQ);  }
+  | exp OP_NEQ exp      { context.solveOperator(OPERATOR_NEQ); }
+    exp BOOL_AND exp    { context.solveOperator(OPERATOR_AND); }
+  | exp BOOL_OR exp     { context.solveOperator(OPERATOR_OR);  }
+  | exp BOOL_XOR exp    { context.solveOperator(OPERATOR_XOR); }
+  | TRUE   { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
   | FALSE  { pushData(TYPE_BOOLEAN, (Arbitrary) 0); }
-  | exp OP_LT exp {  }
 ;
 
 /*
@@ -537,8 +539,7 @@ exp_real:
   2.d) Character Expressions
 */
 exp_char:
-    CHAR        { pushData(TYPE_CHAR, (void*) $1); }
-  | CHAR_C INT  { pushData(TYPE_CHAR, (void*) $2); }
+  CHAR        { pushData(TYPE_CHAR, (void*) $1); }
 ;
 
 /*
@@ -591,35 +592,15 @@ exp_arith:
   | exp BIT_SHR exp     { context.solveOperator(OPERATOR_BIT_SHR); } 
 ;
 
-/*
-  3.b) Logical Expressions
-*/
-exp_logical:
-    exp BOOL_AND exp    { context.solveOperator(OPERATOR_AND); }
-  | exp BOOL_OR exp     { context.solveOperator(OPERATOR_OR);  }
-  | exp BOOL_XOR exp    { context.solveOperator(OPERATOR_XOR); }
-//  | BOOL_NOT exp        { context.solveOperator(OPERATOR_NOT); }
-  | exp OP_LT exp       { context.solveOperator(OPERATOR_LT);  }
-  | exp OP_LTE exp      { context.solveOperator(OPERATOR_LTE); }
-  | exp OP_GT exp       { context.solveOperator(OPERATOR_GT);  }
-  | exp OP_GTE exp      { context.solveOperator(OPERATOR_GTE); }
-  | exp OP_EQ exp       { context.solveOperator(OPERATOR_EQ);  }
-  | exp OP_NEQ exp      { context.solveOperator(OPERATOR_NEQ); }
-//  | exp_is              { }
-;
 
 
 /*
   5.) Datatype Expressions
 */
 
-
 /*
     5.a) Types
 */
-
-
-
 
 /*
   TYPE EXPRESSIONS
@@ -636,16 +617,9 @@ exp_type:
   5.b) Constructors
 */
 
-
-
-pre_exp_struct:
+ident_struct:
   CONSTRUCTOR { context.resolveConstructor($1); }
 ;
-exp_struct:
-    pre_exp_struct arg_record {  }
-  | CONSTRUCTOR exp    { context.castExpression($1); }
-  | CONSTRUCTOR        { context.resolveConstructor($1); }   
-; 
 
 
 /*
@@ -670,11 +644,6 @@ arg_record:
 /*
   5.d) Typeclass/Prototypes
 */
-
-
-exp_typeclass:
-    IDENTIFIER      { exp_typeclass($1); }
-;
 
 
 /*
@@ -759,7 +728,7 @@ param_match:
 */
 
 exp_is:
-    exp IS exp_struct { /*is_construct();*/ }
+//    exp IS exp_struct { /*is_construct();*/ }
   | exp IS exp_type   { isType(); }
 ;
 
@@ -773,7 +742,7 @@ exp_is:
 
 exp_const:
     INT     { context.LastData((void*) (unsigned long long) $1); }
-  | exp_struct
+//  | exp_struct
   | IDENTIFIER { context.resolveConstant($1); }
   | exp_const OP_ADD INT { context.LastData((void*) ((unsigned long long)context.LastData() + $3)); }
   | exp_const OP_SUB INT { context.LastData((void*) ((unsigned long long)context.LastData() - $3)); }
@@ -841,10 +810,6 @@ decl_prototypes:
   | IDENTIFIER OP_ASSIGN exp
 ;
 
-exp_inline:
-    OP_INLINE exp exp_inline {  }
-  | {/* Intentionally Left Blank */}
-;
 
 /*
   FUNCTION EXPRESSIONS (INVOCATIONS)
@@ -892,9 +857,10 @@ exp_memread:
 /*
   6.b) Write Expression to Memory
 */
+/*
 exp_memwrite:
-    exp MEM_SET exp { /*memory_write_exp();*/ }
-  | exp MEM_SET exp INT {/*memory_write_exp();*/ }
+    exp MEM_SET exp { /*memory_write_exp(); }
+  | exp MEM_SET exp INT {/*memory_write_exp(); }
 ;
 
 
@@ -1029,52 +995,6 @@ exp_regex:
   E.) Tether Modules 
 */
 
-/*
-  1.) Tether Module Structure
-*/
-xcs_tether:
-    TETHER_H teth_sep           { printf("Finished Parsing Tether Module.\n"); }
-;
-
-teth_sep:
-    teth_sep OP_SEP teth_sep
-  | decl_offer
-  | decl
-  | exp
-;
-
-/*
-  3.) Request/Offer
-*/
-
-/*
-  3.a) Offer Statements
-*/
-offer:
-    OFFER IDENTIFIER              { decl_offer($2); }
-  | OFFER IDENTIFIER OF exp_type  { decl_offer($2); }
-;
-
-decl_offer:
-    offer param_offer OP_ASSIGN exp
-;
-
-param_offer:
-    IDENTIFIER param_offer  {/* Function Parameters for Offer */}
-  |       {/* INTENTIONALLY LEFT BLANK */}
-;
-
-/*
-  3.b) Request Statements
-*/
-exp_request:
-    REQUEST IDENTIFIER arg_request { exp_request($2); }
-;
-
-arg_request:
-    exp arg_request
-  |       {/* INTENTIONALLY LEFT BLANK */}
-;
 
 %%
 

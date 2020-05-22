@@ -273,18 +273,9 @@ ErrorCode ModuleNode::declareConstant(ConstantID cid, Identifier ident, TypeID t
   //  Resolve Constant
 ConstantID ModuleNode::resolveConstant(Identifier ident)
 {
-  for (unsigned long i = 0; i < constants.size(); ++i)
+  for (Index i = 0; i < constants.size(); ++i)
     if (strcmp(constants[i].Ident(), ident) == 0)
-    {
-      //  Constant Found -- Resolve Here
-      //  Push Type
-      rsPush(constants[i].Type());
-
-      //  Grab Value from Constant Address
-      //    and push into the Register Stack
-
       return constants[i].Id();
-    }
   return 0;
 }
 
@@ -340,7 +331,10 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   }
 
   FunctionParameterNode* ModuleNode::resolveFunctionParameter(Identifier ident)
-  { return functions.back().resolveParameter(ident); }
+  { 
+    if (!functions.size()) return NULL;
+    return functions.back().resolveParameter(ident); 
+  }
 
 
 unsigned long ModuleNode::resolveExpression(Identifier ident)

@@ -128,6 +128,7 @@ public:
   //  2.b) Assembly Operations
   ErrorCode generateAssembly(FILE* file) { return assembly.generateAssembly(file); }
   ErrorCode addInstruction(char* instruction) { return assembly.addInstruction(instruction); }
+  ErrorCode addConstant(char* constant) { return assembly.addConstant(constant); }
   ErrorCode popLastInstruction() { return assembly.popLastInstruction(); }
 
   //  2.c) Register Stack Operations
@@ -139,7 +140,7 @@ public:
   TypeID rsType() { return _context->rsType(); }
   TypeID rsType(int from_top) { return _context->rsType(from_top); }
     //  Operations
-  ADR rsPush(TypeID tid) { return _context->rsPush(tid); }
+  ADR rsPush(TypeID tid) { LastType(tid); return _context->rsPush(tid); }
   ErrorCode rsPushRegister(TypeID tid, ADR reg);
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return _context->rsPop(); }
@@ -178,9 +179,9 @@ public:
   ErrorCode implementTypeclass(Identifier ident);
 
   //  3.c) Constant Operations
-  ErrorCode declareConstant(Identifier ident) { return _context->declareConstant(_next_cid++, ident, _last_type, _last_data); }
+  ErrorCode declareConstant(Identifier ident);
 
-  ConstantID resolveConstant(Identifier ident) { return _context->resolveConstant(ident); }
+  ConstantID resolveConstant(Identifier ident);
 
   //  3.d) Function Operations
   ErrorCode declareFunction(Identifier ident);

@@ -29,6 +29,8 @@ const Int pi2 = pi + 3;;
 
 pi * 32;;
 
+1
+
 --let pi_2 = 314;;
 
 --pi_2

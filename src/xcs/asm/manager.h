@@ -138,6 +138,9 @@ public:
     2.) Assembly Operations
   */
 
+  ErrorCode addConstant(Command command)
+  { asm_data.push_back(strdup(command)); return SUCCESS; }
+
   ErrorCode addInstruction(Command command)
   { asm_text[get_scope_curr()].push_back(strdup(command)); return SUCCESS; }
   ErrorCode addInstruction(const char* command)
