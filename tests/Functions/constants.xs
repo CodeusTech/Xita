@@ -2,27 +2,27 @@
   constants.xs
   Codeus Tech
   Authored on   February 16, 2019
-  Last Modified      May 22, 2020
+  Last Modified      May 26, 2020
 *)
 
 (*
   Contains Test Case for Functional Expressions
 *)
 
+  type color = Color of int;;
 
---  Constant Declarations
-const Int pi = 314;;
-const Int other = pi + 3;;
+  --  Constant Declarations
+  const Color red = 0xFF0000;; --  RGB Notation
+  const Color yellow = red + 0x00FF00;;
 
---  Constant Expressions
-other * 32;;
+  --  Constant Expressions
+  red * 32;;  --  Invoke Constant
 
---  Functional Overrides
-let pi = 314 in 
-  pi
-;;
+  --  Functional Overrides (1 Time Use)
+  let red = 0xaa0000 in 
+    red - 1      --  Check Overriden Value: 'red'
+  ;;
 
---  Functional Undeclare (let ... in ...)
---    Should Compile for Constant Form
-pi
+  --  Check Current Default Value: 'red'
+  red
 

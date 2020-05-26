@@ -2,7 +2,7 @@
   manager.cpp
   Codeus Tech
   Authored on   April 18, 2020
-  Last Modified April 24, 2020
+  Last Modified   May 26, 2020
 */
 
 /*
@@ -293,7 +293,7 @@ ErrorCode ContextManager::endDeclareFunction()
   string logstr;
   if ((ident = _context->endDeclareFunction(LastType())))
   {
-    assembly.
+    assembly.endFunction();
 
     logstr = "Function " + string(ident) + " declared, with Type Signature: " + TypeSignature();
     l.log('D', "DeclFunct", logstr);

@@ -261,6 +261,7 @@ TypeID ModuleNode::resolveTypeclass(Identifier ident)
 
   TypeID ModuleNode::resolveTypeclassParameter(Identifier ident)
   {
+    if (!typeclasses.size()) return 0;
     return typeclasses.back().resolvePrototypeParameter(ident);
   }
 

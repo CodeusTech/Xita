@@ -2,7 +2,7 @@
   arithmetic.cpp
   Codeus Tech
   Authored on   April 22, 2020
-  Last Modified April 22, 2020
+  Last Modified   May 26, 2020
 */
 
 /*
@@ -47,7 +47,7 @@
     char* sec = get_reg(rs->sec(), 32);
 
     char* str = (char*) malloc(50);
-    sprintf(str, "  subs  %s, %s, %s", sec, sec, top);
+    sprintf(str, "  sub   %s, %s, %s", sec, sec, top);
 
     free(top);
     free(sec);
