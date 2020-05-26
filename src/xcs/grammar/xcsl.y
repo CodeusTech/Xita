@@ -415,11 +415,15 @@ decl_typeclass:
 /*
   I.1.c) Constants
 */
+assign_const:
+  OP_ASSIGN  { context.LastData((Arbitrary)0); }
+;
+
 decl_const:
-    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); context.declareConstant($4); }
-  | DEBUG STRING CONST ident_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); context.declareConstant($5); }
-  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { context.declareConstant($2); }
-  | CONST ident_struct IDENTIFIER  OP_ASSIGN exp_const { context.declareConstant($3); }
+    DEBUG STRING CONST IDENTIFIER OF exp_type assign_const exp_const { add_debug_message($4, $2); context.declareConstant($4); }
+  | DEBUG STRING CONST ident_struct IDENTIFIER  assign_const exp_const { add_debug_message($5, $2); context.declareConstant($5); }
+  | CONST IDENTIFIER OF exp_type assign_const exp_const { context.declareConstant($2); }
+  | CONST ident_struct IDENTIFIER  assign_const exp_const { context.declareConstant($3); }
 ;
 
 
@@ -742,12 +746,11 @@ exp_is:
 
 exp_const:
     INT     { context.LastData((void*) (unsigned long long) $1); }
-//  | exp_struct
   | IDENTIFIER { context.resolveConstant($1); }
-  | exp_const OP_ADD INT { context.LastData((void*) ((unsigned long long)context.LastData() + $3)); }
-  | exp_const OP_SUB INT { context.LastData((void*) ((unsigned long long)context.LastData() - $3)); }
-  | exp_const OP_MUL INT { context.LastData((void*) ((unsigned long long)context.LastData() * $3)); }
-  | exp_const OP_DIV INT { context.LastData((void*) ((unsigned long long)context.LastData() / $3)); }
+  | exp_const OP_ADD INT { context.LastData((void*) ((unsigned long long)context.LastData() + $3)); context.popLastInstruction(); }
+  | exp_const OP_SUB INT { context.LastData((void*) ((unsigned long long)context.LastData() - $3)); context.popLastInstruction(); }
+  | exp_const OP_MUL INT { context.LastData((void*) ((unsigned long long)context.LastData() * $3)); context.popLastInstruction(); }
+  | exp_const OP_DIV INT { context.LastData((void*) ((unsigned long long)context.LastData() / $3)); context.popLastInstruction(); }
 ;
 
 /*
@@ -795,8 +798,7 @@ __decl_funct:
 ;
 
 decl_funct:
-    decl_funct IMPL decl_prototypes
-  | __decl_funct IN exp   { context.undeclareFunction(); }
+    __decl_funct IN exp   { context.undeclareFunction(); }
   | __decl_funct
 ;
 

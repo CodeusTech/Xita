@@ -22,10 +22,10 @@ struct PrototypeParameterNode
 
   PrototypeParameterNode(Identifier _ident, ADR _reg)
   {
+   printf("Check: %s\n", _ident);
     ident = strdup(_ident); free(ident);
     reg = _reg;
     tid = TYPE_ARBITRARY;
-   printf("Check\n");
   }
 };
 

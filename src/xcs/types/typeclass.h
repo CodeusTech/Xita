@@ -48,6 +48,7 @@ public:
   TypeID Id() { return _tid; }
   ModuleID Context() { return _context; }
   Identifier Ident() { return _ident; }
+  Identifier Parameter() { return _param; }
 
   /*
     Operations

@@ -40,6 +40,9 @@ protected:
   list<string> asm_bss;
   list<string> asm_data;
 
+  Index command_scope = 0;
+  vector<Index> command_scope_stack;
+
 
   /*
     1.) Initialization Functions

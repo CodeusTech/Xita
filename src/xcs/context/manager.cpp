@@ -240,7 +240,7 @@ ErrorCode ContextManager::declareConstant(Identifier ident)
   //  Grab Value from Constant Address
   //    and push into the Register Stack
   char* str = (char*) malloc(300);
-  sprintf(str, "%s: .word %d", ident, 0);
+  sprintf(str, "%s: .word %llu", ident, (unsigned long long) LastData());
   addConstant(str);
   free (str);
 
@@ -254,7 +254,10 @@ ErrorCode ContextManager::declareConstant(Identifier ident)
 ConstantID ContextManager::resolveConstant(Identifier ident)
 {
   //  TODO:  Check OTHER module contexts
-  ConstantID cid = _context->resolveConstant(ident);
+  ConstantNode* node = _context->resolveConstant(ident);
+  ConstantID cid = node->Id();
+  LastData(node->Value());
+
   if (!cid) return 0;
 
   //  Constant Found -- Resolve Here
@@ -290,6 +293,8 @@ ErrorCode ContextManager::endDeclareFunction()
   string logstr;
   if ((ident = _context->endDeclareFunction(LastType())))
   {
+    assembly.
+
     logstr = "Function " + string(ident) + " declared, with Type Signature: " + TypeSignature();
     l.log('D', "DeclFunct", logstr);
   } else

@@ -1,37 +1,28 @@
 (*
-  functions.xs
-  Cody Fagley
+  constants.xs
+  Codeus Tech
   Authored on   February 16, 2019
-  Last Modified February 16, 2019
+  Last Modified      May 22, 2020
 *)
 
 (*
   Contains Test Case for Functional Expressions
-
-  Table of Contents
-  =================
-  1.) Constant Declarations
-  2.) Functional Declarations
-  3.) Functional Expressions
 *)
 
-(*
-  1.) Constant Declarations
-*)
 
+--  Constant Declarations
 const Int pi = 314;;
-const Int pi2 = pi + 3;;
+const Int other = pi + 3;;
 
+--  Constant Expressions
+other * 32;;
 
-(*
-  2.) Functional Declarations
-*)
+--  Functional Overrides
+let pi = 314 in 
+  pi
+;;
 
-pi * 32;;
-
-1
-
---let pi_2 = 314;;
-
---pi_2
+--  Functional Undeclare (let ... in ...)
+--    Should Compile for Constant Form
+pi
 

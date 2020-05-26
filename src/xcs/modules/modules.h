@@ -151,7 +151,7 @@ public:
   //  2.c) Constants
     ErrorCode declareConstant(ConstantID cid, Identifier ident, TypeID type, Arbitrary value);
 
-    ConstantID resolveConstant(Identifier ident);
+    ConstantNode* resolveConstant(Identifier ident);
 
   //  2.d) Functions
     ErrorCode declareFunction(FunctionID fid, Identifier ident);

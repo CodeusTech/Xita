@@ -271,11 +271,11 @@ ErrorCode ModuleNode::declareConstant(ConstantID cid, Identifier ident, TypeID t
 { constants.push_back( ConstantNode(cid, _mid, ident, type, value) ); return SUCCESS; }
 
   //  Resolve Constant
-ConstantID ModuleNode::resolveConstant(Identifier ident)
+ConstantNode* ModuleNode::resolveConstant(Identifier ident)
 {
   for (Index i = 0; i < constants.size(); ++i)
     if (strcmp(constants[i].Ident(), ident) == 0)
-      return constants[i].Id();
+      return &constants[i];
   return 0;
 }
 
@@ -303,8 +303,7 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
     functions.back().Type(tid);
     functions.back().Register(rsTop());
 
-    //  Return to Parent Scope
-    scope = scope_stack.back(); scope_stack.pop_back();
+    endScope();
 
     return functions.back().Ident();
   }
@@ -312,7 +311,6 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   //  Undeclare Function (let ... in ...)
   ErrorCode ModuleNode::undeclareFunction()
   {
-    endDeclareFunction(TYPE_ARBITRARY);
     functions.pop_back();
 
     return SUCCESS;
