@@ -416,7 +416,7 @@ decl_typeclass:
   I.1.c) Constants
 */
 assign_const:
-  OP_ASSIGN  { context.LastData((Arbitrary)0); }
+  OP_ASSIGN  { context.LastData((Arbitrary)0); context.newData(TYPE_ARBITRARY, NULL); }
 ;
 
 decl_const:
@@ -744,13 +744,19 @@ exp_is:
   4.a) Constants
 */
 
+op_const:
+    OP_ADD
+  | OP_SUB
+  | OP_MUL
+  | OP_DIV
+  | OP_MOD
+;
+
 exp_const:
-    INT     { context.LastData((void*) (unsigned long long) $1); }
-  | IDENTIFIER { context.resolveConstant($1); }
-  | exp_const OP_ADD INT { context.LastData((void*) ((unsigned long long)context.LastData() + $3)); context.popLastInstruction(); }
-  | exp_const OP_SUB INT { context.LastData((void*) ((unsigned long long)context.LastData() - $3)); context.popLastInstruction(); }
-  | exp_const OP_MUL INT { context.LastData((void*) ((unsigned long long)context.LastData() * $3)); context.popLastInstruction(); }
-  | exp_const OP_DIV INT { context.LastData((void*) ((unsigned long long)context.LastData() / $3)); context.popLastInstruction(); }
+    exp_const op_const exp_const
+  | INT     { context.addData(TYPE_INTEGER, (Arbitrary)$1); }
+  | STRING  { context.addData(TYPE_STRING, (Arbitrary)$1);  }
+  | IDENTIFIER { context.resolveConstant($1); context.popLastInstruction(); }
 ;
 
 /*

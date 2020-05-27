@@ -37,6 +37,8 @@
 
 #include <xcs/asm/manager.h>
 #include <xcs/expressions/operators/manager.h>
+#include <xcs/data/manager.h>
+
 #include <xcs/modules/modules.h>
 #include <xcs/expressions/argument.h>
 
@@ -61,6 +63,7 @@ protected:
   //  Managers
   AssemblyManager assembly;       //  Manages Buffers for producing Assembly Files
   OperatorManager operators;      //  Manages Active Operator Semantics (e.g. Addition)
+  DataManager     data;           //  Manages Active Backend Data Values/Types
 
   //  Modules
   vector<ModuleNode> modules;     //  All Imported Module Contexts
@@ -94,7 +97,7 @@ public:
   */
   ModuleID CurrentContext() { return _context->Id(); }
 
-  //  Last Encountered Info
+  //  Last Encountered Data /* DEPRECATED SECTION */
   ExpressionType LastExpression() { return _last_expression; }
   ExpressionType LastExpression(ExpressionType exp) { _last_expression = exp; return _last_expression; }
   TypeID LastType() { return _last_type; }
@@ -106,6 +109,9 @@ public:
   Index LastIndex() { return _last_index; }
   Index LastIndex(Index i) { _last_index = i; return _last_index; }
   bool TypeCheck();
+  //  Last Encountered Data
+  ErrorCode newData(TypeID tid, Arbitrary value) { return data.newData(tid, value); }
+  ErrorCode addData(TypeID tid, Arbitrary value) { return data.addData(tid, value); }
   
   //  Loaded Arguments
   unsigned long CountArguments() { return arguments.size(); }

@@ -240,11 +240,35 @@ ErrorCode ContextManager::declareConstant(Identifier ident)
   //  Grab Value from Constant Address
   //    and push into the Register Stack
   char* str = (char*) malloc(300);
-  sprintf(str, "%s: .word %llu", ident, (unsigned long long) LastData());
-  addConstant(str);
+  
+  DataInstance last = data.getData();
+
+  switch (last.tid)
+  {
+    case TYPE_INTEGER:
+    case TYPE_U32:
+    case TYPE_I32:
+      sprintf(str, "%s: .word %llu", ident, (unsigned long long) last.value);
+      addConstant(str);
+      break;
+    case TYPE_I8:
+    case TYPE_U8:
+    case TYPE_CHAR:
+      sprintf(str, "%s: .byte %llu", ident, (unsigned long long) last.value);
+      addConstant(str);
+      break;
+    case TYPE_STRING:
+      sprintf(str, "%s: .ascii \"%s\"", ident, (char*) last.value);
+      addConstant(str);
+      break;
+    default:
+      printf("Type Not Supported for Constant Declarations\n");
+      l.log('W', "DeclConst", string("Type not supported for Constant Declarations"));
+  }
+
   free (str);
 
-  return _context->declareConstant(_next_cid++, ident, _last_type, _last_data);
+  return _context->declareConstant(_next_cid++, ident, data.getData().tid, data.getData().value);
 }
 
 
@@ -256,7 +280,8 @@ ConstantID ContextManager::resolveConstant(Identifier ident)
   //  TODO:  Check OTHER module contexts
   ConstantNode* node = _context->resolveConstant(ident);
   ConstantID cid = node->Id();
-  LastData(node->Value());
+
+  addData(node->Type(), node->Value());
 
   if (!cid) return 0;
 
@@ -411,7 +436,6 @@ unsigned long ContextManager::resolveExpression(Identifier ident)
 {
   unsigned long _id;
 
-
   //  Resolve Parameter
   if ((_id = resolveFunctionParameter(ident)))
     return _id;
@@ -437,6 +461,7 @@ unsigned long ContextManager::resolveExpression(Identifier ident)
 */
 unsigned long ContextManager::castExpression(Identifier constructor)
 {
+
   //  Grab Last Expression's Infromation
   TypeID _tid = LastType();
   ConstructorID _cid = LastConstructor();

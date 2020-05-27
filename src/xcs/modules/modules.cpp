@@ -125,7 +125,6 @@ ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident, unsigned long si
   { return types.back().declareElement(ident, tid); }
 
 
-
 unsigned long ModuleNode::TypeSize(TypeID tid)
 {
   for (unsigned long i = 0; i < types.size(); ++i)
