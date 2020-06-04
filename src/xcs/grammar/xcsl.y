@@ -442,7 +442,6 @@ exp:
   | decl  
   | LIST_HEAD exp_list
   | exp_conditional  
-//  | exp_struct     
   | exp_arith        
   | exp_literal      
   | exp_regex       
@@ -466,6 +465,7 @@ exp_delay:
 exp_literal:
     exp_identifier
   | exp_primitive
+  | exp_struct
 ;
 
 exp_identifier:
@@ -625,6 +625,16 @@ ident_struct:
   CONSTRUCTOR { context.resolveConstructor($1); }
 ;
 
+exp_struct:
+    ident_struct OP_REC_L exp_record OP_REC_R
+  | ident_struct exp
+  | ident_struct  
+;
+
+exp_record:
+    exp_record OP_COMMA exp_record
+  | IDENTIFIER OP_ASSIGN exp
+;
 
 /*
   5.c) Records
@@ -867,8 +877,8 @@ exp_memread:
 */
 /*
 exp_memwrite:
-    exp MEM_SET exp { /*memory_write_exp(); }
-  | exp MEM_SET exp INT {/*memory_write_exp(); }
+    exp MEM_SET exp { memory_write_exp(); }
+  | exp MEM_SET exp INT { memory_write_exp(); }
 ;
 
 

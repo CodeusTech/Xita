@@ -17,6 +17,7 @@
 #include "param.h"
 #include "typeclass.h"
 
+using namespace std;
 
 class TypeNode
 {
@@ -70,6 +71,8 @@ public:
   Identifier resolveConstructorIdentifier(ConstructorID cid);
   TypeID resolveElement(Identifier ident, ConstructorID cid);
   TypeID resolveParameter(Identifier ident);
+
+  bool findConstructorID(ConstructorID cid);
 
 };
 

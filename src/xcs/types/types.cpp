@@ -101,6 +101,10 @@ TypeID TypeNode::resolveParameter(Identifier ident)
 }
 
 
-
-
-
+bool TypeNode::findConstructorID(ConstructorID cid)
+{
+  for (Index i = 0; i < constructors.size(); ++i)
+    if (constructors[i].Id() == cid)
+      return true;
+  return false;
+}

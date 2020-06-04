@@ -33,6 +33,8 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
   _parent = parent;
 
   register_stacks.push_back(RegisterStack());
+  //types = TypeManager(mid);
+
   l.log('d', "Modules", "Initialized Module");
 }
 
@@ -93,32 +95,9 @@ ErrorCode ModuleNode::concludeExpression()
   3.) Identifier Handling
 */
 
-//  3.a) Types
-  //  Declarations
-ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident)
-{ 
-  types.push_back( TypeNode(tid, _mid, ident) ); 
-  
-  std::string str = "Declared Type: " + string(types.back().Ident());
-  l.log('D', "DeclType", str);
-  return SUCCESS; 
-}
-ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident, unsigned long size)
-{ 
-  types.push_back( TypeNode(tid, _mid, ident, size) ); 
-  
-  std::string str = "Declared Type: " + string(types.back().Ident());
-  l.log('D', "DeclType", str);
-  return SUCCESS; 
-}
-
   //  Declare Parameter
   ErrorCode ModuleNode::declareTypeParameter(TypeID tid, Identifier ident)
   { return types.back().declareParameter(tid, ident); }
-
-  //  Declare Constructor
-  ErrorCode ModuleNode::declareTypeConstructor(ConstructorID cid, Identifier ident)
-  { return types.back().declareConstructor(cid, ident); }
 
   //  Declare Element
   ErrorCode ModuleNode::declareTypeElement(Identifier ident, TypeID tid)
@@ -181,11 +160,13 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
 
   unsigned long* ModuleNode::resolveTypeConstructor(Identifier ident)
   {
+
     unsigned long* rtn = (unsigned long*) malloc(sizeof(unsigned long)*2);
     ConstructorID cid;
     for (unsigned long i = 0; i < types.size(); ++i)
       if ((cid = types[i].resolveConstructor(ident)))
       {
+        rsPush(types[i].Id());
         rtn[0] = types[i].Id();
         rtn[1] = cid;
         return rtn;

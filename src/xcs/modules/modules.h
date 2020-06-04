@@ -26,7 +26,8 @@
 #define _MODULES_STRUCTS_H
 
 #include <xcs/std/includes.h>
-#include <xcs/types/types.h>
+#include <xcs/types/types.h>  //  DEPRECATED
+//#include <xcs/types/manager.h>
 #include <xcs/regstack/structs.h>
 #include <xcs/expressions/constants/constants.h>
 #include <xcs/expressions/functions/functions.h>
@@ -60,6 +61,10 @@ protected:
   Scope next_scope = 1;
   int line_number = 0;
 
+  //  Module-Specific Managers
+  //TypeManager types;
+  
+
   vector<RegisterStack> register_stacks;
 
   vector<TypeNode> types;
@@ -75,7 +80,6 @@ public:
   ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent);
 
   vector<ModuleID> imported;
-
   
   /*
     1.) Private Accessors
@@ -119,10 +123,10 @@ public:
   */
 
   //  2.a) Types
-    ErrorCode declareType(TypeID tid, Identifier ident);
-    ErrorCode declareType(TypeID tid, Identifier ident, unsigned long size);
+    ErrorCode declareType(TypeID tid, Identifier ident)                     {types.push_back(TypeNode(tid, _mid, ident)); return 0;}//{ return types.declareType(tid, ident); }
+    ErrorCode declareType(TypeID tid, Identifier ident, unsigned long size) {types.push_back(TypeNode(tid, _mid, ident, size)); return 0;}//{ return types.declareType(tid, ident, size); }
     ErrorCode declareTypeParameter(TypeID tid, Identifier ident);
-    ErrorCode declareTypeConstructor(ConstructorID cid, Identifier ident);
+    ErrorCode declareTypeConstructor(ConstructorID cid, Identifier ident)   {types.back().declareConstructor(cid, ident); return 0;}//{ return types.declareConstructor(cid, ident); }
     ErrorCode declareTypeElement(Identifier ident, TypeID tid);
     ErrorCode declareTypeAlias(TypeID alias) { return types.back().declareAlias(alias); }
     ErrorCode declareTypeAlias(TypeID alias, TypeID declared) { return types[alias].declareAlias(declared); }

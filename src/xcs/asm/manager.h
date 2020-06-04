@@ -57,13 +57,7 @@ protected:
 
     //  Print TEXT Segment Name into File
     fprintf(filename, ".section .bss:\n");
-
-    /* Print TEXT Buffer Contents to File */
-    for (list<string>::iterator it = asm_bss.begin(); it != asm_bss.end(); it++)
-      fprintf(filename, "  %s\n", (*it).c_str());
-
-    //  Pretty up file with new lines
-    fprintf(filename, "\n\n");
+    fprintf(filename, "  runtime: .skip 0x10000000\n\n");
 
     //  Return Success
     return 0;
