@@ -19,7 +19,12 @@ struct DataInstance
 {
   TypeID tid;
   Arbitrary value;
-  
+
+  DataInstance(TypeID _tid, Arbitrary _value)
+  {
+    tid = _tid;
+    value = _value;
+  }
 };
 
 

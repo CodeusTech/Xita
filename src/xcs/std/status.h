@@ -22,5 +22,7 @@ enum ParserStatus
 };
 
 
+bool XCS_VERBOSE = false;
+
 
 #endif

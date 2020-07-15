@@ -21,7 +21,11 @@
   
   I. DECLARATIONS
 
-  1.) Top-Level Expressions
+  I.1.) Top-Level Declarations
+    I.1.a) Types
+    I.1.b) Typeclasses
+    I.1.c) Constants
+    I.1.d) Functions
 
   ----------------------
 
@@ -89,7 +93,6 @@
 #include <xcs/utils/clear.h>
 #include <xcs/utils/delay.h>
 #include <xcs/expressions/primitives/primitives.h>
-#include <xcs/expressions/operators/resolve.h>
 
 extern int yylex();
 extern int yyparse();
@@ -131,9 +134,6 @@ extern ContextManager context;
 
 //  Comments
 %token COMMENT DOC_NEWLINE REFERENCE
-
-//  Constructors
-%token CHAR_C
 
 //  Override Operators
 %token OP_ADD_O OP_SUB_O OP_MUL_O OP_DIV_O OP_MOD_O  // INTEGER ARITHMETIC
@@ -206,35 +206,39 @@ extern ContextManager context;
   LOWEST-PRIORITY TOKEN
 */
 //  Declaration Keywords
-%left TYPE TYPECLASS LET CONST
+%left IF THEN ELSE
 
 //  Literal Values
-%left CONSTRUCTOR
-%left IDENTIFIER
 %left INT REAL TRUE FALSE CHAR STRING
+%left CONSTRUCTOR
 
-
-//  Assignment Operators
-%left OP_ASSIGN IN
 
 //  Logical Operators
 %left BOOL_NOT BOOL_OR BOOL_AND
-%left OP_GT OP_GTE OP_LT OP_LTE OP_EQ OP_NEQ
+%left OP_GT OP_GTE OP_LT OP_LTE OP_EQ OP_NEQ IS
 //  Numerical Operators
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 
+%left IDENTIFIER
+
+%left OP_COMMA
 
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
 %left PAR_LEFT PAR_RIGHT
+
+//  Assignment Operators
+%left OP_ASSIGN IN
+%left TYPE TYPECLASS LET CONST
+
+%left DEBUG
 
 //  Expression Seperator
 %left OP_SEQ
 /*
   HIGHEST-PRIORITY TOKEN
 */
-
 
 %type <val_int> if if1 then else1
 %type <val_int> lit_integer
@@ -251,7 +255,6 @@ ref_com:
 xcs:
     ref_com xcs { }
   | src  { }
-  | xcs_tether  {/* Tether Module Structure */}
 ;
 
 /*
@@ -276,12 +279,12 @@ src:
   I.1.) Top-Level Declarations
 */
 decl:
-    decl_const          
-  | decl_funct   
-  | decl_type           
-  | decl_typeclass      
-//  | decl_open
-  | decl_fnew
+    decl_type           
+  | decl_typeclass     
+  | decl_const          
+  | decl_funct    
+  | decl_open
+//  | decl_fnew
   | DEBUG STRING                             { printf("%s\n", $2); }
 ;
 
@@ -291,6 +294,136 @@ decl_open:
   | IMPORT
 ;
 
+/*
+  I.1.a) Types
+*/
+
+/* Type Declarations */
+decl_type:
+    pre_decl_type param_type OP_ASSIGN decl_struct implements
+  | pre_decl_type            OP_ASSIGN decl_struct implements
+  | pre_decl_type param_type OP_ASSIGN decl_struct
+  | pre_decl_type            OP_ASSIGN decl_struct
+;
+
+  pre_decl_type: 
+      DEBUG STRING TYPE IDENTIFIER { add_debug_message($4, $2); context.declareType($4); }
+    | TYPE IDENTIFIER  { context.declareType($2); }
+  ;
+
+  param_type:
+      param_type param_type 
+    | IDENTIFIER            { context.declareTypeParameter($1); }
+  ;
+
+  implements:
+      IMPL l_typeclass OP_TYPE impl_proto
+  ;
+
+    l_typeclass:
+        l_typeclass OP_COMMA l_typeclass
+      | IDENTIFIER  { context.implementTypeclass($1); }
+    ;
+
+    impl_proto:
+        impl_proto OP_COMMA impl_proto
+      | impl_proto_decl impl_proto_param OP_ASSIGN exp
+    ;
+
+    impl_proto_decl:
+      IDENTIFIER  { l.log('d', "ImplProto", "Prototype declared: " + string($1)); }
+      ;
+
+    impl_proto_param:
+        impl_proto_param impl_proto_param
+      | IDENTIFIER        { l.log('d', "ImplProto", "Prototype Parameter declared: " + string($1) ); }
+    ;
+
+  /* Type Constructor Declarations */
+  decl_struct:
+      decl_struct BIT_OR decl_struct
+    | pre_decl_struct OF decl_record 
+    | pre_decl_struct OF exp_type     
+    | pre_decl_struct                 
+    | exp_type   { context.declareTypeAlias(context.LastType()); }
+  ;
+
+    pre_decl_struct:
+      CONSTRUCTOR  { context.declareTypeConstructor($1); }
+    ;
+
+    decl_record:
+        decl_record OP_COMMA decl_record
+      | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp { context.declareTypeElement($1, context.LastType()); }
+      | IDENTIFIER OP_TYPE exp_type               { context.declareTypeElement($1, context.LastType()); }
+    ;
+  
+
+/*
+  I.1.b) Typeclasses
+*/
+
+decl_typeclass:
+    pre_decl_typeclass REQ exp_prototype
+; 
+
+  pre_decl_typeclass:
+      TYPECLASS IDENTIFIER IDENTIFIER { context.declareTypeclass($2, $3); }
+  ;
+
+  exp_prototype:
+      exp_prototype proto_comma exp_prototype      { }
+    | prototype param_prototype OP_ASSIGN exp_type { }
+  ;
+
+  prototype:
+      IDENTIFIER    { context.declareTypeclassPrototype($1); }
+    /*
+    | OP_ADD_O      { context.declareTypeclassPrototype("(+)"); }
+    | OP_SUB_O      { context.declareTypeclassPrototype("(-)"); }
+    | OP_MUL_O      { context.declareTypeclassPrototype("(*)"); }
+    | OP_DIV_O      { context.declareTypeclassPrototype("(/)"); }
+    | OP_MOD_O      { context.declareTypeclassPrototype("(%)"); }
+    | BOOL_AND_O    { context.declareTypeclassPrototype("(&&)"); }
+    | BOOL_OR_O     { context.declareTypeclassPrototype("(||)"); }
+    | BOOL_XOR_O    { context.declareTypeclassPrototype("(^^)"); }
+    | BIT_AND_O     { context.declareTypeclassPrototype("(&)"); }
+    | BIT_OR_O      { context.declareTypeclassPrototype("(|)"); }
+    | BIT_XOR_O     { context.declareTypeclassPrototype("(^)"); }
+    | BIT_SHL_O     { context.declareTypeclassPrototype("(<<)"); }
+    | BIT_SHR_O     { context.declareTypeclassPrototype("(>>)"); }
+    | OP_LT_O       { context.declareTypeclassPrototype("(<)"); }
+    | OP_LTE_O      { context.declareTypeclassPrototype("(<=)"); }
+    | OP_GT_O       { context.declareTypeclassPrototype("(>)"); }
+    | OP_GTE_O      { context.declareTypeclassPrototype("(>=)"); }
+    | OP_EQ_O       { context.declareTypeclassPrototype("(==)"); }
+    | OP_NEQ_O      { context.declareTypeclassPrototype("(!=)"); }
+    | OP_APPEND_O   { context.declareTypeclassPrototype("(++)"); }
+    | OP_LIST_CON_O { context.declareTypeclassPrototype("(:)"); } */
+  ;
+
+  /*
+    PROTOTYPE PARAMETERS
+  */
+  param_prototype:
+      param_prototype param_prototype 
+    | exp_type      {/* param_proto($1); */}
+    | {/* DO NOTHING */}
+  ;
+
+/*
+  I.1.c) Constants
+*/
+assign_const:
+  OP_ASSIGN  { context.LastData((Arbitrary)0); context.newData(TYPE_ARBITRARY, NULL); }
+;
+
+decl_const:
+    DEBUG STRING CONST IDENTIFIER OF exp_type assign_const exp_const { add_debug_message($4, $2); context.declareConstant($4); }
+  | DEBUG STRING CONST ident_struct IDENTIFIER  assign_const exp_const { add_debug_message($5, $2); context.declareConstant($5); }
+  | CONST IDENTIFIER OF exp_type assign_const exp_const { context.declareConstant($2); }
+  | CONST ident_struct IDENTIFIER  assign_const exp_const { context.declareConstant($3); }
+;
 
 
 /*
@@ -305,21 +438,18 @@ exp:
   | exp_delay exp   
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
   | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }
-  | decl  
-  | LIST_HEAD exp_list
   | exp_conditional  
-  | exp_struct     
-  | exp_arith    
-  | exp_logical      
+  | exp_arith        
   | exp_literal      
+  | LIST_HEAD exp_list
   | exp_regex       
-  | exp_request   
  // | exp_memIO
   | exp_ipcIO
-  | exp_fileIO
+//  | exp_fileIO
 //  | exp OP_TUP exp                           { add_to_tuple(); }
   | DEBUG_PRINT IDENTIFIER                   { print_debug_message($2); }
   | CLEAR                                    { clear_terminal(); }
+  | decl  
   | XCS_UNDEF
 ;
 
@@ -332,13 +462,12 @@ exp_delay:
 */
 
 exp_literal:
-    exp_struct
-  | exp_identifier
+    exp_identifier  
   | exp_primitive
+  | exp_struct
 ;
 
 exp_identifier:
- //   exp_identifier OP_ELEMENT OP_REC_L INT OP_REC_R   { return_function($4); }
     PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { context.resolveFunction($2); }
   | IDENTIFIER arg_funct  { context.resolveFunction($1); }
   | IDENTIFIER            { context.resolveExpression($1); }
@@ -351,7 +480,7 @@ exp_primitive:
   | exp_boolean         { context.LastType(TYPE_BOOLEAN); }
 //  | exp_real            { context.LastType(TYPE_REAL);    }
   | exp_char            { context.LastType(TYPE_CHAR);    }
-//  | exp_string          { context.LastType(TYPE_STRING);  }
+  | STRING              { context.LastType(TYPE_STRING);  }
   | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
 ;
 
@@ -384,9 +513,17 @@ exp_integer:
   2.b) Boolean Expressions
 */
 exp_boolean:
-    TRUE   { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
+    exp OP_LT exp       { context.resolveOperator(OPERATOR_LT);  }
+  | exp OP_LTE exp      { context.resolveOperator(OPERATOR_LTE); }
+  | exp OP_GT exp       { context.resolveOperator(OPERATOR_GT);  }
+  | exp OP_GTE exp      { context.resolveOperator(OPERATOR_GTE); }
+  | exp OP_EQ exp       { context.resolveOperator(OPERATOR_EQ);  }
+  | exp OP_NEQ exp      { context.resolveOperator(OPERATOR_NEQ); }
+  | exp BOOL_AND exp    { context.resolveOperator(OPERATOR_AND); }
+  | exp BOOL_OR exp     { context.resolveOperator(OPERATOR_OR);  }
+  | exp BOOL_XOR exp    { context.resolveOperator(OPERATOR_XOR); }
+  | TRUE   { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
   | FALSE  { pushData(TYPE_BOOLEAN, (Arbitrary) 0); }
-  | exp OP_LT exp {  }
 ;
 
 /*
@@ -404,8 +541,7 @@ exp_real:
   2.d) Character Expressions
 */
 exp_char:
-    CHAR        { pushData(TYPE_CHAR, (void*) $1); }
-  | CHAR_C INT  { pushData(TYPE_CHAR, (void*) $2); }
+  CHAR        { pushData(TYPE_CHAR, (void*) $1); }
 ;
 
 /*
@@ -445,35 +581,96 @@ param_list:
   3.a) Arithmetic Expressions
 */
 exp_arith:
-    exp OP_ADD exp      { resolveAddition(); }
-  | exp OP_SUB exp      { context.solveOperator(OPERATOR_SUBTRACT); }
-  | exp OP_MUL exp      { context.solveOperator(OPERATOR_MULTIPLY); }
-  | exp OP_DIV exp      { context.solveOperator(OPERATOR_DIVISION); }
-  | exp OP_MOD exp      { context.solveOperator(OPERATOR_MODULUS); }
-  | exp BIT_AND exp     { context.solveOperator(OPERATOR_BIT_AND); }
-  | exp BIT_OR exp      { context.solveOperator(OPERATOR_BIT_OR);  }
+    exp OP_ADD exp      { context.resolveOperator(OPERATOR_ADDITION); }
+  | exp OP_SUB exp      { context.resolveOperator(OPERATOR_SUBTRACT); }
+  | exp OP_MUL exp      { context.resolveOperator(OPERATOR_MULTIPLY); }
+  | exp OP_DIV exp      { context.resolveOperator(OPERATOR_DIVISION); }
+  | exp OP_MOD exp      { context.resolveOperator(OPERATOR_MODULUS); }
+  | exp BIT_AND exp     { context.resolveOperator(OPERATOR_BIT_AND); }
+  | exp BIT_OR exp      { context.resolveOperator(OPERATOR_BIT_OR);  }
   //| BIT_NOT exp         { infer_bit_not(); }
-  | exp BIT_XOR exp     { context.solveOperator(OPERATOR_BIT_XOR); }
-  | exp BIT_SHL exp     { context.solveOperator(OPERATOR_BIT_SHL); }
-  | exp BIT_SHR exp     { context.solveOperator(OPERATOR_BIT_SHR); } 
+  | exp BIT_XOR exp     { context.resolveOperator(OPERATOR_BIT_XOR); }
+  | exp BIT_SHL exp     { context.resolveOperator(OPERATOR_BIT_SHL); }
+  | exp BIT_SHR exp     { context.resolveOperator(OPERATOR_BIT_SHR); } 
+;
+
+
+
+/*
+  5.) Datatype Expressions
+*/
+
+/*
+    5.a) Types
+*/
+
+/*
+  TYPE EXPRESSIONS
+*/
+exp_type:
+    exp_type exp_type  { }
+  | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
+  | IDENTIFIER      { context.resolveType($1); }
+  | OFFER         { printf("Implement Offers as Types\n"); }
+  | exp_type OP_TUP exp_type {  }
 ;
 
 /*
-  3.b) Logical Expressions
+  5.b) Constructors
 */
-exp_logical:
-    exp BOOL_AND exp    { context.solveOperator(OPERATOR_AND); }
-  | exp BOOL_OR exp     { context.solveOperator(OPERATOR_OR);  }
-  | exp BOOL_XOR exp    { context.solveOperator(OPERATOR_XOR); }
-//  | BOOL_NOT exp        { context.solveOperator(OPERATOR_NOT); }
-  | exp OP_LT exp       { context.solveOperator(OPERATOR_LT);  }
-  | exp OP_LTE exp      { context.solveOperator(OPERATOR_LTE); }
-  | exp OP_GT exp       { context.solveOperator(OPERATOR_GT);  }
-  | exp OP_GTE exp      { context.solveOperator(OPERATOR_GTE); }
-  | exp OP_EQ exp       { context.solveOperator(OPERATOR_EQ);  }
-  | exp OP_NEQ exp      { context.solveOperator(OPERATOR_NEQ); }
-//  | exp_is              { }
+
+ident_struct:
+  CONSTRUCTOR { context.resolveConstructor($1); }
 ;
+
+exp_struct:
+    ident_struct OP_REC_L exp_record OP_REC_R
+  | ident_struct exp
+  | ident_struct  
+;
+
+exp_record:
+    exp_record OP_COMMA exp_record
+  | IDENTIFIER OP_ASSIGN exp
+;
+
+/*
+  5.c) Records
+*/
+
+/*
+  TYPE RECORDS
+*/
+
+exp_record:
+    exp OP_ELEMENT exp_record { }
+  | IDENTIFIER                { context.resolveTypeElement($1); }
+;
+
+arg_record: 
+    arg_record OP_COMMA arg_record
+  | IDENTIFIER OP_ASSIGN exp
+  | exp   { l.log('D', "ExpConstruct", "Constructor Parameter Loaded"); }
+;
+
+/*
+  5.d) Typeclass/Prototypes
+*/
+
+
+/*
+  PROTOTYPE EXPRESSIONS
+*/
+
+proto_comma:
+  OP_COMMA {  }
+;
+    
+
+/*
+  5.e) Primitive Typeclasses
+*/
+
 
 /*
   3.) Conditional Expressions
@@ -481,6 +678,7 @@ exp_logical:
 exp_conditional:
     exp_if              { }
   | exp_match           { }
+  | exp_is              { }
 ;
 
 /*
@@ -542,8 +740,8 @@ param_match:
 */
 
 exp_is:
-    exp IS exp_struct { /*is_construct();*/ }
-  | exp IS exp_type   { is_type();      }
+//    exp IS exp_struct { /*is_construct();*/ }
+  | exp IS exp_type   { isType(); }
 ;
 
 /*
@@ -553,21 +751,20 @@ exp_is:
 /*
   4.a) Constants
 */
-decl_const:
-    DEBUG STRING CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { add_debug_message($4, $2); context.declareConstant($4); }
-  | DEBUG STRING CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { add_debug_message($5, $2); context.declareConstant($5); }
-  | CONST IDENTIFIER OF exp_type OP_ASSIGN exp_const { context.declareConstant($2); }
-  | CONST exp_struct IDENTIFIER  OP_ASSIGN exp_const { context.declareConstant($3); }
+
+op_const:
+    OP_ADD
+  | OP_SUB
+  | OP_MUL
+  | OP_DIV
+  | OP_MOD
 ;
 
 exp_const:
-    INT     { context.LastData((void*) (unsigned long long) $1); }
-  | exp_struct
-  | IDENTIFIER { context.resolveConstant($1); }
-  | exp_const OP_ADD INT { context.LastData((void*) ((unsigned long long)context.LastData() + $3)); }
-  | exp_const OP_SUB INT { context.LastData((void*) ((unsigned long long)context.LastData() - $3)); }
-  | exp_const OP_MUL INT { context.LastData((void*) ((unsigned long long)context.LastData() * $3)); }
-  | exp_const OP_DIV INT { context.LastData((void*) ((unsigned long long)context.LastData() / $3)); }
+    exp_const op_const exp_const
+  | INT     { context.addData(TYPE_INTEGER, (Arbitrary)$1); }
+  | STRING  { context.addData(TYPE_STRING, (Arbitrary)$1);  }
+  | IDENTIFIER { context.resolveConstant($1); context.popLastInstruction(); }
 ;
 
 /*
@@ -615,8 +812,7 @@ __decl_funct:
 ;
 
 decl_funct:
-    decl_funct IMPL decl_prototypes
-  | __decl_funct IN exp   { context.undeclareFunction(); }
+    __decl_funct IN exp   { context.undeclareFunction(); }
   | __decl_funct
 ;
 
@@ -630,10 +826,6 @@ decl_prototypes:
   | IDENTIFIER OP_ASSIGN exp
 ;
 
-exp_inline:
-    OP_INLINE exp exp_inline {  }
-  | {/* Intentionally Left Blank */}
-;
 
 /*
   FUNCTION EXPRESSIONS (INVOCATIONS)
@@ -649,178 +841,6 @@ arg_funct:
 ;
 
 
-/*
-  5.) Datatype Expressions
-*/
-
-
-/*
-    5.a) Types
-*/
-
-/*
-  TYPE DECLARATIONS
-*/
-
-dinit_type: 
-    DEBUG STRING TYPE IDENTIFIER { add_debug_message($4, $2); context.declareType($4); }
-  | TYPE IDENTIFIER  { context.declareType($2); }
-;
-
-decl_type:
-    dinit_type param_type OP_ASSIGN decl_struct implements
-  | dinit_type            OP_ASSIGN decl_struct implements
-  | dinit_type param_type OP_ASSIGN decl_struct
-  | dinit_type            OP_ASSIGN decl_struct
-;
-
-implements:
-    IMPL l_typeclass
-;
-
-l_typeclass:
-    l_typeclass OP_COMMA l_typeclass
-  | IDENTIFIER  {/* impl_typeclass($1); */}
-;
-
-param_type:
-    param_type param_type 
-  | IDENTIFIER            { context.declareTypeParameter($1); }
-;
-
-
-/*
-  TYPE EXPRESSIONS
-*/
-exp_type:
-    exp_type exp_type  {printf("Parameterized Type Found\n");}
-  | exp_type OP_LIST_L INT OP_LIST_R    {printf("Type Array initialized\n");}
-  | IDENTIFIER      { context.LastType(context.resolveType($1)); }
-  | OFFER         { printf("Implement Offers as Types\n"); }
-  | exp_type OP_TUP exp_type { printf("Implement Tuples\n"); }
-;
-
-/*
-  5.b) Constructors
-*/
-
-pre_decl_struct:
-  CONSTRUCTOR  { context.declareTypeConstructor($1); }
-;
-decl_struct:
-    decl_struct BIT_OR decl_struct
-  | pre_decl_struct OF decl_record 
-  | pre_decl_struct OF exp_type     
-  | pre_decl_struct                 
-  | exp_type   { context.declareTypeAlias(context.LastType()); }
-;
-
-
-pre_exp_struct:
-  CONSTRUCTOR { context.resolveConstructor($1); }
-;
-exp_struct:
-    pre_exp_struct PAR_LEFT arg_record PAR_RIGHT { printf("Completed\n"); }
-  | CONSTRUCTOR exp    { context.castExpression($1); }
-  | CONSTRUCTOR        { context.resolveConstructor($1); }   
-; 
-
-
-/*
-  5.c) Records
-*/
-
-/*
-  TYPE RECORDS
-*/
-decl_record:
-    decl_record OP_COMMA decl_record
-  | IDENTIFIER OP_TYPE exp_type OP_ASSIGN exp { context.declareTypeElement($1, context.LastType()); }
-  | IDENTIFIER OP_TYPE exp_type               { context.declareTypeElement($1, context.LastType()); }
-;
-
-exp_record:
-    exp OP_ELEMENT exp_record { }
-  | IDENTIFIER                { context.resolveTypeElement($1); }
-;
-
-arg_record: 
-    arg_record OP_COMMA arg_record
-  | IDENTIFIER OP_ASSIGN exp
-  | exp
-;
-
-/*
-  5.d) Typeclass/Prototypes
-*/
-
-/*
-  TYPECLASS DECLARATIONS
-*/
-typeclass:
-    TYPECLASS IDENTIFIER { context.declareTypeclass($2); }
-;
-
-decl_typeclass:
-    typeclass REQ exp_prototype
-; 
-
-exp_typeclass:
-    IDENTIFIER      { exp_typeclass($1); }
-;
-
-
-/*
-  PROTOTYPE EXPRESSIONS
-*/
-prototype:
-    IDENTIFIER    { context.declareTypeclassPrototype($1); }
-  /*
-  | OP_ADD_O      { context.declareTypeclassPrototype("(+)"); }
-  | OP_SUB_O      { context.declareTypeclassPrototype("(-)"); }
-  | OP_MUL_O      { context.declareTypeclassPrototype("(*)"); }
-  | OP_DIV_O      { context.declareTypeclassPrototype("(/)"); }
-  | OP_MOD_O      { context.declareTypeclassPrototype("(%)"); }
-  | BOOL_AND_O    { context.declareTypeclassPrototype("(&&)"); }
-  | BOOL_OR_O     { context.declareTypeclassPrototype("(||)"); }
-  | BOOL_XOR_O    { context.declareTypeclassPrototype("(^^)"); }
-  | BIT_AND_O     { context.declareTypeclassPrototype("(&)"); }
-  | BIT_OR_O      { context.declareTypeclassPrototype("(|)"); }
-  | BIT_XOR_O     { context.declareTypeclassPrototype("(^)"); }
-  | BIT_SHL_O     { context.declareTypeclassPrototype("(<<)"); }
-  | BIT_SHR_O     { context.declareTypeclassPrototype("(>>)"); }
-  | OP_LT_O       { context.declareTypeclassPrototype("(<)"); }
-  | OP_LTE_O      { context.declareTypeclassPrototype("(<=)"); }
-  | OP_GT_O       { context.declareTypeclassPrototype("(>)"); }
-  | OP_GTE_O      { context.declareTypeclassPrototype("(>=)"); }
-  | OP_EQ_O       { context.declareTypeclassPrototype("(==)"); }
-  | OP_NEQ_O      { context.declareTypeclassPrototype("(!=)"); }
-  | OP_APPEND_O   { context.declareTypeclassPrototype("(++)"); }
-  | OP_LIST_CON_O { context.declareTypeclassPrototype("(:)"); } */
-;
-
-proto_comma:
-  OP_COMMA { printf("\n"); }
-;
-
-exp_prototype:
-    exp_prototype proto_comma exp_prototype      { }
-  | prototype param_prototype OP_ASSIGN exp_type { printf("\n"); }
-;
-
-/*
-  PROTOTYPE PARAMETERS
-*/
-param_prototype:
-    param_prototype param_prototype 
-  | exp_type      {/* param_proto($1); */}
-  | {/* DO NOTHING */}
-;
-    
-
-/*
-  5.e) Primitive Typeclasses
-*/
 
 /*
   7) Direct Memory Access (DMA)
@@ -853,9 +873,10 @@ exp_memread:
 /*
   6.b) Write Expression to Memory
 */
+/*
 exp_memwrite:
-    exp MEM_SET exp { /*memory_write_exp();*/ }
-  | exp MEM_SET exp INT {/*memory_write_exp();*/ }
+    exp MEM_SET exp { memory_write_exp(); }
+  | exp MEM_SET exp INT { memory_write_exp(); }
 ;
 
 
@@ -908,6 +929,7 @@ exp_receive:
 /*
   8.) Filesystem Operations
 */
+/*
 exp_fileIO:
     exp_fread
   | exp_fwrite
@@ -939,25 +961,26 @@ exp_fname:
   | OP_ELEMENT CONSTRUCTOR { printf("Hidden File Name Encountered: %s\n", $2); free($2); }
 ;
 
-
+*/
 /*
   New File
 */
+/*
 decl_fnew:
   FILEK IDENTIFIER exp_fpath  { printf("File Declared: %s\n", $2); }
 ;
 
-
+*/
 /*
   Read File
-*/
+*//*
 exp_fread:
   READ IDENTIFIER           {printf("Return Contents of File: %s\n", $2); free($2);}
 ;
-
+*/
 /*
   Write File
-*/
+
 exp_fwrite:
     WRITE IDENTIFIER STRING   {printf("\"%s\" has been written to %s\n", $3, $2); free($3); free($2);}
   | APPEND IDENTIFIER STRING  {printf("\"%s\" has been appended to %s\n", $3, $2); free($3); free($2);}
@@ -965,7 +988,7 @@ exp_fwrite:
 
 /*
   Search for File
-*/
+
 exp_fsearch:
     TSEARCH exp_ffilter 
   | SEARCH exp_fpath
@@ -988,52 +1011,6 @@ exp_regex:
   E.) Tether Modules 
 */
 
-/*
-  1.) Tether Module Structure
-*/
-xcs_tether:
-    TETHER_H teth_sep           { printf("Finished Parsing Tether Module.\n"); }
-;
-
-teth_sep:
-    teth_sep OP_SEP teth_sep
-  | decl_offer
-  | decl
-  | exp
-;
-
-/*
-  3.) Request/Offer
-*/
-
-/*
-  3.a) Offer Statements
-*/
-offer:
-    OFFER IDENTIFIER              { decl_offer($2); }
-  | OFFER IDENTIFIER OF exp_type  { decl_offer($2); }
-;
-
-decl_offer:
-    offer param_offer OP_ASSIGN exp
-;
-
-param_offer:
-    IDENTIFIER param_offer  {/* Function Parameters for Offer */}
-  |       {/* INTENTIONALLY LEFT BLANK */}
-;
-
-/*
-  3.b) Request Statements
-*/
-exp_request:
-    REQUEST IDENTIFIER arg_request { exp_request($2); }
-;
-
-arg_request:
-    exp arg_request
-  |       {/* INTENTIONALLY LEFT BLANK */}
-;
 
 %%
 
@@ -1051,6 +1028,6 @@ void yyerror(const char* error) {
   
   //rs_end();
 
-	exit(grammar_status);
+	exit(1);
 }
 

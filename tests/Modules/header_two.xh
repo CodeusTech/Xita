@@ -1,5 +1,7 @@
 
 
-let test_function x y = x + y;;
+--let test_function x y = x + y;;
 
-(test_function 5 7);;
+--(test_function 5 7);;
+
+let test2 = 65;;

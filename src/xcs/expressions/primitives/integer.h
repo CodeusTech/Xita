@@ -75,11 +75,19 @@ ErrorCode pushInteger(Arbitrary value)
 
   switch(tid)
   {
+    case TYPE_ARBITRARY:
+      context.LastType(TYPE_INTEGER);
+    case TYPE_INTEGER:
+    case TYPE_U32:
+    case TYPE_I32:
+      bytes = 4;
+      break;
     case 9: //  U64
     case 10://  I64
       bytes = 8;
       break;
     default:
+
       break; //  Remove when Type Checking is finished
       yyerror("Attempted to add non-integer data casted as integer type");
       return 1;

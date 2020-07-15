@@ -2,7 +2,7 @@
   is.h
   Cody Fagley
   Authored on   February 16, 2019
-  Last Modified February 16, 2019
+  Last Modified      May  1, 2020
 */
 
 /*
@@ -90,22 +90,28 @@ ErrorCode is_construct()
   Returns:
     0, if Successful
 */
-ErrorCode is_type()
+ErrorCode isType()
 {
   //  Remove the last expression getting pushed to stack
   context.popLastInstruction();
 
+  pushData(context.LastType(), (Arbitrary) context.LastType());
+
   /*
     Compare TOP Type vs SECOND Type
   */
-  TypeID tSec = context.rsSecType();
-  TypeID tTop = context.rsType();
 
-  context.rsPop();
+  //  If Possible, Type-Check statically
+  if (context.TypeCheck())
+  {
+    l.log('d', "TypeCheck", "Invoked Type Check Successful");
+  } else
+  {
+    l.log('e', "TypeCheck", "Invoked Type Check Failed");
+  }
 
-  //  Push TypeID of top 2 elements to Register Stack
-  pushData(2, (Arbitrary) tSec);
-  pushData(2, (Arbitrary) tTop);
+  //  TODO: Add Type Check Function
+  pushData(TYPE_BOOLEAN, (Arbitrary) 1); //  True
 
 
   //  Get Register Codes

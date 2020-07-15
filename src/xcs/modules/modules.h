@@ -26,7 +26,8 @@
 #define _MODULES_STRUCTS_H
 
 #include <xcs/std/includes.h>
-#include <xcs/types/types.h>
+#include <xcs/types/types.h>  //  DEPRECATED
+//#include <xcs/types/manager.h>
 #include <xcs/regstack/structs.h>
 #include <xcs/expressions/constants/constants.h>
 #include <xcs/expressions/functions/functions.h>
@@ -60,9 +61,13 @@ protected:
   Scope next_scope = 1;
   int line_number = 0;
 
+  //  Module-Specific Managers
+  //TypeManager _types;
+  
+
   vector<RegisterStack> register_stacks;
 
-  vector<TypeNode> types;
+  vector<TypeNode> _types;
   vector<TypeclassNode> typeclasses;
   
   vector<ConstantNode> constants;
@@ -75,7 +80,6 @@ public:
   ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent);
 
   vector<ModuleID> imported;
-
   
   /*
     1.) Private Accessors
@@ -99,7 +103,6 @@ public:
   TypeID rsType(int from_top) { return register_stacks[scope].from_top_type(from_top); }
 
   ADR rsPush(TypeID tid) { return register_stacks[scope].push(tid); }
-  char* rsPushRegister(TypeID tid, ADR reg);
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return register_stacks[scope].pop(); }
   
@@ -119,35 +122,39 @@ public:
   */
 
   //  2.a) Types
-    ErrorCode declareType(TypeID tid, Identifier ident);
-    ErrorCode declareType(TypeID tid, Identifier ident, unsigned long size);
-    ErrorCode declareTypeParameter(TypeID tid, Identifier ident);
-    ErrorCode declareTypeConstructor(ConstructorID cid, Identifier ident);
-    ErrorCode declareTypeElement(Identifier ident, TypeID tid);
-    ErrorCode declareTypeAlias(TypeID alias) { return types.back().declareAlias(alias); }
+    ErrorCode _declareType(TypeID tid, Identifier ident)                     {_types.push_back(TypeNode(tid, _mid, ident)); return 0;}//{ return _types.declareType(tid, ident); }
+    ErrorCode _declareType(TypeID tid, Identifier ident, unsigned long size) {_types.push_back(TypeNode(tid, _mid, ident, size)); return 0;}//{ return _types.declareType(tid, ident, size); }
+    ErrorCode _declareTypeParameter(TypeID tid, Identifier ident);
+    ErrorCode _declareTypeConstructor(ConstructorID cid, Identifier ident)   {_types.back().declareConstructor(cid, ident); return 0;}//{ return _types.declareConstructor(cid, ident); }
+    ErrorCode _declareTypeElement(Identifier ident, TypeID tid);
+    ErrorCode _declareTypeAlias(TypeID alias) { return _types.back().declareAlias(alias); }
+    ErrorCode _declareTypeAlias(TypeID alias, TypeID declared) { return _types[alias].declareAlias(declared); }
 
-    unsigned long TypeSize(TypeID tid); //  In Bytes
-    unsigned long TypeSize(Identifier ident); //  In Bytes
+    unsigned long _TypeSize(TypeID tid); //  In Bytes
+    unsigned long _TypeSize(Identifier ident); //  In Bytes
+    bool _IsAliased(TypeID alias, TypeID checked);
     
-    TypeID resolveType(Identifier ident);
-    Identifier resolveTypeIdentifier(TypeID tid);
-    unsigned long* resolveTypeConstructor(Identifier ident);
-    Identifier resolveConstructorIdentifier(ConstructorID cid);
-    TypeID resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid);
+    TypeID _resolveType(Identifier ident);
+    Identifier _resolveTypeIdentifier(TypeID tid);
+    TypeID _resolveTypeParameter(Identifier ident);
+    unsigned long* _resolveTypeConstructor(Identifier ident);
+    Identifier _resolveConstructorIdentifier(ConstructorID cid);
+    TypeID _resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid);
 
-    ErrorCode castType(TypeID tid);
-    ErrorCode castTypeConstructor(ConstructorID cid);
+    ErrorCode _castType(TypeID tid);
+    ErrorCode _castTypeConstructor(ConstructorID cid);
 
   //  2.b) Typeclasses
-    ErrorCode declareTypeclass(TypeID tid, Identifier ident);
-    ErrorCode declareTypeclassPrototype(PrototypeID pid, Identifier ident);
-    ErrorCode declareTypeclassParameter(Identifier ident, ADR reg);
+    ErrorCode _declareTypeclass(TypeID tid, Identifier ident, Identifier param);
+    ErrorCode _declareTypeclassPrototype(PrototypeID pid, Identifier ident);
 
+    TypeID _resolveTypeclass(Identifier ident);
+    TypeID _resolveTypeclassParameter(Identifier ident);
 
   //  2.c) Constants
     ErrorCode declareConstant(ConstantID cid, Identifier ident, TypeID type, Arbitrary value);
 
-    ConstantID resolveConstant(Identifier ident);
+    ConstantNode* resolveConstant(Identifier ident);
 
   //  2.d) Functions
     ErrorCode declareFunction(FunctionID fid, Identifier ident);

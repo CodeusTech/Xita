@@ -325,7 +325,14 @@ import     BEGIN(IMPORT);
 <OPEN>[ \t"]* /*Eat Whitespace*/
 <OPEN>[^ \t\n]+ {
   
-  printf("%s\n", yytext);
+  // for testing
+  // printf("%s\n", yytext);
+
+  /*
+    TODO:
+      External modules require absolute paths from the initial compiling directory.  
+      This needs to be changed so that headers are imported from relative pathing.
+  */
 
   FILE* fmod = fopen(yytext, "r");
 
@@ -338,7 +345,14 @@ import     BEGIN(IMPORT);
 <RUN>[ \t"]* /*Eat Whitespace*/
 <RUN>[^ \t\n]+ {
   
-  printf("%s\n", yytext);
+  // for testing
+  //printf("%s\n", yytext);
+
+  /*
+    TODO: 
+      External modules require absolute paths from the initial compiling directory.
+      This needs to be changed so that scripts can be ran using relative pathing.
+  */
 
   FILE* fmod = fopen(yytext, "r");
 
@@ -349,8 +363,15 @@ import     BEGIN(IMPORT);
 
 <IMPORT>[ \t"]* /*Eat Whitespace*/
 <IMPORT>[^ \t\n]+ {
-  
+
+  //  for testing  
   printf("%s\n", yytext);
+
+  /*
+    POSSIBLY DEPRECATED!
+      With the new changes in module imports, e.g. open/run system, 
+      the 'import' keyword may be obsolete.
+  */
 
   FILE* fmod = fopen(yytext, "r");
 

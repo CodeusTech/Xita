@@ -92,8 +92,19 @@ TypeID TypeNode::resolveElement(Identifier ident, ConstructorID cid)
   return 0;
 }
 
+TypeID TypeNode::resolveParameter(Identifier ident)
+{
+  for (Index i = 0; i < parameters.size(); ++i)
+    if (strcmp(parameters[i].Ident(), ident) == 0)
+      return parameters[i].Id();
+  return 0;
+}
 
 
-
-
-
+bool TypeNode::findConstructorID(ConstructorID cid)
+{
+  for (Index i = 0; i < constructors.size(); ++i)
+    if (constructors[i].Id() == cid)
+      return true;
+  return false;
+}

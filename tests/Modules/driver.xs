@@ -14,4 +14,4 @@
   open tests/Modules/header_one.xh
   open tests/Modules/header_two.xh
 
-  (test_function test2 55) + 1
+  test + test2
