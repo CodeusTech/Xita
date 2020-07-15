@@ -1,35 +1,28 @@
 (*
-  functions.xs
-  Cody Fagley
+  constants.xs
+  Codeus Tech
   Authored on   February 16, 2019
-  Last Modified February 16, 2019
+  Last Modified      May 26, 2020
 *)
 
 (*
   Contains Test Case for Functional Expressions
-
-  Table of Contents
-  =================
-  1.) Constant Declarations
-  2.) Functional Declarations
-  3.) Functional Expressions
 *)
 
-(*
-  1.) Constant Declarations
-*)
+  type color = Color of int;;
 
-const Int pi = 314;;
-const Int pi2 = pi + 3;;
+  --  Constant Declarations
+  const Color red = 0xFF0000;; --  RGB Notation
+  const Color yellow = red + 0x00FF00;;
 
+  --  Constant Expressions
+  red * 32;;  --  Invoke Constant
 
-(*
-  2.) Functional Declarations
-*)
+  --  Functional Overrides (1 Time Use)
+  let red = 0xaa0000 in 
+    red - 1      --  Check Overriden Value: 'red'
+  ;;
 
-pi * 32;;
-
---let pi_2 = 314;;
-
---pi_2
+  --  Check Current Default Value: 'red'
+  red
 

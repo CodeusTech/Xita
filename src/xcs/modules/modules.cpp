@@ -33,6 +33,8 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
   _parent = parent;
 
   register_stacks.push_back(RegisterStack());
+  //_types = TypeManager(mid);
+
   l.log('d', "Modules", "Initialized Module");
 }
 
@@ -41,18 +43,6 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
   2.) Operations/Accessors
 */
 
-//  2.b) Register Stacks
-char* ModuleNode::rsPushRegister(TypeID tid, ADR src) 
-{
-  //  If all registers are in use, reroute to extended stack space
-  ADR dest = rsPush(tid);
-
-  //  Copy Data from src to dest
-  char* str = (char*) malloc(50);
-  sprintf(str, "  mov   %s, %s", get_reg(dest, 8*TypeSize(tid)), get_reg(src, 8*TypeSize(tid)));  
-
-  return str;
-}
 
 ADR ModuleNode::rsMerge(TypeID tid, ADR reg)
 {
@@ -93,69 +83,79 @@ ErrorCode ModuleNode::concludeExpression()
   3.) Identifier Handling
 */
 
-//  3.a) Types
-  //  Declarations
-ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident)
-{ types.push_back( TypeNode(tid, _mid, ident) ); return SUCCESS; }
-ErrorCode ModuleNode::declareType(TypeID tid, Identifier ident, unsigned long size)
-{ types.push_back( TypeNode(tid, _mid, ident, size) ); return SUCCESS; }
-
   //  Declare Parameter
-  ErrorCode ModuleNode::declareTypeParameter(TypeID tid, Identifier ident)
-  { return types.back().declareParameter(tid, ident); }
-
-  //  Declare Constructor
-  ErrorCode ModuleNode::declareTypeConstructor(ConstructorID cid, Identifier ident)
-  { return types.back().declareConstructor(cid, ident); }
+  ErrorCode ModuleNode::_declareTypeParameter(TypeID tid, Identifier ident)
+  { return _types.back().declareParameter(tid, ident); }
 
   //  Declare Element
-  ErrorCode ModuleNode::declareTypeElement(Identifier ident, TypeID tid)
-  { return types.back().declareElement(ident, tid); }
+  ErrorCode ModuleNode::_declareTypeElement(Identifier ident, TypeID tid)
+  { return _types.back().declareElement(ident, tid); }
 
 
-
-unsigned long ModuleNode::TypeSize(TypeID tid)
+unsigned long ModuleNode::_TypeSize(TypeID tid)
 {
-  for (unsigned long i = 0; i < types.size(); ++i)
-    if (tid == types[i].Id())
-      return types[i].Size();
+  for (unsigned long i = 0; i < _types.size(); ++i)
+    if (tid == _types[i].Id())
+      return _types[i].Size();
   return 0;
 }
-unsigned long ModuleNode::TypeSize(Identifier ident)
+unsigned long ModuleNode::_TypeSize(Identifier ident)
 {
-  for (unsigned long i = 0; i < types.size(); ++i)
-    if (strcmp(ident, types[i].Ident()))
-      return types[i].Size();
+  for (unsigned long i = 0; i < _types.size(); ++i)
+    if (strcmp(ident, _types[i].Ident()))
+      return _types[i].Size();
   return 0;
+}
+
+bool ModuleNode::_IsAliased(TypeID alias, TypeID checked)
+{
+  for (Index i = 0; i < _types.size(); ++i)
+    if (_types[i].Id() == alias)
+      return _types[i].IsAliased(checked);
+  return false;
 }
 
   //  Invocations
-TypeID ModuleNode::resolveType(Identifier ident)
+TypeID ModuleNode::_resolveType(Identifier ident)
 {
-  for (unsigned long i = 0; i < types.size(); ++i)
-    if (strcmp(ident, types[i].Ident()))
-      return types[i].Id();
+  TypeID tid = _resolveTypeclass(ident);
+  if (tid) return tid;
+
+  for (unsigned long i = 0; i < _types.size(); ++i)
+    if (strcmp(ident, _types[i].Ident()) == 0)
+      return _types[i].Id();
 
   return 0;
 }
 
-Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
+Identifier ModuleNode::_resolveTypeIdentifier(TypeID tid)
 {
-  for (unsigned long i = 0; i < types.size(); ++i)
-    if (tid == types[i].Id())
-      return types[i].Ident();
+  for (unsigned long i = 0; i < _types.size(); ++i)
+    if (tid == _types[i].Id())
+      return _types[i].Ident();
 
   return NULL;
 }
 
-  unsigned long* ModuleNode::resolveTypeConstructor(Identifier ident)
+  TypeID ModuleNode::_resolveTypeParameter(Identifier ident)
   {
+    TypeID tid;
+    if ((tid = _types.back().resolveParameter(ident)))
+      return tid;
+
+    return 0;
+  }
+
+  unsigned long* ModuleNode::_resolveTypeConstructor(Identifier ident)
+  {
+
     unsigned long* rtn = (unsigned long*) malloc(sizeof(unsigned long)*2);
     ConstructorID cid;
-    for (unsigned long i = 0; i < types.size(); ++i)
-      if ((cid = types[i].resolveConstructor(ident)))
+    for (unsigned long i = 0; i < _types.size(); ++i)
+      if ((cid = _types[i].resolveConstructor(ident)))
       {
-        rtn[0] = types[i].Id();
+        rsPush(_types[i].Id());
+        rtn[0] = _types[i].Id();
         rtn[1] = cid;
         return rtn;
       }
@@ -163,33 +163,33 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
     rtn[0] = 0; rtn[1] = 0;
     return rtn;
   }
-  Identifier ModuleNode::resolveConstructorIdentifier(ConstructorID cid)
+  Identifier ModuleNode::_resolveConstructorIdentifier(ConstructorID cid)
   {
     char* str;
-    for (unsigned long i = 0; i < types.size(); ++i)
-      if ((str = types[i].resolveConstructorIdentifier(cid)))
+    for (unsigned long i = 0; i < _types.size(); ++i)
+      if ((str = _types[i].resolveConstructorIdentifier(cid)))
         return str;
     return 0;
   }
 
-  TypeID ModuleNode::resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid)
+  TypeID ModuleNode::_resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid)
   {
-    for (unsigned long i = 0; i < types.size(); ++i)
-      if (types[i].Id() == tid)
-        return types[i].resolveElement(ident, cid);
+    for (unsigned long i = 0; i < _types.size(); ++i)
+      if (_types[i].Id() == tid)
+        return _types[i].resolveElement(ident, cid);
     return 0;
   }
 
-  ErrorCode ModuleNode::castType(TypeID tid)
+  ErrorCode ModuleNode::_castType(TypeID tid)
   {
 
-    string str = "Last data element has been type cast to " + string(resolveTypeIdentifier(tid));
+    string str = "Last data element has been type cast to " + string(_resolveTypeIdentifier(tid));
     l.log('D', "TypeCheck", str);
     
     return SUCCESS;
   }
 
-  ErrorCode ModuleNode::castTypeConstructor(ConstructorID cid)
+  ErrorCode ModuleNode::_castTypeConstructor(ConstructorID cid)
   {
     return SUCCESS;
   }
@@ -197,16 +197,41 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
 
 //  3.b) Typeclasses
   //  Declarations
-ErrorCode ModuleNode::declareTypeclass(TypeID tid, Identifier ident)
-{ typeclasses.push_back( TypeclassNode(tid, _mid, ident) ); return SUCCESS; }
+ErrorCode ModuleNode::_declareTypeclass(TypeID tid, Identifier ident, Identifier param)
+{ 
+  string tmp = string(ident);
+  typeclasses.push_back( TypeclassNode(tid, _mid, ident, param) ); 
+
+  string str = "Declared Typeclass: " + tmp;
+  l.log('d', "DeclTypeclass", str);
+  return SUCCESS; 
+}
 
   //  Declare Prototype
-  ErrorCode ModuleNode::declareTypeclassPrototype(PrototypeID pid, Identifier ident)
+  ErrorCode ModuleNode::_declareTypeclassPrototype(PrototypeID pid, Identifier ident)
   { return typeclasses.back().declarePrototype(pid, ident); }
 
-  //  Declare Prototype Parameter
-  ErrorCode ModuleNode::declareTypeclassParameter(Identifier ident, ADR reg)
-  { return typeclasses.back().declarePrototypeParameter(ident, reg); }
+
+TypeID ModuleNode::_resolveTypeclass(Identifier ident)
+{
+  TypeID tid;
+  if ((tid = _resolveTypeclassParameter(ident)))
+  {
+    l.log('d', "ExpTypeclass", "Resolved typeclass parameter: " + string(ident));
+    return tid;
+  }
+
+  for (Index i = 0; i < typeclasses.size(); ++i)
+    if (strcmp(ident, typeclasses[i].Ident()) == 0)
+      return typeclasses[i].Id();
+  return 0;
+}
+
+  TypeID ModuleNode::_resolveTypeclassParameter(Identifier ident)
+  {
+    if (!typeclasses.size()) return 0;
+    return typeclasses.back().resolvePrototypeParameter(ident);
+  }
 
 
 //  3.c) Constants
@@ -215,20 +240,11 @@ ErrorCode ModuleNode::declareConstant(ConstantID cid, Identifier ident, TypeID t
 { constants.push_back( ConstantNode(cid, _mid, ident, type, value) ); return SUCCESS; }
 
   //  Resolve Constant
-ConstantID ModuleNode::resolveConstant(Identifier ident)
+ConstantNode* ModuleNode::resolveConstant(Identifier ident)
 {
-  for (unsigned long i = 0; i < constants.size(); ++i)
+  for (Index i = 0; i < constants.size(); ++i)
     if (strcmp(constants[i].Ident(), ident) == 0)
-    {
-      //  Constant Found -- Resolve Here
-      //  Push Type
-      rsPush(constants[i].Type());
-
-      //  Grab Value from Constant Address
-      //    and push into the Register Stack
-
-      return constants[i].Id();
-    }
+      return &constants[i];
   return 0;
 }
 
@@ -240,13 +256,13 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   register_stacks.push_back(RegisterStack());             //  Add new Register Stack for the Function
   scope_stack.push_back(scope); scope = next_scope++;     //  Manipulate Relavent Scope Variables
   functions.push_back( FunctionNode(fid, _mid, ident) );  //  Add Function Node
+  
   return SUCCESS; 
 }
 
   //  Declare Parameter
   ErrorCode ModuleNode::declareFunctionParameter(Identifier ident)
   {
-    rsPush(TYPE_ARBITRARY); //  Allocate a register for the parameter
     return functions.back().declareParameter(ident, rsTop());
   }
 
@@ -256,8 +272,7 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
     functions.back().Type(tid);
     functions.back().Register(rsTop());
 
-    //  Return to Parent Scope
-    scope = scope_stack.back(); scope_stack.pop_back();
+    endScope();
 
     return functions.back().Ident();
   }
@@ -265,7 +280,6 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   //  Undeclare Function (let ... in ...)
   ErrorCode ModuleNode::undeclareFunction()
   {
-    endDeclareFunction(TYPE_ARBITRARY);
     functions.pop_back();
 
     return SUCCESS;
@@ -284,7 +298,10 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   }
 
   FunctionParameterNode* ModuleNode::resolveFunctionParameter(Identifier ident)
-  { return functions.back().resolveParameter(ident); }
+  { 
+    if (!functions.size()) return NULL;
+    return functions.back().resolveParameter(ident); 
+  }
 
 
 unsigned long ModuleNode::resolveExpression(Identifier ident)

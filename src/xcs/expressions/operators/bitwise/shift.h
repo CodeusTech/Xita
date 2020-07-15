@@ -32,8 +32,10 @@ public:
 
     char* str = (char*) malloc(50);
 
-    sprintf(str, "  mov   %s, %s  //  TODO: Replace with Bitwise Op", sec, top);
+    sprintf(str, "  lsl   %s, %s, %s", sec, sec, top);
     l.log('D', "Operators", "Resolved Bitwise Shift Left Operation");
+
+    rs->pop();
 
     free(top);
     free(sec);
@@ -51,7 +53,6 @@ public:
 
   BitwiseShiftRightOperator() { }
 
-
   char* resolve(RegisterStack* rs) override
   {
     //  STUB STUB STUB  (TODO: IMPLEMENT THIS!!!)
@@ -60,8 +61,10 @@ public:
 
     char* str = (char*) malloc(50);
 
-    sprintf(str, "  mov   %s, %s  //  TODO: Replace with Bitwise Op", sec, top);
+    sprintf(str, "  slr   %s, %s, %s", sec, sec, top);
     l.log('D', "Operators", "Resolved Bitwise Shift Right Operation");
+
+    rs->pop();
 
     free(top);
     free(sec);

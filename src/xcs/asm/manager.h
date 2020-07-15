@@ -2,7 +2,7 @@
   manager.h (Assembly)
   Codeus Tech
   Authored on   April 22, 2020
-  Last Modified April 22, 2020
+  Last Modified   May 26, 2020
 */
 
 /*
@@ -40,6 +40,10 @@ protected:
   list<string> asm_bss;
   list<string> asm_data;
 
+  Index next_scope = 1;
+  Index instruction_scope = 0;
+  vector<Index> instruction_scope_stack;
+
 
   /*
     1.) Initialization Functions
@@ -53,13 +57,7 @@ protected:
 
     //  Print TEXT Segment Name into File
     fprintf(filename, ".section .bss:\n");
-
-    /* Print TEXT Buffer Contents to File */
-    for (list<string>::iterator it = asm_bss.begin(); it != asm_bss.end(); it++)
-      fprintf(filename, "  %s\n", (*it).c_str());
-
-    //  Pretty up file with new lines
-    fprintf(filename, "\n\n");
+    fprintf(filename, "  runtime: .skip 0x10000000\n\n");
 
     //  Return Success
     return 0;
@@ -103,6 +101,7 @@ protected:
       /* Print TEXT Buffer Contents to File */
       for (list<string>::iterator it = (*scope).begin(); it != (*scope).end(); it++)
         fprintf(filename, "  %s\n", (*it).c_str());
+      if (scope != asm_text.begin()) fprintf(filename, "    ret\n");
     }
 
     fprintf(filename, "\n\n");
@@ -138,25 +137,38 @@ public:
     2.) Assembly Operations
   */
 
-  ErrorCode addInstruction(Command command)
-  { asm_text[get_scope_curr()].push_back(strdup(command)); return SUCCESS; }
-  ErrorCode addInstruction(const char* command)
-  { asm_text[get_scope_curr()].push_back(strdup(command)); return SUCCESS; }
+  ErrorCode addConstant(Command command)
+  { asm_data.push_back(strdup(command)); return SUCCESS; }
 
+  ErrorCode addInstruction(Command command)
+    { asm_text[instruction_scope].push_back(strdup(command)); return SUCCESS; }
+  ErrorCode addInstruction(const char* command)
+    { asm_text[instruction_scope].push_back(strdup(command)); return SUCCESS; }
+
+
+  /*
+    Function Operations
+  */
   ErrorCode initFunction(Identifier ident, FunctionID fid)
   {
     asm_text.push_back(list<string>());   //  Add Buffer for new Function Commands
-    get_scope_next();                     //  Adjust Assembly Scope Index
+    instruction_scope_stack.push_back(instruction_scope);
+    instruction_scope = next_scope++;
 
     string str = "__" + to_string(fid) + "_" + string(ident) + ":";
     addInstruction(str.c_str());
     return SUCCESS;
   }
+  ErrorCode endFunction()
+  {
+    instruction_scope = instruction_scope_stack.back();
+    instruction_scope_stack.pop_back();
+  }
 
 
   ErrorCode popLastInstruction()
   {
-    asm_text[get_scope_curr()].pop_back();
+    asm_text[instruction_scope].pop_back();
     return SUCCESS;
   }
 

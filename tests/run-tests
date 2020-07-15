@@ -1,0 +1,111 @@
+#!/bin/bash
+#  run-tests (.sh)
+#  Codeus Tech
+#  Authored on    June 20, 2020
+#  Last Modified  June 25, 2020
+
+#
+# TABLE OF CONTENTS
+#   * Primitive Data Testing
+#   * Conditional Expressions
+#   * Datatype Testing
+#   * Functional Expression Testing
+#   * External Module Testing
+#
+
+
+#  Initial Dialog
+printf "Running XCSL Unit Tests...\n"
+
+#  Primitive Data Testing
+printf "\nTesting XCSL Primitives\n"
+  #  Integers
+xcs-aarch64 ./tests/Primitives/integer.xs
+if [ $? == 0 ]
+then
+  printf "  Integer Primitives:  SUCCESS\n"
+else
+  printf "  Integer Primitives:  FAILURE\n"
+fi
+  #  Boolean
+xcs-aarch64 ./tests/Primitives/boolean.xs
+if [ $? == 0 ]
+then
+  printf "  Boolean Primitives:  SUCCESS\n"
+else
+  printf "  Boolean Primitives:  FAILURE\n"
+fi
+
+
+#  Conditional Expression Testing
+printf "\nTesting Conditional Expressions\n"
+  #  if ... then ... else ...
+xcs-aarch64 ./tests/Conditions/if.xs
+if [ $? == 0 ]
+then 
+  printf "  if then else:  SUCCESS\n"
+else 
+  printf "  if then else:  FAILURE\n"
+fi
+  #  ... is ...
+xcs-aarch64 ./tests/Conditions/is.xs
+if [ $? == 0 ]
+then
+  printf "  is Typecheck:  SUCCESS\n"
+else
+  printf "  is Typecheck:  FAILURE\n"
+fi
+
+
+#  Datatype Testing
+printf "\nTesting Datatypes\n"
+  # Basic Type Declarations
+xcs-aarch64 ./tests/Types/basic.xs
+if [ $? == 0 ]
+then
+  printf "  Basic Type Declarations:  SUCCESS\n"
+else
+  printf "  Basic Type Declarations:  FAILURE\n"
+fi
+  # Typeclasses
+xcs-aarch64 ./tests/Types/typeclass.xs
+if [ $? == 0 ]
+then
+  printf "  Typeclass Declarations:  SUCCESS\n"
+else
+  printf "  Typeclass Declarations:  FAILURE\n"
+fi
+
+
+#  Functional Expression Testing
+printf "\nTesting Functional Expressions\n"
+  #  Constant Expressions
+xcs-aarch64 ./tests/Functions/constants.xs
+if [ $? == 0 ]
+then 
+  printf "  Constant Expressions:  SUCCESS\n"
+else
+  printf "  Constant Expressions:  FAILURE\n"
+fi
+  #  Functional Expressions
+xcs-aarch64 ./tests/Functions/functions.xs
+if [ $? == 0 ]
+then 
+  printf "  Dynamic Functions:  SUCCESS\n"
+else 
+  printf "  Dynamic Functions:  FAILURE\n"
+fi
+
+
+#  External Module Testing
+printf "\nTesting External Module Imports\n"
+xcs-aarch64 ./tests/Modules/driver.xs
+if [ $? == 0 ]
+then 
+  printf "  Module Imports:  SUCCESS\n"
+else
+  printf "  Module Imports:  FAILURE\n"
+fi
+
+
+printf "\n"

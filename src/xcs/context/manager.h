@@ -37,6 +37,8 @@
 
 #include <xcs/asm/manager.h>
 #include <xcs/expressions/operators/manager.h>
+#include <xcs/data/manager.h>
+
 #include <xcs/modules/modules.h>
 #include <xcs/expressions/argument.h>
 
@@ -61,6 +63,7 @@ protected:
   //  Managers
   AssemblyManager assembly;       //  Manages Buffers for producing Assembly Files
   OperatorManager operators;      //  Manages Active Operator Semantics (e.g. Addition)
+  DataManager     data;           //  Manages Active Backend Data Values/Types
 
   //  Modules
   vector<ModuleNode> modules;     //  All Imported Module Contexts
@@ -94,7 +97,7 @@ public:
   */
   ModuleID CurrentContext() { return _context->Id(); }
 
-  //  Last Encountered Info
+  //  Last Encountered Data /* DEPRECATED SECTION */
   ExpressionType LastExpression() { return _last_expression; }
   ExpressionType LastExpression(ExpressionType exp) { _last_expression = exp; return _last_expression; }
   TypeID LastType() { return _last_type; }
@@ -105,6 +108,10 @@ public:
   Arbitrary LastData(Arbitrary data) { _last_data = data; return _last_data; }
   Index LastIndex() { return _last_index; }
   Index LastIndex(Index i) { _last_index = i; return _last_index; }
+  bool TypeCheck();
+  //  Last Encountered Data
+  ErrorCode newData(TypeID tid, Arbitrary value) { return data.newData(tid, value); }
+  ErrorCode addData(TypeID tid, Arbitrary value) { return data.addData(tid, value); }
   
   //  Loaded Arguments
   unsigned long CountArguments() { return arguments.size(); }
@@ -127,6 +134,7 @@ public:
   //  2.b) Assembly Operations
   ErrorCode generateAssembly(FILE* file) { return assembly.generateAssembly(file); }
   ErrorCode addInstruction(char* instruction) { return assembly.addInstruction(instruction); }
+  ErrorCode addConstant(char* constant) { return assembly.addConstant(constant); }
   ErrorCode popLastInstruction() { return assembly.popLastInstruction(); }
 
   //  2.c) Register Stack Operations
@@ -138,8 +146,8 @@ public:
   TypeID rsType() { return _context->rsType(); }
   TypeID rsType(int from_top) { return _context->rsType(from_top); }
     //  Operations
-  ADR rsPush(TypeID tid) { return _context->rsPush(tid); }
-  ErrorCode rsPushRegister(TypeID tid, ADR reg);
+  ADR rsPush(TypeID tid);
+  ErrorCode rsCopy(TypeID tid, ADR src);
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return _context->rsPop(); }
 
@@ -147,40 +155,48 @@ public:
   ErrorCode concludeExpression();
 
   //  2.e) Operators
-  ErrorCode solveOperator(OperatorID oid);
+  ErrorCode resolveOperator(OperatorID oid);
 
   /*
     3.) Identifier Handling
   */
 
   //  3.a) Type Operations
-  ErrorCode declareType(Identifier ident) { return _context->declareType(_next_tid++, ident); }
-  ErrorCode declareType(Identifier ident, unsigned long size) { return _context->declareType(_next_tid++, ident, size); }
-  ErrorCode declareTypeParameter(Identifier ident) { return _context->declareTypeParameter(_next_tid++, ident); }
-  ErrorCode declareTypeConstructor(Identifier ident) { return _context->declareTypeConstructor(_next_constructor++, ident); }
-  ErrorCode declareTypeElement(Identifier ident, TypeID tid) { return _context->declareTypeElement(ident, tid); }
-  ErrorCode declareTypeAlias(TypeID tid) { return _context->declareTypeAlias(tid); }
+    //  Declarations
+  ErrorCode declareType(Identifier ident) { return _context->_declareType(_next_tid++, ident); }
+  ErrorCode declareType(Identifier ident, unsigned long size) { return _context->_declareType(_next_tid++, ident, size); }
+  ErrorCode declareTypeParameter(Identifier ident);
+  ErrorCode declareTypeConstructor(Identifier ident) { return _context->_declareTypeConstructor(_next_constructor++, ident); }
+  ErrorCode declareTypeElement(Identifier ident, TypeID tid) { return _context->_declareTypeElement(ident, tid); }
+  ErrorCode declareTypeAlias(TypeID tid);
 
-  TypeID resolveType(Identifier ident);
-  Identifier resolveTypeIdentifier(TypeID tid) { return _context->resolveTypeIdentifier(tid); }
+    //  Resolve
+  TypeID resolveType(Identifier ident); //  TODO: This should return reference to TypeNode
+  Identifier resolveTypeIdentifier(TypeID tid) { return _context->_resolveTypeIdentifier(tid); }
+  TypeID resolveTypeParameter(Identifier ident);
   ConstructorID resolveConstructor(Identifier ident);
-  Identifier resolveConstructorIdentifier(ConstructorID cid) { return _context->resolveConstructorIdentifier(cid); }
+  Identifier resolveConstructorIdentifier(ConstructorID cid) { return _context->_resolveConstructorIdentifier(cid); }
   TypeID resolveConstructorType(ConstructorID cid);
   TypeID resolveTypeElement(Identifier ident);
 
+    //  Information
+  unsigned long long TypeSize(TypeID tid) { return 4; } //  TODO: Implement Me!
+
   //  3.b) Typeclass Operations
-  ErrorCode declareTypeclass(Identifier ident) { return _context->declareTypeclass(_next_tid++, ident); }
-  ErrorCode declareTypeclassPrototype(Identifier ident) { return _context->declareTypeclassPrototype(_next_fid++, ident); }
-  ErrorCode declareTypeclassParameter(Identifier ident);
+  ErrorCode declareTypeclass(Identifier ident, Identifier param) { return _context->_declareTypeclass(_next_tid++, ident, param); }
+  ErrorCode declareTypeclassPrototype(Identifier ident) { return _context->_declareTypeclassPrototype(_next_fid++, ident); }
+
+  TypeID resolveTypeclass(Identifier ident);
+  ErrorCode implementTypeclass(Identifier ident);
 
   //  3.c) Constant Operations
-  ErrorCode declareConstant(Identifier ident) { return _context->declareConstant(_next_cid++, ident, _last_type, _last_data); }
+  ErrorCode declareConstant(Identifier ident);
 
-  ConstantID resolveConstant(Identifier ident) { return _context->resolveConstant(ident); }
+  ConstantID resolveConstant(Identifier ident);
 
   //  3.d) Function Operations
   ErrorCode declareFunction(Identifier ident);
-  ErrorCode declareFunctionParameter(Identifier ident) { return _context->declareFunctionParameter(ident); }
+  ErrorCode declareFunctionParameter(Identifier ident);
 
   ErrorCode endDeclareFunction();  //{ return _context->endDeclareFunction(); }
   ErrorCode undeclareFunction() { return _context->undeclareFunction(); }

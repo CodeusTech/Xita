@@ -17,6 +17,7 @@
 #include "param.h"
 #include "typeclass.h"
 
+using namespace std;
 
 class TypeNode
 {
@@ -48,6 +49,14 @@ public:
   ModuleID Context() { return _context; }
   Identifier Ident() { return _ident; }
   unsigned long Size() { return _size; }
+  
+  bool IsAliased(TypeID tid)
+  {
+    for (Index i = 0; i < aliases.size(); ++i)
+      if (aliases[i] == tid)
+        return true;
+    return false;
+  }
 
 
   /*
@@ -62,6 +71,8 @@ public:
   Identifier resolveConstructorIdentifier(ConstructorID cid);
   TypeID resolveElement(Identifier ident, ConstructorID cid);
   TypeID resolveParameter(Identifier ident);
+
+  bool findConstructorID(ConstructorID cid);
 
 };
 
