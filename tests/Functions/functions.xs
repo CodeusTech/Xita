@@ -12,14 +12,13 @@
 (*
   Declarations
 *)
+--  Declarations
 let five = I8 5;;  -- 64-bit Type Cast Checking
-let sum x y = (U64 x) + y;;
-let sum x y z = x + y + z;;
+let sum x y = x + y;;
+(*let sum x y z = x + y + z;;
 let prod x y = y * x;;
 
-(*
-  Expressions (Invocations)
-*)
+--  Expressions
 five;;                --  Primitive Function Testing
 (sum 1 2);;           --  Parameterized Function Testing
 (sum 1 2 3);;         --  Overloaded Function Testing

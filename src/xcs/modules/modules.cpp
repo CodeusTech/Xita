@@ -33,7 +33,7 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
   _parent = parent;
 
   register_stacks.push_back(RegisterStack());
-  //types = TypeManager(mid);
+  //_types = TypeManager(mid);
 
   l.log('d', "Modules", "Initialized Module");
 }
@@ -44,14 +44,14 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
 */
 
 //  2.b) Register Stacks
-char* ModuleNode::rsPushRegister(TypeID tid, ADR src) 
+char* ModuleNode::rsCopy(TypeID tid, ADR src) 
 {
   //  If all registers are in use, reroute to extended stack space
   ADR dest = rsPush(tid);
 
   //  Copy Data from src to dest
   char* str = (char*) malloc(50);
-  sprintf(str, "  mov   %s, %s", get_reg(dest, 8*TypeSize(tid)), get_reg(src, 8*TypeSize(tid)));  
+  sprintf(str, "  mov   %s, %s", get_reg(dest, 8*_TypeSize(tid)), get_reg(src, 8*_TypeSize(tid)));  
 
   return str;
 }
@@ -96,78 +96,78 @@ ErrorCode ModuleNode::concludeExpression()
 */
 
   //  Declare Parameter
-  ErrorCode ModuleNode::declareTypeParameter(TypeID tid, Identifier ident)
-  { return types.back().declareParameter(tid, ident); }
+  ErrorCode ModuleNode::_declareTypeParameter(TypeID tid, Identifier ident)
+  { return _types.back().declareParameter(tid, ident); }
 
   //  Declare Element
-  ErrorCode ModuleNode::declareTypeElement(Identifier ident, TypeID tid)
-  { return types.back().declareElement(ident, tid); }
+  ErrorCode ModuleNode::_declareTypeElement(Identifier ident, TypeID tid)
+  { return _types.back().declareElement(ident, tid); }
 
 
-unsigned long ModuleNode::TypeSize(TypeID tid)
+unsigned long ModuleNode::_TypeSize(TypeID tid)
 {
-  for (unsigned long i = 0; i < types.size(); ++i)
-    if (tid == types[i].Id())
-      return types[i].Size();
+  for (unsigned long i = 0; i < _types.size(); ++i)
+    if (tid == _types[i].Id())
+      return _types[i].Size();
   return 0;
 }
-unsigned long ModuleNode::TypeSize(Identifier ident)
+unsigned long ModuleNode::_TypeSize(Identifier ident)
 {
-  for (unsigned long i = 0; i < types.size(); ++i)
-    if (strcmp(ident, types[i].Ident()))
-      return types[i].Size();
+  for (unsigned long i = 0; i < _types.size(); ++i)
+    if (strcmp(ident, _types[i].Ident()))
+      return _types[i].Size();
   return 0;
 }
 
-bool ModuleNode::IsAliased(TypeID alias, TypeID checked)
+bool ModuleNode::_IsAliased(TypeID alias, TypeID checked)
 {
-  for (Index i = 0; i < types.size(); ++i)
-    if (types[i].Id() == alias)
-      return types[i].IsAliased(checked);
+  for (Index i = 0; i < _types.size(); ++i)
+    if (_types[i].Id() == alias)
+      return _types[i].IsAliased(checked);
   return false;
 }
 
   //  Invocations
-TypeID ModuleNode::resolveType(Identifier ident)
+TypeID ModuleNode::_resolveType(Identifier ident)
 {
-  TypeID tid = resolveTypeclass(ident);
+  TypeID tid = _resolveTypeclass(ident);
   if (tid) return tid;
 
-  for (unsigned long i = 0; i < types.size(); ++i)
-    if (strcmp(ident, types[i].Ident()) == 0)
-      return types[i].Id();
+  for (unsigned long i = 0; i < _types.size(); ++i)
+    if (strcmp(ident, _types[i].Ident()) == 0)
+      return _types[i].Id();
 
   return 0;
 }
 
-Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
+Identifier ModuleNode::_resolveTypeIdentifier(TypeID tid)
 {
-  for (unsigned long i = 0; i < types.size(); ++i)
-    if (tid == types[i].Id())
-      return types[i].Ident();
+  for (unsigned long i = 0; i < _types.size(); ++i)
+    if (tid == _types[i].Id())
+      return _types[i].Ident();
 
   return NULL;
 }
 
-  TypeID ModuleNode::resolveTypeParameter(Identifier ident)
+  TypeID ModuleNode::_resolveTypeParameter(Identifier ident)
   {
     TypeID tid;
-    if ((tid = types.back().resolveParameter(ident)))
+    if ((tid = _types.back().resolveParameter(ident)))
       return tid;
 
     return 0;
   }
 
-  unsigned long* ModuleNode::resolveTypeConstructor(Identifier ident)
+  unsigned long* ModuleNode::_resolveTypeConstructor(Identifier ident)
   {
 
     unsigned long* rtn = (unsigned long*) malloc(sizeof(unsigned long)*2);
     ConstructorID cid;
-    for (unsigned long i = 0; i < types.size(); ++i)
-      if ((cid = types[i].resolveConstructor(ident)))
+    for (unsigned long i = 0; i < _types.size(); ++i)
+      if ((cid = _types[i].resolveConstructor(ident)))
       {
-        rsPush(types[i].Id());
-        rtn[0] = types[i].Id();
+        rsPush(_types[i].Id());
+        rtn[0] = _types[i].Id();
         rtn[1] = cid;
         return rtn;
       }
@@ -175,33 +175,33 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
     rtn[0] = 0; rtn[1] = 0;
     return rtn;
   }
-  Identifier ModuleNode::resolveConstructorIdentifier(ConstructorID cid)
+  Identifier ModuleNode::_resolveConstructorIdentifier(ConstructorID cid)
   {
     char* str;
-    for (unsigned long i = 0; i < types.size(); ++i)
-      if ((str = types[i].resolveConstructorIdentifier(cid)))
+    for (unsigned long i = 0; i < _types.size(); ++i)
+      if ((str = _types[i].resolveConstructorIdentifier(cid)))
         return str;
     return 0;
   }
 
-  TypeID ModuleNode::resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid)
+  TypeID ModuleNode::_resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid)
   {
-    for (unsigned long i = 0; i < types.size(); ++i)
-      if (types[i].Id() == tid)
-        return types[i].resolveElement(ident, cid);
+    for (unsigned long i = 0; i < _types.size(); ++i)
+      if (_types[i].Id() == tid)
+        return _types[i].resolveElement(ident, cid);
     return 0;
   }
 
-  ErrorCode ModuleNode::castType(TypeID tid)
+  ErrorCode ModuleNode::_castType(TypeID tid)
   {
 
-    string str = "Last data element has been type cast to " + string(resolveTypeIdentifier(tid));
+    string str = "Last data element has been type cast to " + string(_resolveTypeIdentifier(tid));
     l.log('D', "TypeCheck", str);
     
     return SUCCESS;
   }
 
-  ErrorCode ModuleNode::castTypeConstructor(ConstructorID cid)
+  ErrorCode ModuleNode::_castTypeConstructor(ConstructorID cid)
   {
     return SUCCESS;
   }
@@ -209,7 +209,7 @@ Identifier ModuleNode::resolveTypeIdentifier(TypeID tid)
 
 //  3.b) Typeclasses
   //  Declarations
-ErrorCode ModuleNode::declareTypeclass(TypeID tid, Identifier ident, Identifier param)
+ErrorCode ModuleNode::_declareTypeclass(TypeID tid, Identifier ident, Identifier param)
 { 
   string tmp = string(ident);
   typeclasses.push_back( TypeclassNode(tid, _mid, ident, param) ); 
@@ -220,14 +220,14 @@ ErrorCode ModuleNode::declareTypeclass(TypeID tid, Identifier ident, Identifier 
 }
 
   //  Declare Prototype
-  ErrorCode ModuleNode::declareTypeclassPrototype(PrototypeID pid, Identifier ident)
+  ErrorCode ModuleNode::_declareTypeclassPrototype(PrototypeID pid, Identifier ident)
   { return typeclasses.back().declarePrototype(pid, ident); }
 
 
-TypeID ModuleNode::resolveTypeclass(Identifier ident)
+TypeID ModuleNode::_resolveTypeclass(Identifier ident)
 {
   TypeID tid;
-  if ((tid = resolveTypeclassParameter(ident)))
+  if ((tid = _resolveTypeclassParameter(ident)))
   {
     l.log('d', "ExpTypeclass", "Resolved typeclass parameter: " + string(ident));
     return tid;
@@ -239,7 +239,7 @@ TypeID ModuleNode::resolveTypeclass(Identifier ident)
   return 0;
 }
 
-  TypeID ModuleNode::resolveTypeclassParameter(Identifier ident)
+  TypeID ModuleNode::_resolveTypeclassParameter(Identifier ident)
   {
     if (!typeclasses.size()) return 0;
     return typeclasses.back().resolvePrototypeParameter(ident);

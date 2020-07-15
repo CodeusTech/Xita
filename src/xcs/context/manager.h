@@ -146,8 +146,8 @@ public:
   TypeID rsType() { return _context->rsType(); }
   TypeID rsType(int from_top) { return _context->rsType(from_top); }
     //  Operations
-  ADR rsPush(TypeID tid) { LastType(tid); return _context->rsPush(tid); }
-  ErrorCode rsPushRegister(TypeID tid, ADR reg);
+  ADR rsPush(TypeID tid);
+  ErrorCode rsCopy(TypeID tid, ADR reg);
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return _context->rsPop(); }
 
@@ -155,31 +155,31 @@ public:
   ErrorCode concludeExpression();
 
   //  2.e) Operators
-  ErrorCode solveOperator(OperatorID oid);
+  ErrorCode resolveOperator(OperatorID oid);
 
   /*
     3.) Identifier Handling
   */
 
   //  3.a) Type Operations
-  ErrorCode declareType(Identifier ident) { return _context->declareType(_next_tid++, ident); }
-  ErrorCode declareType(Identifier ident, unsigned long size) { return _context->declareType(_next_tid++, ident, size); }
+  ErrorCode declareType(Identifier ident) { return _context->_declareType(_next_tid++, ident); }
+  ErrorCode declareType(Identifier ident, unsigned long size) { return _context->_declareType(_next_tid++, ident, size); }
   ErrorCode declareTypeParameter(Identifier ident);
-  ErrorCode declareTypeConstructor(Identifier ident) { return _context->declareTypeConstructor(_next_constructor++, ident); }
-  ErrorCode declareTypeElement(Identifier ident, TypeID tid) { return _context->declareTypeElement(ident, tid); }
+  ErrorCode declareTypeConstructor(Identifier ident) { return _context->_declareTypeConstructor(_next_constructor++, ident); }
+  ErrorCode declareTypeElement(Identifier ident, TypeID tid) { return _context->_declareTypeElement(ident, tid); }
   ErrorCode declareTypeAlias(TypeID tid);
 
   TypeID resolveType(Identifier ident);
-  Identifier resolveTypeIdentifier(TypeID tid) { return _context->resolveTypeIdentifier(tid); }
+  Identifier resolveTypeIdentifier(TypeID tid) { return _context->_resolveTypeIdentifier(tid); }
   TypeID resolveTypeParameter(Identifier ident);
   ConstructorID resolveConstructor(Identifier ident);
-  Identifier resolveConstructorIdentifier(ConstructorID cid) { return _context->resolveConstructorIdentifier(cid); }
+  Identifier resolveConstructorIdentifier(ConstructorID cid) { return _context->_resolveConstructorIdentifier(cid); }
   TypeID resolveConstructorType(ConstructorID cid);
   TypeID resolveTypeElement(Identifier ident);
 
   //  3.b) Typeclass Operations
-  ErrorCode declareTypeclass(Identifier ident, Identifier param) { return _context->declareTypeclass(_next_tid++, ident, param); }
-  ErrorCode declareTypeclassPrototype(Identifier ident) { return _context->declareTypeclassPrototype(_next_fid++, ident); }
+  ErrorCode declareTypeclass(Identifier ident, Identifier param) { return _context->_declareTypeclass(_next_tid++, ident, param); }
+  ErrorCode declareTypeclassPrototype(Identifier ident) { return _context->_declareTypeclassPrototype(_next_fid++, ident); }
 
   TypeID resolveTypeclass(Identifier ident);
   ErrorCode implementTypeclass(Identifier ident);

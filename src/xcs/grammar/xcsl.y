@@ -93,7 +93,6 @@
 #include <xcs/utils/clear.h>
 #include <xcs/utils/delay.h>
 #include <xcs/expressions/primitives/primitives.h>
-#include <xcs/expressions/operators/resolve.h>
 
 extern int yylex();
 extern int yyparse();
@@ -463,13 +462,12 @@ exp_delay:
 */
 
 exp_literal:
-    exp_identifier
+    exp_identifier  
   | exp_primitive
   | exp_struct
 ;
 
 exp_identifier:
- //   exp_identifier OP_ELEMENT OP_REC_L INT OP_REC_R   { return_function($4); }
     PAR_LEFT IDENTIFIER arg_funct PAR_RIGHT  { context.resolveFunction($2); }
   | IDENTIFIER arg_funct  { context.resolveFunction($1); }
   | IDENTIFIER            { context.resolveExpression($1); }
@@ -515,15 +513,15 @@ exp_integer:
   2.b) Boolean Expressions
 */
 exp_boolean:
-    exp OP_LT exp       { context.solveOperator(OPERATOR_LT);  }
-  | exp OP_LTE exp      { context.solveOperator(OPERATOR_LTE); }
-  | exp OP_GT exp       { context.solveOperator(OPERATOR_GT);  }
-  | exp OP_GTE exp      { context.solveOperator(OPERATOR_GTE); }
-  | exp OP_EQ exp       { context.solveOperator(OPERATOR_EQ);  }
-  | exp OP_NEQ exp      { context.solveOperator(OPERATOR_NEQ); }
-    exp BOOL_AND exp    { context.solveOperator(OPERATOR_AND); }
-  | exp BOOL_OR exp     { context.solveOperator(OPERATOR_OR);  }
-  | exp BOOL_XOR exp    { context.solveOperator(OPERATOR_XOR); }
+    exp OP_LT exp       { context.resolveOperator(OPERATOR_LT);  }
+  | exp OP_LTE exp      { context.resolveOperator(OPERATOR_LTE); }
+  | exp OP_GT exp       { context.resolveOperator(OPERATOR_GT);  }
+  | exp OP_GTE exp      { context.resolveOperator(OPERATOR_GTE); }
+  | exp OP_EQ exp       { context.resolveOperator(OPERATOR_EQ);  }
+  | exp OP_NEQ exp      { context.resolveOperator(OPERATOR_NEQ); }
+  | exp BOOL_AND exp    { context.resolveOperator(OPERATOR_AND); }
+  | exp BOOL_OR exp     { context.resolveOperator(OPERATOR_OR);  }
+  | exp BOOL_XOR exp    { context.resolveOperator(OPERATOR_XOR); }
   | TRUE   { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
   | FALSE  { pushData(TYPE_BOOLEAN, (Arbitrary) 0); }
 ;
@@ -583,17 +581,17 @@ param_list:
   3.a) Arithmetic Expressions
 */
 exp_arith:
-    exp OP_ADD exp      { resolveAddition(); }
-  | exp OP_SUB exp      { context.solveOperator(OPERATOR_SUBTRACT); }
-  | exp OP_MUL exp      { context.solveOperator(OPERATOR_MULTIPLY); }
-  | exp OP_DIV exp      { context.solveOperator(OPERATOR_DIVISION); }
-  | exp OP_MOD exp      { context.solveOperator(OPERATOR_MODULUS); }
-  | exp BIT_AND exp     { context.solveOperator(OPERATOR_BIT_AND); }
-  | exp BIT_OR exp      { context.solveOperator(OPERATOR_BIT_OR);  }
+    exp OP_ADD exp      { context.resolveOperator(OPERATOR_ADDITION); }
+  | exp OP_SUB exp      { context.resolveOperator(OPERATOR_SUBTRACT); }
+  | exp OP_MUL exp      { context.resolveOperator(OPERATOR_MULTIPLY); }
+  | exp OP_DIV exp      { context.resolveOperator(OPERATOR_DIVISION); }
+  | exp OP_MOD exp      { context.resolveOperator(OPERATOR_MODULUS); }
+  | exp BIT_AND exp     { context.resolveOperator(OPERATOR_BIT_AND); }
+  | exp BIT_OR exp      { context.resolveOperator(OPERATOR_BIT_OR);  }
   //| BIT_NOT exp         { infer_bit_not(); }
-  | exp BIT_XOR exp     { context.solveOperator(OPERATOR_BIT_XOR); }
-  | exp BIT_SHL exp     { context.solveOperator(OPERATOR_BIT_SHL); }
-  | exp BIT_SHR exp     { context.solveOperator(OPERATOR_BIT_SHR); } 
+  | exp BIT_XOR exp     { context.resolveOperator(OPERATOR_BIT_XOR); }
+  | exp BIT_SHL exp     { context.resolveOperator(OPERATOR_BIT_SHL); }
+  | exp BIT_SHR exp     { context.resolveOperator(OPERATOR_BIT_SHR); } 
 ;
 
 
@@ -1030,6 +1028,6 @@ void yyerror(const char* error) {
   
   //rs_end();
 
-	exit(grammar_status);
+	exit(1);
 }
 
