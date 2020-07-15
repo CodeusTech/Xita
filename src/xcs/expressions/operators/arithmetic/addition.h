@@ -59,6 +59,8 @@ char* AdditionOperator::resolve(RegisterStack* rs)
   char* str = (char*) malloc(50);
   sprintf(str, "  add   %s, %s, %s", sec, sec, top);
 
+  rs->pop();
+
   free(top);
   free(sec);
 
