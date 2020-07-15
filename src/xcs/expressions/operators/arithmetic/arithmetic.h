@@ -12,5 +12,7 @@
 #pragma once
 
 #include "addition.h"
-
+#include "subtraction.h"
+#include "multiply.h"
+#include "division.h"
 

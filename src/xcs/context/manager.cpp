@@ -147,7 +147,22 @@ ContextManager::ContextManager()
   { 
     LastExpression(EXP_LITERAL);
     char* ret = operators.solveOperator(oid, _context->rsCurrent()); 
-    if (ret)  { addInstruction(ret); free(ret); rsPop(); }
+    if (ret)  
+    { 
+      if (oid == OPERATOR_MODULUS)
+      {
+        char** ret2 = (char**) ret;
+        addInstruction(ret2[0]);
+        addInstruction(ret2[1]);
+        free(ret2[0]); free(ret2[1]); free(ret2);
+        rsPop();
+      } else
+      {
+        addInstruction(ret); 
+        free(ret); 
+      }
+      rsPop(); 
+    }
     else      { return 1; /* FAILURE */ }
     return SUCCESS;
   }

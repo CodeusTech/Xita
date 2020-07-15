@@ -30,14 +30,11 @@ public:
 };
 
 
-
-
 /*
   Constructors
 */
 AdditionOperator::AdditionOperator()
 {
-
   op = strdup(string("(+)").c_str());
   is_communitive = true;
 }
