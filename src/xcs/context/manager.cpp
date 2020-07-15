@@ -90,10 +90,14 @@ ContextManager::ContextManager()
       This occurs when the original data is needed an arbitrary number of times,
       but the copied data entries need to be treated as independent elements (e.g. parameters).
   */
-  ErrorCode ContextManager::rsCopy(TypeID tid, ADR reg) 
+  ErrorCode ContextManager::rsCopy(TypeID tid, ADR src) 
   { 
-    LastType(tid);
-    char* str = _context->rsCopy(tid, reg); 
+    //  Get a new register
+    ADR dest = rsPush(tid);
+
+    //  Copy Data from src to dest
+    char* str = (char*) malloc(50);
+    sprintf(str, "  mov   %s, %s", get_reg(dest, 8*TypeSize(tid)), get_reg(src, 8*TypeSize(tid)));  
 
     addInstruction(str);
 
@@ -405,6 +409,15 @@ ContextManager::ContextManager()
     return _context->declareFunction(fid, ident);
   }
 
+  ErrorCode ContextManager::declareFunctionParameter(Identifier ident)
+  {
+    rsPush(TYPE_ARBITRARY); //  Allocate a register for the parameter
+
+    if (XCS_VERBOSE) printf ("Declared Function Parameter: %s\n", ident);
+    
+    return _context->declareFunctionParameter(ident);
+  }
+
   /*
     endDeclareFunction()
       This method is called when a function declaration ends.
@@ -416,10 +429,13 @@ ContextManager::ContextManager()
     string logstr;
     if ((ident = _context->endDeclareFunction(LastType())))
     {
+      //  Conclude Function Assembly
       assembly.endFunction();
 
       logstr = "Function " + string(ident) + " declared, with Type Signature: " + TypeSignature();
       l.log('D', "DeclFunct", logstr);
+
+      if (XCS_VERBOSE) printf("Declared Function: %s\n", ident);
     } else
     {
       yyerror(string("Function Declaration Failed").c_str());
@@ -458,6 +474,8 @@ ContextManager::ContextManager()
         sprintf (str, "  mov   %s, %s", param_reg, arg_reg);
         addInstruction(str);
         i++;
+
+        rsPop();
       
         free(arg_reg); free(param_reg);
       }
@@ -469,6 +487,7 @@ ContextManager::ContextManager()
       LastExpression(EXP_FUNCTION);
 
       std::string _str = "Resolved function "; _str.append(ident); _str += " resolved as type " + string(resolveTypeIdentifier(LastType()));
+      if (XCS_VERBOSE) printf ("Resolved Function: %s\n", node->Ident());
       l.log('D', "ExpFunct", _str);
 
       free (str);
@@ -495,7 +514,8 @@ ContextManager::ContextManager()
       rsCopy(param->Type(), param->Register());  //  Add Data/Type to Register Stack 
       LastExpression(EXP_PARAMETER);                  //  Set Status Variables  -- DEPRECATED???
       LastIndex(param->getIndex());                   //  Set Last Seen Index   -- DEPRECATED???
-      
+
+      if (XCS_VERBOSE) printf("Parameter Encountered: %s\n", ident);
       string str = "Resolved parameter " + string(ident) + " of type " + resolveTypeIdentifier(LastType()) + " in register: " + to_string(param->Register());
       l.log('d', "ExpFunct", str);
       return LastType();

@@ -18,6 +18,7 @@
 #include "error.h"
 #include "logger.h"
 #include "buffers.h"
+#include "status.h"
 
 #include <xcs/regstack/codes.h>
 

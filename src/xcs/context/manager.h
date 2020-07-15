@@ -147,7 +147,7 @@ public:
   TypeID rsType(int from_top) { return _context->rsType(from_top); }
     //  Operations
   ADR rsPush(TypeID tid);
-  ErrorCode rsCopy(TypeID tid, ADR reg);
+  ErrorCode rsCopy(TypeID tid, ADR src);
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return _context->rsPop(); }
 
@@ -162,6 +162,7 @@ public:
   */
 
   //  3.a) Type Operations
+    //  Declarations
   ErrorCode declareType(Identifier ident) { return _context->_declareType(_next_tid++, ident); }
   ErrorCode declareType(Identifier ident, unsigned long size) { return _context->_declareType(_next_tid++, ident, size); }
   ErrorCode declareTypeParameter(Identifier ident);
@@ -169,13 +170,17 @@ public:
   ErrorCode declareTypeElement(Identifier ident, TypeID tid) { return _context->_declareTypeElement(ident, tid); }
   ErrorCode declareTypeAlias(TypeID tid);
 
-  TypeID resolveType(Identifier ident);
+    //  Resolve
+  TypeID resolveType(Identifier ident); //  TODO: This should return reference to TypeNode
   Identifier resolveTypeIdentifier(TypeID tid) { return _context->_resolveTypeIdentifier(tid); }
   TypeID resolveTypeParameter(Identifier ident);
   ConstructorID resolveConstructor(Identifier ident);
   Identifier resolveConstructorIdentifier(ConstructorID cid) { return _context->_resolveConstructorIdentifier(cid); }
   TypeID resolveConstructorType(ConstructorID cid);
   TypeID resolveTypeElement(Identifier ident);
+
+    //  Information
+  unsigned long long TypeSize(TypeID tid) { return 4; } //  TODO: Implement Me!
 
   //  3.b) Typeclass Operations
   ErrorCode declareTypeclass(Identifier ident, Identifier param) { return _context->_declareTypeclass(_next_tid++, ident, param); }
@@ -191,7 +196,7 @@ public:
 
   //  3.d) Function Operations
   ErrorCode declareFunction(Identifier ident);
-  ErrorCode declareFunctionParameter(Identifier ident) { return _context->declareFunctionParameter(ident); }
+  ErrorCode declareFunctionParameter(Identifier ident);
 
   ErrorCode endDeclareFunction();  //{ return _context->endDeclareFunction(); }
   ErrorCode undeclareFunction() { return _context->undeclareFunction(); }

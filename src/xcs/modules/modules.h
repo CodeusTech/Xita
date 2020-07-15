@@ -103,7 +103,6 @@ public:
   TypeID rsType(int from_top) { return register_stacks[scope].from_top_type(from_top); }
 
   ADR rsPush(TypeID tid) { return register_stacks[scope].push(tid); }
-  char* rsCopy(TypeID tid, ADR reg);
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return register_stacks[scope].pop(); }
   

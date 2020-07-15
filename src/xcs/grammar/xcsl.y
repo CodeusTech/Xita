@@ -209,7 +209,6 @@ extern ContextManager context;
 %left IF THEN ELSE
 
 //  Literal Values
-%left IDENTIFIER
 %left INT REAL TRUE FALSE CHAR STRING
 %left CONSTRUCTOR
 
@@ -220,6 +219,8 @@ extern ContextManager context;
 //  Numerical Operators
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
+
+%left IDENTIFIER
 
 %left OP_COMMA
 
@@ -238,7 +239,6 @@ extern ContextManager context;
 /*
   HIGHEST-PRIORITY TOKEN
 */
-
 
 %type <val_int> if if1 then else1
 %type <val_int> lit_integer
@@ -438,11 +438,10 @@ exp:
   | exp_delay exp   
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
   | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }
-  | decl  
-  | LIST_HEAD exp_list
   | exp_conditional  
   | exp_arith        
   | exp_literal      
+  | LIST_HEAD exp_list
   | exp_regex       
  // | exp_memIO
   | exp_ipcIO
@@ -450,6 +449,7 @@ exp:
 //  | exp OP_TUP exp                           { add_to_tuple(); }
   | DEBUG_PRINT IDENTIFIER                   { print_debug_message($2); }
   | CLEAR                                    { clear_terminal(); }
+  | decl  
   | XCS_UNDEF
 ;
 

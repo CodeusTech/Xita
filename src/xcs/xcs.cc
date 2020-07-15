@@ -30,6 +30,7 @@
 #include <xcs/std/std.h>
 #include <xcs/asm/asm.h>
 #include <xcs/ident/ident.h>
+#include <xcs/std/includes.h>
 #include <xcs/std/buffers.h>
 
 #include <xcs/context/manager.h>
@@ -71,6 +72,13 @@ int main(int argc, char** argv)
 		{
 			keep_assembly = true;
 		}
+
+		//  Keep Assembly Option
+		if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verbose") == 0) 
+		{
+			XCS_VERBOSE = true;
+		}
+
 
 	/*
 		OPTIMIZATION OPTIONS:

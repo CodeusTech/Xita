@@ -43,18 +43,6 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
   2.) Operations/Accessors
 */
 
-//  2.b) Register Stacks
-char* ModuleNode::rsCopy(TypeID tid, ADR src) 
-{
-  //  If all registers are in use, reroute to extended stack space
-  ADR dest = rsPush(tid);
-
-  //  Copy Data from src to dest
-  char* str = (char*) malloc(50);
-  sprintf(str, "  mov   %s, %s", get_reg(dest, 8*_TypeSize(tid)), get_reg(src, 8*_TypeSize(tid)));  
-
-  return str;
-}
 
 ADR ModuleNode::rsMerge(TypeID tid, ADR reg)
 {
@@ -268,13 +256,13 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   register_stacks.push_back(RegisterStack());             //  Add new Register Stack for the Function
   scope_stack.push_back(scope); scope = next_scope++;     //  Manipulate Relavent Scope Variables
   functions.push_back( FunctionNode(fid, _mid, ident) );  //  Add Function Node
+  
   return SUCCESS; 
 }
 
   //  Declare Parameter
   ErrorCode ModuleNode::declareFunctionParameter(Identifier ident)
   {
-    rsPush(TYPE_ARBITRARY); //  Allocate a register for the parameter
     return functions.back().declareParameter(ident, rsTop());
   }
 
