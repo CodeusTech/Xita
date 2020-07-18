@@ -222,7 +222,7 @@ extern ContextManager context;
 
 %left IDENTIFIER
 
-%left OP_COMMA
+%left OP_COMMA OP_ELEMENT
 
 //  Order Keepers
 %left OP_LIST_L OP_LIST_R
@@ -440,6 +440,7 @@ exp:
   | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }
   | exp_conditional  
   | exp_arith        
+  | exp OP_ELEMENT exp_record  
   | exp_literal      
   | LIST_HEAD exp_list
   | exp_regex       
@@ -481,7 +482,6 @@ exp_primitive:
 //  | exp_real            { context.LastType(TYPE_REAL);    }
   | exp_char            { context.LastType(TYPE_CHAR);    }
   | STRING              { context.LastType(TYPE_STRING);  }
-  | exp OP_ELEMENT exp_record  { printf("Record Accessed\n"); }
 ;
 
 /*
@@ -624,14 +624,15 @@ ident_struct:
 ;
 
 exp_struct:
-    ident_struct OP_REC_L exp_record OP_REC_R
+    ident_struct OP_REC_L data_struct OP_REC_R
   | ident_struct exp
   | ident_struct  
 ;
 
-exp_record:
-    exp_record OP_COMMA exp_record
+data_struct:
+    data_struct OP_COMMA data_struct
   | IDENTIFIER OP_ASSIGN exp
+  | exp
 ;
 
 /*
@@ -643,8 +644,7 @@ exp_record:
 */
 
 exp_record:
-    exp OP_ELEMENT exp_record { }
-  | IDENTIFIER                { context.resolveTypeElement($1); }
+    IDENTIFIER                { context.resolveTypeElement($1); printf("Accessed Record: %s\n", $1); }
 ;
 
 arg_record: 
