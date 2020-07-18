@@ -14,7 +14,7 @@
 #include <xcs/std/includes.h>
 #include <xcs/regstack/structs.h>
 
-#include "arithmetic.h"
+#include "arithmetic/arithmetic.h"
 #include "logical/logical.h"
 #include "bitwise/bitwise.h"
 
@@ -74,6 +74,7 @@ public:
       case OPERATOR_DIVISION:         //  Division
         return division.resolve(rs);
       case OPERATOR_MODULUS:          //  Modulus (Remainder of Division)
+        return modulus.resolve(rs);
         l.log('d', "Operators", "Resolved Modulus Operation");
         return SUCCESS;
 
