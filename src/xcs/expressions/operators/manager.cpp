@@ -61,6 +61,8 @@ char* OperatorManager::solveOperator(OperatorID oid, RegisterStack* rs)
       return logical_eq.resolve(rs);
     case OPERATOR_NEQ:              //  Not Equal To
       return logical_neq.resolve(rs);
+    case OPERATOR_NOT:
+      return logical_not.resolve(rs);
 
     case OPERATOR_MEM_GET:
       return resolveMemoryGet(rs);

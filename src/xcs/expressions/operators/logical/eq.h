@@ -33,7 +33,6 @@ public:
 class NotEqualOperator : public Operator
 {
 
-
 public:
 
   NotEqualOperator(OperatorManager* manager) : Operator(manager)
@@ -42,33 +41,14 @@ public:
   char* resolve(RegisterStack* rs) override;
 };
 
-
 class LogicalNotOperator : public Operator
 {
-
 
 public:
 
   LogicalNotOperator(OperatorManager* manager) : Operator(manager) 
   { }
 
-  char* resolve(RegisterStack* rs) override
-  {
-    //  STUB STUB STUB  (TODO: IMPLEMENT THIS!!!)
-    char* top = get_reg(rs->top(), 32);
-    char* sec = get_reg(rs->sec(), 32);
-
-    //  STUB:  Needs to be rebuilt using previous implementation.
-    char* str = (char*) malloc(50);
-    sprintf(str, "  cmp  %s, %s", sec, top);
-
-    l.log('D', "Operators", "Resolved Logical 'Not' Operation");
-
-    free(top);
-    free(sec);
-
-    return str;
-  }
-
+  char* resolve(RegisterStack* rs) override;
 };
 

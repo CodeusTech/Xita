@@ -19,29 +19,12 @@
 class LogicalANDOperator : public Operator
 {
 
-
 public:
 
   LogicalANDOperator(OperatorManager* manager) : Operator(manager)
   { }
 
-  char* resolve(RegisterStack* rs) override
-  {
-    //  STUB STUB STUB  (TODO: IMPLEMENT THIS!!!)
-    char* top = get_reg(rs->top(), 32);
-    char* sec = get_reg(rs->sec(), 32);
-
-    char* str = (char*) malloc(50);
-
-    sprintf(str, "  mov  %s, %s  // TODO: FIX LOGICAL AND", sec, top);
-
-    l.log('D', "Operators", "Resolved Logical AND Operation");
-
-    free(top);
-    free(sec);
-
-    return str;
-  }
+  char* resolve(RegisterStack* rs) override;
 
 };
 

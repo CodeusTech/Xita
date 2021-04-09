@@ -529,9 +529,9 @@ exp_boolean:
   | exp OP_NEQ exp      { context.resolveOperator(OPERATOR_NEQ); }
   | exp BOOL_AND exp    { context.resolveOperator(OPERATOR_AND); }
   | exp BOOL_OR exp     { context.resolveOperator(OPERATOR_OR);  }
-  | exp BOOL_XOR exp    { context.resolveOperator(OPERATOR_XOR); }
-  | TRUE   { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
-  | FALSE  { pushData(TYPE_BOOLEAN, (Arbitrary) 0); }
+  | BOOL_NOT exp        { context.resolveOperator(OPERATOR_NOT); }
+  | TRUE                { pushData(TYPE_BOOLEAN, (Arbitrary) 1); }
+  | FALSE               { pushData(TYPE_BOOLEAN, (Arbitrary) 0); }
 ;
 
 /*

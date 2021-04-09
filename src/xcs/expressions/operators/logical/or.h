@@ -23,22 +23,7 @@ public:
   LogicalOROperator(OperatorManager* manager) : Operator(manager)
   { }
 
-  char* resolve(RegisterStack* rs) override
-  {
-    //  STUB STUB STUB  (TODO: IMPLEMENT THIS!!!)
-    char* top = get_reg(rs->top(), 32);
-    char* sec = get_reg(rs->sec(), 32);
-
-    char* str = (char*) malloc(50);
-
-    sprintf (str, "  cmp   %s, %s  //  FIX LOGICAL OR", sec, top);
-    l.log('D', "Operators", "Resolved Logical OR Operation");
-
-    free(top);
-    free(sec);
-
-    return str;
-  }
+  char* resolve(RegisterStack* rs) override;
 
 };
 
