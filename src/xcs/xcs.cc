@@ -38,6 +38,7 @@
 
 #include <xcs/std/forwards.h>
 #include <xcs/std/source.h>
+#include <xcs/std/help.h> 
 
 //  Import Grammar Libraries
 #include "../../lex.yy.c"
@@ -81,6 +82,13 @@ int main(int argc, char** argv)
 		{
 			XCS_VERBOSE = true;
 		}
+
+		//  Help Message
+		if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) 
+		{
+			return help_msg();
+		}
+
 
 
 	/*

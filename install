@@ -1,0 +1,54 @@
+#!/bin/bash
+#  install
+#  Codeus Tech
+
+#  
+#  Script to Simplify Installation Process
+#
+
+
+#  Detect Linux Varient\
+OS=`grep '^NAME' /etc/os-release`
+
+#
+#   DISTRO SPECIFIC PREREQS
+#
+
+#  Fedora
+if [[ $OS == "NAME=Fedora" ]] 
+then
+  sudo dnf upgrade --refresh -y
+  sudo dnf groupinstall "Development Tools" -y
+  sudo dnf groupinstall "C Development Tools and Libraries" -y
+fi
+
+#  Arch
+if [[ $OS == "NAME=\"EndeavourOS\"" || $OS == "NAME=\"Arch Linux\"" || $OS == "NAME=\"Antergos Linux\"" ]]
+then
+  sudo pacman -Syyu --noconfirm
+  sudo pacman -S make gcc flex bison --noconfirm
+fi
+
+#  Debian
+if [[ $OS == "NAME=\"Debian GNU/Linux\"" || $OS == "NAME=\"Ubuntu\"" || "NAME=\"Linux Mint\"" ]]
+then
+  sudo apt update
+  sudo apt upgrade
+  sudo apt install build-essential flex flexc++ bison bisonc++
+fi
+
+#
+#   DISTRO INDEPENDENT PREREQS
+#
+
+#  Clone Repo into ~/.codeus
+mkdir -p ~/.codeus
+cd ~/.codeus
+git clone https://github.com/CodeusTech/XCSL-AArch64
+cd XCSL-AArch64
+
+#  Uncompress AArch64 Cross-Assembler to proper location
+tar xf aarch64-assembler.tar.xz -C $HOME
+
+#  Perform installation
+make install

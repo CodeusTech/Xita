@@ -43,7 +43,6 @@ $  sudo pacman -S make gcc flex bison
 
 ``` bash
 $  sudo yum update
-$  sudo yum nasm
 $  sudo yum group install "Development Tools"
 ```
 
