@@ -463,7 +463,8 @@ exp_delay:
 */
 
 exp_literal:
-    exp_identifier  
+    PAR_LEFT exp_literal PAR_RIGHT
+  | exp_identifier  
   | exp_primitive
   | exp_struct
 ;

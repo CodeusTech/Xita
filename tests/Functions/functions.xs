@@ -20,8 +20,6 @@ let diff x y = (x - y);;
 let prod x y = (x * y);;
 let quot x y = (x / y);;
 let mod x y = (x % y);;
-
-
 let sum x y z = (z + y + x);;
 
 --  Expressions

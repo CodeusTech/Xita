@@ -13,7 +13,7 @@
 #define XCS_ADMIN_H
 
 
-#define XCSL_VERSION "0.20"
+#define XCSL_VERSION "0.24"
 
 
 #endif

@@ -1,5 +1,5 @@
 # XCSL Cross-Compiler (AArch64)
-#### Version: v0.23
+#### Version: v0.24
 
 This respository provides the Linux-to-XCS cross compiler.  This **X-Ita Control System (XCS)** compiler targets ARM's AArch64 architecture.  As of the current version, it specifically targets BCM 2837 (Rasberry Pi 3 B+).  However, it could be adapted to fit other AArch64 chips with ease.  
 
@@ -20,6 +20,15 @@ This respository provides the Linux-to-XCS cross compiler.  This **X-Ita Control
   * [Cross-Compiler](#xcs-cross-compiler)
   * [Terminal Options](#terminal-options)
 
+
+
+### Clone the Repository
+
+```bash
+$  mkdir CodeusTech && cd CodeusTech
+$  git clone https://github.com/CodeusTech/XCSL-AArch64.git
+```
+**NOTE:** Two-Factor Authentication *must* be enabled.
 
 ### Prerequisite Installation 
 
@@ -54,34 +63,34 @@ $  sudo apt-get upgrade
 $  sudo apt-get install build-essential flex flexc++ bison bisonc++
 ```
 
-### XCSL-AArch64 Cross-Compiler Installation
+#####  Cross-Assembler
 
-##### Clone the Repository
+To use the XCSL Cross-Compiler, we need a compliant AArch64 cross-compiler.  Using the command below will uncompress the cross-assembler into the correct location for XCS internal use.  
+
+**NOTE: XCSL expects the cross assembler to reside in ~/.opt/cross**.
 
 ```bash
-$  mkdir CodeusTech && cd CodeusTech
-$  git clone https://github.com/CodeusTech/XCSL-AArch64.git
+$  cd XCSL-AArch64/
+$  tar xf aarch64-assembler.tar.xz -C $HOME
 ```
-**NOTE:** Two-Factor Authentication *must* be enabled.
+
+### XCSL-AArch64 Cross-Compiler Installation
 
 ##### Build and Install XCSL
 
 ```bash
-$  cd XCSL-AArch64/
 $  make install
 ```
 
 ##### Build XCSL and Do NOT Install
 
 ```bash
-$  cd XCSL-AArch64/
 $  make build
 ```
 
 ##### Uninstall XCSL
 
 ```bash
-$  cd XCSL-AArch64/
 $  make uninstall
 ```
 
@@ -89,20 +98,11 @@ $  make uninstall
 
 The following usage commands assume XCS-AArch64 is installed on the current
 Linux system.  If it is only built (and not installed), you will need to
-use 
+use:   ` $  _build/xcs-aarch64 [...] `
 
-```$  _build/xcs-aarch64 [...]```
-
-##### Live Interpreter
 
 ```bash
-$  xcs-aarch64 [OPTIONS]
-```
-
-##### XCS Cross-Compiler
-
-```bash
-$  xcs-aarch64 [file1 file2 ...] [OPTIONS]
+$  xcs-aarch64 [OPTIONS] [file1 file2 ...]
 ```
 
 ##### Terminal Options
@@ -110,8 +110,6 @@ $  xcs-aarch64 [file1 file2 ...] [OPTIONS]
 Command-line options can be fed to either the live interpreter or cross-compiler.  
 See the following list for option syntax and functionality.
 
-* -a | --keep-assembly
-  * Instructs XCSL-AArch64 to keep any procedurally generated ARM Assembly 
-  files after compiling to binary.
-
+*  --version
+*  -v  |  --verbose  
 

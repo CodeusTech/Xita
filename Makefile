@@ -17,6 +17,7 @@ install: build tidy
 
 uninstall: 
 	sudo rm -rf /usr/bin/xcs-aarch64
+	rm -rf ${HOME}/.opt/cross
 
 #  Build XCSL Cross Compiler
 build:  grammar src/xcs/xcs.cc
@@ -34,7 +35,6 @@ leakTest: grammar src/xcs/xcs.cc
 grammar: src/xcs/grammar/xcsl.y src/xcs/grammar/xcsl.l 
 	bison src/xcs/grammar/xcsl.y
 	flex src/xcs/grammar/xcsl.l
-
 
 
 #  Tidy Generated Files
