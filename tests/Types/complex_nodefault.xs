@@ -9,16 +9,23 @@
   Contains unit tests for complex data types, WITHOUT default values
 *)
 
-type person = 
-  Person of 
-    name    : string,
-    age     : int,
+type attributes = 
+  Attributes of
+    age     : int, 
     weight  : int
 ;;
 
-let joe = 
-  Person {"Joe", 15, 155}
+
+type person = 
+  Person of 
+    name  : string,
+    stats : attributes,
+    height: int
 ;;
 
-joe.paul.age
+let joe = 
+  Person {"Joe", Attributes {15, 155}, 65 }
+;;
+
+joe.height
 

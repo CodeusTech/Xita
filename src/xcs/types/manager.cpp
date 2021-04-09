@@ -30,7 +30,7 @@ ErrorCode TypeManager::declareType(TypeID tid, Identifier ident)
 {
   types.push_back(TypeNode(tid, context, ident));
   
-  std::string str = "Declared Type: " + string(types.getIdentifier());
+  std::string str = "Declared Type: " + string(ident);
   l.log('D', "DeclType", str);
 
   return SUCCESS;
@@ -40,23 +40,21 @@ ErrorCode TypeManager::declareType(TypeID tid, Identifier ident, unsigned long s
 {
   types.push_back(TypeNode(tid, context, ident, size));
   
-  std::string str = "Declared Type: " + string(types.getIdentifier());
+  std::string str = "Declared Type: " + string(ident);
   l.log('D', "DeclType", str);
 
   return SUCCESS;
 }
 
-ErrorCode TypeManager::pushConstructor(ConstructorID cid, Identifier ident)
+ErrorCode TypeManager::declareConstructor(ConstructorID cid, Identifier ident)
 {
   constructors.push_back(TypeConstructor(cid, types.back().Id(), types.back().Context(), ident));
   
-  std::string str = "Declared Constructor: " + string(types.getIdentifier());
+  std::string str = "Declared Constructor: " + string(ident);
   l.log('D', "DeclType", str);
 
   return SUCCESS;
 }
-
-
 
 
 TypeID TypeManager::getTypeID(ConstructorID cid)

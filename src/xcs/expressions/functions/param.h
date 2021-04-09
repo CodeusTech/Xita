@@ -13,7 +13,7 @@
 
 #include <xcs/std/includes.h>
 
-
+using namespace std;
 
 struct ParameterRestrictions
 {

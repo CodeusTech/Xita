@@ -147,22 +147,7 @@ ContextManager::ContextManager()
   { 
     LastExpression(EXP_LITERAL);
     char* ret = operators.solveOperator(oid, _context->rsCurrent()); 
-    if (ret)  
-    { 
-      if (oid == OPERATOR_MODULUS)
-      {
-        char** ret2 = (char**) ret;
-        addInstruction(ret2[0]);
-        addInstruction(ret2[1]);
-        free(ret2[0]); free(ret2[1]); free(ret2);
-        rsPop();
-      } else
-      {
-        addInstruction(ret); 
-        free(ret); 
-      }
-      rsPop(); 
-    }
+    if (ret)  { addInstruction(ret); free(ret); rsPop(); }
     else      { return 1; /* FAILURE */ }
     return SUCCESS;
   }
@@ -225,6 +210,17 @@ ContextManager::ContextManager()
     l.log('d', "DeclType", "Aliased current type declaration for: " + string(resolveTypeIdentifier(tid))); 
     return _context->_declareTypeAlias(tid); 
   }
+
+  /*
+    declareTypeElement (IDENT, TYPE)
+      Declares a new element in the current constructor with name `IDENT`.
+  */
+  ErrorCode ContextManager::declareTypeElement(Identifier ident, TypeID tid) 
+  {
+    string str = "Element " + string(ident) + " added to Constructor of TypeID: " + string(resolveTypeIdentifier(tid));
+    l.log('D', "Types/Constructors", str);  
+    return _context->_declareTypeElement(ident, tid); 
+    }
 
   //  Resolutions
   /*
@@ -309,15 +305,46 @@ ContextManager::ContextManager()
       Searches current context for a sub-element named `IDENT`.
       If found, the data is pushed onto the current register stack and Type ID is returned
         otherwise, returns Null
+        NOTE:  This may need to be changed, because one error case returns 0
   */
   TypeID ContextManager::resolveTypeElement(Identifier ident)
   {
     TypeID tid = _context->_resolveTypeElement(ident, LastConstructor(), LastType());
-    if (tid) return tid;
+    if (tid) 
+    {
+      if (XCS_VERBOSE) printf("Accessed Record: %s\n", ident); 
+      //  Set Current Type
+      LastType(tid);
+
+      switch(tid)
+      {
+        case TYPE_INTEGER:
+          
+        default:
+          std::string str = "Record type is unrecognized: " + string(ident);
+          l.log('E', "ExpStruct", str);
+          return 0;
+      }
+
+
+      /*
+        TODO: Use Relative Positioning in Type to determine which element needs to be extracted
+
+        e.g., in `complex_nodefault`, (Person) x.name should return the first expression.
+        
+        Additionally, this needs to be "smart" enough to detect when a type has > XYZ number of elements to start using SRAM, rather than registers
+      */
+
+      std::string str = "Accesed Record: " + string(ident) + " of type: " + string(resolveTypeIdentifier(tid));
+      l.log('D', "ExpStruct", str);
+      return tid;
+    }
 
     /*
       TODO: Check other child module nodes for this element identifier
     */
+    std::string str = "Failed to Access Record: " + string(ident);
+    l.log('E', "ExpStruct", str);
 
     return NULL;
   }
@@ -404,7 +431,10 @@ ContextManager::ContextManager()
     sprintf(str, "  ldr   %s, =%s", top, ident);
     addInstruction(str); free(str);
 
-    std::string _str = "Resolved constant "; _str.append(ident); _str += " as type " + string(resolveTypeIdentifier(LastType()));
+    std::string _str = "Resolved constant "; 
+    _str.append(ident); 
+    _str += " as type " + string(resolveTypeIdentifier(LastType()));
+
     l.log('D', "ExpConst", _str);
 
     return cid;
@@ -483,6 +513,7 @@ ContextManager::ContextManager()
       while (!arguments.empty())
       {
         ArgumentNode arg = resolveArgument();
+        _context->rsRemove(arguments.size());
         arg_reg = get_reg(arg.reg, 8*4);                      /* TODO: Replace w/ Type Size */
         param_reg = get_reg(node->ParameterRegister(i), 8*4); /* TODO: Replace w/ Type Size */
 
@@ -490,13 +521,13 @@ ContextManager::ContextManager()
         addInstruction(str);
         i++;
 
-        rsPop();
       
         free(arg_reg); free(param_reg);
       }
 
       sprintf(str, "  bl    __%lu_%s", node->Id(), ident);
       addInstruction(str);
+
       
       rsMerge(node->Type(), node->Register());
       LastExpression(EXP_FUNCTION);
@@ -535,8 +566,33 @@ ContextManager::ContextManager()
       l.log('d', "ExpFunct", str);
       return LastType();
     }
-    return 0;
+    return NULL;
   }
+
+  TypeID ContextManager::resolveMemoryVariable(Identifier ident)
+  {
+    MemoryVariable* mem = memory.getMemoryVariable(ident);
+    if (mem)
+    {
+      char* sec = get_reg(rsTop(), 64);
+      ADR reg = rsPush(mem->Type());
+      LastExpression(EXP_MEMORY);
+      char* top = get_reg(reg, 32);
+      char* str = (char*) malloc(50);
+
+      sprintf(str, "  ldr %s, [%s]", top, sec);
+      addInstruction(str);
+
+      if (XCS_VERBOSE) printf("Memory Variable Encountered: %s\n", ident);
+
+      free(str); free(top); free(sec);
+      //  NOTE:  Might be erroneous...
+      //         'Sec' might need to get popped here.
+      return mem->Type();
+    }
+    return NULL;
+  }
+
 
   /*
     Function Type Signatures
@@ -599,6 +655,9 @@ ContextManager::ContextManager()
 unsigned long ContextManager::resolveExpression(Identifier ident) 
 {
   unsigned long _id;
+
+  if ((_id = resolveMemoryVariable(ident)))
+    return _id;
 
   //  Resolve Parameter
   if ((_id = resolveFunctionParameter(ident)))
@@ -673,5 +732,6 @@ unsigned long ContextManager::castExpression(Identifier constructor)
 
   return 0;
 }
+
 
 

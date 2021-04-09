@@ -174,9 +174,11 @@ Identifier ModuleNode::_resolveTypeIdentifier(TypeID tid)
 
   TypeID ModuleNode::_resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid)
   {
+    TypeID _tid;
     for (unsigned long i = 0; i < _types.size(); ++i)
-      if (_types[i].Id() == tid)
-        return _types[i].resolveElement(ident, cid);
+      if (tid == _types[i].Id())
+        if ((_tid = _types[i].resolveElement(ident, cid)))
+          return _tid;
     return 0;
   }
 

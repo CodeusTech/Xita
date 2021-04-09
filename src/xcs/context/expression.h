@@ -22,6 +22,9 @@ enum ExpressionType
   EXP_CONSTANT     = 6,
   EXP_FUNCTION     = 7,
   EXP_PARAMETER    = 8,
-  EXP_MODULE       = 9
+  EXP_MODULE       = 9,
+  EXP_MEMORY       = 10
 };
+
+
 

@@ -16,6 +16,7 @@
 #include <vector>
 
 //  XCS Libraries
+#include <xcs/std/includes.h>
 #include <xcs/std/typedefs.h>
 #include <xcs/std/optimize.h>
 #include <xcs/utils/mangle.h>
@@ -39,18 +40,10 @@ public:
     l.log('d', "RegStack", "Initialized New Register Stack");
   }
 
-  /*
-    isActive(test)
-      Returns true if the test ADR is already active
-  */
-  bool isActive(ADR test) const
-  {
-    for (unsigned long i = 0; i < registers.size(); i++)
-      if ((registers[i]) == (test)) return true;
-    return false;
-  }
 
-//  MUTATORS
+/*
+  MUTATORS
+*/
   ADR push(TypeID tid)
   {
     //  If all registers are in use, reroute to extended stack space
@@ -74,6 +67,19 @@ public:
     return check;
   }
 
+  /*
+    duplicateTop() 
+      Adds the top ADR/Type to the register stack again.
+      This is used to correct subsequent automatic pop() operations.
+  */
+  ErrorCode duplicateTop()
+  {
+    registers.push_back(registers.back());
+    types.push_back(types.back());
+
+    return SUCCESS;
+  }
+
   ADR merge(TypeID tid, ADR reg)
   {
     /*
@@ -93,6 +99,43 @@ public:
     return SUCCESS;
   }
 
+  /*
+    remove(from_top)
+      This function removes the entry X places from top of the reg stack, then returns all entries above it to the stack.  
+      If "from_top" == 0, it will remove the top entry of the stack; "from_top" == 1 will remove the second from top.
+  */
+  ErrorCode remove(int from_top)
+  {
+    vector<ADR> buffer_reg;
+    vector<TypeID> buffer_type;
+
+    //  Store registers/types to buffer
+    for (int i = 0; i < from_top; ++i)
+    {
+      buffer_reg.push_back(registers.back()); registers.pop_back();
+      buffer_type.push_back(types.back()); types.pop_back();
+    }
+
+    //  Remove Target Register
+    registers.pop_back();
+    types.pop_back();
+
+    //  Restore Registers/types from buffer
+    for (int i = 0; i < from_top; ++i)
+    {
+      registers.push_back(buffer_reg.back()); buffer_reg.pop_back();
+      types.push_back(buffer_type.back()); buffer_type.pop_back();
+    }
+
+    return SUCCESS;
+  }
+
+  ErrorCode removeSec() { return remove(1); }
+
+
+/*
+  ACCESSORS
+*/
   ADR from_top(int i) { return registers.at(registers.size()-(i+1)); }
   ADR top() { return registers.back(); }
   ADR sec() { return registers.at(registers.size()-2); }
@@ -102,6 +145,18 @@ public:
   ADR sec_type() { return types.at(types.size()-2); }
 
   unsigned int size() const { return registers.size(); }
+
+  /*
+    isActive(test)
+      Returns true if the test ADR is already active
+  */
+  bool isActive(ADR test) const
+  {
+    for (unsigned long i = 0; i < registers.size(); i++)
+      if ((registers[i]) == (test)) return true;
+    return false;
+  }
+
 };
 
 

@@ -20,7 +20,8 @@ class BitwiseAndOperator : public Operator
 
 
 public:
-  BitwiseAndOperator() { }
+  BitwiseAndOperator(OperatorManager* manager) : Operator(manager)
+  { }
 
   
   char* resolve(RegisterStack* rs) override
@@ -31,7 +32,7 @@ public:
 
     char* str = (char*) malloc(50);
 
-    sprintf(str, "  mov   %s, %s  //  TODO: Replace with Bitwise Op", sec, top);
+    sprintf(str, "  and   %s, %s, %s ", sec, sec, top);
 
     l.log('D', "Operators", "Resolved Bitwise AND Operation");
 

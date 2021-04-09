@@ -86,9 +86,10 @@ Identifier TypeNode::resolveConstructorIdentifier(ConstructorID cid)
 //  Resolve Element
 TypeID TypeNode::resolveElement(Identifier ident, ConstructorID cid)
 {
+  TypeID tid;
   for (unsigned long i = 0; i < constructors.size(); ++i)
-    if (constructors[i].Id() == cid)
-      return constructors[i].resolveElement(ident);
+    if ((tid = constructors[i].resolveElement(ident)))
+      return tid;
   return 0;
 }
 

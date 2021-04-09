@@ -13,6 +13,6 @@
 
 #include "addition.h"
 #include "subtraction.h"
-#include "multiply.h"
+#include "multiplication.h"
 #include "division.h"
 

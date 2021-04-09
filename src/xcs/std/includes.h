@@ -11,6 +11,7 @@
 //  Linux Standard Includes
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
  
 //  XCS Standard Includes
 #include "typedefs.h"

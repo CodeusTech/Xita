@@ -1,6 +1,9 @@
 
 #  XCSL-AArch64 Change Log
 
+### 0.24.0
+*  
+
 ### 0.23.0
 * Added high-level managers:
   * Assembly Manager

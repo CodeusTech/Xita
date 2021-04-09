@@ -10,11 +10,14 @@
 *)
 
 
-typeclass number a requires
-  sum  a a = a,
-  diff a a = a,
-  prod a a = a,
-  div  a a = a;;
+typeclass number a 
+  requires
+    sum  a a = a,
+    diff a a = a,
+    prod a a = a,
+    div  a a = a;;
+
+--type digit = number;;
 
 type age = int
   implements number:
@@ -22,5 +25,3 @@ type age = int
     diff x y = 3 - 4,
     prod x y = 5 * 6,
     div  x y = 7 / 8
-
-

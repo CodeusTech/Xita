@@ -29,7 +29,7 @@ struct ConstructorElement
   {
     tid = _tid;
     ident = strdup(_ident);
-    free(ident);
+    free(_ident);
   }
 };
 
@@ -78,7 +78,6 @@ public:
   */
   ErrorCode declareElement(TypeID tid, Identifier ident) 
   { 
-    l.log('D', "Types/Constructors", "Element added to Constructor"); 
     _elements.push_back(ConstructorElement(tid, ident)); 
     return SUCCESS; 
   }
@@ -87,7 +86,10 @@ public:
   { 
     for (unsigned long i = 0; i < _elements.size(); ++i)
       if (strcmp(_elements[i].ident, ident) == 0) 
+      {
+        if (XCS_VERBOSE) printf("Element Found: %s\n", ident);
         return _elements[i].tid;
+      }
     return 0;
   }
 

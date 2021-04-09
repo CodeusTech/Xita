@@ -20,10 +20,8 @@ class LogicalXOROperator : public Operator
 {
 
 public:
-  LogicalXOROperator()
-  {
-    
-  }
+  LogicalXOROperator(OperatorManager* manager) : Operator(manager)
+  { }
 
   char* resolve(RegisterStack* rs) override
   {

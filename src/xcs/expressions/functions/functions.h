@@ -72,6 +72,3 @@ public:
 
 };
 
-
-
-#include "functions.cpp"

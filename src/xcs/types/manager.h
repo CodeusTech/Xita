@@ -55,6 +55,3 @@ public:
   Identifier getIdentifier() { return types.back().Ident(); }
   Identifier getIdentifier(Index i) { return types[i].Ident(); }
 };
-
-
-#include "manager.cpp"

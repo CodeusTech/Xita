@@ -15,7 +15,7 @@
 #include <xcs/regstack/structs.h>
 
 
-
+class OperatorManager;
 
 class Operand
 {
@@ -41,12 +41,15 @@ class Operator
 {
 
 protected:
+  OperatorManager* manager;
+
   vector<Operand> operands;
   char* op;
   bool is_communitive = true;
 
 
 public:
+  Operator(OperatorManager* manager) : manager(manager) {}
 
   virtual char* resolve(RegisterStack* rs) { l.log('E', "Operators", "Default 'resolve' function called for operator"); return NULL; }
 

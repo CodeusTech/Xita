@@ -67,6 +67,30 @@ then
 else
   printf "  Basic Type Declarations:  FAILURE\n"
 fi
+  # Complex Datatypes (No Default Values)
+xcs-aarch64 ./tests/Types/complex_nodefault.xs
+if [ $? == 0 ]
+then
+  printf "  Complex Datatypes (No Defaults): SUCCESS\n"
+else
+  printf "  Complex Datatypes (No Defaults): FAILURE\n"
+fi
+  # Complex Datatypes (With Default Values)                       NOTE:  INACTIVE!!
+#xcs-aarch64 ./tests/Types/complex_wdefault.xs
+#if [ $? == 0 ]
+#then
+#  printf "  Complex Datatypes (With Defaults): SUCCESS\n"
+#else
+#  printf "  Complex Datatypes (With Defaults): FAILURE\n"
+#fi
+  # Constant Datatypes
+xcs-aarch64 ./tests/Types/constants.xs
+if [ $? == 0 ]
+then
+  printf "  Constant Datatypes: SUCCESS\n"
+else
+  printf "  Constant Datatypes: FAILURE\n"
+fi
   # Typeclasses
 xcs-aarch64 ./tests/Types/typeclass.xs
 if [ $? == 0 ]
@@ -95,6 +119,24 @@ then
 else 
   printf "  Dynamic Functions:  FAILURE\n"
 fi
+  #  Nested/Complex Functions
+xcs-aarch64 ./tests/Functions/nested.xs
+if [ $? == 0 ]
+then 
+  printf "  Nested Functions:  SUCCESS\n"
+else 
+  printf "  Nested Functions:  FAILURE\n"
+fi
+
+printf "\nTesting Direct Memory Access\n"
+xcs-aarch64 ./tests/Memory/memory.xs
+if [ $? == 0 ]
+then 
+  printf "  Memory Access:  SUCCESS\n"
+else
+  printf "  Memory Access:  FAILURE\n"
+fi
+
 
 
 #  External Module Testing

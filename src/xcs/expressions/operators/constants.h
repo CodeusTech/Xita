@@ -37,5 +37,8 @@
 #define OPERATOR_NEQ 18
 #define OPERATOR_NOT 19
 
+//  Memory
+#define OPERATOR_MEM_GET 20
+#define OPERATOR_MEM_SET 21
 
 

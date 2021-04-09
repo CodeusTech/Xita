@@ -36,6 +36,9 @@
 #include <xcs/context/manager.h>
 #include <xcs/expressions/primitives/primitives.h>
 
+#include <xcs/std/forwards.h>
+#include <xcs/std/source.h>
+
 //  Import Grammar Libraries
 #include "../../lex.yy.c"
 
@@ -132,6 +135,7 @@ int main(int argc, char** argv)
 			strncpy(asm_fname, argv[i], strlen(argv[i]));
 			strncat(asm_fname, ".s", 3);
 
+			//  Create Object File
 			char* obj_fname = (char*) malloc(strlen(argv[i])+3);
 			obj_fname[strlen(argv[i])] = 0;
 			strncpy(obj_fname, argv[i], strlen(argv[i]));

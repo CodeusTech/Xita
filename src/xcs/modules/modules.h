@@ -101,6 +101,7 @@ public:
   TypeID rsSecType() { return register_stacks[scope].sec_type(); }
   TypeID rsType() { return register_stacks[scope].top_type(); }
   TypeID rsType(int from_top) { return register_stacks[scope].from_top_type(from_top); }
+  ErrorCode rsRemove(int from_top) { return register_stacks[scope].remove(from_top); }
 
   ADR rsPush(TypeID tid) { return register_stacks[scope].push(tid); }
   ADR rsMerge(TypeID tid, ADR reg);
@@ -174,6 +175,4 @@ public:
   unsigned long resolveExpression(Identifier ident);
 };
 
-
-#include "modules.cpp"
 #endif

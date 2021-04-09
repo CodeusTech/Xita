@@ -21,7 +21,8 @@ class BitwiseShiftLeftOperator : public Operator
 
 public: 
 
-  BitwiseShiftLeftOperator() { }
+  BitwiseShiftLeftOperator(OperatorManager* manager) : Operator(manager) 
+  { }
 
 
   char* resolve(RegisterStack* rs) override
@@ -51,7 +52,8 @@ class BitwiseShiftRightOperator : public Operator
 
 public:
 
-  BitwiseShiftRightOperator() { }
+  BitwiseShiftRightOperator(OperatorManager* manager) : Operator(manager)
+  { }
 
   char* resolve(RegisterStack* rs) override
   {
@@ -61,7 +63,7 @@ public:
 
     char* str = (char*) malloc(50);
 
-    sprintf(str, "  slr   %s, %s, %s", sec, sec, top);
+    sprintf(str, "  lsr   %s, %s, %s", sec, sec, top);
     l.log('D', "Operators", "Resolved Bitwise Shift Right Operation");
 
     rs->pop();

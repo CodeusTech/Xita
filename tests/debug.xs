@@ -39,4 +39,3 @@ type person =
 --const guy of person = 1 --Person (name="Cody", age=27)
 
 
-

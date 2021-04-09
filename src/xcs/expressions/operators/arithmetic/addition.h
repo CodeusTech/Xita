@@ -24,17 +24,20 @@ class AdditionOperator : public Operator
 private:
   
 public:
-  AdditionOperator();
+  AdditionOperator(OperatorManager*);
   char* resolve(RegisterStack* rs) override;
   ErrorCode override(TypeID rtn_type, TypeID left, TypeID right);
 };
 
 
+
+
 /*
   Constructors
 */
-AdditionOperator::AdditionOperator()
+AdditionOperator::AdditionOperator(OperatorManager* manager) : Operator(manager)
 {
+
   op = strdup(string("(+)").c_str());
   is_communitive = true;
 }

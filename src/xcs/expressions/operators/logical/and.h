@@ -22,10 +22,8 @@ class LogicalANDOperator : public Operator
 
 public:
 
-  LogicalANDOperator()
-  {
-    
-  }
+  LogicalANDOperator(OperatorManager* manager) : Operator(manager)
+  { }
 
   char* resolve(RegisterStack* rs) override
   {

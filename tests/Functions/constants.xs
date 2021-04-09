@@ -9,10 +9,10 @@
   Contains Test Case for Functional Expressions
 *)
 
-  type color = Color of int;;
+  type color = Color of int;;  --  RGB Notation
 
   --  Constant Declarations
-  const Color red = 0xFF0000;; --  RGB Notation
+  const Color red = 0xFF0000;; 
   const Color yellow = red + 0x00FF00;;
 
   --  Constant Expressions

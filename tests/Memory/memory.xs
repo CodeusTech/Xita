@@ -26,18 +26,20 @@ let write_entry entry offset =
   offset <-* entry;;
 
 
-(write_entry 10 5);;
+(write_entry 10 5) + 5;;
 
 
-let read_int offset = 
-  offset   *-> entry  in
-  offset+4 *-> entry2 in
-    entry + entry2;;
-
+--  TODO: Order of Operations is messed up for Memory Read Operator
+--        The following requires excessive parentheses to compile
+(*let read_int offset = 
+  (offset   *-> entry  in
+  (offset+4 *-> entry2 in
+    (entry + entry2)));;
+*)
 
 let read_ offset = 
   offset *-> this;;
 
 
-(read_int 10) + (read_ 5)
+(read_ 5) + 5
     

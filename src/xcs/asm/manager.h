@@ -141,9 +141,21 @@ public:
   { asm_data.push_back(strdup(command)); return SUCCESS; }
 
   ErrorCode addInstruction(Command command)
-    { asm_text[instruction_scope].push_back(strdup(command)); return SUCCESS; }
+  { asm_text[instruction_scope].push_back(strdup(command)); return SUCCESS; }
   ErrorCode addInstruction(const char* command)
-    { asm_text[instruction_scope].push_back(strdup(command)); return SUCCESS; }
+  { asm_text[instruction_scope].push_back(strdup(command)); return SUCCESS; }
+  
+  ErrorCode addString(char* str)
+  { 
+    Index i = asm_data.size();
+    char* s = (char*) malloc(50 + strlen(str));
+    sprintf(s, "_s_%lu: .string \"%s\"", i, str);
+    asm_data.push_back(strdup(s)); 
+    free(s);
+    free(str);
+    return SUCCESS; 
+  }
+
 
 
   /*
@@ -163,6 +175,7 @@ public:
   {
     instruction_scope = instruction_scope_stack.back();
     instruction_scope_stack.pop_back();
+    return SUCCESS;
   }
 
 

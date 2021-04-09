@@ -19,7 +19,8 @@ class BitwiseXorOperator : public Operator
 {
 
 public:
-  BitwiseXorOperator() { }
+  BitwiseXorOperator(OperatorManager* manager) : Operator(manager) 
+  { }
 
 
   char* resolve(RegisterStack* rs) override
@@ -30,7 +31,7 @@ public:
 
     char* str = (char*) malloc(50);
 
-    sprintf(str, "  mov   %s, %s  //  TODO: Replace with Bitwise Op", sec, top);
+    sprintf(str, "  eor   %s, %s", sec, top);
     l.log('D', "Operators", "Resolved Bitwise Exclusive OR Operation");
 
     free(top);

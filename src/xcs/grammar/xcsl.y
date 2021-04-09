@@ -209,9 +209,10 @@ extern ContextManager context;
 %left IF THEN ELSE
 
 //  Literal Values
-%left INT REAL TRUE FALSE CHAR STRING
 %left CONSTRUCTOR
+%left INT REAL TRUE FALSE CHAR STRING
 
+%left IDENTIFIER
 
 //  Logical Operators
 %left BOOL_NOT BOOL_OR BOOL_AND
@@ -220,7 +221,6 @@ extern ContextManager context;
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 
-%left IDENTIFIER
 
 %left OP_COMMA OP_ELEMENT
 
@@ -231,6 +231,7 @@ extern ContextManager context;
 //  Assignment Operators
 %left OP_ASSIGN IN
 %left TYPE TYPECLASS LET CONST
+%left MEM_SET MEM_READ
 
 %left DEBUG
 
@@ -242,6 +243,7 @@ extern ContextManager context;
 
 %type <val_int> if if1 then else1
 %type <val_int> lit_integer
+%type <val_string> var_memread
 
 /*
   C.) Start of Grammar
@@ -415,16 +417,22 @@ decl_typeclass:
   I.1.c) Constants
 */
 assign_const:
-  OP_ASSIGN  { context.LastData((Arbitrary)0); context.newData(TYPE_ARBITRARY, NULL); }
+  OP_ASSIGN  { context.newData(TYPE_ARBITRARY, NULL); }
 ;
 
 decl_const:
-    DEBUG STRING CONST IDENTIFIER OF exp_type assign_const exp_const { add_debug_message($4, $2); context.declareConstant($4); }
-  | DEBUG STRING CONST ident_struct IDENTIFIER  assign_const exp_const { add_debug_message($5, $2); context.declareConstant($5); }
-  | CONST IDENTIFIER OF exp_type assign_const exp_const { context.declareConstant($2); }
-  | CONST ident_struct IDENTIFIER  assign_const exp_const { context.declareConstant($3); }
+    DEBUG STRING CONST IDENTIFIER OF exp_type assign_const add_value_const    
+  | DEBUG STRING CONST ident_struct IDENTIFIER  assign_const add_value_const  
+  | CONST IDENTIFIER OF exp_type assign_const add_value_const                 { context.declareConstant($2); }
+  | CONST ident_struct IDENTIFIER  assign_const add_value_const               { context.declareConstant($3); }
 ;
 
+add_value_const:
+    add_value_const OP_ADD add_value_const  { }
+  | INT         { context.addData(TYPE_INTEGER,(Arbitrary) $1); }
+  | STRING      { context.addData(TYPE_STRING,(Arbitrary) $1); }
+  | IDENTIFIER  { context.addData($1); }
+;
 
 /*
     II. EXPRESSIONS
@@ -437,14 +445,14 @@ exp:
     PAR_LEFT exp PAR_RIGHT
   | exp_delay exp   
   | exp OP_ELEMENT OP_LIST_L exp OP_LIST_R  { printf("ARRAY/LIST ELEMENT ACCESSED\n"); }
-  | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }
+  | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }    
+  | exp_memIO
   | exp_conditional  
   | exp_arith        
   | exp OP_ELEMENT exp_record  
   | exp_literal      
   | LIST_HEAD exp_list
-  | exp_regex       
- // | exp_memIO
+  | exp_regex   
   | exp_ipcIO
 //  | exp_fileIO
 //  | exp OP_TUP exp                           { add_to_tuple(); }
@@ -463,8 +471,7 @@ exp_delay:
 */
 
 exp_literal:
-    PAR_LEFT exp_literal PAR_RIGHT
-  | exp_identifier  
+    exp_identifier  
   | exp_primitive
   | exp_struct
 ;
@@ -478,11 +485,11 @@ exp_identifier:
 
 exp_primitive:
     exp_list            { context.LastType(TYPE_LIST);    }
-  | exp_integer         {  }
+  | exp_integer 
   | exp_boolean         { context.LastType(TYPE_BOOLEAN); }
 //  | exp_real            { context.LastType(TYPE_REAL);    }
   | exp_char            { context.LastType(TYPE_CHAR);    }
-  | STRING              { context.LastType(TYPE_STRING);  }
+  | STRING              { pushString($1);  }
 ;
 
 /*
@@ -625,9 +632,9 @@ ident_struct:
 ;
 
 exp_struct:
-    ident_struct OP_REC_L data_struct OP_REC_R
-  | ident_struct exp
-  | ident_struct  
+    CONSTRUCTOR OP_REC_L data_struct OP_REC_R   { context.resolveConstructor($1); }
+  | CONSTRUCTOR exp                             { context.resolveConstructor($1); }
+  | CONSTRUCTOR                                 { context.resolveConstructor($1); }  
 ;
 
 data_struct:
@@ -645,7 +652,7 @@ data_struct:
 */
 
 exp_record:
-    IDENTIFIER                { context.resolveTypeElement($1); printf("Accessed Record: %s\n", $1); }
+    IDENTIFIER                { context.resolveTypeElement($1); }
 ;
 
 arg_record: 
@@ -742,7 +749,7 @@ param_match:
 
 exp_is:
 //    exp IS exp_struct { /*is_construct();*/ }
-  | exp IS exp_type   { isType(); }
+    exp IS exp_type   { isType(); }
 ;
 
 /*
@@ -765,7 +772,7 @@ exp_const:
     exp_const op_const exp_const
   | INT     { context.addData(TYPE_INTEGER, (Arbitrary)$1); }
   | STRING  { context.addData(TYPE_STRING, (Arbitrary)$1);  }
-  | IDENTIFIER { context.resolveConstant($1); context.popLastInstruction(); }
+  | IDENTIFIER 
 ;
 
 /*
@@ -846,38 +853,31 @@ arg_funct:
 /*
   7) Direct Memory Access (DMA)
 */
-
-/*
-  6.a) Read Expression from Memory
-*/
-/*
 exp_memIO:
     exp_memread         { }
   | exp_memwrite        { }
 ;
 
-
-memread:
-  exp MEM_READ {  }
-;
-pre_memread:
-    memread IDENTIFIER { decl_memory_variable($2); }
-  | memread THIS       { decl_memory_variable_this(); }
+/*
+  6.a) Read Expression from Memory
+*/
+var_memread:
+  IDENTIFIER                        { context.addMemoryVariable($1); $$ = $1; }
 ;
 
 exp_memread:
-  | pre_memread INT IN exp { undecl_memory_variable(); }
-  | pre_memread     IN exp { undecl_memory_variable(); }
-  | memread THIS      { decl_memory_variable_this(); }
+//    exp MEM_READ var_memread IN exp { context.rmMemoryVariable($3); }
+   exp MEM_READ THIS               { context.resolveOperator(OPERATOR_MEM_GET); }
 ;
+
+
 
 /*
   6.b) Write Expression to Memory
 */
-/*
 exp_memwrite:
-    exp MEM_SET exp { memory_write_exp(); }
-  | exp MEM_SET exp INT { memory_write_exp(); }
+    exp MEM_SET exp                 { context.resolveOperator(OPERATOR_MEM_SET); }
+  | exp MEM_SET exp INT             {  }
 ;
 
 

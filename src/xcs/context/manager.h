@@ -37,6 +37,7 @@
 
 #include <xcs/asm/manager.h>
 #include <xcs/expressions/operators/manager.h>
+#include <xcs/expressions/memory/memory.h>
 #include <xcs/data/manager.h>
 
 #include <xcs/modules/modules.h>
@@ -62,8 +63,9 @@ protected:
 
   //  Managers
   AssemblyManager assembly;       //  Manages Buffers for producing Assembly Files
-  OperatorManager operators;      //  Manages Active Operator Semantics (e.g. Addition)
-  DataManager     data;           //  Manages Active Backend Data Values/Types
+  OperatorManager operators = OperatorManager(this);      //  Manages Active Operator Semantics (e.g. Addition)
+  DataManager     data = DataManager(this);           //  Manages Active Backend Data Values/Types
+  MemoryVariableManager memory;
 
   //  Modules
   vector<ModuleNode> modules;     //  All Imported Module Contexts
@@ -85,7 +87,6 @@ protected:
   unsigned long _last_index;        //  Used Encountered Index 
     //  Loaded Arguments
   list<ArgumentNode> arguments;   //  Arguments loaded for an expression (e.g. function)
-
 
 
 public:
@@ -112,6 +113,7 @@ public:
   //  Last Encountered Data
   ErrorCode newData(TypeID tid, Arbitrary value) { return data.newData(tid, value); }
   ErrorCode addData(TypeID tid, Arbitrary value) { return data.addData(tid, value); }
+  ErrorCode addData(Identifier ident)            { return data.addData(ident); }
   
   //  Loaded Arguments
   unsigned long CountArguments() { return arguments.size(); }
@@ -135,6 +137,7 @@ public:
   ErrorCode generateAssembly(FILE* file) { return assembly.generateAssembly(file); }
   ErrorCode addInstruction(char* instruction) { return assembly.addInstruction(instruction); }
   ErrorCode addConstant(char* constant) { return assembly.addConstant(constant); }
+  ErrorCode addString(char* str) { return assembly.addString(str); }
   ErrorCode popLastInstruction() { return assembly.popLastInstruction(); }
 
   //  2.c) Register Stack Operations
@@ -167,7 +170,7 @@ public:
   ErrorCode declareType(Identifier ident, unsigned long size) { return _context->_declareType(_next_tid++, ident, size); }
   ErrorCode declareTypeParameter(Identifier ident);
   ErrorCode declareTypeConstructor(Identifier ident) { return _context->_declareTypeConstructor(_next_constructor++, ident); }
-  ErrorCode declareTypeElement(Identifier ident, TypeID tid) { return _context->_declareTypeElement(ident, tid); }
+  ErrorCode declareTypeElement(Identifier ident, TypeID tid);
   ErrorCode declareTypeAlias(TypeID tid);
 
     //  Resolve
@@ -191,8 +194,9 @@ public:
 
   //  3.c) Constant Operations
   ErrorCode declareConstant(Identifier ident);
-
+  
   ConstantID resolveConstant(Identifier ident);
+  ConstantNode* resolveConstantNode(Identifier ident) { return _context->resolveConstant(ident); }
 
   //  3.d) Function Operations
   ErrorCode declareFunction(Identifier ident);
@@ -208,6 +212,10 @@ public:
   ErrorCode loadArgument(TypeID tid, ADR reg) { arguments.push_back(ArgumentNode(tid, reg)); return SUCCESS; }
   ArgumentNode resolveArgument() { ArgumentNode arg = arguments.front(); arguments.pop_front(); return arg; }
 
+  //  3.f) Memory Operations
+  ErrorCode addMemoryVariable(Identifier ident) { memory.addMemoryVariable(ident); return SUCCESS; }
+  ErrorCode rmMemoryVariable(Identifier ident)  { memory.rmMemoryVariable(ident);  return SUCCESS; }
+  TypeID resolveMemoryVariable(Identifier);
 
   /*
     3.) Complex Operations
@@ -215,8 +223,8 @@ public:
   //  Resolve Identifiers
   unsigned long resolveExpression(Identifier ident);
   unsigned long castExpression(Identifier ident);
+  ErrorCode pushExpression(TypeID tid);
 };
 
 
-#include "manager.cpp"
 #endif

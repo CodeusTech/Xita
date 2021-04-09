@@ -23,6 +23,8 @@
 extern ContextManager context;
 
 
+Index countStrings = 0;
+
 /*
   1.) Initialize ASCII Primitives
 */
@@ -40,3 +42,19 @@ ErrorCode initializeASCIIPrimitives()
 }
 
 
+ErrorCode pushString(char* str)
+{
+  context.addString(str);
+  context.LastConstructor(TYPE_STRING);
+  context.LastType(TYPE_STRING);
+
+  ADR adr = context.rsPush(TYPE_STRING);
+  char* top = get_reg(adr, 64);
+
+  char* s = (char*) malloc(100);
+  sprintf(s, "  ldr   %s, =_s_%lu", top, countStrings++);
+  context.addInstruction(s);
+
+  free(s);
+  return SUCCESS;
+}
