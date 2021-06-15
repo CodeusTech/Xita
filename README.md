@@ -94,7 +94,7 @@ $  make build
 $  make uninstall
 ```
 
-###  Xita Terminal Usage 
+###  Xita Usage 
 
 The following usage commands assume XCS-AArch64 is installed on the current
 Linux system.  If it is only built (and not installed), you will need to
@@ -113,3 +113,13 @@ See the following list for option syntax and functionality.
 *  --version
 *  -v  |  --verbose  
 
+##### Syntax Highlighting
+
+At present, Xita syntax highlighting is only available for [Visual Studio Code](https://code.visualstudio.com/).  
+
+After installing VS Code, execute the following to install the highlighter:
+```bash
+$  cd ~/.vscode/extensions/
+$  git clone https://github.com/CodeusTech/Xita-SyntaxHighligher
+```
+Restart VS Code if it doesn't register \*.xs files immediately.
