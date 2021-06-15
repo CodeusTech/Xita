@@ -120,6 +120,6 @@ At present, Xita syntax highlighting is only available for [Visual Studio Code](
 After installing VS Code, execute the following to install the highlighter:
 ```bash
 $  cd ~/.vscode/extensions/
-$  git clone https://github.com/CodeusTech/Xita-SyntaxHighligher
+$  git clone https://github.com/CodeusTech/Xita-SyntaxHighlighter
 ```
 Restart VS Code if it doesn't register \*.xs files immediately.
