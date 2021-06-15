@@ -1,7 +1,8 @@
-# XCSL Cross-Compiler (AArch64)
+# Xita Cross-Compiler (AArch64)
 #### Version: v0.24
+**NOTE:  For sake of consistency, this repository will be renamed to `Xita-AArch64` starting with v0.25.**
 
-This respository provides the Linux-to-XCS cross compiler.  This **X-Ita Control System (XCS)** compiler targets ARM's AArch64 architecture.  As of the current version, it specifically targets BCM 2837 (Rasberry Pi 3 B+).  However, it could be adapted to fit other AArch64 chips with ease.  
+This respository provides the Linux-to-Xita cross compiler.  This **X-Ita Control System** compiler targets ARM's AArch64 architecture.  As of the current version, it specifically targets BCM 2837 (Rasberry Pi 3 B+).  However, it could be adapted to fit other AArch64 chips with ease.  
 
 ### Table of Contents
 
@@ -64,36 +65,36 @@ $  sudo apt-get install build-essential flex flexc++ bison bisonc++
 
 #####  Cross-Assembler
 
-To use the XCSL Cross-Compiler, we need a compliant AArch64 cross-compiler.  Using the command below will uncompress the cross-assembler into the correct location for XCS internal use.  
+To use the Xita Cross-Compiler, we need a compliant AArch64 cross-compiler.  Using the command below will uncompress the cross-assembler into the correct location for Xita internal use.  
 
-**NOTE: XCSL expects the cross assembler to reside in ~/.opt/cross**.
+**NOTE: Xita expects the cross assembler to reside in ~/.opt/cross**.
 
 ```bash
 $  cd XCSL-AArch64/
 $  tar xf aarch64-assembler.tar.xz -C $HOME
 ```
 
-### XCSL-AArch64 Cross-Compiler Installation
+### Xita-AArch64 Cross-Compiler Installation
 
-##### Build and Install XCSL
+##### Build and Install Xita
 
 ```bash
 $  make install
 ```
 
-##### Build XCSL and Do NOT Install
+##### Build Xita and Do NOT Install
 
 ```bash
 $  make build
 ```
 
-##### Uninstall XCSL
+##### Uninstall Xita
 
 ```bash
 $  make uninstall
 ```
 
-###  XCSL Terminal Usage 
+###  Xita Usage 
 
 The following usage commands assume XCS-AArch64 is installed on the current
 Linux system.  If it is only built (and not installed), you will need to
@@ -112,3 +113,13 @@ See the following list for option syntax and functionality.
 *  --version
 *  -v  |  --verbose  
 
+##### Syntax Highlighting
+
+At present, Xita syntax highlighting is only available for [Visual Studio Code](https://code.visualstudio.com/).  
+
+After installing VS Code, execute the following to install the highlighter:
+```bash
+$  cd ~/.vscode/extensions/
+$  git clone https://github.com/CodeusTech/Xita-SyntaxHighlighter
+```
+Restart VS Code if it doesn't register \*.xs files immediately.
