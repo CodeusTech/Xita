@@ -159,7 +159,7 @@ ErrorCode isType()
   free(str);
 
   //  Return Success
-  return 0;
+  return SUCCESS;
 }
 
 #endif

@@ -41,7 +41,7 @@ ErrorCode add_debug_message(Identifier ident, char* msg)
   //free(msg);
 
   //  Return Success
-  return 0;
+  return SUCCESS;
 }
 
 
@@ -55,7 +55,7 @@ ErrorCode print_debug_message(Identifier ident)
       printf("%s\n", (*iter).msg);
 
   //  Return Success
-  return 0;
+  return SUCCESS;
 }
 
 #endif

@@ -13,6 +13,6 @@
 #define XCS_COMMENTS_H
 
 #include "ref.h"
-
+#include "debug.h"
 
 #endif

@@ -28,7 +28,7 @@ int delete_asm_file(char* filename)
 {
   remove(filename);
 
-  return 0;
+  return SUCCESS;
 }
 
 #endif

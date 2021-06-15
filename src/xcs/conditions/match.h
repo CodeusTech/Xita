@@ -48,7 +48,7 @@ ErrorCode decl_match()
   //  Print str to Assembly File
   context.addInstruction(str);
 
-  return 0;
+  return SUCCESS;
 }
 
 /* 1.b) Match Expression
@@ -64,7 +64,7 @@ ErrorCode exp_match()
 
   //  Prepare parameter metadata
 
-  return 0;
+  return SUCCESS;
 }
 
 
@@ -86,7 +86,7 @@ ErrorCode decl_with()
      * Error Check
   */
 
-  return 0;
+  return SUCCESS;
 }
 
 /* 2.b) With Expression
@@ -105,7 +105,7 @@ ErrorCode exp_with()
    * Prepare to Accept Arbitrary # of Case Arguments
 */
 
-  return 0;
+  return SUCCESS;
 }
 
 
@@ -128,7 +128,7 @@ ErrorCode decl_case()
       * Check Constructor/Literal
   */
 
-  return 0;
+  return SUCCESS;
 }
 
 
@@ -147,7 +147,7 @@ ErrorCode exp_match_with()
 
   mangle++;
 
-  return 0;
+  return SUCCESS;
 }
 
 

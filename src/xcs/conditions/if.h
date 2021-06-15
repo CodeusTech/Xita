@@ -155,7 +155,7 @@ ErrorCode exp_else(unsigned int mang)
   free(str);
 
   //  Return Success
-  return 0;
+  return SUCCESS;
 }
 
 

@@ -247,7 +247,7 @@ ConstantNode* ModuleNode::resolveConstant(Identifier ident)
   for (Index i = 0; i < constants.size(); ++i)
     if (strcmp(constants[i].Ident(), ident) == 0)
       return &constants[i];
-  return 0;
+  return NULL;
 }
 
 
@@ -296,7 +296,7 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
         if (args.size() == functions[fi].CountParameters())
           //  Type Check Argument/Parameter Types Here
             return &functions[fi];
-    return 0;
+    return NULL;
   }
 
   FunctionParameterNode* ModuleNode::resolveFunctionParameter(Identifier ident)

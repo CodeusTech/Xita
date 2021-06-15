@@ -17,6 +17,12 @@
 #ifndef COMMENTS_REF_H
 #define COMMENTS_REF_H
 
+//  Linux Libraries
+#include <cstdio>
+#include <cstdlib>
+
+//  XCS Libraries
+#include <xcs/std/includes.h>
 
 /* 1) Declare Referece
 
@@ -33,7 +39,7 @@ int decl_ref_comment(char* ref)
   //  Prevent Memory Leak
   free(ref);
 
-  return 0;
+  return SUCCESS;
 }
 
 
@@ -46,7 +52,7 @@ int exp_ref_comment()
 {
   printf("Reference Guide Invoked.\n");
 
-  return 0;
+  return SUCCESS;
 }
 
 

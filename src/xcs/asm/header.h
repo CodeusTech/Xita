@@ -13,17 +13,17 @@
 #define ASM_HEADER_H
 
 #include "stdio.h"
+#include <xcs/std/includes.h>
 
 FILE* asm_file;
 
 // Generate Assembly Header for Source Module
 int header_source(char* mod_name)
 {
-  fprintf(asm_file, "//  %s\n", mod_name);
-  fprintf(asm_file, "\n");
+  fprintf(asm_file, "//  %s\n\n", mod_name);
   
   //  Return 0, if Successful
-  return 0;
+  return SUCCESS;
 }
 
 

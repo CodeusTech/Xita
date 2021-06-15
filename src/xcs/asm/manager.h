@@ -60,7 +60,7 @@ protected:
     fprintf(filename, "  runtime: .skip 0x10000000\n\n");
 
     //  Return Success
-    return 0;
+    return SUCCESS;
   }
 
   // 1.b) Generate Data
@@ -81,7 +81,7 @@ protected:
     //printf(".data Section Generated\n");
 
     //  Return Success
-    return 0;
+    return SUCCESS;
   }
 
   // 1.c) Generate Text

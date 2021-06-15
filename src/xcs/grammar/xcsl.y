@@ -90,8 +90,8 @@
 #include <xcs/proc/proc.h>
 #include <xcs/regex/regex.h>
 #include <xcs/regstack/regstack.h>
-#include <xcs/utils/clear.h>
-#include <xcs/utils/delay.h>
+#include <xcs/sys/utils/clear.h>
+#include <xcs/sys/utils/delay.h>
 #include <xcs/expressions/primitives/primitives.h>
 
 extern int yylex();
