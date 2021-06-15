@@ -28,7 +28,5 @@ let prod x y = (x * y);;
 debug "Test Unparameterized Functions"
 let test = 
     1
-
-
 *)
 
