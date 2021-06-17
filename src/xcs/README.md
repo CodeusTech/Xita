@@ -20,8 +20,6 @@
   * 'expressions' contains a collection of sublibraries for managing literal values and identifiers
 * grammar
   * 'grammar' contains the sublibraries used for generating/parsing the grammar and syntax
-* ident
-  * **DEPRECATED:**  Contents will be moved to comments library
 * modules
   * 'modules' contains definitions for multifile Xita modules and rules on how they can interact
 * proc
@@ -32,8 +30,8 @@
   * 'regstack' contains definitions and structures for managing Xita register stacks
 * std
   * 'std' contains Xita's core "standard" libraries and constant definitions
-* sys/primitives
-  * **DEPRECATED:**  Contents will be moved to types library
+* sys
+  * 'sys' will contain utility backend functionality for OS subsystems, e.g. bit vectors, delay functions, etc.
 * types
   * 'types' contains libraries for type declaration and dynamic type/constructor checking
 * utils
