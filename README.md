@@ -20,6 +20,7 @@ This respository provides the Linux-to-Xita cross compiler.  This **X-Ita Contro
   * [Live Interpreter](#live-interpreter)
   * [Cross-Compiler](#xcs-cross-compiler)
   * [Terminal Options](#terminal-options)
+* [Syntax Highlighting](#syntax-highlighting)
 
 
 
@@ -113,7 +114,7 @@ See the following list for option syntax and functionality.
 *  --version
 *  -v  |  --verbose  
 
-##### Syntax Highlighting
+### Syntax Highlighting
 
 At present, Xita syntax highlighting is only available for [Visual Studio Code](https://code.visualstudio.com/).  
 
