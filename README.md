@@ -16,9 +16,9 @@ This respository provides the Linux-to-Xita cross compiler.  This **X-Ita Contro
   * [Install XCSL-AArch64](#build-and-install-xcsl)
   * [Build XCSL-AArch64](#build-xcsl-and-do-not-install)
   * [Uninstall XCSL-AArch64](#uninstall-xcsl)
-* [Usage](#xcsl-terminal-usage)
+* [Usage](#xita-usage)
   * [Live Interpreter](#live-interpreter)
-  * [Cross-Compiler](#xcs-cross-compiler)
+  * [Cross-Compiler](#xita-cross-compiler)
   * [Terminal Options](#terminal-options)
 * [Syntax Highlighting](#syntax-highlighting)
 
