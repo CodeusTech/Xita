@@ -8,21 +8,21 @@ An expression is any executable code that results in some arbitrary value.
 ##  Types of Expressions
 
 *  Primitive Expressions
-  * _Primitive_ values are ones that are defined to always have a known value in Xita.  E.g. integer/boolean literals, strings, lists, etc.
-  * ` 1 `
-  * ` true `
-  * ` "hello reader" `
+   * _Primitive_ values are ones that are defined to always have a known value in Xita.  E.g. integer/boolean literals, strings, lists, etc.
+   * ` 1 `
+   * ` true `
+   * ` "hello reader" `
 *  Arithmetic Expressions
-  * ` 1 + 1 `
-  * ` 5 * 2 `
+   * ` 1 + 1 `
+   * ` 5 * 2 `
 *  Logical Expressions
-  * ` x >= y `
-  * ` t is int `
+   * ` x >= y `
+   * ` t is int `
 *  Conditional Expressions
-  * `if x > y then "x is bigger" else "x is smaller"`
-  * `match ... with ...`
+   * `if x > y then "x is bigger" else "x is smaller"`
+   * `match ... with ...`
 *  Functional Expressions
-  * `(sum x y)`
+   * `(sum x y)`
 
 
 ##  Expressions vs Declarations
