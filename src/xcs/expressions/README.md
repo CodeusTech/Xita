@@ -15,20 +15,18 @@ An expression is any executable code that results in some arbitrary value.
 *  Arithmetic Expressions
    * _Arithmetic_ expressions result in a mathematical operation such as Addition, Subtraction, Multiplication, Division, and Modulus.
    * ` 1 + 1 `
-   * ` 5 * 2 `
 *  Logical Expressions
    * _Logical_ Expressions result in a comparative operation that tests an expression for True/False
    * ` x >= y `
-   * ` t is int `
 *  Conditional Expressions
    * _Conditional_ Expressions control the flow of program logic
-   * `if x > y then "x is bigger" else "x is smaller"`
-   * `match ... with ...`
+   * ` if x > y then "x is bigger" else "x is smaller" `
 *  Constant Expressions
    * _Constant_ Expressions enable self-documenting code by labeling values that will not change during execution
+   * ` pi `
 *  Functional Expressions
    * _Functional_ Expressions map identifiers to complex, parameterized functionalities
-   * `(sum x y)`
+   * ` (sum x y) `
 
 
 ##  Expressions vs Declarations
