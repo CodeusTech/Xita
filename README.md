@@ -1,8 +1,8 @@
 # Xita Cross-Compiler (AArch64)
-#### Version: v0.24
-**NOTE:  For sake of consistency, this repository will be renamed to `Xita-AArch64` starting with v0.25.**
+#### Version: v0.25
 
-This respository provides the Linux-to-Xita cross compiler.  This **X-Ita Control System** compiler targets ARM's AArch64 architecture.  As of the current version, it specifically targets BCM 2837 (Rasberry Pi 3 B+).  However, it could be adapted to fit other AArch64 chips with ease.  
+
+This respository provides the Linux-to-Xita cross compiler.  This **Xita Control System** compiler targets ARM's AArch64 architecture.  As of the current version, it specifically targets BCM 2837 (Rasberry Pi 3 B+).  However, it could be adapted to fit other AArch64 chips with ease.  
 
 ### Table of Contents
 
@@ -30,7 +30,6 @@ This respository provides the Linux-to-Xita cross compiler.  This **X-Ita Contro
 $  mkdir CodeusTech && cd CodeusTech
 $  git clone https://github.com/CodeusTech/XCSL-AArch64.git
 ```
-**NOTE:** Two-Factor Authentication *must* be enabled.
 
 ### Prerequisite Installation 
 

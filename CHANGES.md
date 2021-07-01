@@ -1,8 +1,17 @@
 
 #  XCSL-AArch64 Change Log
 
+**Current Version:  v0.25.0**
+
+### 0.25.0
+*  Started building and refining documentation
+  * Added a README to expressions
+  * Modified Makefile and other scripts for small name changes (e.g. XCS -> Xita)
+*  Started combing through all source files to add comments, READMEs, etc.
+
 ### 0.24.0
-*  
+*  Initial Version as Open Source
+  * Officially changed name to XCS from Xita
 
 ### 0.23.0
 * Added high-level managers:
@@ -27,7 +36,7 @@
 * Added initial eager type-checking to Constants
 
 ### 0.21.0
+* Added "CHANGES.md" to track changes between versions in text
 * Added initial framework/shell of XCSL's new `ContextManager`
 * Added global logger to XCSL Internal
   * Rewrote all Code to use `l.log()`, rather than `printf()`
-
