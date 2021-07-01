@@ -2,13 +2,19 @@
   manager.h (Type Manager)
   Codeus Tech
   Authored on   June 1, 2020
-  Last Modified June 1, 2020
+  Last Modified July 1, 2021
 */
 
 /*
-  Contains structures/definitions for XCSL Type Manager
+  Contains structures/definitions for Xita Type Manager
 
-  The Type Manager is a structure for checking/validating type correctness during compilation.
+  The TypeManager provides a central interface for dynamic type-checking
+  expressions of arbitrary structure in Xita.  Additionally, Xita offers
+  dynamic Constructor checking when possible to allow faster development.
+
+  NOTE: This will be used eventually, but it is NOT used right now.  
+  TODO: This needs to be integrated into ContextManager and relinked
+        through entire system when type-checking is necessary.
 */
 
 #pragma once

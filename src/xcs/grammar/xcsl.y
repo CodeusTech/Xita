@@ -87,11 +87,11 @@
 #include <xcs/conditions/conditions.h>
 #include <xcs/context/manager.h>
 #include <xcs/grammar/status.h>
-#include <xcs/proc/proc.h>
 #include <xcs/regex/regex.h>
 #include <xcs/regstack/regstack.h>
 #include <xcs/sys/utils/clear.h>
 #include <xcs/sys/utils/delay.h>
+#include <xcs/sys/proc/proc.h>
 #include <xcs/expressions/primitives/primitives.h>
 
 extern int yylex();

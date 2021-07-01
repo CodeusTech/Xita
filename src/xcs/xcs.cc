@@ -31,10 +31,8 @@
 #include <xcs/asm/asm.h>
 #include <xcs/std/includes.h>
 #include <xcs/std/buffers.h>
-
 #include <xcs/context/manager.h>
 #include <xcs/expressions/primitives/primitives.h>
-
 #include <xcs/std/forwards.h>
 #include <xcs/std/source.h>
 #include <xcs/std/help.h> 
@@ -46,15 +44,18 @@ extern FILE* yyin;
 
 ContextManager context;
 
-/*
-	1.) Default Compiler Options
-*/
-bool interpreted 		= true;	// LIVE INTERPRETER MODE
-bool keep_assembly 	= false;
-
 //  Driver File
 int main(int argc, char** argv) 
 { 
+
+	/*
+		1.) Default Compiler Options
+	*/
+	bool interpreted 		= false;  //  This feature should normally be 'true' by default
+																//  but is currently deactivated.	
+	bool keep_assembly 	= false;
+			 XCS_VERBOSE    = false;
+
  
 	/*
 		2.) Handle Compiler Options

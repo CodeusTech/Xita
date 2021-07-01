@@ -620,6 +620,7 @@ ContextManager::ContextManager()
 
       ParameterRestrictions restrict = _context->_ParamRestrictions(i);
       if (tsig[index] == TYPE_ARBITRARY )
+      {
         if (!restrict.construct.empty())
         {
           _str += "(";
@@ -629,6 +630,7 @@ ContextManager::ContextManager()
           }
           _str += ")";
         }
+      }
       else
         _str += string(resolveTypeIdentifier(tsig[index]));
       _str += " -> ";
