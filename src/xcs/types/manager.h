@@ -26,29 +26,23 @@
 
 using namespace std;
 
+class ModuleNode;
 
 class TypeManager
 {
   /*
     Private Data
   */
+  ModuleNode* owner;
 
 protected:
   /*
     Protected Data
   */
-  ModuleID context;
-
-  //  Buffered Data
   vector<TypeNode> types;
-  vector<TypeConstructor> constructors;
-
-  //  Active data
-  vector<TypeID> activeTypes;
-  vector<ConstructorID> activeConstructors;
 
 public: 
-  TypeManager(ModuleID _context);
+  TypeManager(ModuleNode* context);
 
   ErrorCode declareType(TypeID tid, Identifier ident);
   ErrorCode declareType(TypeID tid, Identifier ident, unsigned long size);
@@ -58,6 +52,4 @@ public:
   TypeID getTypeID(Identifier ident);
   TypeID getTypeID(ConstructorID cid);
 
-  Identifier getIdentifier() { return types.back().Ident(); }
-  Identifier getIdentifier(Index i) { return types[i].Ident(); }
 };

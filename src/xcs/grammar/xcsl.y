@@ -83,16 +83,16 @@
 #include "stdlib.h"
 
 //  XCS Libraries
-#include <xcs/comments/comments.h>
-#include <xcs/conditions/conditions.h>
 #include <xcs/context/manager.h>
 #include <xcs/grammar/status.h>
-#include <xcs/regex/regex.h>
+#include <xcs/comments/comments.h>
 #include <xcs/regstack/regstack.h>
+#include <xcs/conditions/conditions.h>
+#include <xcs/expressions/primitives/primitives.h>
+#include <xcs/expressions/regex/regex.h>
 #include <xcs/sys/utils/clear.h>
 #include <xcs/sys/utils/delay.h>
 #include <xcs/sys/proc/proc.h>
-#include <xcs/expressions/primitives/primitives.h>
 
 extern int yylex();
 extern int yyparse();

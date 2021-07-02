@@ -10,16 +10,14 @@
 */
 
 #include "manager.h"
-
+#include "xcs/modules/modules.h"
 
 /*
   Constructors
 */
-TypeManager::TypeManager(ModuleID _context)
-{
-  //  Initialize Type Manager
-  context = _context;
-}
+TypeManager::TypeManager(ModuleNode* context)
+  : owner(context)
+{}
 
 
 /*
@@ -28,7 +26,6 @@ TypeManager::TypeManager(ModuleID _context)
 
 ErrorCode TypeManager::declareType(TypeID tid, Identifier ident)
 {
-  types.push_back(TypeNode(tid, context, ident));
   
   std::string str = "Declared Type: " + string(ident);
   l.log('D', "DeclType", str);
@@ -38,8 +35,6 @@ ErrorCode TypeManager::declareType(TypeID tid, Identifier ident)
 
 ErrorCode TypeManager::declareType(TypeID tid, Identifier ident, unsigned long size)
 {
-  types.push_back(TypeNode(tid, context, ident, size));
-  
   std::string str = "Declared Type: " + string(ident);
   l.log('D', "DeclType", str);
 
@@ -48,7 +43,6 @@ ErrorCode TypeManager::declareType(TypeID tid, Identifier ident, unsigned long s
 
 ErrorCode TypeManager::declareConstructor(ConstructorID cid, Identifier ident)
 {
-  constructors.push_back(TypeConstructor(cid, types.back().Id(), types.back().Context(), ident));
   
   std::string str = "Declared Constructor: " + string(ident);
   l.log('D', "DeclType", str);

@@ -40,9 +40,12 @@
 #include <xcs/expressions/operators/manager.h>
 #include <xcs/expressions/memory/memory.h>
 #include <xcs/data/manager.h>
+#include <xcs/types/manager.h>
 
 #include <xcs/modules/modules.h>
 #include <xcs/expressions/argument.h>
+
+#include <xcs/sys/xalloc/xalloc.h>
 
 extern int yylineno;
 
@@ -62,11 +65,12 @@ class ContextManager
 
 protected:
 
-  //  Managers
-  AssemblyManager assembly;       //  Manages Buffers for producing Assembly Files
-  OperatorManager operators = OperatorManager(this);      //  Manages Active Operator Semantics (e.g. Addition)
+  //  System Managers
+  AssemblyManager assembly;                           //  Manages Buffers for producing Assembly Files
+  OperatorManager operators = OperatorManager(this);  //  Manages Active Operator Semantics (e.g. Addition)
   DataManager     data = DataManager(this);           //  Manages Active Backend Data Values/Types
-  MemoryVariableManager memory;
+  MemoryVariableManager memory; //  DEPRECATED!!!  Will be merged into MemoryAllocator
+  MemoryAllocator xalloc = MemoryAllocator(this);
 
   //  Modules
   vector<ModuleNode> modules;     //  All Imported Module Contexts
@@ -152,6 +156,8 @@ public:
   ErrorCode rsCopy(TypeID tid, ADR src);
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return _context->rsPop(); }
+  ErrorCode rsSerialize() { return _context->rsSerialize(); }
+  ErrorCode rsSerialize(int top_n) { return _context->rsSerialize(top_n); }
 
   // 2.d) Scope Handling
   ErrorCode concludeExpression();

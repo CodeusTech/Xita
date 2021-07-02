@@ -157,6 +157,9 @@ public:
     return false;
   }
 
+  ErrorCode serialize();  //  TODO:  Serializes entire register stack
+  ErrorCode serialize(int top_n);       //  Serializes top n registers of register stack
+
 };
 
 

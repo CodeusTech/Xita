@@ -61,12 +61,11 @@ protected:
   Scope next_scope = 1;
   int line_number = 0;
 
-  //  Module-Specific Managers
-  //TypeManager _types;
   
 
   vector<RegisterStack> register_stacks;
 
+  TypeManager     types = TypeManager(this);
   vector<TypeNode> _types;
   vector<TypeclassNode> typeclasses;
   
@@ -106,6 +105,8 @@ public:
   ADR rsPush(TypeID tid) { return register_stacks[scope].push(tid); }
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return register_stacks[scope].pop(); }
+  ErrorCode rsSerialize() { return register_stacks[scope].serialize(); }
+  ErrorCode rsSerialize(int top_n) { return register_stacks[scope].serialize(top_n); }
   
   //  2.b) Scope Handling
   ErrorCode initScope();
