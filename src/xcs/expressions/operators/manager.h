@@ -7,6 +7,10 @@
 
 /*
   Contains functions for managing operators and their operands/implementations
+
+  The OperatorManager is a non-obvious requirement for a full working language.
+  It is necessary to enable users to override operators, as well as provide
+  dynamic type-checking on arithmetic operators.
 */
 
 #pragma once

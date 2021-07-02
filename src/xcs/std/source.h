@@ -20,7 +20,8 @@
 #include "../modules/modules.cpp"
 #include "../types/manager.cpp"
 #include "../types/types.cpp"
-
+#include "../sys/xalloc/xalloc.cpp"
+#include "../regstack/regstack.cpp"
 
 
 

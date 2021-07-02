@@ -6,9 +6,9 @@
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
 CCOMP=g++
-CFLAGS=-lm -Wall -I/home/${USER}/CodeusTech/XCSL-AArch64/src
+CFLAGS=-lm -Wall -I/home/${USER}/CodeusTech/Xita-AArch64/src
 MEMTEST=-g -O0
-SILENT=-Wno-unused-variable -Wno-switch -Wno-conversion-null
+SILENT=-Wno-unused-variable -Wno-unused-but-set-variable -Wno-switch -Wno-conversion-null
 
 #  Build and Install Cross Compiler
 install: build tidy

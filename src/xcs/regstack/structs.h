@@ -23,14 +23,28 @@
 
 using namespace std;
 
+//  Forward Declarations
 extern void yyerror(const char* str);
+class ContextManager;
 
+
+/*
+  Register Stacks are the core structure used for managing the
+  system's processor (CPU) register stacks.
+
+  Each RegisterStack contains a list of CPU registers that are
+  actively holding software data.  Additionally, the data's type
+  is tracked for type-checking correctness purposes.  
+
+  The RegisterStack tracks data by its literal datatype.  That means
+  type equivalence and typeclass membership needs to be checked by
+  the data owner (i.e. at the time of use) if that is applicable.
+*/
 class RegisterStack
 {
   vector<ADR> registers;
   vector<TypeID> types;
 	
-
 
 public:
 
@@ -156,6 +170,9 @@ public:
       if ((registers[i]) == (test)) return true;
     return false;
   }
+
+  ErrorCode serialize();  //  TODO:  Serializes entire register stack
+  ErrorCode serialize(int top_n);       //  Serializes top n registers of register stack
 
 };
 
