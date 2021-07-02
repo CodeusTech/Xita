@@ -43,18 +43,18 @@ ErrorCode MemoryAllocator::allocate(unsigned long bytes)
   context->rsPush(TYPE_INTEGER);
 
   //  Create Strings
-  char* str = (char*) malloc(15);
+  char* str = (char*) malloc(25);
   char* top = get_reg(context->rsTop(), 32);
 
   //  Record the number of bytes that need to be allocated in register stack
-  snprintf(str, 15, "mov   %s, %lu", top, bytes);
+  snprintf(str, 23, "mov   %s, %lu", top, bytes);
   context->addInstruction(str);
 
   //  Serialize Current Active Registers
   context->rsSerialize(1);
 
   //  Call Assembly-Defined Allocate Memory Function
-  sprintf(str, "bl    _x_alloc");
+  snprintf(str, 15, "bl    _x_alloc");
   //  TODO:  Uncomment the following code when `_x_alloc` has assembly definition
   //context->addInstruction(str);
 

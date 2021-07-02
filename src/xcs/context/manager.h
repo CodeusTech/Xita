@@ -98,10 +98,13 @@ public:
   //  Constructors
   ContextManager();
 
-
   ModuleID CurrentContext() { return _context->Id(); }
 
   //  Last Encountered Data /* DEPRECATED SECTION */
+  /*
+    NOTE!!  There has to be a way to clean this crap up.  All of these "Last*()" functions
+            are necessary for something in Xita.  We need to reorganize into managers
+  */
   ExpressionType LastExpression() { return _last_expression; }
   ExpressionType LastExpression(ExpressionType exp) { _last_expression = exp; return _last_expression; }
   TypeID LastType() { return _last_type; }
@@ -117,6 +120,8 @@ public:
   ErrorCode newData(TypeID tid, Arbitrary value) { return data.newData(tid, value); }
   ErrorCode addData(TypeID tid, Arbitrary value) { return data.addData(tid, value); }
   ErrorCode addData(Identifier ident)            { return data.addData(ident); }
+
+
   
   //  Loaded Arguments
   unsigned long CountArguments() { return arguments.size(); }

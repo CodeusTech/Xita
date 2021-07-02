@@ -26,7 +26,8 @@
 
 extern void yyerror(const char* error);
 
-ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent)
+ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent, ContextManager* context)
+  : context(context)
 {
   _mid = mid;
   _mtype = mtype;

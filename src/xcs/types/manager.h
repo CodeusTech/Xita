@@ -2,7 +2,7 @@
   manager.h (Type Manager)
   Codeus Tech
   Authored on   June 1, 2020
-  Last Modified July 1, 2021
+  Last Modified July 2, 2021
 */
 
 /*
@@ -26,14 +26,14 @@
 
 using namespace std;
 
-class ModuleNode;
+class ContextManager;
 
 class TypeManager
 {
   /*
     Private Data
   */
-  ModuleNode* owner;
+  ContextManager* context;
 
 protected:
   /*
@@ -42,14 +42,21 @@ protected:
   vector<TypeNode> types;
 
 public: 
-  TypeManager(ModuleNode* context);
+  //  Constructors
+  TypeManager(ContextManager* context);
 
+  //  Declare Type/Constructor
   ErrorCode declareType(TypeID tid, Identifier ident);
   ErrorCode declareType(TypeID tid, Identifier ident, unsigned long size);
   ErrorCode declareConstructor(ConstructorID cid, Identifier ident);
   ErrorCode declareParameter(TypeID tid, Identifier ident);
 
+  //  Get TypeID from Identifier or ConstructorID
   TypeID getTypeID(Identifier ident);
   TypeID getTypeID(ConstructorID cid);
 
+  //  Get TypeNode
+  TypeNode* getType(TypeID tid);
 };
+
+

@@ -48,6 +48,7 @@ class ModuleNode
   ModuleID _mid;
   ModuleType _mtype;
   ModuleID _parent;
+  ContextManager* context;
 
 
 protected: 
@@ -61,7 +62,7 @@ protected:
 
   vector<RegisterStack> register_stacks;
 
-  TypeManager     types = TypeManager(this);
+  TypeManager     types = TypeManager(context);
   vector<TypeNode> _types;
   vector<TypeclassNode> typeclasses;
   
@@ -72,7 +73,7 @@ protected:
 
 public:
   //  Constructors
-  ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent);
+  ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent, ContextManager* context);
 
   vector<ModuleID> imported;
   

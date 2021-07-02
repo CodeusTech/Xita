@@ -15,8 +15,8 @@
 /*
   Constructors
 */
-TypeManager::TypeManager(ModuleNode* context)
-  : owner(context)
+TypeManager::TypeManager(ContextManager* context)
+  : context(context)
 {}
 
 
@@ -67,3 +67,10 @@ TypeID TypeManager::getTypeID(Identifier ident)
   return 0;
 }
 
+TypeNode* TypeManager::getType(TypeID tid)
+{
+  for (Index i = 0; i < types.size(); ++i)
+    if (types[i].Id() == tid)
+      return &types[i];
+  return NULL;
+}
