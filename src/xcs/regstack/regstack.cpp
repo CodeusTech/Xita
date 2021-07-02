@@ -46,9 +46,18 @@ ErrorCode RegisterStack::serialize(int top_n)
 
   char* str = (char*) malloc(80);
 
+  //  TODO: Add a field to this class for current ContextManager
+  //        Then get stack order for current register stack from that.
   sprintf(str, "mov   x16, xzr");
-  
 
+  //  TODO: Serialize the top n registers (up to 8) into x16 here
+  unsigned long long serial_number = 0;
+
+  //  TODO: Add the instructions in `str` to the current context
+  sprintf(str, "mov   x16, %llu", serial_number);
+
+
+  l.log('w', "RegStack", "Register Stack is not getting serialized yet");
   l.log('d', "RegStack", "Current Register Stack has been serialized");
 
   return SUCCESS;
