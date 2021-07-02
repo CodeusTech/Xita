@@ -2,24 +2,20 @@
   structs.h (_modules)
   Codeus Tech
   Authored on   April 15, 2020
-  Last Modified April 16, 2020
+  Last Modified  July 02, 2021
 */
 
 /*
   Contains structural definitions for Context Manager's ModuleNode
 
+  ModuleNode are the largest vectorized datatype in Xita's ContextManager.
+  Each active Module contains a list of declared constants, functions, data
+  types, as well as other imported "Submodules".  
 
-  Table of Contents
-  =================
-  1.) Private Variable Access
-  2.) Operations/Accessors
-    2.a) Register Stacks
-    2.b) Scope Handling
-  3.) Identifier Handling
-    3.a) Types
-    3.b) Typeclasses
-    3.c) Constants
-    3.d) Functions
+  When a user invokes an identifier (e.g. a constant or function), the
+  ContextManager starts by searching the current "context" ModuleNode.
+  If the identifier isn't defined in the current context, each submodule
+  is searched recursively in the same way until found.
 */
 
 #ifndef _MODULES_STRUCTS_H
