@@ -114,6 +114,8 @@ public:
   ErrorCode newData(TypeID tid, Arbitrary value) { return data.newData(tid, value); }
   ErrorCode addData(TypeID tid, Arbitrary value) { return data.addData(tid, value); }
   ErrorCode addData(Identifier ident)            { return data.addData(ident); }
+
+
   
   //  Loaded Arguments
   unsigned long CountArguments() { return arguments.size(); }
