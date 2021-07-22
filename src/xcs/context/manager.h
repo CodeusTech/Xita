@@ -6,22 +6,23 @@
 */
 
 /*
-  Contains structure/prototypes for XCS Context Manager
+  Contains structure/prototypes for Xita Context Manager
 
+  The ContextManager is a singular global object for managing the language's
+  active metadata.  The ContextManager's most important job is to provide an
+  interface between the other various "Manager" classes in Xita's backend.  
 
-  Table of Contents
-  =================
-  1.) Private Variable Access
-  2.) Public Operations
-    2.a) Module Operations
-    2.b) Assembly Operations
-    2.c) Register Stack Operations
-    2.d) Scope Handling
-  3.) Identifier Handling
-    3.a) Type Operations
-    3.b) Typeclass Operations
-    3.c) Constant Operations
-    3.d) Function Operations
+  The ContextManager has access to each of Xita's System Managers:
+    * AssemblyManager
+    * OperatorManager
+    * DataManager
+    * MemoryVariableManager
+
+  The ContextManager provides a central backend interface for:
+    * Modules
+    * Data Types
+    * Functions
+    * Constants
 */
 
 #ifndef CONTEXT_MANAGER_H
@@ -39,9 +40,12 @@
 #include <xcs/expressions/operators/manager.h>
 #include <xcs/expressions/memory/memory.h>
 #include <xcs/data/manager.h>
+#include <xcs/types/manager.h>
 
 #include <xcs/modules/modules.h>
 #include <xcs/expressions/argument.h>
+
+#include <xcs/sys/xalloc/xalloc.h>
 
 extern int yylineno;
 
@@ -61,11 +65,12 @@ class ContextManager
 
 protected:
 
-  //  Managers
-  AssemblyManager assembly;       //  Manages Buffers for producing Assembly Files
-  OperatorManager operators = OperatorManager(this);      //  Manages Active Operator Semantics (e.g. Addition)
+  //  System Managers
+  AssemblyManager assembly;                           //  Manages Buffers for producing Assembly Files
+  OperatorManager operators = OperatorManager(this);  //  Manages Active Operator Semantics (e.g. Addition)
   DataManager     data = DataManager(this);           //  Manages Active Backend Data Values/Types
-  MemoryVariableManager memory;
+  MemoryVariableManager memory; //  DEPRECATED!!!  Will be merged into MemoryAllocator
+  MemoryAllocator xalloc = MemoryAllocator(this);
 
   //  Modules
   vector<ModuleNode> modules;     //  All Imported Module Contexts
@@ -93,12 +98,13 @@ public:
   //  Constructors
   ContextManager();
 
-  /*
-    1.) Accessors
-  */
   ModuleID CurrentContext() { return _context->Id(); }
 
   //  Last Encountered Data /* DEPRECATED SECTION */
+  /*
+    NOTE!!  There has to be a way to clean this crap up.  All of these "Last*()" functions
+            are necessary for something in Xita.  We need to reorganize into managers
+  */
   ExpressionType LastExpression() { return _last_expression; }
   ExpressionType LastExpression(ExpressionType exp) { _last_expression = exp; return _last_expression; }
   TypeID LastType() { return _last_type; }
@@ -158,6 +164,8 @@ public:
   ErrorCode rsCopy(TypeID tid, ADR src);
   ADR rsMerge(TypeID tid, ADR reg);
   ErrorCode rsPop() { return _context->rsPop(); }
+  ErrorCode rsSerialize() { return _context->rsSerialize(); }
+  ErrorCode rsSerialize(int top_n) { return _context->rsSerialize(top_n); }
 
   // 2.d) Scope Handling
   ErrorCode concludeExpression();
