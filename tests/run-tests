@@ -13,14 +13,29 @@
 #   * External Module Testing
 #
 
+#
+# NOTE:  It is expected that this file be run from project's root directory (Xita-AArch64)
+#
 
 #  Initial Dialog
 printf "Running XCSL Unit Tests...\n"
 
+KEEP_ASSEMBLY=false
+
+if [ $1 == "-a" ]
+then
+  KEEP_ASSEMBLY=true
+fi
+
 #  Primitive Data Testing
 printf "\nTesting XCSL Primitives\n"
   #  Integers
-xcs-aarch64 ./tests/Primitives/integer.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Primitives/integer.xs
+else
+  xcs-aarch64 ./tests/Primitives/integer.xs
+fi
 if [ $? == 0 ]
 then
   printf "  Integer Primitives:  SUCCESS\n"
@@ -28,7 +43,12 @@ else
   printf "  Integer Primitives:  FAILURE\n"
 fi
   #  Boolean
-xcs-aarch64 ./tests/Primitives/boolean.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Primitives/boolean.xs
+else
+  xcs-aarch64 ./tests/Primitives/boolean.xs
+fi
 if [ $? == 0 ]
 then
   printf "  Boolean Primitives:  SUCCESS\n"
@@ -40,7 +60,12 @@ fi
 #  Conditional Expression Testing
 printf "\nTesting Conditional Expressions\n"
   #  if ... then ... else ...
-xcs-aarch64 ./tests/Conditions/if.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Conditions/if.xs
+else
+  xcs-aarch64 ./tests/Conditions/if.xs
+fi
 if [ $? == 0 ]
 then 
   printf "  if then else:  SUCCESS\n"
@@ -48,7 +73,12 @@ else
   printf "  if then else:  FAILURE\n"
 fi
   #  ... is ...
-xcs-aarch64 ./tests/Conditions/is.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Conditions/is.xs
+else
+  xcs-aarch64 ./tests/Conditions/is.xs
+fi
 if [ $? == 0 ]
 then
   printf "  is Typecheck:  SUCCESS\n"
@@ -60,7 +90,12 @@ fi
 #  Datatype Testing
 printf "\nTesting Datatypes\n"
   # Basic Type Declarations
-xcs-aarch64 ./tests/Types/basic.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Types/basic.xs
+else
+  xcs-aarch64 ./tests/Types/basic.xs
+fi
 if [ $? == 0 ]
 then
   printf "  Basic Type Declarations:  SUCCESS\n"
@@ -68,7 +103,12 @@ else
   printf "  Basic Type Declarations:  FAILURE\n"
 fi
   # Complex Datatypes (No Default Values)
-xcs-aarch64 ./tests/Types/complex_nodefault.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Types/complex_nodefault.xs
+else
+  xcs-aarch64 ./tests/Types/complex_nodefault.xs
+fi
 if [ $? == 0 ]
 then
   printf "  Complex Datatypes (No Defaults): SUCCESS\n"
@@ -84,7 +124,12 @@ fi
 #  printf "  Complex Datatypes (With Defaults): FAILURE\n"
 #fi
   # Constant Datatypes
-xcs-aarch64 ./tests/Types/constants.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Types/constants.xs
+else
+  xcs-aarch64 ./tests/Types/constants.xs
+fi
 if [ $? == 0 ]
 then
   printf "  Constant Datatypes: SUCCESS\n"
@@ -92,7 +137,12 @@ else
   printf "  Constant Datatypes: FAILURE\n"
 fi
   # Typeclasses
-xcs-aarch64 ./tests/Types/typeclass.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Types/typeclass.xs
+else
+  xcs-aarch64 ./tests/Types/typeclass.xs
+fi
 if [ $? == 0 ]
 then
   printf "  Typeclass Declarations:  SUCCESS\n"
@@ -104,7 +154,12 @@ fi
 #  Functional Expression Testing
 printf "\nTesting Functional Expressions\n"
   #  Constant Expressions
-xcs-aarch64 ./tests/Functions/constants.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Functions/constants.xs
+else
+  xcs-aarch64 ./tests/Functions/constants.xs
+fi
 if [ $? == 0 ]
 then 
   printf "  Constant Expressions:  SUCCESS\n"
@@ -112,7 +167,12 @@ else
   printf "  Constant Expressions:  FAILURE\n"
 fi
   #  Functional Expressions
-xcs-aarch64 ./tests/Functions/functions.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Functions/functions.xs
+else
+  xcs-aarch64 ./tests/Functions/functions.xs
+fi
 if [ $? == 0 ]
 then 
   printf "  Dynamic Functions:  SUCCESS\n"
@@ -120,7 +180,12 @@ else
   printf "  Dynamic Functions:  FAILURE\n"
 fi
   #  Nested/Complex Functions
-xcs-aarch64 ./tests/Functions/nested.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Functions/nested.xs
+else
+  xcs-aarch64 ./tests/Functions/nested.xs
+fi
 if [ $? == 0 ]
 then 
   printf "  Nested Functions:  SUCCESS\n"
@@ -129,7 +194,12 @@ else
 fi
 
 printf "\nTesting Direct Memory Access\n"
-xcs-aarch64 ./tests/Memory/memory.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Memory/memory.xs
+else
+  xcs-aarch64 ./tests/Memory/memory.xs
+fi
 if [ $? == 0 ]
 then 
   printf "  Memory Access:  SUCCESS\n"
@@ -141,7 +211,12 @@ fi
 
 #  External Module Testing
 printf "\nTesting External Module Imports\n"
-xcs-aarch64 ./tests/Modules/driver.xs
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 -a ./tests/Modules/driver.xs
+else
+  xcs-aarch64 ./tests/Modules/driver.xs
+fi
 if [ $? == 0 ]
 then 
   printf "  Module Imports:  SUCCESS\n"
