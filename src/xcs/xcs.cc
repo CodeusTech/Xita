@@ -23,7 +23,8 @@
 #include "stdbool.h"
 #include "stdio.h"
 #include "string.h"
-#include "stdlib.h"
+#include <stdlib.h>
+#include <sys/wait.h>
 
 //  XCS Libraries
 #include "meta.h"
@@ -71,19 +72,19 @@ int main(int argc, char** argv)
 	*/
 
 		//  Keep Assembly Option
-		if (strcmp(argv[i], "-a") == 0 || strcmp(argv[i], "--keep-assembly") == 0) 
+		else if (strcmp(argv[i], "-a") == 0 || strcmp(argv[i], "--assembly") == 0) 
 		{
 			keep_assembly = true;
 		}
 
 		//  Keep Assembly Option
-		if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verbose") == 0) 
+		else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verbose") == 0) 
 		{
 			XCS_VERBOSE = true;
 		}
 
 		//  Help Message
-		if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) 
+		else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) 
 		{
 			return help_msg();
 		}
@@ -91,6 +92,8 @@ int main(int argc, char** argv)
 
 
 	/*
+		NOTE: This should not be used until other features are more robust		
+
 		OPTIMIZATION OPTIONS:
 			* -a32i
 			* -a32f
@@ -164,9 +167,27 @@ int main(int argc, char** argv)
 
 			char* _argv[6] = {_argc, _argv2[0], asm_fname, _argv2[1], obj_fname, NULL};
 
-			//  If `-a` option is not active, remove generated assembly file (TODO)
+			pid_t pid;
 
-			execvp(_argc, _argv);
+			int  status;
+			if ((pid = fork()) < 0) 
+			{     
+				printf("*** ERROR: forking child process failed\n");
+				exit(1);
+			}
+			else if (pid == 0) { 
+				printf ("Compiling Binary\n");
+				execvp(_argc, _argv);
+			}
+			
+			waitpid(pid, NULL, 0);
+
+			//  If `-a` option is not active, remove generated assembly file (TODO)
+			if (!keep_assembly)
+			{
+				char* rm_argv[3] = {"rm", asm_fname, NULL};
+				execvp(string("rm").c_str(), rm_argv);
+			}
 
 			free (asm_fname);
 

@@ -2,7 +2,7 @@
   manager.h (context)
   Codeus Tech
   Authored on   April 15, 2020
-  Last Modified April 26, 2020
+  Last Modified  July 03, 2021
 */
 
 /*
@@ -114,6 +114,9 @@ public:
   ErrorCode newData(TypeID tid, Arbitrary value) { return data.newData(tid, value); }
   ErrorCode addData(TypeID tid, Arbitrary value) { return data.addData(tid, value); }
   ErrorCode addData(Identifier ident)            { return data.addData(ident); }
+
+  //  New interface functionality to simplify the "LastEncounteredData" system
+  ErrorCode rsData(ConstructorID cid);
 
 
   
