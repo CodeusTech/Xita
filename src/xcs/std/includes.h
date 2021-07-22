@@ -5,6 +5,11 @@
   Last Modified April 16, 2020
 */
 
+/*
+  Includes a list of standard Xita/Linux Libraries that will
+  be used in most source files in Xita cross compiler.
+*/
+
 #ifndef STANDARD_INCLUDES_H
 #define STANDARD_INCLUDES_H
 

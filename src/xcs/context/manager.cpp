@@ -33,7 +33,7 @@
 ContextManager::ContextManager()
 {
   //  Add Root Module/Scope
-  modules.push_back(ModuleNode(0, ModuleType::XCSL_SOURCE, 0));
+  modules.push_back(ModuleNode(0, ModuleType::XCSL_SOURCE, 0, this));
   _context = &modules[0];
 
   //  Set Type
@@ -41,6 +41,7 @@ ContextManager::ContextManager()
 
   l.log('D', "ContextManager", "Context Manager has been initialized");
 }
+
 
 
 /*
@@ -56,7 +57,7 @@ ContextManager::ContextManager()
   ErrorCode ContextManager::importModule(ModuleType mtype)
   {
     int index = modules.size();
-    modules.push_back(ModuleNode(_next_mid++, mtype, modules.back().Id()));
+    modules.push_back(ModuleNode(_next_mid++, mtype, modules.back().Id(), this));
     _context = &modules[index];
     l.log('D', "Modules", "Module Imported and Context Shifted Accordingly");
 
@@ -620,6 +621,7 @@ ContextManager::ContextManager()
 
       ParameterRestrictions restrict = _context->_ParamRestrictions(i);
       if (tsig[index] == TYPE_ARBITRARY )
+      {
         if (!restrict.construct.empty())
         {
           _str += "(";
@@ -629,6 +631,7 @@ ContextManager::ContextManager()
           }
           _str += ")";
         }
+      }
       else
         _str += string(resolveTypeIdentifier(tsig[index]));
       _str += " -> ";
