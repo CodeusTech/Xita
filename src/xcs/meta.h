@@ -2,7 +2,7 @@
   meta.h
   Codeus Tech
   Authored on   December 21, 2019
-  Last Modified     July  1, 2021
+  Last Modified     July 22, 2021
 */
 
 /*
@@ -13,10 +13,7 @@
 #define XCS_META_H
 
 
-//  The Version Number is used in the cross-compiler backend for determining
-//  if features are available or not.  This enables effortless backwards
-//  compatability if all requested features are available.
-#define XCSL_VERSION "0.25"
+#define XCSL_VERSION "0.26"
 
 
 #endif

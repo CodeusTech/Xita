@@ -1,0 +1,22 @@
+--  rpi3.chip
+--  Chip Name (used in terminal options, etc.)
+rpi3
+--  Set Desired Architecture & Assembly Language
+arch="AArch64"
+
+--  Desired Memory Mappings and Firmware Interfaces
+Timer:      0x3F003000 + 0x1F;    --  System Timer Interface
+Aux:        0x3F215000 + 0xD6;    --  Auxillary GPIO (e.g. mini UART)
+UART:       0x3F201000 + 0x90;    --  Asynchronous Receiver/Transmitter
+SPI:        0x3F204000 + 0x17;    --  Serial Peripheral Interface
+BSC:        0x3F205000 + 0x1F,    --  
+            0x3F804000 + 0x1F,    --  I2C Interface (BSC)
+            0x3F805000 + 0x1F,    --  
+            0x3F214000 + 0x3F;    --  SPI Slave Interface
+Interrupt:  0x3F00B000 + 0x22F;   --  System Interrupt Table
+GPIO:       0x3F200000 + 0xB3;    --  General Purpose Input/Output
+PCM:        0x3F203000 + 0x24;    --  Audio Interface
+EMMC:       0x3F300000 + 0xFF;    --  External Multimedia Controller (MicroSD drivers)
+DMA:        0x3F007000 + 0x1400,  --  Direct Memory Channels
+            0x3FE05000 + 0x100;   --  For parallel conversations between firmware
+

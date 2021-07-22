@@ -1,7 +1,15 @@
 
 #  XCSL-AArch64 Change Log
 
-**Current Version:  v0.25.0**
+**Current Version:  v0.26**
+
+### 0.26.0
+*  Rewrite/organized a lot of the project's documentation for open source collaboration
+*  Started laying out the memory allocation system (not used in stable version)
+  * Started organizing backend interactions between memory allocator and data types system
+*  Designed new firmware system to restrict how memory can be accessed directly in Xita
+  * Updated syntax highlighter to recognize `*.chip` files and driver-specific keywords
+*  Reorganized code from private codebase into Xita-AArch64 (e.g. `rpi3-boot.s`, `rpi3-linker.ld`)
 
 ### 0.25.0
 *  Started building and refining documentation
