@@ -17,11 +17,11 @@
 #include "../expressions/memory/memory.cpp"
 #include "../expressions/operators/manager.cpp"
 #include "../expressions/operators/logical/resolve.cpp"
+#include "../firmware/manager.cpp"
 #include "../modules/modules.cpp"
+#include "../regstack/regstack.cpp"
+#include "../sys/xalloc/xalloc.cpp"
 #include "../types/manager.cpp"
 #include "../types/types.cpp"
-#include "../sys/xalloc/xalloc.cpp"
-#include "../regstack/regstack.cpp"
-
 
 

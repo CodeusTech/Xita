@@ -187,7 +187,7 @@ int main(int argc, char** argv)
 			if (!keep_assembly)
 			{
 				char* rm_argv[3] = {"rm", asm_fname, NULL};
-				execvp(string("rm").c_str(), rm_argv);
+				execvp(rm_argv[0], rm_argv);
 			}
 
 			free (asm_fname);
