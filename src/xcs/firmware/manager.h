@@ -27,10 +27,25 @@ class FirmwareManager
 {
   ContextManager* _context;
 
+
+protected:
+
+  //  Active Firmware Metadata
   XitaChip chip;
+  FirmwareInterface* active_driver;
+
+
+  //  Administrate Active FirmwareInterface Metadata
+  ErrorCode addFirmwareInterface(string name);
   
 
 public:
   FirmwareManager(ContextManager* context);
+  
+  ErrorCode activateDriver(string name);
 
+  ErrorCode requestMemoryRead(Address addr);
+  ErrorCode requestMemoryWrite(Address addr);
 };
+
+

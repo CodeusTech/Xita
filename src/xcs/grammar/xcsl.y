@@ -13,13 +13,13 @@
   ======================
   A.) Token Declarations
   B.) Order of Operations
-  C.) Start of Grammar
-  D.) Source Modules
-
+  C.) Start of Xita Grammar
+  D.) Start of Driver Grammar
+  E.) Start of Chip Grammar
 
   ----------------------
   
-  I. DECLARATIONS
+  I. XITA DECLARATIONS
 
   I.1.) Top-Level Declarations
     I.1.a) Types
@@ -29,7 +29,7 @@
 
   ----------------------
 
-  II. EXPRESSIONS
+  II. XITA EXPRESSIONS
   
   1.) XCSL Expressions
   2.) Primitive Expressions
@@ -66,14 +66,17 @@
   8.) Special Operations
     8.a) Regular Expressions
 
-  
-  E.) Tether Modules
-  ----------------------
-  1.) Tether Module Structure
-  2.) Tether Expressions
-  3.) Request/Offer
-    3.a) Offer Statements
-    3.b) Request Statements
+  ---------------------------
+
+  III. DRIVER MODULES
+
+
+
+  ---------------------------
+
+  IV. CHIP FILES
+
+
 */
 
 
@@ -110,8 +113,15 @@ extern ContextManager context;
 %}
 
 /*
+  ==========================
+
   A.) Token Declarations
+
+  ==========================
 */
+
+//  Preprocess Directives
+%token CHIP DRIVER ARCH
 
 //  Primitive Data Types
 %union {
@@ -150,7 +160,7 @@ extern ContextManager context;
 %token BIT_AND BIT_OR BIT_XOR BIT_SHR BIT_SHL BIT_NOT   // BITWISE MANIPULATION
 %token BOOL_OR BOOL_AND BOOL_XOR BOOL_NOT               // BOOLEAN COMPARISON
 %token ARROW_L ARROW_R
-%token OP_SEP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
+%token OP_EXP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
 
 //  List Operators/Keywords
 %token OP_APPEND OP_LIST_CON
@@ -200,7 +210,11 @@ extern ContextManager context;
 %token OFFER REQUEST XCS_UNDEF
 
 /*
+  ===========================
+
   B.) Order of Operations
+
+  ===========================
 */
 /*
   LOWEST-PRIORITY TOKEN
@@ -236,7 +250,7 @@ extern ContextManager context;
 %left DEBUG
 
 //  Expression Seperator
-%left OP_SEQ
+%left OP_EXP
 /*
   HIGHEST-PRIORITY TOKEN
 */
@@ -248,14 +262,20 @@ extern ContextManager context;
 /*
   C.) Start of Grammar
 */
-%start xcs
+%start main
 %%
+
+main:
+    xita_chip
+  | xita_driver
+  | xita_source
+
 ref_com:
     DOC { decl_ref_comment($1); }
 ;
 
-xcs:
-    ref_com xcs { }
+xita_source:
+    ref_com xita_source { }
   | src  { }
 ;
 
@@ -268,7 +288,7 @@ src2:
 ;
 
 src:
-    src2 OP_SEP src {  }
+    src2 OP_EXP src {  }
   | src2  
 ;
 
@@ -1007,10 +1027,54 @@ exp_regex:
     REGEX STRING  { regular_expression($2); }
 ;
 
+/*
+  =====================================
+
+  III. DRIVER MODULES
+
+  =====================================
+*/
+
+driver_header:
+    DRIVER CONSTRUCTOR { printf("Driver Encountered:  %s\n", $2); }
+;
+
+xita_driver:
+    driver_header xita_source /* TODO: This will be changed from xita_source */
+;
+
 
 /*
-  E.) Tether Modules 
+  =====================================
+
+  IV. CHIP FILES
+
+  =====================================
 */
+
+xita_chip:
+    chip_header chip_arch chip_interface  { printf("Finished Parsing Chip File\n"); }
+;
+
+chip_header:
+    CHIP CONSTRUCTOR { printf("Chip Encountered:  %s\n", $2); }
+;
+
+chip_arch:
+    ARCH STRING { printf("Architecture Defined as:  %s\n", $2); }
+;
+
+chip_interface:
+    chip_interface chip_interface
+  |  chip_interface_name OP_TYPE chip_interface_range OP_TUP { printf("\n"); }
+;
+  chip_interface_name:
+    CONSTRUCTOR { printf("Firmware Interface \"%s\": ", $1); }
+;
+
+  chip_interface_range:
+    chip_interface_range OP_COMMA chip_interface_range
+  | INT OP_ADD INT { printf ("%d - %d, ", $1, $1+$3); }
 
 
 %%

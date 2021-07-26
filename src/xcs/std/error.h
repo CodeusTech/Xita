@@ -2,7 +2,7 @@
   error.h
   Codeus Tech
   Authored on   December 14, 2019
-  Last Modified December 14, 2019
+  Last Modified     July 23, 2021
 */
 
 /*
@@ -10,8 +10,16 @@
 */
 
 
+
+
+
+
 /*
-  GENERAL
+  ERROR CODE LISTING
 */
 #define SUCCESS 0
+
+
+
+
 

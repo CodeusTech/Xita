@@ -177,7 +177,6 @@ int main(int argc, char** argv)
 				exit(1);
 			}
 			else if (pid == 0) { 
-				printf ("Compiling Binary\n");
 				execvp(_argc, _argv);
 			}
 			
@@ -195,7 +194,6 @@ int main(int argc, char** argv)
 			return 0;
 		}
 	}
-
 
 	/*
 		3.) Interpreter Mode

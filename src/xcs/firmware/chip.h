@@ -45,7 +45,7 @@ public:
   ErrorCode addRange(string interface_name, Address begin, Address end)
   {
     for (Index i = 0; i < interfaces.size(); ++i)
-      if (strcmp(interface_name, interfaces[i].Name()) == 0)
+      if (strcmp(interface_name.c_str(), interfaces[i].Name().c_str()) == 0)
       {
         // TODO: 
         //    There is more validation required here to ensure

@@ -1,6 +1,6 @@
 --  rpi3.chip
 --  Chip Name (used in terminal options, etc.)
-rpi3
+!CHIP Rpi3
 --  Set Desired Architecture & Assembly Language
 arch="AArch64"
 
