@@ -9,10 +9,9 @@
   Contains standard XCS Error Codes
 */
 
+#pragma once
 
-
-
-
+ErrorCode active_error_code = 1;  //  Unhandled Exception Code
 
 /*
   ERROR CODE LISTING

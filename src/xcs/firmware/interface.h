@@ -35,6 +35,7 @@ public:
     range_start.push_back(start);
     range_end.push_back(end);
 
+    l.log('d', "Chip", "Defined new Firmware Interface Range: " + to_string(start) + " - " + to_string(end) );
     return SUCCESS;
   }
 
@@ -42,7 +43,7 @@ public:
   bool inRange(Address target)
   {
     for (Index i = 0; i < range_start.size(); ++i)
-      if (target > range_start[i] && target < range_end[i])
+      if (target >= range_start[i] && target <= range_end[i])
         return true;
     return false;
   }

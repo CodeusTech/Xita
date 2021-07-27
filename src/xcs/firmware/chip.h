@@ -71,6 +71,7 @@ public:
     }
     else
     {
+      active_error_code = ERR_UNSUPPORTED_ARCH;
       yyerror("Chip file specifies an unsupported target architecture.\n Acceptable architectures include:  Arm32, Arm64");
       return ERR_UNSUPPORTED_ARCH;
     }
@@ -90,7 +91,14 @@ public:
   ErrorCode addRange(Address begin, Address end)
   {
 
-    l.log('d', "Chip", "Defined new Firmware Interface Range: " + to_string(begin) + " - " + to_string(end) );
+    for (Index i = 0; i < interfaces.size(); ++i)
+      if (interfaces[i].inRange(begin) || interfaces[i].inRange(end))
+      {
+        active_error_code = ERR_MEMORY_OVERLAP;
+        l.log('c', "Chip", interfaces[i].Name() + " overlaps with other firmware interface memory ranges" );
+        yyerror("Chip file defines two firmware interfaces with overlapping memory");
+      }
+
     // TODO: 
     //    There is more validation required here to ensure
     //    no two interfaces are claiming the same memory ranges

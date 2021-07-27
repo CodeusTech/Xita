@@ -1084,7 +1084,7 @@ chip_interface:
   GENERIC ERROR MESSAGE
 */
 void yyerror(const char* error) {
-	fprintf(stderr, "\nParse error in line %d: %s\n\n", yylineno, error);
+	fprintf(stderr, "\nCritical error in line %d\n %s\n\n", yylineno, error);
   
   //  TODO: DEALLOCATE ALL BUFFERS
   l.log('E', "Crash", error);
@@ -1094,6 +1094,6 @@ void yyerror(const char* error) {
   
   //rs_end();
 
-	exit(1);
+	exit(active_error_code);
 }
 
