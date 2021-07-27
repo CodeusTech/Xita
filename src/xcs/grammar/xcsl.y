@@ -1074,8 +1074,9 @@ chip_interface:
 
   chip_interface_range:
     chip_interface_range OP_COMMA chip_interface_range
-  | INT OP_ADD INT { printf ("%d - %d, ", $1, $1+$3); }
-
+  | INT OP_ADD INT { printf ("%lld - %lld, ", $1, $1+$3); } /* This operation will accept a number of offset bytes */
+  | INT OP_SUB INT { printf ("%lld - %lld, ", $1, $3); }    /* This operation will accept minimum/maximium bounds  */
+;
 
 %%
 

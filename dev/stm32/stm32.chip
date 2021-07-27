@@ -1,0 +1,54 @@
+(*
+  stm32.chip
+  Codeus Tech
+  Authored on   July 26, 2021
+  Last Modified July 26, 2021
+*)
+
+(*
+  Contains Chip/Firmware Definitions for Stm32 Family
+*)
+
+--  Chip Name
+!CHIP Stm32
+
+--  Chip Architecture/Assembly 
+arch="Arm32"
+
+
+
+Boot:       0x00000000 + 0xFFFFF;
+Flash:      0x08000000 + 0xFFFFF,
+            0x40023C00 - 0x40023FFF;
+SRAM:       0x20000000 + 0x1BFFF,       --  112 KB Aliased by bit-banding
+            0x2001C000 - 0x2001FFFF;    --   16 KB Aliased by bit-banding
+Timers:     0x40000000 + 0x23FF,        --  TIM2 thru TIM7, TIM12 thru TIM14
+            0x40010000 + 0x7FF,         --  TIM1, TIM8
+            0x40014000 - 0x40014BFF;    --  TIM9 thru TIM11
+RTC:        0x40002800 - 0x40002BFF,    --  Real-Time Clock
+            0x40002C00 - 0x40002FFF,    --  System Window Watch Dog
+            0x40003000 + 0x3FF;         --  Indepedent Watch Dog
+SPI:        0x40003800 - 0x40003FFF,
+            0x40013000 + 0x3FF;
+UART:       0x40004400 - 0x400053FF,    --  USART2, USART3, UART4, UART5
+            0x40011000 - 0x400117FF;    --  USART1, USART6
+I2C:        0x40005400 - 0x40005FFF;
+BxCAN:      0x40006400 - 0x40006BFF;
+Interrupt:  0x40007000 + 0x3FF,         --  Power
+            0x40013C00 - 0x40013FFF;    --  EXTI (External Interrupts)
+DAC:        0x40007400 - 0x400077FF;
+ADC:        0x40012000 + 0x3FF;
+SDIO:       0x40012C00 - 0x40012FFF;
+Syscfg:     0x40013800 - 0x40013BFF;
+Port:       0x40020000 + 0x23FF;
+CRC:        0x40023000 + 0x3FF;
+RCCI:       0x40023800 - 0x40023BFF;
+BKPSRAM:    0x40024000 + 0xFFF;
+DMA:        0x40026000 - 0x400267FF;
+Ethernet:   0x40028000 - 0x400293FF;
+USB:        0x40040000 + 0x3FFFF,
+            0x50000000 + 0x3FFFF;
+DCMI:       0x50050000 + 0x3FF;        
+RNG:        0x50060800 + 0x7FF;       
+FSMC:       0x60000000 + 0x40000FFF;  
+
