@@ -16,12 +16,13 @@
 arch="Arm32"
 
 
-
+--  System-Sensitive Firmwares
 Boot:       0x00000000 + 0xFFFFF;
-Flash:      0x08000000 + 0xFFFFF,
-            0x40023C00 - 0x40023FFF;
-SRAM:       0x20000000 + 0x1BFFF,       --  112 KB Aliased by bit-banding
-            0x2001C000 - 0x2001FFFF;    --   16 KB Aliased by bit-banding
+Memory:     0x20000000 + 0x1BFFF,       --  SRAM Pages
+            0x2001C000 - 0x2001FFFF,    --  SRAM Control Registers
+            0x08000000 + 0xFFFFF,       --  Flash Pages
+            0x40023C00 - 0x40023FFF;    --  Flash Control Registers
+
 Timers:     0x40000000 + 0x23FF,        --  TIM2 thru TIM7, TIM12 thru TIM14
             0x40010000 + 0x7FF,         --  TIM1, TIM8
             0x40014000 - 0x40014BFF;    --  TIM9 thru TIM11

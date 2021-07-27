@@ -139,6 +139,15 @@ public:
   string TypeSignature(Identifier function);
 
   /*
+    Chip/Firmware Operations
+  */
+  ErrorCode newChip(string name) { return firmware.newChip(name); }
+  ErrorCode setChipArch(string arch) { return firmware.setChipArch(arch); }
+  ErrorCode addFirmwareInterface(string name) { return firmware.addInterface(name); }
+  ErrorCode addFirmwareRange(int begin, int end) { return firmware.addInterfaceRange(begin, end); }
+
+
+  /*
     2.) Public Operations
   */
 

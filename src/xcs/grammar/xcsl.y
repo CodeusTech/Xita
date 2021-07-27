@@ -1057,25 +1057,25 @@ xita_chip:
 ;
 
 chip_header:
-    CHIP CONSTRUCTOR { printf("Chip Encountered:  %s\n", $2); }
+    CHIP CONSTRUCTOR { context.newChip($2); }
 ;
 
 chip_arch:
-    ARCH STRING { printf("Architecture Defined as:  %s\n", $2); }
+    ARCH STRING { context.setChipArch($2); }
 ;
 
 chip_interface:
     chip_interface chip_interface
-  |  chip_interface_name OP_TYPE chip_interface_range OP_TUP { printf("\n"); }
+  |  chip_interface_name OP_TYPE chip_interface_range OP_TUP 
 ;
   chip_interface_name:
-    CONSTRUCTOR { printf("Firmware Interface \"%s\": ", $1); }
+    CONSTRUCTOR { context.addFirmwareInterface($1); }
 ;
 
   chip_interface_range:
     chip_interface_range OP_COMMA chip_interface_range
-  | INT OP_ADD INT { printf ("%lld - %lld, ", $1, $1+$3); } /* This operation will accept a number of offset bytes */
-  | INT OP_SUB INT { printf ("%lld - %lld, ", $1, $3); }    /* This operation will accept minimum/maximium bounds  */
+  | INT OP_ADD INT { context.addFirmwareRange($1, $1+$3); } /* This operation will accept a number of offset bytes */
+  | INT OP_SUB INT { context.addFirmwareRange($1, $3); }    /* This operation will accept minimum/maximium bounds  */
 ;
 
 %%

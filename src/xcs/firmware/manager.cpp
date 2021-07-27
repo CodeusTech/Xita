@@ -19,16 +19,24 @@
 */
 FirmwareManager::FirmwareManager(ContextManager* context)
   : _context(context)
-{
-    
-}
-
+{ }
 
 
 /*
-  Internal Helper Functions
+  Public Interface Functions for Chip Data
 */
-ErrorCode FirmwareManager::addFirmwareInterface(string name)
+ErrorCode FirmwareManager::newChip(string name)
+{
+  chip = XitaChip(name);
+
+  return SUCCESS;
+}
+
+
+/*
+  Public Interface Functions for FirmwareManager
+*/
+ErrorCode FirmwareManager::addInterface(string name)
 {
   //  TODO:
   //    This needs major work for validating that the interface appears
@@ -39,10 +47,6 @@ ErrorCode FirmwareManager::addFirmwareInterface(string name)
   return SUCCESS;
 }
 
-
-/*
-  Public Interface Functions for FirmwareManager
-*/
 ErrorCode FirmwareManager::requestMemoryRead(Address addr)
 {
   if (!active_driver)
@@ -58,9 +62,9 @@ ErrorCode FirmwareManager::requestMemoryRead(Address addr)
     //  the request should be tossed out and an error message should be thrown.
     yyerror("The executing code does not have ");
   }
-
-
 }
+
+
 
 
 ErrorCode FirmwareManager::requestMemoryWrite(Address addr)

@@ -35,13 +35,17 @@ protected:
   FirmwareInterface* active_driver;
 
 
-  //  Administrate Active FirmwareInterface Metadata
-  ErrorCode addFirmwareInterface(string name);
   
 
 public:
   FirmwareManager(ContextManager* context);
   
+  ErrorCode newChip(string name);
+  ErrorCode setChipArch(string arch) { return chip.setArchitecture(arch); }
+
+  //  Administrate Active FirmwareInterface Metadata
+  ErrorCode addInterface(string name);
+  ErrorCode addInterfaceRange(int begin, int end) { return chip.addRange(begin, end); }
   ErrorCode activateDriver(string name);
 
   ErrorCode requestMemoryRead(Address addr);

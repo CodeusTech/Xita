@@ -19,6 +19,10 @@
 */
 #define SUCCESS 0
 
+//  Preprocess Errors
+#define ERR_UNSUPPORTED_ARCH 100
+#define ERR_MEMORY_OVERLAP   101
+
 
 
 

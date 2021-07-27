@@ -35,22 +35,26 @@ char* get_reg_a32i(ADR i, unsigned char bits)
     case (8):
       if (i < 14) sprintf(str, "b%u", i-1); else
       if (i < 28) sprintf(str, "b%u", i+3); else
-                  sprintf(str, "v%u.s[%d]", (i-24)/4, (i-24)%4);
+                  sprintf(str, "v%u.s[%d]", (i-24)/4, (i-24)%4); //  TODO:  This needs reviewed.
+                                                                 //  Pretty sure it is wrong...
       break;
     case (16):
       if (i < 14) sprintf(str, "s%u", i-1); else
       if (i < 28) sprintf(str, "s%u", i+3); else
-                  sprintf(str, "v%u.s[%d]", (i-24)/4, (i-24)%4);
+                  sprintf(str, "v%u.s[%d]", (i-24)/4, (i-24)%4); //  TODO:  This needs reviewed.
+                                                                 //  Pretty sure it is wrong...
       break;
     case (32):
       if (i < 14) sprintf(str, "w%u", i-1); else
       if (i < 28) sprintf(str, "w%u", i+3); else
-                  sprintf(str, "v%u.s[%d]", (i-24)/4, (i-24)%4);
-      break;
+                  sprintf(str, "v%u.s[%d]", (i-24)/4, (i-24)%4); //  TODO:  This needs reviewed.
+                                                                 //  Pretty sure it is wrong...
+      break; 
     case (64):
       if (i < 14) sprintf(str, "x%u", i-1); else
       if (i < 28) sprintf(str, "x%u", i+3); else
-                  sprintf(str, "v%u.s[%d]", (i-24)/4, (i-24)%4);
+                  sprintf(str, "v%u.s[%d]", (i-24)/4, (i-24)%4); //  TODO:  This needs reviewed.
+                                                                 //  Pretty sure it is wrong...
       break;
   }
 
@@ -87,7 +91,7 @@ char* get_reg(ADR i, unsigned char bits)
     case (8):
       if (i < 29) sprintf(str, "b%u", i); else
       if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                  sprintf(str, "v%u.s[0]", i-24);
+                  sprintf(str, "v%u.s[0]", i-24); 
       break;
     case (16):
       if (i < 29) sprintf(str, "s%u", i); else
