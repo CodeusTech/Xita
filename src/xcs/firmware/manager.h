@@ -27,26 +27,26 @@ class FirmwareManager
 {
   ContextManager* _context;
 
-
 protected:
 
   //  Active Firmware Metadata
   XitaChip chip;
   FirmwareInterface* active_driver;
-
-
-  
+  vector<string> loaded_drivers;
 
 public:
   FirmwareManager(ContextManager* context);
   
   ErrorCode newChip(string name);
   ErrorCode setChipArch(string arch) { return chip.setArchitecture(arch); }
+  XitaArchitecture getChipArch() { return chip.getArchitecture(); }
 
   //  Administrate Active FirmwareInterface Metadata
   ErrorCode addInterface(string name);
-  ErrorCode addInterfaceRange(int begin, int end) { return chip.addRange(begin, end); }
+  ErrorCode addInterfaceRange(int begin, int end) { return chip.addInterfaceRange(begin, end); }
+
   ErrorCode activateDriver(string name);
+  ErrorCode deactivateDriver();
 
   ErrorCode requestMemoryRead(Address addr);
   ErrorCode requestMemoryWrite(Address addr);

@@ -87,8 +87,9 @@ import     BEGIN(IMPORT);
 "rng" { return RNG; } //  RANDOM NUMBER GENERATOR
 
 "!CHIP"   {return CHIP;   }  // Chip & Driver Utility Keywords
-"!DRIVER" {return DRIVER; }
 "arch="   {return ARCH;   }
+"!DRIVER" {return DRIVER; }
+"!END"    {return END;    }
 
 
 %{

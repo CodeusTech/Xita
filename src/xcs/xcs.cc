@@ -35,8 +35,10 @@
 #include <xcs/context/manager.h>
 #include <xcs/expressions/primitives/primitives.h>
 #include <xcs/std/forwards.h>
-#include <xcs/std/source.h>
 #include <xcs/std/help.h> 
+
+//  XCS Source (*.cpp) Files
+#include "source.h"
 
 //  Import Grammar Libraries
 #include "../../lex.yy.c"

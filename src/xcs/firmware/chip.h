@@ -20,17 +20,6 @@ using namespace std;
 
 
 /*
-  Supported Chip Architecture/Assembly 
-*/
-enum XitaArchitecture
-{
-  Arm64,
-  Arm32//,
-  //x86
-};
-
-
-/*
   XitaChip classes hold data contained within Xita's `*.chip` files
 
   These the first half of Xita's asynchronous firmware system
@@ -57,52 +46,11 @@ public:
   }
 
   //  Architecture
-  ErrorCode setArchitecture(string target)
-  {
-    if (strcmp("Arm32", target.c_str()) == 0)
-    {
-      arch = XitaArchitecture::Arm32;
-      l.log('d', "Chip", "Set System for 32-Bit Arm Architecture");
-    }
-    else if (strcmp("Arm64", target.c_str()) == 0)
-    {
-      arch = XitaArchitecture::Arm64;
-      l.log('d', "Chip", "Set System for 64-Bit Arm Architecture");
-    }
-    else
-    {
-      active_error_code = ERR_UNSUPPORTED_ARCH;
-      yyerror("Chip file specifies an unsupported target architecture.\n Acceptable architectures include:  Arm32, Arm64");
-      return ERR_UNSUPPORTED_ARCH;
-    }
+  XitaArchitecture getArchitecture() { return arch; }
+  ErrorCode setArchitecture(string target);
 
-    return SUCCESS;
-  }
-
-  ErrorCode newInterface(string name)
-  {
-    interfaces.push_back(FirmwareInterface(name));
-
-    l.log('d', "Chip", "Defined new Firmware Interface: "+name);
-
-    return SUCCESS;
-  }
-
-  ErrorCode addRange(Address begin, Address end)
-  {
-
-    for (Index i = 0; i < interfaces.size(); ++i)
-      if (interfaces[i].inRange(begin) || interfaces[i].inRange(end))
-      {
-        active_error_code = ERR_MEMORY_OVERLAP;
-        l.log('c', "Chip", interfaces[i].Name() + " overlaps with other firmware interface memory ranges" );
-        yyerror("Chip file defines two firmware interfaces with overlapping memory");
-      }
-
-    // TODO: 
-    //    There is more validation required here to ensure
-    //    no two interfaces are claiming the same memory ranges
-    return interfaces.back().addRange(begin, end);
-  }
+  ErrorCode newInterface(string name);
+  FirmwareInterface* getInterface(string name);
+  ErrorCode addInterfaceRange(Address begin, Address end);
 
 };

@@ -121,7 +121,7 @@ extern ContextManager context;
 */
 
 //  Preprocess Directives
-%token CHIP DRIVER ARCH
+%token CHIP DRIVER ARCH END
 
 //  Primitive Data Types
 %union {
@@ -251,6 +251,9 @@ extern ContextManager context;
 
 //  Expression Seperator
 %left OP_EXP
+
+//  Preprocess Directives
+%left CHIP DRIVER END
 /*
   HIGHEST-PRIORITY TOKEN
 */
@@ -1040,7 +1043,7 @@ driver_header:
 ;
 
 xita_driver:
-    driver_header xita_source /* TODO: This will be changed from xita_source */
+    driver_header xita_source END /* TODO: This will be changed from xita_source */
 ;
 
 
