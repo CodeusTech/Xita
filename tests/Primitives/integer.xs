@@ -12,6 +12,7 @@
   =================
   1.) Integer Arithmetic
   2.) Bitwise Arithmetic
+  3.) Static Optimization
 *)
 
 (*
@@ -23,26 +24,40 @@
 (*
   1.) Integer Arithmetic
 *)
+let x = 0;;  -- Using this x variable, because integer arithmetic is statically optimized out
+
 U8 5;;    --  BUG:  '5' is not being tracked as an 8-bit value
-1 + 2;;
-4 - 1;;
-3 * 1;;
-3 / 1;;
-7 % 4;;
+(x + 2) + 5;;
+x - 1;;
+x * 1;;
+x / 1;;
+x % 4;;
 
 (*
   2.) Bitwise Arithmetic
 *)
 
-7 & 5;;
-3 | 5;;
-2 ^ 10;;
+x & 5;;
+x | 5;;
+x ^ 10;;
 
+x << 5;; 
+x >> 2;;
 
-(I16 8) << 5;;  --  BUG:  '8' is not being tracked as a 16-bit value
-67 >> 2;;
+(*
+  3.) Static Optimization
+*)
 
-(I16 7) + 5     --  BUG:  '7' is not being tracked as a 16-bit value
+7 + 5;;     
+20 - 8;;
+3 * 4;;
+36 / 3;;
+
+12 | 0;;
+15 & 12;;
+
+6 << 1;;
+24 >> 1
 
 
 

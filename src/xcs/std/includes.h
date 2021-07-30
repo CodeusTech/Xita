@@ -25,6 +25,7 @@
 #include "logger.h"
 #include "buffers.h"
 #include "status.h"
+#include "arch.h"
 
 #include <xcs/regstack/codes.h>
 

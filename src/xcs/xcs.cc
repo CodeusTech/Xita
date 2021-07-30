@@ -35,8 +35,10 @@
 #include <xcs/context/manager.h>
 #include <xcs/expressions/primitives/primitives.h>
 #include <xcs/std/forwards.h>
-#include <xcs/std/source.h>
 #include <xcs/std/help.h> 
+
+//  XCS Source (*.cpp) Files
+#include "source.h"
 
 //  Import Grammar Libraries
 #include "../../lex.yy.c"
@@ -69,7 +71,12 @@ int main(int argc, char** argv)
 
 	/*
 		ASSEMBLY OPTIONS:
+			* --version
 			* -a || --keep-assembly
+			* -c [file.chip] || --chip file.chip
+			* -h || --help
+			* -v || --verbose
+
 	*/
 
 		//  Keep Assembly Option
@@ -90,40 +97,18 @@ int main(int argc, char** argv)
 			return help_msg();
 		}
 
+		else if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--chip") == 0)
+		{
+			i++;
 
+			yyin = fopen(argv[i], "r");
+			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
 
-	/*
-		NOTE: This should not be used until other features are more robust		
+			initializePrimitives();
 
-		OPTIMIZATION OPTIONS:
-			* -a32i
-			* -a32f
-			* -a48sr
-			* -a64sr
-	*/
-		//  Optimization Option: a32i
-		else if (strcmp(argv[i], "-a32i") == 0) 
-		{
-			printf("Enabling 32-bit Integer Optimization\n");
-			set_optimization(a32i);
-		}
-		//  Optimization Option: a32f
-		else if (strcmp(argv[i], "-a32f") == 0) 
-		{
-			printf("Enabling 32-bit Floating-Point Optimization\n");
-			set_optimization(a32f);
-		}
-		//  Optimization Option: a48sr
-		else if (strcmp(argv[i], "-a48sr") == 0) 
-		{
-			printf("Enabling 48-Wide Tuple Returns\n");
-			set_optimization(a48sr);
-		}
-		//  Optimization Option: a64sr
-		else if (strcmp(argv[i], "-a64sr") == 0) 
-		{
-			printf("Enabling 64-Wide Tuple Returns\n");
-			set_optimization(a64sr);
+			//  Set Parser File Pointer
+			//yypush_buffer_state(YY_CURRENT_BUFFER);
+			while(!feof(yyin)) yyparse();
 		}
 
 		//  Assume Input File
@@ -177,7 +162,6 @@ int main(int argc, char** argv)
 				exit(1);
 			}
 			else if (pid == 0) { 
-				printf ("Compiling Binary\n");
 				execvp(_argc, _argv);
 			}
 			
@@ -187,7 +171,7 @@ int main(int argc, char** argv)
 			if (!keep_assembly)
 			{
 				char* rm_argv[3] = {"rm", asm_fname, NULL};
-				execvp(string("rm").c_str(), rm_argv);
+				execvp(rm_argv[0], rm_argv);
 			}
 
 			free (asm_fname);
@@ -195,7 +179,6 @@ int main(int argc, char** argv)
 			return 0;
 		}
 	}
-
 
 	/*
 		3.) Interpreter Mode

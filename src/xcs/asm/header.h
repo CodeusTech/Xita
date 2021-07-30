@@ -20,7 +20,8 @@ FILE* asm_file;
 // Generate Assembly Header for Source Module
 int header_source(char* mod_name)
 {
-  fprintf(asm_file, "//  %s\n\n", mod_name);
+  fprintf(asm_file, "//  %s\n", mod_name);
+  fprintf(asm_file, "//  Cross-Compiled using Xita Control System: v%s\n\n", XCSL_VERSION);
   
   //  Return 0, if Successful
   return SUCCESS;

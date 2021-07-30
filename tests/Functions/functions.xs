@@ -9,9 +9,8 @@
   Contains test-case file for XCS Function Testing
 *)
 
-(*
-  Declarations
-*)
+
+
 --  Declarations
 let five = 5;;  
 let sum x y = (x + y);;

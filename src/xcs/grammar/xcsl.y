@@ -13,13 +13,13 @@
   ======================
   A.) Token Declarations
   B.) Order of Operations
-  C.) Start of Grammar
-  D.) Source Modules
-
+  C.) Start of Xita Grammar
+  D.) Start of Driver Grammar
+  E.) Start of Chip Grammar
 
   ----------------------
   
-  I. DECLARATIONS
+  I. XITA DECLARATIONS
 
   I.1.) Top-Level Declarations
     I.1.a) Types
@@ -29,7 +29,7 @@
 
   ----------------------
 
-  II. EXPRESSIONS
+  II. XITA EXPRESSIONS
   
   1.) XCSL Expressions
   2.) Primitive Expressions
@@ -66,14 +66,17 @@
   8.) Special Operations
     8.a) Regular Expressions
 
-  
-  E.) Tether Modules
-  ----------------------
-  1.) Tether Module Structure
-  2.) Tether Expressions
-  3.) Request/Offer
-    3.a) Offer Statements
-    3.b) Request Statements
+  ---------------------------
+
+  III. DRIVER MODULES
+
+
+
+  ---------------------------
+
+  IV. CHIP FILES
+
+
 */
 
 
@@ -110,8 +113,15 @@ extern ContextManager context;
 %}
 
 /*
+  ==========================
+
   A.) Token Declarations
+
+  ==========================
 */
+
+//  Preprocess Directives
+%token CHIP DRIVER ARCH END
 
 //  Primitive Data Types
 %union {
@@ -150,7 +160,7 @@ extern ContextManager context;
 %token BIT_AND BIT_OR BIT_XOR BIT_SHR BIT_SHL BIT_NOT   // BITWISE MANIPULATION
 %token BOOL_OR BOOL_AND BOOL_XOR BOOL_NOT               // BOOLEAN COMPARISON
 %token ARROW_L ARROW_R
-%token OP_SEP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
+%token OP_EXP OP_TUP OP_ASSIGN PAR_LEFT PAR_RIGHT OP_COMMA
 
 //  List Operators/Keywords
 %token OP_APPEND OP_LIST_CON
@@ -200,7 +210,11 @@ extern ContextManager context;
 %token OFFER REQUEST XCS_UNDEF
 
 /*
+  ===========================
+
   B.) Order of Operations
+
+  ===========================
 */
 /*
   LOWEST-PRIORITY TOKEN
@@ -208,18 +222,19 @@ extern ContextManager context;
 //  Declaration Keywords
 %left IF THEN ELSE
 
-//  Literal Values
-%left CONSTRUCTOR
-%left INT REAL TRUE FALSE CHAR STRING
-
-%left IDENTIFIER
-
 //  Logical Operators
 %left BOOL_NOT BOOL_OR BOOL_AND
 %left OP_GT OP_GTE OP_LT OP_LTE OP_EQ OP_NEQ IS
+
 //  Numerical Operators
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
+
+
+//  Literal Values
+%left IDENTIFIER
+%left CONSTRUCTOR
+%left INT REAL TRUE FALSE CHAR STRING
 
 
 %left OP_COMMA OP_ELEMENT
@@ -236,7 +251,10 @@ extern ContextManager context;
 %left DEBUG
 
 //  Expression Seperator
-%left OP_SEQ
+%left OP_EXP
+
+//  Preprocess Directives
+%left CHIP DRIVER END
 /*
   HIGHEST-PRIORITY TOKEN
 */
@@ -248,14 +266,20 @@ extern ContextManager context;
 /*
   C.) Start of Grammar
 */
-%start xcs
+%start main
 %%
+
+main:
+    xita_chip
+  | xita_driver
+  | xita_source
+
 ref_com:
     DOC { decl_ref_comment($1); }
 ;
 
-xcs:
-    ref_com xcs { }
+xita_source:
+    ref_com xita_source { }
   | src  { }
 ;
 
@@ -268,7 +292,7 @@ src2:
 ;
 
 src:
-    src2 OP_SEP src {  }
+    src2 OP_EXP src {  }
   | src2  
 ;
 
@@ -448,9 +472,9 @@ exp:
   | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }    
   | exp_memIO
   | exp_conditional  
-  | exp_arith        
   | exp OP_ELEMENT exp_record  
   | exp_literal      
+  | exp_arith        
   | LIST_HEAD exp_list
   | exp_regex   
   | exp_ipcIO
@@ -1007,11 +1031,56 @@ exp_regex:
     REGEX STRING  { regular_expression($2); }
 ;
 
-
 /*
-  E.) Tether Modules 
+  =====================================
+
+  III. DRIVER MODULES
+
+  =====================================
 */
 
+driver_header:
+    DRIVER CONSTRUCTOR { printf("Driver Encountered:  %s\n", $2); }
+;
+
+xita_driver:
+    driver_header xita_source END /* TODO: This will be changed from xita_source */
+;
+
+
+/*
+  =====================================
+
+  IV. CHIP FILES
+
+  =====================================
+*/
+
+xita_chip:
+    chip_header chip_arch chip_interface  { printf("Finished Parsing Chip File\n"); }
+;
+
+chip_header:
+    CHIP CONSTRUCTOR { context.newChip($2); }
+;
+
+chip_arch:
+    ARCH STRING { context.setChipArch($2); }
+;
+
+chip_interface:
+    chip_interface chip_interface
+  |  chip_interface_name OP_TYPE chip_interface_range OP_TUP 
+;
+  chip_interface_name:
+    CONSTRUCTOR { context.addFirmwareInterface($1); }
+;
+
+  chip_interface_range:
+    chip_interface_range OP_COMMA chip_interface_range
+  | INT OP_ADD INT { context.addFirmwareRange($1, $1+$3); } /* This operation will accept a number of offset bytes */
+  | INT OP_SUB INT { context.addFirmwareRange($1, $3); }    /* This operation will accept minimum/maximium bounds  */
+;
 
 %%
 
@@ -1019,7 +1088,7 @@ exp_regex:
   GENERIC ERROR MESSAGE
 */
 void yyerror(const char* error) {
-	fprintf(stderr, "\nParse error in line %d: %s\n\n", yylineno, error);
+	fprintf(stderr, "\nCritical error in line %d\n %s\n\n", yylineno, error);
   
   //  TODO: DEALLOCATE ALL BUFFERS
   l.log('E', "Crash", error);
@@ -1029,6 +1098,6 @@ void yyerror(const char* error) {
   
   //rs_end();
 
-	exit(1);
+	exit(active_error_code);
 }
 

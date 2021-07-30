@@ -38,12 +38,13 @@
 
 #include <xcs/asm/manager.h>
 #include <xcs/expressions/operators/manager.h>
-#include <xcs/expressions/memory/memory.h>
 #include <xcs/data/manager.h>
 #include <xcs/types/manager.h>
+#include <xcs/firmware/manager.h>
 
 #include <xcs/modules/modules.h>
 #include <xcs/expressions/argument.h>
+#include <xcs/expressions/memory/memory.h>
 
 #include <xcs/sys/xalloc/xalloc.h>
 
@@ -71,6 +72,7 @@ protected:
   DataManager     data = DataManager(this);           //  Manages Active Backend Data Values/Types
   MemoryVariableManager memory; //  DEPRECATED!!!  Will be merged into MemoryAllocator
   MemoryAllocator xalloc = MemoryAllocator(this);
+  FirmwareManager firmware = FirmwareManager(this);
 
   //  Modules
   vector<ModuleNode> modules;     //  All Imported Module Contexts
@@ -135,6 +137,15 @@ public:
 
   string TypeSignature();
   string TypeSignature(Identifier function);
+
+  /*
+    Chip/Firmware Operations
+  */
+  ErrorCode newChip(string name) { return firmware.newChip(name); }
+  ErrorCode setChipArch(string arch) { return firmware.setChipArch(arch); }
+  ErrorCode addFirmwareInterface(string name) { return firmware.addInterface(name); }
+  ErrorCode addFirmwareRange(int begin, int end) { return firmware.addInterfaceRange(begin, end); }
+
 
   /*
     2.) Public Operations

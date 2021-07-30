@@ -1,8 +1,8 @@
 /*
   division.h
   Codeus Tech
-  Authored on   March 7, 2021
-  Last Modified March 7, 2021
+  Authored on   March  7, 2021
+  Last Modified  July 30, 2021
 */
 
 /*
@@ -33,10 +33,6 @@ public:
   char* resolve(RegisterStack* rs)
   {
     /*
-      Type Check Operands
-    */
-
-    /*
       Get top 2 registers
       Add together (according to type sizes)
     */
@@ -45,13 +41,36 @@ public:
     char* sec = get_reg(rs->sec(), 32);
 
     char* str = (char*) malloc(50);
-    sprintf(str, "  div   %s, %s, %s", sec, sec, top);
+
+    if (target_architecture == XitaArchitecture::Arm32 || 
+        target_architecture == XitaArchitecture::Arm64)
+    {
+      char* rtn = get_reg(rs->push(rs->top_type()), 32);
+
+      sprintf(str, "  udiv   %s, %s, %s", rtn, sec, top);
+      
+      rs->remove(1);
+      rs->remove(1);
+
+      free(rtn);
+    }
+    else if (target_architecture == XitaArchitecture::x86_64)
+    {
+      sprintf(str, "  mov  %s, rax\n", sec);
+      sprintf(str, "  div  %s", top);
+
+      //  NOTE !!! This is more involved than what is shown here.  
+      //           As done this way, this will NOT work.  
+      //           RAX and RDI need to be prepped for quotient/remainder
+      rs->pop();
+      rs->pop();
+    }
 
     free(top);
     free(sec);
 
     return str;
-  }
+  } 
 
   ErrorCode override(TypeID rtn_type, TypeID left, TypeID right);
 };

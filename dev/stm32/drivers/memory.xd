@@ -1,0 +1,16 @@
+(*
+  memory.xd (stm32)
+  Codeus Tech
+  Authored on   July 27, 2021
+  Last Modified July 27, 2021
+*)
+
+(*
+  Contains firmware driver for stm32 flash and SRAM memory units
+
+  For an example reference (done on 'blue pill' stm32), see below C file
+  https://gist.github.com/pasindu-sandima/3e98112fe42fb4df12bf9b9777b202ab
+*)
+
+
+

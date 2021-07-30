@@ -27,22 +27,39 @@ public:
 
   char* resolve(RegisterStack* rs) override
   {
-    //  STUB STUB STUB  (TODO: IMPLEMENT THIS!!!)
+    /*
+      Get top 2 registers
+      Add together (according to type sizes)
+    */
+
     char* top = get_reg(rs->top(), 32);
     char* sec = get_reg(rs->sec(), 32);
 
     char* str = (char*) malloc(50);
 
-    sprintf(str, "  lsl   %s, %s, %s", sec, sec, top);
-    l.log('D', "Operators", "Resolved Bitwise Shift Left Operation");
+    if (target_architecture == XitaArchitecture::Arm32 || 
+        target_architecture == XitaArchitecture::Arm64)
+    {
+      char* rtn = get_reg(rs->push(rs->top_type()), 32);
 
-    rs->pop();
+      sprintf(str, "  lsl   %s, %s, %s", rtn, sec, top);
+      
+      rs->remove(1);
+      rs->remove(1);
+
+      free(rtn);
+    }
+    else if (target_architecture == XitaArchitecture::x86_64)
+    {
+      sprintf(str, "  shl  %s, %s", top, sec);
+      rs->pop();
+    }
 
     free(top);
     free(sec);
 
     return str;
-  }
+  } 
 
 };
 
@@ -57,22 +74,39 @@ public:
 
   char* resolve(RegisterStack* rs) override
   {
-    //  STUB STUB STUB  (TODO: IMPLEMENT THIS!!!)
+    /*
+      Get top 2 registers
+      Add together (according to type sizes)
+    */
+
     char* top = get_reg(rs->top(), 32);
     char* sec = get_reg(rs->sec(), 32);
 
     char* str = (char*) malloc(50);
 
-    sprintf(str, "  lsr   %s, %s, %s", sec, sec, top);
-    l.log('D', "Operators", "Resolved Bitwise Shift Right Operation");
+    if (target_architecture == XitaArchitecture::Arm32 || 
+        target_architecture == XitaArchitecture::Arm64)
+    {
+      char* rtn = get_reg(rs->push(rs->top_type()), 32);
 
-    rs->pop();
+      sprintf(str, "  lsr   %s, %s, %s", rtn, sec, top);
+      
+      rs->remove(1);
+      rs->remove(1);
+
+      free(rtn);
+    }
+    else if (target_architecture == XitaArchitecture::x86_64)
+    {
+      sprintf(str, "  shr  %s, %s", top, sec);
+      rs->pop();
+    }
 
     free(top);
     free(sec);
 
     return str;
-  }
+  } 
 
 };
 

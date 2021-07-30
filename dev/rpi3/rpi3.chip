@@ -1,8 +1,17 @@
---  rpi3.chip
---  Chip Name (used in terminal options, etc.)
-rpi3
+(*
+  rpi3.chip
+  Codeus Tech
+  Authored on   July 24, 2021
+  Last Modified July 26, 2021
+*)
+
+(*
+  Contains Chip/Firmware Definitions for Raspberry Pi 3 Family
+*)
+
+!CHIP Rpi3
 --  Set Desired Architecture & Assembly Language
-arch="AArch64"
+arch="Arm64"
 
 --  Desired Memory Mappings and Firmware Interfaces
 Timer:      0x3F003000 + 0x1F;    --  System Timer Interface

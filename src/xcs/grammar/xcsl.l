@@ -12,7 +12,7 @@
   Table of Contents
   =================
   1.) Comments
-  2.) Primitive Types/Constructors
+  2.) Keywords
   3.) Override Operators
   4.) Syntactic Operators
   5.) Conditional Keywords
@@ -80,11 +80,16 @@ import     BEGIN(IMPORT);
 
 %{
 /*
-  2.) Primitive Types/Constructors
+  2.) Keywords
 */
 %}
 
 "rng" { return RNG; } //  RANDOM NUMBER GENERATOR
+
+"!CHIP"   {return CHIP;   }  // Chip & Driver Utility Keywords
+"arch="   {return ARCH;   }
+"!DRIVER" {return DRIVER; }
+"!END"    {return END;    }
 
 
 %{
@@ -176,7 +181,7 @@ import     BEGIN(IMPORT);
 ")" { return PAR_RIGHT; } //  RIGHT PARENTHESIS
 
 "="  { return OP_ASSIGN; } //  ASSIGNMENT OPERATOR
-";;" { return OP_SEP; }    //  SEPERATOR OPERATOR
+";;" { return OP_EXP; }    //  SEPERATOR OPERATOR
 ";"  { return OP_TUP; }    //  TUPPLE OPERATOR
 ","  { return OP_COMMA; }  //  COMMA OPERATOR
 "."   { return OP_ELEMENT; } //  ACCESS ELEMENT OPERATOR
