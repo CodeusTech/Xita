@@ -26,21 +26,39 @@ public:
   
   char* resolve(RegisterStack* rs) override
   {
-    //  STUB STUB STUB  (TODO: IMPLEMENT THIS!!!)
+    /*
+      Get top 2 registers
+      Add together (according to type sizes)
+    */
+
     char* top = get_reg(rs->top(), 32);
     char* sec = get_reg(rs->sec(), 32);
 
     char* str = (char*) malloc(50);
 
-    sprintf(str, "  and   %s, %s, %s ", sec, sec, top);
+    if (target_architecture == XitaArchitecture::Arm32 || 
+        target_architecture == XitaArchitecture::Arm64)
+    {
+      char* rtn = get_reg(rs->push(rs->top_type()), 32);
 
-    l.log('D', "Operators", "Resolved Bitwise AND Operation");
+      sprintf(str, "  and   %s, %s, %s", rtn, sec, top);
+      
+      rs->remove(1);
+      rs->remove(1);
+
+      free(rtn);
+    }
+    else if (target_architecture == XitaArchitecture::x86_64)
+    {
+      sprintf(str, "  and  %s, %s", top, sec);
+      rs->pop();
+    }
 
     free(top);
     free(sec);
 
     return str;
-  }
+  } 
 
 };
 

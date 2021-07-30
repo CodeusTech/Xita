@@ -2,7 +2,7 @@
   addition.h
   Codeus Tech
   Authored on   April 28, 2020
-  Last Modified April 28, 2020
+  Last Modified  July 30, 2021
 */
 
 /*
@@ -57,7 +57,24 @@ char* AdditionOperator::resolve(RegisterStack* rs)
   char* sec = get_reg(rs->sec(), 32);
 
   char* str = (char*) malloc(50);
-  sprintf(str, "  add   %s, %s, %s", sec, sec, top);
+
+  if (target_architecture == XitaArchitecture::Arm32 || 
+      target_architecture == XitaArchitecture::Arm64)
+  {
+    char* rtn = get_reg(rs->push(rs->top_type()), 32);
+
+    sprintf(str, "  add   %s, %s, %s", rtn, sec, top);
+    
+    rs->remove(1);
+    rs->remove(1);
+
+    free(rtn);
+  }
+  else if (target_architecture == XitaArchitecture::x86_64)
+  {
+    sprintf(str, "  add  %s, %s", top, sec);
+    rs->pop();
+  }
 
   free(top);
   free(sec);

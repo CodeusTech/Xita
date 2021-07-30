@@ -1,8 +1,8 @@
 /*
   subtraction.h
   Codeus Tech
-  Authored on   March 7, 2021
-  Last Modified March 7, 2021
+  Authored on   March  7, 2021
+  Last Modified  July 30, 2021
 */
 
 /*
@@ -44,11 +44,29 @@ public:
     char* sec = get_reg(rs->sec(), 32);
 
     char* str = (char*) malloc(50);
-    sprintf(str, "  sub   %s, %s, %s", sec, sec, top);
+
+    if (target_architecture == XitaArchitecture::Arm32 || 
+        target_architecture == XitaArchitecture::Arm64)
+    {
+      char* rtn = get_reg(rs->push(rs->top_type()), 32);
+
+      sprintf(str, "  sub   %s, %s, %s", rtn, sec, top);
+      
+      rs->remove(1);
+      rs->remove(1);
+
+      free(rtn);
+    }
+    else if (target_architecture == XitaArchitecture::x86_64)
+    {
+      sprintf(str, "  sub  %s, %s", top, sec);
+      rs->pop();
+    }
 
     free(top);
     free(sec);
 
     return str;
-  }
+  } 
+
 };

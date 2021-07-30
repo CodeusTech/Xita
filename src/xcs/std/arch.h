@@ -23,7 +23,7 @@ enum XitaArchitecture
   x86_64
 };
 
-XitaArchitecture target_architecture = XitaArchitecture::Undefined;
+XitaArchitecture target_architecture = XitaArchitecture::Arm64;
 
 
 

@@ -148,7 +148,7 @@ ContextManager::ContextManager()
   { 
     LastExpression(EXP_LITERAL);
     char* ret = operators.solveOperator(oid, _context->rsCurrent()); 
-    if (ret)  { addInstruction(ret); free(ret); rsPop(); }
+    if (ret)  { addInstruction(ret); free(ret); }
     else      { return 1; /* FAILURE */ }
     return SUCCESS;
   }
