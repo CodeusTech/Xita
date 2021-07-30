@@ -1,5 +1,5 @@
 # Xita Cross-Compiler (AArch64)
-#### Version: v0.26
+#### Version: v0.27
 
 
 This respository provides the Linux-to-Xita cross compiler.  This **Xita Control System** compiler targets ARM's AArch64 architecture.  As of the current version, it specifically targets BCM 2837 (Rasberry Pi 3 B+).  However, it could be adapted to fit other AArch64 chips with ease.  

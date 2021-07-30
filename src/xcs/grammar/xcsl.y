@@ -222,18 +222,19 @@ extern ContextManager context;
 //  Declaration Keywords
 %left IF THEN ELSE
 
-//  Literal Values
-%left CONSTRUCTOR
-%left INT REAL TRUE FALSE CHAR STRING
-
-%left IDENTIFIER
-
 //  Logical Operators
 %left BOOL_NOT BOOL_OR BOOL_AND
 %left OP_GT OP_GTE OP_LT OP_LTE OP_EQ OP_NEQ IS
+
 //  Numerical Operators
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
+
+
+//  Literal Values
+%left IDENTIFIER
+%left CONSTRUCTOR
+%left INT REAL TRUE FALSE CHAR STRING
 
 
 %left OP_COMMA OP_ELEMENT
@@ -471,9 +472,9 @@ exp:
   | exp OP_LIST_CON exp_list       { printf("List Constructed\n"); }    
   | exp_memIO
   | exp_conditional  
-  | exp_arith        
   | exp OP_ELEMENT exp_record  
   | exp_literal      
+  | exp_arith        
   | LIST_HEAD exp_list
   | exp_regex   
   | exp_ipcIO

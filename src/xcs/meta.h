@@ -13,7 +13,7 @@
 #define XCS_META_H
 
 
-#define XCSL_VERSION "0.26"
+#define XCSL_VERSION "0.27"
 
 
 #endif
