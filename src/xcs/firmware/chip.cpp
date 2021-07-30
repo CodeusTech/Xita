@@ -2,7 +2,7 @@
   chip.cpp
   Codeus Tech
   Authored on   July 28, 2021
-  Last Modified July 28, 2021
+  Last Modified July 29, 2021
 */
 
 /*
@@ -19,11 +19,13 @@ ErrorCode XitaChip::setArchitecture(string target)
 {
   if (strcmp("Arm32", target.c_str()) == 0)
   {
+    target_architecture = XitaArchitecture::Arm32;
     arch = XitaArchitecture::Arm32;
     l.log('d', "Chip", "Set System for 32-Bit Arm Architecture");
   }
   else if (strcmp("Arm64", target.c_str()) == 0)
   {
+    target_architecture = XitaArchitecture::Arm64;
     arch = XitaArchitecture::Arm64;
     l.log('d', "Chip", "Set System for 64-Bit Arm Architecture");
   }

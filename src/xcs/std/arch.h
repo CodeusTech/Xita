@@ -2,7 +2,7 @@
   arch.h
   Codeus Tech
   Authored on   July 27, 2021
-  Last Modified July 27, 2021
+  Last Modified July 29, 2021
 */
 
 /*
@@ -17,10 +17,15 @@
 */
 enum XitaArchitecture
 {
+  Undefined,
   Arm64,
-  Arm32//,
-  //x86
+  Arm32,
+  x86_64
 };
+
+XitaArchitecture target_architecture = XitaArchitecture::Undefined;
+
+
 
 
 

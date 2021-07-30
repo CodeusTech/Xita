@@ -2,7 +2,7 @@
   chip.h
   Codeus Tech
   Authored on   July 22, 2021
-  Last Modified July 22, 2021
+  Last Modified July 29, 2021
 */
 
 /*
@@ -36,7 +36,6 @@ protected:
   string name;
   vector<FirmwareInterface> interfaces;
   XitaArchitecture arch;
-
 
 public:
   XitaChip() {}
