@@ -67,36 +67,36 @@ char* get_reg(ADR i, unsigned char bits)
     switch(bits)
     {
       case (8):
-        if      (i == 1) sprintf(str, "%bl");
-        else if (i == 2) sprintf(str, "\%cl");
-        else if (i == 3) sprintf(str, "\%dl");
-        else if (i == 4) sprintf(str, "\%sil");
-        else if (i == 5) sprintf(str, "\%dil");
-        else if (i > 5 && i < 11) sprintf(str, "%r%db", (i+5));
+        if      (i == 1) sprintf(str, "%%bl");
+        else if (i == 2) sprintf(str, "%%cl");
+        else if (i == 3) sprintf(str, "%%dl");
+        else if (i == 4) sprintf(str, "%%sil");
+        else if (i == 5) sprintf(str, "%%dil");
+        else if (i > 5 && i < 11) sprintf(str, "%%r%db", (i+5));
         break;
       case (16):
-        if      (i == 1) sprintf(str, "%bx");
-        else if (i == 2) sprintf(str, "\%cx");
-        else if (i == 3) sprintf(str, "\%dx");
-        else if (i == 4) sprintf(str, "\%si");
-        else if (i == 5) sprintf(str, "\%di");
-        else if (i > 5 && i < 11) sprintf(str, "%r%dw", (i+5));
+        if      (i == 1) sprintf(str, "%%bx");
+        else if (i == 2) sprintf(str, "%%cx");
+        else if (i == 3) sprintf(str, "%%dx");
+        else if (i == 4) sprintf(str, "%%si");
+        else if (i == 5) sprintf(str, "%%di");
+        else if (i > 5 && i < 11) sprintf(str, "%%r%dw", (i+5));
         break;
       case (32):
-        if      (i == 1) sprintf(str, "\%ebx");
-        else if (i == 2) sprintf(str, "\%ecx");
-        else if (i == 3) sprintf(str, "\%edx");
-        else if (i == 4) sprintf(str, "\%esi");
-        else if (i == 5) sprintf(str, "\%edi");
-        else if (i > 5 && i < 11) sprintf(str, "%r%dd", (i+5));
+        if      (i == 1) sprintf(str, "%%ebx");
+        else if (i == 2) sprintf(str, "%%ecx");
+        else if (i == 3) sprintf(str, "%%edx");
+        else if (i == 4) sprintf(str, "%%esi");
+        else if (i == 5) sprintf(str, "%%edi");
+        else if (i > 5 && i < 11) sprintf(str, "%%r%dd", (i+5));
         break;
       case (64):
-        if      (i == 1) sprintf(str, "\%rbx");
-        else if (i == 2) sprintf(str, "\%rcx");
-        else if (i == 3) sprintf(str, "\%rdx");
-        else if (i == 4) sprintf(str, "\%rsi");
-        else if (i == 5) sprintf(str, "\%rdi");
-        else if (i > 5 && i < 11) sprintf(str, "%r%d", (i+5));
+        if      (i == 1) sprintf(str, "%%rbx");
+        else if (i == 2) sprintf(str, "%%rcx");
+        else if (i == 3) sprintf(str, "%%rdx");
+        else if (i == 4) sprintf(str, "%%rsi");
+        else if (i == 5) sprintf(str, "%%rdi");
+        else if (i > 5 && i < 11) sprintf(str, "%%r%d", (i+5));
         break;
       
     }

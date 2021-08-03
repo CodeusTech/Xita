@@ -32,14 +32,18 @@ leakTest: grammar src/xcs/xcs.cc
 
 
 #  Build Grammar
-grammar: src/xcs/grammar/xcsl.y src/xcs/grammar/xcsl.l 
-	bison src/xcs/grammar/xcsl.y
+grammar: src/xcs/grammar/xita.y src/xcs/grammar/xcsl.l 
+	bison src/xcs/grammar/xita.y
 	flex src/xcs/grammar/xcsl.l
 
 
+grammar-test:  src/xcs/grammar/xita.y src/xcs/grammar/xcsl.l 
+	bison -Wcounterexamples src/xcs/grammar/xita.y
+	flex src/xcs/grammar/xcsl.l
+
 #  Tidy Generated Files
 tidy:
-	rm lex.yy.c xcsl.tab.c
+	rm lex.yy.c xita.tab.c
 
 
 #  PHONY TARGETS

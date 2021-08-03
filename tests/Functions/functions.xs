@@ -13,12 +13,12 @@
 
 --  Declarations
 let five = 5;;  
-let sum x y = (x + y);;
-let sum x y z = (x + y + z);;
-let prod x y = (x * y);;
+let sum x y = x + y;;
+let sum x y z = x + y + z;;
+let prod x y = x * y;;
 
 --  Test Functions as Expressions
-(prod 1 2) + five     
+prod 1 2 + five     
 
 
 

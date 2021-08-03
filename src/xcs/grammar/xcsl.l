@@ -25,7 +25,7 @@
   B.) Constructors/Identifiers
 */
 
-#include "xcsl.tab.c"
+#include "xita.tab.c"
 extern int yylex();
 
 #include "string.h"
@@ -207,6 +207,9 @@ import     BEGIN(IMPORT);
 "match" {return MATCH; }
 "with"  {return WITH;  }
 
+"True"  {return TRUE; }
+"False" {return FALSE;}
+
 %{
 /*
   6.) Functional Keywords
@@ -215,8 +218,10 @@ import     BEGIN(IMPORT);
 
 "const" { return CONST; }
 
-"let" { return LET; }
-"in"  { return IN;  }
+"public" { return PUBLIC; }
+"system" { return SYSTEM; }
+"let"    { return LET; }
+"in"     { return IN;  }
 
 
 %{

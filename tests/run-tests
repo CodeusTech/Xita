@@ -193,19 +193,23 @@ else
   printf "  Nested Functions:  FAILURE\n"
 fi
 
-printf "\nTesting Direct Memory Access\n"
-if [ $KEEP_ASSEMBLY == true ]
-then
-  xcs-aarch64 -a ./tests/Memory/memory.xs
-else
-  xcs-aarch64 ./tests/Memory/memory.xs
-fi
-if [ $? == 0 ]
-then 
-  printf "  Memory Access:  SUCCESS\n"
-else
-  printf "  Memory Access:  FAILURE\n"
-fi
+# 
+# The following has been commented, because the new Firmware system
+#   renders this code unusable and meaningless.
+#
+#printf "\nTesting Direct Memory Access\n"
+#if [ $KEEP_ASSEMBLY == true ]
+#then
+#  xcs-aarch64 -a ./tests/Memory/memory.xs
+#else
+#  xcs-aarch64 ./tests/Memory/memory.xs
+#fi
+#if [ $? == 0 ]
+#then 
+#  printf "  Memory Access:  SUCCESS\n"
+#else
+#  printf "  Memory Access:  FAILURE\n"
+#fi
 
 
 

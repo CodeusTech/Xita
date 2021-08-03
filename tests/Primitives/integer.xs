@@ -26,7 +26,7 @@
 *)
 let x = 0;;  -- Using this x variable, because integer arithmetic is statically optimized out
 
-U8 5;;    --  BUG:  '5' is not being tracked as an 8-bit value
+(*U8*) 5;;    --  BUG:  '5' is not being tracked as an 8-bit value
 (x + 2) + 5;;
 x - 1;;
 x * 1;;
