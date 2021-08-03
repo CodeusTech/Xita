@@ -1,8 +1,8 @@
 /*
   codes.h (Register Stacks)
   Cody Fagley
-  Authored on   March 14, 2019
-  Last Modified  July 29, 2021
+  Authored on    March 14, 2019
+  Last Modified August 03, 2021
 */
 
 /*
@@ -38,24 +38,16 @@ char* get_reg(ADR i, unsigned char bits)
     switch(bits)
     {
       case (8):
-        if (i < 29) sprintf(str, "b%u", i); else
-        if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                    sprintf(str, "v%u.s[0]", i-24); 
+        if (i < 30) sprintf(str, "b%u", i); 
         break;
       case (16):
-        if (i < 29) sprintf(str, "s%u", i); else
-        if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                    sprintf(str, "v%u.s[0]", i-24);
+        if (i < 30) sprintf(str, "s%u", i);
         break;
       case (32):
-        if (i < 29) sprintf(str, "w%u", i); else
-        if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                    sprintf(str, "v%u.s[0]", i-24);
+        if (i < 30) sprintf(str, "w%u", i);
         break;
       case (64):
-        if (i < 29) sprintf(str, "x%u", i); else
-        if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                    sprintf(str, "v%u.s[0]", i-24);
+        if (i < 30) sprintf(str, "x%u", i);
         break;
     }
   /* Get string representation of ARMv7 register */

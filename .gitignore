@@ -1,7 +1,7 @@
-#  .gitignore (XCSL-AArch64)
-#  Cody Fagley
+#  .gitignore
+#  Codeus Tech
 #  Authored on   January 29, 2019
-#  Last Modified January 29, 2019
+#  Last Modified  August 03, 2021
 
 #
 #  Contains ignore patterns for Git Repository
@@ -15,11 +15,12 @@ xcsl.tab.c
 # _build Directory
 _build
 
-#  Generated Assembly Test Files
-tests/**/*.s
-tests/**/*.o
-
+#  Generated Files
 *.chip.o
+*.xd.s
+*.xd.o
+*.xs.s
+*.xs.o
 
 #  Generated Log Files
 xcs.log

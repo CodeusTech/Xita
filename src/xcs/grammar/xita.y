@@ -2,14 +2,11 @@
 /*
   xita.y
   Codeus Tech
-  Authored on   July 30, 2021
-  Last Modified July 30, 2021
+  Authored on     July 30, 2021
+  Last Modified August  3, 2021
 */
 
 /*
-  NOTE:   THIS IS NOT ACTIVELY USED YET!!
-          Eventually, this will replace `xcsl.y` as the primary grammar file
-
   Contains grammar structure/implementation for Xita Programming Language
 
   Table of Contents
@@ -31,7 +28,7 @@
     G.1) Constant Declarations
     G.2) Function Declarations
     G.3) Data Type Declarations
-
+    G.4) Typeclass Declarations
 
 */
 
@@ -184,6 +181,8 @@ extern ContextManager context;
 //  Order Keepers
 %left PAR_LEFT PAR_RIGHT
 
+
+%left STATIC
 %left ELSE //  For 'Dangling Else' Problem
 %right OP_ELEMENT
 
@@ -194,8 +193,14 @@ extern ContextManager context;
 
 %start xita
 
-//  There are 21 Shift/Reduce Conflicts, 
-//   ALL caused by 'dangling else' expressions
+
+/*
+  SHIFT/REDUCE EXPECTATIONS (VALID)
+  =====================================
+    * Dangling Else                 21
+
+    TOTAL                           21
+*/
 %expect 21
 
 %%
@@ -230,7 +235,7 @@ chip_arch:
 ;
 
 chip_interface:
-    chip_interface OP_TUP chip_interface
+    chip_interface_name OP_TYPE chip_interface_range OP_TUP chip_interface
   | chip_interface_name OP_TYPE chip_interface_range 
 ;
   
@@ -239,7 +244,8 @@ chip_interface:
   ;
 
   chip_interface_range:
-    chip_interface_range OP_COMMA chip_interface_range
+    chip_interface_range OP_COMMA INT OP_ADD INT { context.addFirmwareRange($3, $3+$5); } /* This operation will accept a number of offset bytes */
+  | chip_interface_range OP_COMMA INT OP_SUB INT { context.addFirmwareRange($3, $5); } /* This operation will accept a number of offset bytes */
   | INT OP_ADD INT { context.addFirmwareRange($1, $1+$3); } /* This operation will accept a number of offset bytes */
   | INT OP_SUB INT { context.addFirmwareRange($1, $3); }    /* This operation will accept minimum/maximium bounds  */
   ;
@@ -253,11 +259,32 @@ chip_interface:
   ===========================
 */
 xita_driver:
-    driver_header
+    driver_header exps_driver
 ;
 
 driver_header:
     DRIVER CONSTRUCTOR { printf("Driver Encountered:  %s\n", $2); }
+;
+
+exps_driver:
+    decl OP_EXP exps_driver
+  | exp_driver OP_EXP exps_driver
+  | module exps_driver
+  | decl
+  | exp_driver
+;
+
+exp_driver:
+    PAR_LEFT exp PAR_RIGHT
+  | condition
+  | function
+  | primitive
+  | arithmetic
+  | bitwise
+  | logical
+  | constructor
+  | exp OP_ELEMENT IDENTIFIER
+  | IDENTIFIER    { context.resolveExpression($1); }
 ;
 
 /*
@@ -294,23 +321,24 @@ exp:
   | arithmetic
   | bitwise
   | logical
-  | constructor
   | primitive
+  | constructor
   | exp OP_ELEMENT IDENTIFIER
-  | IDENTIFIER
+  | IDENTIFIER                  { context.resolveExpression($1); }
 ;
 
 /*
   F.1) Primitive Expressions
 */
 primitive:
-    INT
-  | REAL
+    REAL
+  | INT { pushInteger((Arbitrary) $1); }
   | TRUE
   | FALSE
   | STRING
   | CHAR
 ;
+
 
 /*
   F.2) Arithmetic Expressions
@@ -331,8 +359,8 @@ bitwise:
   | exp BIT_XOR exp
   | exp BIT_AND exp
   | exp BIT_OR exp
-  | exp BIT_SHL INT
-  | exp BIT_SHR INT
+  | exp BIT_SHL exp
+  | exp BIT_SHR exp
 ;
 
 /*
@@ -377,11 +405,11 @@ if:
   ;
 
   else:
-    else_pre exp 
+    else_pre exp  %expect 21
   ;
 
   else_pre:
-    ELSE
+    ELSE 
   ;
 
 
@@ -389,16 +417,16 @@ if:
   F.6) Functional Expressions
 */
 function:
-    IDENTIFIER function_args
+    IDENTIFIER function_args  { context.resolveFunction($1); }
 ;
 
   function_args:
-      primitive function_args
-    | primitive
-    | IDENTIFIER function_args
-    | IDENTIFIER
-    | PAR_LEFT exp PAR_RIGHT function_args
-    | PAR_LEFT exp PAR_RIGHT
+      function_args primitive   { context.loadArgument(context.LastType()); }
+    | primitive                 { context.loadArgument(context.LastType()); }
+    | function_args IDENTIFIER  { context.loadArgument(context.LastType()); }
+    | IDENTIFIER                { context.loadArgument(context.LastType()); }
+    | function_args PAR_LEFT exp PAR_RIGHT  { context.loadArgument(context.LastType()); }
+    | PAR_LEFT exp PAR_RIGHT    { context.loadArgument(context.LastType()); }
   ;
 
 /*
@@ -425,7 +453,7 @@ constructor:
   ;
 
 module:
-  OPEN
+  OPEN STRING
 ;
 
 
@@ -447,26 +475,38 @@ decl:
   1.) Declare Constant
 */
 decl_constant:
-    CONST CONSTRUCTOR IDENTIFIER OP_ASSIGN exp
+    CONST CONSTRUCTOR IDENTIFIER decl_constant_assign constant_value { context.declareConstant($3); }
 ;
+  decl_constant_assign:
+    OP_ASSIGN { context.newData(TYPE_ARBITRARY, NULL); }
+  ;
+  constant_value:
+      constant_value OP_ADD constant_value  { }
+    | INT         { context.addData(TYPE_INTEGER,(Arbitrary) $1); }
+    | STRING      { context.addData(TYPE_STRING,(Arbitrary) $1); }
+    | IDENTIFIER  { context.addData($1); }
+  ;
 
 /*
   2.) Declare Function
 */
 decl_function:
-    decl_function_pre decl_function_param OP_ASSIGN exp IN exp
-  | decl_function_pre OP_ASSIGN exp IN exp
-  | decl_function_pre decl_function_param OP_ASSIGN exp
-  | decl_function_pre OP_ASSIGN exp
+    __decl_function IN exp  { context.undeclareFunction(); }
+  | __decl_function 
 ;
 
+  __decl_function:
+      decl_function_pre decl_function_param OP_ASSIGN exp { context.endDeclareFunction(); }
+    | decl_function_pre OP_ASSIGN exp                     { context.endDeclareFunction(); }
+  ;
+
   decl_function_pre:
-    LET IDENTIFIER
+    LET IDENTIFIER  { context.declareFunction($2); }
   ;
 
   decl_function_param:
-      decl_function_param IDENTIFIER
-    | IDENTIFIER
+      decl_function_param IDENTIFIER{  context.declareFunctionParameter($2); }
+    | IDENTIFIER { context.declareFunctionParameter($1); }
   ;
 
 /*
