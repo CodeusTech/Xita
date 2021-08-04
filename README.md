@@ -1,4 +1,4 @@
-# Xita Cross-Compiler (AArch64)
+# Xita Cross-Compiler
 #### Version: v0.27.3
 
 
