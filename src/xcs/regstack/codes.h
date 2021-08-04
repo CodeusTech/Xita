@@ -1,8 +1,8 @@
 /*
   codes.h (Register Stacks)
   Cody Fagley
-  Authored on   March 14, 2019
-  Last Modified  July 29, 2021
+  Authored on    March 14, 2019
+  Last Modified August 03, 2021
 */
 
 /*
@@ -17,10 +17,6 @@
 
 #ifndef REGSTACK_CODES_H
 #define REGSTACK_CODES_H
-
-
-
-
 
 
 /* 1.) Get Register (Flexible)
@@ -38,24 +34,16 @@ char* get_reg(ADR i, unsigned char bits)
     switch(bits)
     {
       case (8):
-        if (i < 29) sprintf(str, "b%u", i); else
-        if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                    sprintf(str, "v%u.s[0]", i-24); 
+        if (i < 30) sprintf(str, "b%u", i); 
         break;
       case (16):
-        if (i < 29) sprintf(str, "s%u", i); else
-        if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                    sprintf(str, "v%u.s[0]", i-24);
+        if (i < 30) sprintf(str, "s%u", i);
         break;
       case (32):
-        if (i < 29) sprintf(str, "w%u", i); else
-        if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                    sprintf(str, "v%u.s[0]", i-24);
+        if (i < 30) sprintf(str, "w%u", i);
         break;
       case (64):
-        if (i < 29) sprintf(str, "x%u", i); else
-        if (i < 41) sprintf(str, "v%u.s[0]", i-28); else
-                    sprintf(str, "v%u.s[0]", i-24);
+        if (i < 30) sprintf(str, "x%u", i);
         break;
     }
   /* Get string representation of ARMv7 register */
@@ -67,36 +55,36 @@ char* get_reg(ADR i, unsigned char bits)
     switch(bits)
     {
       case (8):
-        if      (i == 1) sprintf(str, "%bl");
-        else if (i == 2) sprintf(str, "\%cl");
-        else if (i == 3) sprintf(str, "\%dl");
-        else if (i == 4) sprintf(str, "\%sil");
-        else if (i == 5) sprintf(str, "\%dil");
-        else if (i > 5 && i < 11) sprintf(str, "%r%db", (i+5));
+        if      (i == 1) sprintf(str, "%%bl");
+        else if (i == 2) sprintf(str, "%%cl");
+        else if (i == 3) sprintf(str, "%%dl");
+        else if (i == 4) sprintf(str, "%%sil");
+        else if (i == 5) sprintf(str, "%%dil");
+        else if (i > 5 && i < 11) sprintf(str, "%%r%db", (i+5));
         break;
       case (16):
-        if      (i == 1) sprintf(str, "%bx");
-        else if (i == 2) sprintf(str, "\%cx");
-        else if (i == 3) sprintf(str, "\%dx");
-        else if (i == 4) sprintf(str, "\%si");
-        else if (i == 5) sprintf(str, "\%di");
-        else if (i > 5 && i < 11) sprintf(str, "%r%dw", (i+5));
+        if      (i == 1) sprintf(str, "%%bx");
+        else if (i == 2) sprintf(str, "%%cx");
+        else if (i == 3) sprintf(str, "%%dx");
+        else if (i == 4) sprintf(str, "%%si");
+        else if (i == 5) sprintf(str, "%%di");
+        else if (i > 5 && i < 11) sprintf(str, "%%r%dw", (i+5));
         break;
       case (32):
-        if      (i == 1) sprintf(str, "\%ebx");
-        else if (i == 2) sprintf(str, "\%ecx");
-        else if (i == 3) sprintf(str, "\%edx");
-        else if (i == 4) sprintf(str, "\%esi");
-        else if (i == 5) sprintf(str, "\%edi");
-        else if (i > 5 && i < 11) sprintf(str, "%r%dd", (i+5));
+        if      (i == 1) sprintf(str, "%%ebx");
+        else if (i == 2) sprintf(str, "%%ecx");
+        else if (i == 3) sprintf(str, "%%edx");
+        else if (i == 4) sprintf(str, "%%esi");
+        else if (i == 5) sprintf(str, "%%edi");
+        else if (i > 5 && i < 11) sprintf(str, "%%r%dd", (i+5));
         break;
       case (64):
-        if      (i == 1) sprintf(str, "\%rbx");
-        else if (i == 2) sprintf(str, "\%rcx");
-        else if (i == 3) sprintf(str, "\%rdx");
-        else if (i == 4) sprintf(str, "\%rsi");
-        else if (i == 5) sprintf(str, "\%rdi");
-        else if (i > 5 && i < 11) sprintf(str, "%r%d", (i+5));
+        if      (i == 1) sprintf(str, "%%rbx");
+        else if (i == 2) sprintf(str, "%%rcx");
+        else if (i == 3) sprintf(str, "%%rdx");
+        else if (i == 4) sprintf(str, "%%rsi");
+        else if (i == 5) sprintf(str, "%%rdi");
+        else if (i > 5 && i < 11) sprintf(str, "%%r%d", (i+5));
         break;
       
     }

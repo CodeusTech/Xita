@@ -538,7 +538,7 @@ exp_integer:
     LIST_LENGTH exp_list { printf("List of Length determined\n"); }
   | RNG             { /*rng();*/ }
   | SIZEOF exp_type { printf("TYPE SIZE CHECKED\n"); }
-  | lit_integer     {  pushInteger((Arbitrary) $1); }
+  | lit_integer     {  context.LastType(TYPE_INTEGER); pushInteger((Arbitrary) $1); }
 ;
 
 /*

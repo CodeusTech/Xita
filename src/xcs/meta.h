@@ -2,7 +2,7 @@
   meta.h
   Codeus Tech
   Authored on   December 21, 2019
-  Last Modified     July 22, 2021
+  Last Modified   August  4, 2021
 */
 
 /*
@@ -13,7 +13,7 @@
 #define XCS_META_H
 
 
-#define XCSL_VERSION "0.27"
+#define XCSL_VERSION "0.27.3"
 
 
 #endif

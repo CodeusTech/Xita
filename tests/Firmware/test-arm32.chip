@@ -19,7 +19,7 @@ arch="Arm32"
 
 Test:   0x00000000 + 0xFF;
 Other:  0x10000000 + 0xFF,
-        0x20000000 + 0xFF;
+        0x20000000 + 0xFF
 --Error:  0x000000CC + 0x1000; --  Throws "Overlapping Memory Regions" Error
 
 

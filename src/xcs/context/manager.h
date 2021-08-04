@@ -1,8 +1,8 @@
 /*
   manager.h (context)
   Codeus Tech
-  Authored on   April 15, 2020
-  Last Modified  July 03, 2021
+  Authored on    April 15, 2020
+  Last Modified August 03, 2021
 */
 
 /*
@@ -233,7 +233,7 @@ public:
   TypeID resolveFunctionParameter(Identifier ident);
 
   //  3.e) Argument Operations
-  ErrorCode loadArgument(TypeID tid, ADR reg) { arguments.push_back(ArgumentNode(tid, reg)); return SUCCESS; }
+  ErrorCode loadArgument(TypeID tid) { arguments.push_back(ArgumentNode(tid, rsTop())); return SUCCESS; }
   ArgumentNode resolveArgument() { ArgumentNode arg = arguments.front(); arguments.pop_front(); return arg; }
 
   //  3.f) Memory Operations

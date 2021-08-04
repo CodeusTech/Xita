@@ -27,5 +27,5 @@ GPIO:       0x3F200000 + 0xB3;    --  General Purpose Input/Output
 PCM:        0x3F203000 + 0x24;    --  Audio Interface
 EMMC:       0x3F300000 + 0xFF;    --  External Multimedia Controller (MicroSD drivers)
 DMA:        0x3F007000 + 0x1400,  --  Direct Memory Channels
-            0x3FE05000 + 0x100;   --  For parallel conversations between firmware
+            0x3FE05000 + 0x100    --  For parallel conversations between firmware
 
