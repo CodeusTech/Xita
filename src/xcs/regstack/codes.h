@@ -19,10 +19,6 @@
 #define REGSTACK_CODES_H
 
 
-
-
-
-
 /* 1.) Get Register (Flexible)
  
 */

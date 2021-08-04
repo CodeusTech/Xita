@@ -201,7 +201,7 @@ extern ContextManager context;
 
     TOTAL                           21
 */
-%expect 21
+%expect 20
 
 %%
 
@@ -344,11 +344,11 @@ primitive:
   F.2) Arithmetic Expressions
 */
 arithmetic:
-    exp OP_MUL exp
-  | exp OP_DIV exp
-  | exp OP_MOD exp
-  | exp OP_ADD exp
-  | exp OP_SUB exp
+    exp OP_ADD exp      { context.resolveOperator(OPERATOR_ADDITION); }
+  | exp OP_SUB exp      { context.resolveOperator(OPERATOR_SUBTRACT); }
+  | exp OP_MUL exp      { context.resolveOperator(OPERATOR_MULTIPLY); }
+  | exp OP_DIV exp      { context.resolveOperator(OPERATOR_DIVISION); }
+  | exp OP_MOD exp      { context.resolveOperator(OPERATOR_MODULUS); }
 ;
 
 /*
@@ -356,11 +356,11 @@ arithmetic:
 */
 bitwise:
     BIT_NOT exp
-  | exp BIT_XOR exp
-  | exp BIT_AND exp
-  | exp BIT_OR exp
-  | exp BIT_SHL exp
-  | exp BIT_SHR exp
+  | exp BIT_XOR exp     { context.resolveOperator(OPERATOR_BIT_XOR); }
+  | exp BIT_AND exp     { context.resolveOperator(OPERATOR_BIT_AND); }
+  | exp BIT_OR exp      { context.resolveOperator(OPERATOR_BIT_OR);  }
+  | exp BIT_SHL exp     { context.resolveOperator(OPERATOR_BIT_SHL); }
+  | exp BIT_SHR exp     { context.resolveOperator(OPERATOR_BIT_SHR); } 
 ;
 
 /*
@@ -369,16 +369,15 @@ bitwise:
 logical:
     exp IS IDENTIFIER
   | exp IS CONSTRUCTOR
-  | BOOL_NOT exp
-  | exp BOOL_AND exp
-  | exp BOOL_OR exp
-  | exp BOOL_XOR exp
-  | exp OP_LT exp
-  | exp OP_LTE exp
-  | exp OP_GT exp
-  | exp OP_GTE exp
-  | exp OP_EQ exp
-  | exp OP_NEQ exp
+  | exp OP_LT exp       { context.resolveOperator(OPERATOR_LT);  }
+  | exp OP_LTE exp      { context.resolveOperator(OPERATOR_LTE); }
+  | exp OP_GT exp       { context.resolveOperator(OPERATOR_GT);  }
+  | exp OP_GTE exp      { context.resolveOperator(OPERATOR_GTE); }
+  | exp OP_EQ exp       { context.resolveOperator(OPERATOR_EQ);  }
+  | exp OP_NEQ exp      { context.resolveOperator(OPERATOR_NEQ); }
+  | exp BOOL_AND exp    { context.resolveOperator(OPERATOR_AND); }
+  | exp BOOL_OR exp     { context.resolveOperator(OPERATOR_OR);  }
+  | BOOL_NOT exp        { context.resolveOperator(OPERATOR_NOT); }
   
 ;
 
@@ -405,7 +404,7 @@ if:
   ;
 
   else:
-    else_pre exp  %expect 21
+    else_pre exp  %expect 20
   ;
 
   else_pre:
