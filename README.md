@@ -28,7 +28,7 @@ This respository provides the Linux-to-Xita cross compiler.  This **Xita Control
 
 ```bash
 $  mkdir CodeusTech && cd CodeusTech
-$  git clone https://github.com/CodeusTech/XCSL-AArch64.git
+$  git clone https://github.com/CodeusTech/Xita.git
 ```
 
 ### Prerequisite Installation 
@@ -70,7 +70,7 @@ To use the Xita Cross-Compiler, we need a compliant AArch64 cross-compiler.  Usi
 **NOTE: Xita expects the cross assembler to reside in ~/.opt/cross**.
 
 ```bash
-$  cd XCSL-AArch64/
+$  cd Xita/
 $  tar xf aarch64-assembler.tar.xz -C $HOME
 ```
 
