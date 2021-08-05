@@ -1,0 +1,18 @@
+(*
+  driver.xd (Memory Test)
+  Codeus Tech
+  Authored on   August 5, 2021
+  Last Modified August 5, 2021
+*)
+
+(*
+  Tests proper use of direct memory accesses in Xita Drivers
+*)
+
+!DRIVER Test
+
+let read_mem  = Int ($ 0x00000000);;
+let read_mem2 = 0x00000000 *-> x in x;;
+
+let set_mem   = 0x00000000 <-* 32 -- Test with Integer
+

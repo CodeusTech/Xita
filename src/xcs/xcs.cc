@@ -44,6 +44,7 @@
 #include "../../lex.yy.c"
 
 extern FILE* yyin;
+extern int yylineno;
 
 ContextManager context;
 
@@ -114,6 +115,7 @@ int main(int argc, char** argv)
 		//  Assume Input File
 		else
 		{
+			yylineno = 1;
 			interpreted = false;
 			
 			yyin = fopen(argv[i], "r");

@@ -143,6 +143,7 @@ extern ContextManager context;
 //  Utilities
 %token CLEAR DELAY         
 %token DEBUG DEBUG_PRINT 
+%token MEM_ACC
 
 //  Module Operations
 %token SOURCE_M HEADER_M TETHER_M SYSTEM_M
@@ -178,6 +179,8 @@ extern ContextManager context;
 %left OP_ADD OP_SUB
 %left OP_MUL OP_DIV OP_MOD
 
+%left MEM_SET MEM_READ
+
 //  Order Keepers
 %left PAR_LEFT PAR_RIGHT
 
@@ -197,11 +200,13 @@ extern ContextManager context;
 /*
   SHIFT/REDUCE EXPECTATIONS (VALID)
   =====================================
-    * Dangling Else                 21
+    * Dangling Else (Generic)       20
+    * Dangling Else (Drivers)       20
+    * Dangling Memory Set          170
 
-    TOTAL                           21
+    TOTAL                           40
 */
-%expect 20
+%expect 210
 
 %%
 
@@ -267,25 +272,147 @@ driver_header:
 ;
 
 exps_driver:
-    decl OP_EXP exps_driver
+    decl_driver OP_EXP exps_driver
   | exp_driver OP_EXP exps_driver
   | module exps_driver
-  | decl
+  | decl_driver
   | exp_driver
 ;
 
 exp_driver:
-    PAR_LEFT exp PAR_RIGHT
-  | condition
-  | function
+    PAR_LEFT exp_driver PAR_RIGHT
+  | condition_driver
+  | function_driver
+  | arithmetic_driver
+  | bitwise_driver
+  | logical_driver
+  | memory
   | primitive
-  | arithmetic
-  | bitwise
-  | logical
-  | constructor
-  | exp OP_ELEMENT IDENTIFIER
-  | IDENTIFIER    { context.resolveExpression($1); }
+  | constructor_driver
+  | exp_driver OP_ELEMENT IDENTIFIER
+  | IDENTIFIER                  { context.resolveExpression($1); }
 ;
+
+memory:
+    MEM_ACC INT    { printf("Memory Accessed at: %d\n", (int) $2); pushInteger((Arbitrary)$2); }
+  | MEM_ACC IDENTIFIER { printf("Memory Accessed for Constant: %s\n", (char*) $2); }
+  | set_memory exps_driver
+  | memory_variable IN exps_driver
+;
+  memory_variable:
+    INT MEM_READ IDENTIFIER { printf("Memory ( %lld ) Read into Variable: %s\n", $1, $3); context.addMemoryVariable($3); pushInteger((Arbitrary)$1); }
+  ;
+  set_memory:
+    INT MEM_SET   { printf("Memory Set at: %lld\n", $1); pushInteger((Arbitrary)$1); }
+  ;
+
+/*
+  To keep parser protocols separate for driver files and source files,
+  each of the "Generic Expressions" found in section `F.)` of this file
+  must be rebuilt with `exp_driver` instead of `exp`.
+  
+  If this isn''t done, it results in numerous reduce/reduce errors that will
+  make cross-compiler behavior inconsistent (and wrong).
+*/
+  /*
+    Expressions
+  */
+  arithmetic_driver:
+      exp_driver OP_ADD exp_driver { context.resolveOperator(OPERATOR_ADDITION); }
+    | exp_driver OP_SUB exp_driver { context.resolveOperator(OPERATOR_SUBTRACT); }
+    | exp_driver OP_MUL exp_driver { context.resolveOperator(OPERATOR_MULTIPLY); }
+    | exp_driver OP_DIV exp_driver { context.resolveOperator(OPERATOR_DIVISION); }
+    | exp_driver OP_MOD exp_driver { context.resolveOperator(OPERATOR_MODULUS);  }
+  ;
+  bitwise_driver:
+      BIT_NOT exp_driver
+    | exp_driver BIT_XOR exp_driver     { context.resolveOperator(OPERATOR_BIT_XOR); }
+    | exp_driver BIT_AND exp_driver     { context.resolveOperator(OPERATOR_BIT_AND); }
+    | exp_driver BIT_OR exp_driver      { context.resolveOperator(OPERATOR_BIT_OR);  }
+    | exp_driver BIT_SHL exp_driver     { context.resolveOperator(OPERATOR_BIT_SHL); }
+    | exp_driver BIT_SHR exp_driver     { context.resolveOperator(OPERATOR_BIT_SHR); } 
+  ;
+  logical_driver:
+      exp_driver IS IDENTIFIER
+    | exp_driver IS CONSTRUCTOR
+    | exp_driver OP_LT exp_driver       { context.resolveOperator(OPERATOR_LT);  }
+    | exp_driver OP_LTE exp_driver      { context.resolveOperator(OPERATOR_LTE); }
+    | exp_driver OP_GT exp_driver       { context.resolveOperator(OPERATOR_GT);  }
+    | exp_driver OP_GTE exp_driver      { context.resolveOperator(OPERATOR_GTE); }
+    | exp_driver OP_EQ exp_driver       { context.resolveOperator(OPERATOR_EQ);  }
+    | exp_driver OP_NEQ exp_driver      { context.resolveOperator(OPERATOR_NEQ); }
+    | exp_driver BOOL_AND exp_driver    { context.resolveOperator(OPERATOR_AND); }
+    | exp_driver BOOL_OR exp_driver     { context.resolveOperator(OPERATOR_OR);  }
+    | BOOL_NOT exp_driver        { context.resolveOperator(OPERATOR_NOT); }
+  ;
+  condition_driver:
+    if_d then_d else_d
+  ;
+    if_d:
+        if_pre exp_driver
+    ;
+      then_d: 
+        then_pre exp_driver
+      ;
+      else_d:
+        else_pre exp_driver  %expect 20
+      ;
+  function_driver:
+      IDENTIFIER function_args_d  { context.resolveFunction($1); }
+  ;
+    function_args_d:
+        function_args_d primitive   { context.loadArgument(context.LastType()); }
+      | primitive                 { context.loadArgument(context.LastType()); }
+      | function_args_d IDENTIFIER  { context.loadArgument(context.LastType()); }
+      | IDENTIFIER                { context.loadArgument(context.LastType()); }
+      | function_args_d PAR_LEFT exp_driver PAR_RIGHT  { context.loadArgument(context.LastType()); }
+      | PAR_LEFT exp_driver PAR_RIGHT    { context.loadArgument(context.LastType()); }
+    ;
+  constructor_driver:
+      CONSTRUCTOR constructor_args_d
+    | CONSTRUCTOR
+  ;
+    constructor_args_d:
+        OP_REC_L record_args_d OP_REC_R
+      | primitive constructor_args_d
+      | primitive
+      | IDENTIFIER constructor_args_d
+      | IDENTIFIER
+      | PAR_LEFT exp_driver PAR_RIGHT constructor_args_d
+      | PAR_LEFT exp_driver PAR_RIGHT
+    ;
+    record_args_d:
+        exp_driver OP_COMMA record_args_d
+      | exp_driver
+    ;
+  /*
+    Declarations
+  */
+  decl_driver:
+      decl_constant
+    | decl_function_d
+    | decl_type_d
+    | decl_typeclass
+  ;
+    decl_function_d:
+        __decl_function_d IN exp_driver  { context.undeclareFunction(); }
+      | __decl_function_d 
+    ;
+      __decl_function_d:
+          decl_function_pre decl_function_param OP_ASSIGN exp_driver { context.endDeclareFunction(); }
+        | decl_function_pre OP_ASSIGN exp_driver                     { context.endDeclareFunction(); }
+      ;
+    decl_type_d:
+        TYPE IDENTIFIER OP_ASSIGN decl_type_constructor IMPL IDENTIFIER OP_TYPE decl_type_implements_d
+      | TYPE IDENTIFIER OP_ASSIGN decl_type_constructor
+    ;
+      decl_type_implements_d:
+          decl_type_implements_d OP_COMMA IDENTIFIER decl_type_implements_param OP_ASSIGN exp_driver
+        | decl_type_implements_d OP_COMMA IDENTIFIER OP_ASSIGN exp_driver
+        | IDENTIFIER decl_type_implements_param OP_ASSIGN exp_driver
+        | IDENTIFIER OP_ASSIGN exp_driver
+      ;
+
 
 /*
   ===========================
@@ -378,7 +505,6 @@ logical:
   | exp BOOL_AND exp    { context.resolveOperator(OPERATOR_AND); }
   | exp BOOL_OR exp     { context.resolveOperator(OPERATOR_OR);  }
   | BOOL_NOT exp        { context.resolveOperator(OPERATOR_NOT); }
-  
 ;
 
 /*
