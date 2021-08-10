@@ -39,7 +39,8 @@ public:
   
   ErrorCode newChip(string name);
   ErrorCode setChipArch(string arch) { return chip.setArchitecture(arch); }
-  XitaArchitecture getChipArch() { return chip.getArchitecture(); }
+  XitaArchitecture getChipArch() { return chip.Architecture(); }
+  int getArchRegisterWidth() { return chip.RegisterWidth(); }
 
   //  Administrate Active FirmwareInterface Metadata
   ErrorCode addInterface(string name);

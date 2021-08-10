@@ -94,7 +94,7 @@ ErrorCode pushInteger(Arbitrary value)
   }
 
   //  Always push into 64-Bit Register (in case of type casting)
-  char* reg = get_reg(context.rsPush(tid), bytes*8);
+  char* reg = get_reg(context.rsPush(tid), context.getArchRegisterWidth());
 
   char* str = (char*) malloc(50);
   sprintf(str, "  mov   %s, #%lld", reg, (long long) value);

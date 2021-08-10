@@ -18,7 +18,6 @@
 //  XCS Libraries
 #include <xcs/std/includes.h>
 #include <xcs/std/typedefs.h>
-#include <xcs/std/optimize.h>
 #include <xcs/sys/utils/mangle.h>
 
 using namespace std;

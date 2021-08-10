@@ -151,6 +151,7 @@ import     BEGIN(IMPORT);
 
 "*->"   { return MEM_READ; }  //  READ FROM MEMORY
 "<-*"   { return MEM_SET; }   //  SET MEMORY
+"$"  { return MEM_ACC;  }
 
 "<-"    { return ARROW_L; }   //  LEFT FACING ARROW
 "->"    { return ARROW_R; }   //  RIGHT FACING ARROW
@@ -347,6 +348,8 @@ import     BEGIN(IMPORT);
   FILE* fmod = fopen(yytext, "r");
 
   if (!fmod) yyerror("Invalid Input File");
+  line_numbers.push_back(yylineno);
+  yylineno = 0;
   yypush_buffer_state(yy_create_buffer( fmod, YY_BUF_SIZE ));
 
 }
@@ -367,6 +370,8 @@ import     BEGIN(IMPORT);
   FILE* fmod = fopen(yytext, "r");
 
   if (!fmod) yyerror("Invalid Input File");
+  line_numbers.push_back(yylineno);
+  yylineno = 0;
   yypush_buffer_state(yy_create_buffer( fmod, YY_BUF_SIZE ));
 }
 <RUN>[\n]      BEGIN(INITIAL);
@@ -386,6 +391,8 @@ import     BEGIN(IMPORT);
   FILE* fmod = fopen(yytext, "r");
 
   if (!fmod) yyerror("Invalid Input File");
+  line_numbers.push_back(yylineno);
+  yylineno = 0;
   yypush_buffer_state(yy_create_buffer( fmod, YY_BUF_SIZE ));
 }
 <IMPORT>[\n]      BEGIN(INITIAL);
@@ -396,6 +403,8 @@ import     BEGIN(IMPORT);
     if ( !YY_CURRENT_BUFFER )
       {
         yyterminate();
+        yylineno = line_numbers.back();
+        line_numbers.pop_back();
       } 
   }
 

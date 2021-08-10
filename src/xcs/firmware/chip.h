@@ -36,17 +36,19 @@ protected:
   string name;
   vector<FirmwareInterface> interfaces;
   XitaArchitecture arch;
+  int register_width;
 
 public:
   XitaChip() {}
-  XitaChip(string name) : name(name) 
+  XitaChip(string name) : name(name)
   {
     l.log('d', "Chip", "Defined new Chip Device: " + name);
   }
 
-  //  Architecture
-  XitaArchitecture getArchitecture() { return arch; }
+  //  Properties
+  XitaArchitecture Architecture() { return arch; }
   ErrorCode setArchitecture(string target);
+  int RegisterWidth() { return register_width; }
 
   ErrorCode newInterface(string name);
   FirmwareInterface* getInterface(string name);

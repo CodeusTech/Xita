@@ -9,7 +9,7 @@
   Contains extended definitions for FirmwareManager procedures
 */
 
-
+#include <string>
 #include "manager.h"
 #include "../context/manager.h"
 
@@ -104,9 +104,25 @@ ErrorCode FirmwareManager::requestMemoryRead(Address addr)
   }
 
   /*
-    TODO:  
-      At this point, we need to actually write out assembly instructions
+    At this point, we need to actually write out assembly instructions
   */
+  _context->rsPush(TYPE_INTEGER);
+  
+  char* addr_reg = (get_reg(_context->rsTop(), chip.RegisterWidth()));
+  string addr_reg_str (addr_reg);
+  string str = "  mov   " + addr_reg_str + ", #" + to_string(addr);
+  _context->addInstruction(str.c_str());
+
+  _context->rsPop();
+  _context->rsPush(TYPE_ARBITRARY); //  TODO:  THIS NEEDS TO CHANGE!! Type should be determined by usage context
+
+  char* data_reg = (get_reg(_context->rsTop(), chip.RegisterWidth()));
+  string data_reg_str (data_reg);
+  str = "  ldr   " + data_reg_str + ", [" + addr_reg_str + "]" ;
+  _context->addInstruction(str.c_str());
+
+  free(addr_reg);
+  free(data_reg);
 
   return SUCCESS;
 }
