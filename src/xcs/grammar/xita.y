@@ -3,7 +3,7 @@
   xita.y
   Codeus Tech
   Authored on     July 30, 2021
-  Last Modified August  3, 2021
+  Last Modified  August 6, 2021
 */
 
 /*
@@ -228,7 +228,7 @@ xita:
   ===========================
 */
 xita_chip:
-    chip_header chip_arch chip_interface  { printf("Finished Parsing Chip File\n"); }
+    chip_header chip_arch chip_interface  
 ;
 
 chip_header:
@@ -290,7 +290,7 @@ exp_driver:
   | primitive
   | constructor_driver
   | exp_driver OP_ELEMENT IDENTIFIER
-  | IDENTIFIER                  { context.resolveExpression($1); }
+  | IDENTIFIER                        { context.resolveExpression($1); }
 ;
 
 memory:

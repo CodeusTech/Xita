@@ -1,23 +1,29 @@
 #  Makefile
 #  Cody Fagley
 #  Authored on 	 January 25, 2019
-#  Last Modified    July 03, 2021
+#  Last Modified  August  9, 2021
 
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
 CCOMP=g++
-CFLAGS=-lm -Wall -I/home/${USER}/CodeusTech/Xita-AArch64/src
+CFLAGS=-lm -Wall -I${PWD}/src
 MEMTEST=-g -O0
 SILENT=-Wno-unused-variable -Wno-unused-but-set-variable -Wno-switch -Wno-conversion-null -Wno-write-strings
 
+DESTDIR=/usr/local/bin
+CTXOPT=${HOME}/.ctxopt
+CROSS=${CTXOPT}/cross
+
 #  Build and Install Cross Compiler
-install: build tidy
-	sudo cp _build/xcs-aarch64 /usr/bin/xcs-aarch64
+update: build tidy
+	sudo cp _build/xcs-aarch64 ${DESTDIR}/xita
 	sudo rm -rf _build
 
+install: assemblers update
+
 uninstall: 
-	sudo rm -rf /usr/bin/xcs-aarch64
-	rm -rf ${HOME}/.opt/cross
+	sudo rm -rf ${DESTDIR}/xita
+	rm -rf ${CROSS}
 
 #  Build XCSL Cross Compiler
 build:  grammar src/xcs/xcs.cc
@@ -36,7 +42,6 @@ grammar: src/xcs/grammar/xita.y src/xcs/grammar/xcsl.l
 	bison src/xcs/grammar/xita.y
 	flex src/xcs/grammar/xcsl.l
 
-
 grammar-test:  src/xcs/grammar/xita.y src/xcs/grammar/xcsl.l 
 	bison -Wcounterexamples src/xcs/grammar/xita.y
 	flex src/xcs/grammar/xcsl.l
@@ -45,6 +50,17 @@ grammar-test:  src/xcs/grammar/xita.y src/xcs/grammar/xcsl.l
 tidy:
 	rm lex.yy.c xita.tab.c
 
+# Grabs freestanding (OS-independent) assemblers in this order
+#		* ARMv7 (32-bit)
+#		* ARMv8 (64-bit) 
+assemblers:
+	rm -rf /home/${USER}/.ctxopt/asm
+	mkdir -p /home/${USER}/.ctxopt
+	mkdir -p /home/${USER}/.ctxopt/asm
+	cp asm/ARMv7.tar.gz asm/ARMv8.tar.gz ${HOME}/.ctxopt/asm
+	tar -xf ${HOME}/.ctxopt/asm/ARMv8.tar.gz -C ${HOME}/.ctxopt/asm/
+	tar -xf ${HOME}/.ctxopt/asm/ARMv7.tar.gz -C ${HOME}/.ctxopt/asm/
+	rm ${HOME}/.ctxopt/asm/*.tar*
 
 #  PHONY TARGETS
 .PHONY: install uninstall build

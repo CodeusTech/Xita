@@ -21,12 +21,24 @@ ErrorCode XitaChip::setArchitecture(string target)
   {
     target_architecture = XitaArchitecture::Arm32;
     arch = XitaArchitecture::Arm32;
+    register_width = 32;
+    NUMBER_OF_ADRS = 11;
     l.log('d', "Chip", "Set System for 32-Bit Arm Architecture");
   }
   else if (strcmp("Arm64", target.c_str()) == 0)
   {
     target_architecture = XitaArchitecture::Arm64;
     arch = XitaArchitecture::Arm64;
+    register_width = 64;
+    NUMBER_OF_ADRS = 27;
+    l.log('d', "Chip", "Set System for 64-Bit Arm Architecture");
+  }
+  else if (strcmp("x86_64", target.c_str()) == 0)
+  {
+    target_architecture = XitaArchitecture::x86_64;
+    arch = XitaArchitecture::x86_64;
+    register_width = 64;
+    NUMBER_OF_ADRS = 10;
     l.log('d', "Chip", "Set System for 64-Bit Arm Architecture");
   }
   else

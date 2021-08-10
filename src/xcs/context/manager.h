@@ -145,6 +145,9 @@ public:
   ErrorCode setChipArch(string arch) { return firmware.setChipArch(arch); }
   ErrorCode addFirmwareInterface(string name) { return firmware.addInterface(name); }
   ErrorCode addFirmwareRange(int begin, int end) { return firmware.addInterfaceRange(begin, end); }
+  ErrorCode requestMemoryRead(int addr) { return firmware.requestMemoryRead(addr); }
+  ErrorCode requestMemoryWrite(int addr) { return firmware.requestMemoryWrite(addr); }
+  ErrorCode getArchRegisterWidth() { return firmware.getArchRegisterWidth(); }
 
 
   /*
@@ -158,6 +161,7 @@ public:
   //  2.b) Assembly Operations
   ErrorCode generateAssembly(FILE* file) { return assembly.generateAssembly(file); }
   ErrorCode addInstruction(char* instruction) { return assembly.addInstruction(instruction); }
+  ErrorCode addInstruction(const char* instr) { return assembly.addInstruction(instr); }
   ErrorCode addConstant(char* constant) { return assembly.addConstant(constant); }
   ErrorCode addString(char* str) { return assembly.addString(str); }
   ErrorCode popLastInstruction() { return assembly.popLastInstruction(); }

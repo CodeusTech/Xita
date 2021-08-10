@@ -23,6 +23,8 @@ enum XitaArchitecture
   x86_64
 };
 
+unsigned long NUMBER_OF_ADRS;
+
 XitaArchitecture target_architecture = XitaArchitecture::Arm64;
 
 

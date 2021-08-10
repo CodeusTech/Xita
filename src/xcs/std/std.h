@@ -17,6 +17,4 @@
 #include "buffers.h"
 #include "logger.h"
 
-#include "optimize.h"
-
 #endif

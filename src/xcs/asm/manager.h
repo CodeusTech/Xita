@@ -1,8 +1,8 @@
 /*
   manager.h (Assembly)
   Codeus Tech
-  Authored on   April 22, 2020
-  Last Modified   May 26, 2020
+  Authored on    April 22, 2020
+  Last Modified  August 6, 2021
 */
 
 /*
@@ -91,17 +91,38 @@ protected:
     fprintf(filename, ".section .text:\n\n");
 
     fprintf(filename, ".global __start\n__start:\n");
+    if (target_architecture == XitaArchitecture::Arm32)
+    {
+      fprintf(filename, "  push  {r12, lr}\n");
+      scope_curr = 0;
+      string str = "pop   {r12, lr}";
+      addInstruction(str.c_str());
+    }
 
-    string str = "wfe  //  Wait for Event";
-    scope_curr = 0;
-    addInstruction(str.c_str());
+    if (target_architecture == XitaArchitecture::Arm32 || target_architecture == XitaArchitecture::Arm64)
+    {
+      string str = "wfe  //  Wait for Event";
+      addInstruction(str.c_str());
+    }
 
     for (vector<list<string> >::iterator scope = asm_text.begin(); scope < asm_text.end(); ++scope)
     {
       /* Print TEXT Buffer Contents to File */
       for (list<string>::iterator it = (*scope).begin(); it != (*scope).end(); it++)
         fprintf(filename, "  %s\n", (*it).c_str());
-      if (scope != asm_text.begin()) fprintf(filename, "    ret\n");
+
+      if (scope != asm_text.begin()) 
+        switch (target_architecture)
+        {
+          case XitaArchitecture::Arm32:
+            fprintf(filename, "    pop   {r12, lr}\n");
+            fprintf(filename, "    bx    lr\n");
+            break;
+          case XitaArchitecture::Arm64:
+          case XitaArchitecture::x86_64:
+            fprintf(filename, "    ret\n");
+            break;
+        }
     }
 
     fprintf(filename, "\n\n");
@@ -168,7 +189,21 @@ public:
     instruction_scope = next_scope++;
 
     string str = "__" + to_string(fid) + "_" + string(ident) + ":";
-    addInstruction(str.c_str());
+    switch (target_architecture)
+    {
+      case XitaArchitecture::Arm32:
+        addInstruction(str.c_str());
+        str = "  push  {r12, lr}";
+        addInstruction(str.c_str());
+        break;
+      case XitaArchitecture::Arm64:
+      case XitaArchitecture::x86_64:
+        addInstruction(str.c_str());
+        break;
+      default:
+        break;
+    }
+
     return SUCCESS;
   }
   ErrorCode endFunction()

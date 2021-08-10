@@ -148,10 +148,26 @@ int main(int argc, char** argv)
 			l.printLogs();
  			l.write();
 			
-			//  Generate Object File using Cross Assembler
 			char* _argc    = getenv("HOME");
-			strcat(_argc, "/.opt/cross/bin/aarch64-elf-as");
 			char _argv2[2][3]= {"-c", "-o"};
+
+			//  Generate Object File using Cross Assembler
+			switch (target_architecture)
+			{
+				case XitaArchitecture::Arm32:
+					strcat(_argc, "/.ctxopt/asm/ARMv7/bin/arm-none-eabi-as");
+
+					break;
+				case XitaArchitecture::Arm64:
+					strcat(_argc, "/.ctxopt/asm/ARMv8/bin/aarch64-elf-as");
+
+					break;
+				case XitaArchitecture::x86_64:
+
+					break;
+				default:
+					break;
+			}
 
 			char* _argv[6] = {_argc, _argv2[0], asm_fname, _argv2[1], obj_fname, NULL};
 

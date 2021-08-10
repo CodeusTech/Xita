@@ -1,8 +1,8 @@
 /*
   structs.h (_modules)
   Codeus Tech
-  Authored on   April 15, 2020
-  Last Modified  July 02, 2021
+  Authored on    April 15, 2020
+  Last Modified August  6, 2021
 */
 
 /*
