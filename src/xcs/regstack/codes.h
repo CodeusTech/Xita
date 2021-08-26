@@ -18,6 +18,9 @@
 #ifndef REGSTACK_CODES_H
 #define REGSTACK_CODES_H
 
+#include <cstdlib>
+
+#include <xcs/std/typedefs.h>
 
 /* 1.) Get Register (Flexible)
  
