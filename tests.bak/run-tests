@@ -22,11 +22,7 @@ printf "Running XCSL Unit Tests...\n"
 
 KEEP_ASSEMBLY=false
 
-#  Expect First Argument to provide target architecture
-ARCH=$1
-CHIP="--chip ./tests/runtime/Firmware/test-${ARCH}.chip"
-
-if [ $2 == "-a" ]
+if [ $1 == "-a" ]
 then
   KEEP_ASSEMBLY=true
 fi
@@ -36,9 +32,9 @@ printf "\nTesting XCSL Primitives\n"
   #  Integers
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP}  -a ./tests/runtime/Primitives/integer.xs
+  xcs-aarch64 -a ./tests/Primitives/integer.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Primitives/integer.xs
+  xcs-aarch64 ./tests/Primitives/integer.xs
 fi
 if [ $? == 0 ]
 then
@@ -49,9 +45,9 @@ fi
   #  Boolean
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Primitives/boolean.xs
+  xcs-aarch64 -a ./tests/Primitives/boolean.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Primitives/boolean.xs
+  xcs-aarch64 ./tests/Primitives/boolean.xs
 fi
 if [ $? == 0 ]
 then
@@ -66,9 +62,9 @@ printf "\nTesting Conditional Expressions\n"
   #  if ... then ... else ...
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Conditions/if.xs
+  xcs-aarch64 -a ./tests/Conditions/if.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Conditions/if.xs
+  xcs-aarch64 ./tests/Conditions/if.xs
 fi
 if [ $? == 0 ]
 then 
@@ -79,9 +75,9 @@ fi
   #  ... is ...
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Conditions/is.xs
+  xcs-aarch64 -a ./tests/Conditions/is.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Conditions/is.xs
+  xcs-aarch64 ./tests/Conditions/is.xs
 fi
 if [ $? == 0 ]
 then
@@ -96,9 +92,9 @@ printf "\nTesting Datatypes\n"
   # Basic Type Declarations
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Types/basic.xs
+  xcs-aarch64 -a ./tests/Types/basic.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Types/basic.xs
+  xcs-aarch64 ./tests/Types/basic.xs
 fi
 if [ $? == 0 ]
 then
@@ -109,9 +105,9 @@ fi
   # Complex Datatypes (No Default Values)
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Types/complex_nodefault.xs
+  xcs-aarch64 -a ./tests/Types/complex_nodefault.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Types/complex_nodefault.xs
+  xcs-aarch64 ./tests/Types/complex_nodefault.xs
 fi
 if [ $? == 0 ]
 then
@@ -120,7 +116,7 @@ else
   printf "  Complex Datatypes (No Defaults): FAILURE\n"
 fi
   # Complex Datatypes (With Default Values)                       NOTE:  INACTIVE!!
-#xcs-aarch64 ${CHIP} ./tests/runtime/Types/complex_wdefault.xs
+#xcs-aarch64 ./tests/Types/complex_wdefault.xs
 #if [ $? == 0 ]
 #then
 #  printf "  Complex Datatypes (With Defaults): SUCCESS\n"
@@ -130,9 +126,9 @@ fi
   # Constant Datatypes
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Types/constants.xs
+  xcs-aarch64 -a ./tests/Types/constants.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Types/constants.xs
+  xcs-aarch64 ./tests/Types/constants.xs
 fi
 if [ $? == 0 ]
 then
@@ -143,9 +139,9 @@ fi
   # Typeclasses
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Types/typeclass.xs
+  xcs-aarch64 -a ./tests/Types/typeclass.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Types/typeclass.xs
+  xcs-aarch64 ./tests/Types/typeclass.xs
 fi
 if [ $? == 0 ]
 then
@@ -160,9 +156,9 @@ printf "\nTesting Functional Expressions\n"
   #  Constant Expressions
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Functions/constants.xs
+  xcs-aarch64 -a ./tests/Functions/constants.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Functions/constants.xs
+  xcs-aarch64 ./tests/Functions/constants.xs
 fi
 if [ $? == 0 ]
 then 
@@ -173,9 +169,9 @@ fi
   #  Functional Expressions
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Functions/functions.xs
+  xcs-aarch64 -a ./tests/Functions/functions.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Functions/functions.xs
+  xcs-aarch64 ./tests/Functions/functions.xs
 fi
 if [ $? == 0 ]
 then 
@@ -186,9 +182,9 @@ fi
   #  Nested/Complex Functions
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Functions/nested.xs
+  xcs-aarch64 -a ./tests/Functions/nested.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Functions/nested.xs
+  xcs-aarch64 ./tests/Functions/nested.xs
 fi
 if [ $? == 0 ]
 then 
@@ -204,9 +200,9 @@ fi
 #printf "\nTesting Direct Memory Access\n"
 #if [ $KEEP_ASSEMBLY == true ]
 #then
-#  xcs-aarch64 ${CHIP} -a ./tests/runtime/Memory/memory.xs
+#  xcs-aarch64 -a ./tests/Memory/memory.xs
 #else
-#  xcs-aarch64 ${CHIP} ./tests/runtime/Memory/memory.xs
+#  xcs-aarch64 ./tests/Memory/memory.xs
 #fi
 #if [ $? == 0 ]
 #then 
@@ -221,9 +217,9 @@ fi
 printf "\nTesting External Module Imports\n"
 if [ $KEEP_ASSEMBLY == true ]
 then
-  xcs-aarch64 ${CHIP} -a ./tests/runtime/Modules/driver.xs
+  xcs-aarch64 -a ./tests/Modules/driver.xs
 else
-  xcs-aarch64 ${CHIP} ./tests/runtime/Modules/driver.xs
+  xcs-aarch64 ./tests/Modules/driver.xs
 fi
 if [ $? == 0 ]
 then 

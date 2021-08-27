@@ -23,7 +23,11 @@ enum XitaArchitecture
   x86_64
 };
 
-unsigned long NUMBER_OF_ADRS;
+#define NUM_SUPPORTED_ARCH          3
+
+#define NUM_DATA_REGISTERS_Arm64   27
+#define NUM_DATA_REGISTERS_Arm32   11
+#define NUM_DATA_REGISTERS_x86_64  10
 
 XitaArchitecture target_architecture = XitaArchitecture::Arm64;
 

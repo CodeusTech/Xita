@@ -60,7 +60,7 @@ typedef unsigned long Address;
   Register Stacks
 */
 
-typedef unsigned int ADR;
+typedef int ADR;
 typedef unsigned int Scope;
 
 

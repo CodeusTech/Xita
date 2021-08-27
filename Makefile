@@ -62,6 +62,13 @@ assemblers:
 	tar -xf ${HOME}/.ctxopt/asm/ARMv7.tar.gz -C ${HOME}/.ctxopt/asm/
 	rm ${HOME}/.ctxopt/asm/*.tar*
 
+unit-tests:
+	rm -rf _build
+	mkdir _build
+	${CCOMP} ${CFLAGS} ${SILENT} tests/XitaTests.cc -o _build/test-xita
+	./_build/test-xita
+
+
 #  PHONY TARGETS
 .PHONY: install uninstall build
 

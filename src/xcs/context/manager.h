@@ -148,6 +148,7 @@ public:
   ErrorCode requestMemoryRead(int addr) { return firmware.requestMemoryRead(addr); }
   ErrorCode requestMemoryWrite(int addr) { return firmware.requestMemoryWrite(addr); }
   ErrorCode getArchRegisterWidth() { return firmware.getArchRegisterWidth(); }
+  XitaArchitecture getChipArch() { return firmware.getChipArch(); }
 
 
   /*

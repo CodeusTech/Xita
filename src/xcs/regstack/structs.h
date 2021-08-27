@@ -2,7 +2,7 @@
   structs.h
   Codeus Tech
   Authored on   October 30, 2019
-  Last Modified October 30, 2019
+  Last Modified  August 26, 2021
 */
 
 /*
@@ -43,14 +43,30 @@ class RegisterStack
 {
   vector<ADR> registers;
   vector<TypeID> types;
+  XitaArchitecture arch = XitaArchitecture::Undefined;
 	
+
+  unsigned int MaxRegisters()
+  {
+    switch (arch)
+    {
+      case XitaArchitecture::Arm64:
+        return NUM_DATA_REGISTERS_Arm64;
+      case XitaArchitecture::Arm32:
+        return NUM_DATA_REGISTERS_Arm32;
+      case XitaArchitecture::x86_64:
+        return NUM_DATA_REGISTERS_x86_64;
+    }
+    return 0;
+  }
 
 public:
 
 //  CONSTRUCTORS
-  RegisterStack() 
+  RegisterStack(XitaArchitecture arch)
+    : arch(arch)
   {
-    l.log('d', "RegStack", "Initialized New Register Stack");
+    l.log('d', "RegStack", "Initialized New Register Stack with defined architecture");
   }
 
 
@@ -59,15 +75,17 @@ public:
 */
   ADR push(TypeID tid)
   {
+    if (arch == XitaArchitecture::Undefined) return ERR_REGSTACK_UNDEF_ARCH;
+
     //  If all registers are in use, reroute to extended stack space
-    if (registers.size() >= NUMBER_OF_ADRS) { return NUMBER_OF_ADRS + 1; } 
+    if (registers.size() >= MaxRegisters()) { return MaxRegisters() + 1; } 
     //  TODO: FIX THE ABOVE LINE!!!
 
     //  Acquire a mangled random number in ADR range
-    ADR check = (ADR) (get_mangle() % NUMBER_OF_ADRS) + 1;
+    ADR check = (ADR) (get_mangle() % MaxRegisters()) + 1;
 
     //  If the test register is not in use, add it to active ADRs vector
-    while (isActive(check)) check = (ADR) (get_mangle() % NUMBER_OF_ADRS) + 1;
+    while (isActive(check)) check = (ADR) (get_mangle() % MaxRegisters()) + 1;
 
     //  If all else is kosher, Add the entry and type
     registers.push_back(check);
@@ -107,6 +125,8 @@ public:
 
   ErrorCode pop()
   {
+    if (arch == XitaArchitecture::Undefined) return ERR_REGSTACK_UNDEF_ARCH;
+    if (!registers.size()) return ERR_REGSTACK_POP_EMPTY;
     registers.pop_back();
     types.pop_back();
     return SUCCESS;
