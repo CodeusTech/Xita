@@ -66,6 +66,7 @@ unit-tests:
 	rm -rf _build
 	mkdir _build
 	${CCOMP} ${CFLAGS} ${SILENT} tests/XitaTests.cc -o _build/test-xita
+	./_build/test-xita
 
 
 #  PHONY TARGETS

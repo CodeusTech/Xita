@@ -10,8 +10,8 @@
 */
 
 
-#include "regstack.h"
-
+#include "topics/regstack.h"
+#include "topics/modules.h"
 
 
 int main()
@@ -19,10 +19,15 @@ int main()
   //  Prepare Test Environment
   printf("Preparing Test Environment...\n");
   XitaTest_RegisterStacks RegisterStacks;
+  XitaTest_ModuleHandling Modules;
 
   //  Check for errors in Register Stack Descriptions
   printf("Testing Register Stacks with Arbitrary Data...\n");
   RegisterStacks.DescribeAndTest();
 
+
+  Modules.DescribeAndTest();
+
+  return SUCCESS;
 }
 

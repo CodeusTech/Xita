@@ -2,7 +2,7 @@
   structs.h
   Codeus Tech
   Authored on   October 30, 2019
-  Last Modified October 30, 2019
+  Last Modified  August 26, 2021
 */
 
 /*
@@ -126,6 +126,7 @@ public:
   ErrorCode pop()
   {
     if (arch == XitaArchitecture::Undefined) return ERR_REGSTACK_UNDEF_ARCH;
+    if (!registers.size()) return ERR_REGSTACK_POP_EMPTY;
     registers.pop_back();
     types.pop_back();
     return SUCCESS;

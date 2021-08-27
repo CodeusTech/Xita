@@ -23,7 +23,6 @@ TypeManager::TypeManager(ContextManager* context)
 /*
   Declarations
 */
-
 ErrorCode TypeManager::declareType(TypeID tid, Identifier ident)
 {
   
