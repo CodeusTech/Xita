@@ -21,6 +21,7 @@
 //  XCS Standard Includes
 #include "typedefs.h"
 #include "typecodes.h"
+#include "constants.h"
 #include "error.h"
 #include "logger.h"
 #include "buffers.h"

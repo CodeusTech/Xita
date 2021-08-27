@@ -130,6 +130,15 @@ TypeID ModuleNode::_resolveType(Identifier ident)
   return 0;
 }
 
+ErrorCode ModuleNode::typeCheck(TypeID tid)
+{
+  //  TODO: This needs to be redone to be more efficient.
+  for (Index i = 0; i < _types.size(); ++i)
+    if (tid == _types[i].Id())
+      return SUCCESS;
+  return ERR_TYPE_UNDEFINED;
+}
+
 Identifier ModuleNode::_resolveTypeIdentifier(TypeID tid)
 {
   for (unsigned long i = 0; i < _types.size(); ++i)
@@ -241,7 +250,13 @@ TypeID ModuleNode::_resolveTypeclass(Identifier ident)
 //  3.c) Constants
   //  Declare Constant
 ErrorCode ModuleNode::declareConstant(ConstantID cid, Identifier ident, TypeID type, Arbitrary value)
-{ constants.push_back( ConstantNode(cid, _mid, ident, type, value) ); return SUCCESS; }
+{ 
+  ErrorCode status = typeCheck(type);
+  if (status) return status;
+
+  constants.push_back( ConstantNode(cid, _mid, ident, type, value) ); 
+  return SUCCESS; 
+}
 
   //  Resolve Constant
 ConstantNode* ModuleNode::resolveConstant(Identifier ident)

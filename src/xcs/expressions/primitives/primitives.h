@@ -20,15 +20,15 @@
 #include "event.h"
 
 
-ErrorCode initializePrimitives()
+ErrorCode initializePrimitives(ContextManager context)
 {
-  if (initializeSpecialPrimitives()) return 1;
-  if (initializeIntegerPrimitives()) return 2;
-  if (initializeRealPrimitives())    return 3;
-  if (initializeBooleanPrimitives()) return 4;
-  if (initializeASCIIPrimitives())   return 5;
-  if (initializeListPrimitives())    return 6;
-  if (initializeEventPrimitives())   return 7;
+  if (initializeSpecialPrimitives(context)) return 1;
+  if (initializeIntegerPrimitives(context)) return 2;
+  if (initializeRealPrimitives(context))    return 3;
+  if (initializeBooleanPrimitives(context)) return 4;
+  if (initializeASCIIPrimitives(context))   return 5;
+  if (initializeListPrimitives(context))    return 6;
+  if (initializeEventPrimitives(context))   return 7;
 
   l.log('d', "Primitives", "Primitive data types have been initialized");
 

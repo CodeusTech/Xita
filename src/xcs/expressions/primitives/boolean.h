@@ -21,14 +21,12 @@
 #include <xcs/std/includes.h>
 #include <xcs/context/manager.h>
 
-extern ContextManager context;
-
 
 /*
   1.) Initialize Boolean Primitives
 */
 
-ErrorCode initializeBooleanPrimitives()
+ErrorCode initializeBooleanPrimitives(ContextManager context)
 {
   char* name = (char*) malloc(50);
 

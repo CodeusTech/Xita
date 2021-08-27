@@ -20,14 +20,11 @@
 #include <xcs/std/includes.h>
 #include <xcs/context/manager.h>
 
-extern ContextManager context;
-
-
 /*
   1.) Initialize ASCII Primitives
 */
 
-ErrorCode initializeListPrimitives()
+ErrorCode initializeListPrimitives(ContextManager context)
 {
   char* name = (char*) malloc(50);
 

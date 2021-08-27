@@ -139,6 +139,7 @@ public:
     unsigned long* _resolveTypeConstructor(Identifier ident);
     Identifier _resolveConstructorIdentifier(ConstructorID cid);
     TypeID _resolveTypeElement(Identifier ident, ConstructorID cid, TypeID tid);
+    ErrorCode typeCheck(TypeID tid);
 
     ErrorCode _castType(TypeID tid);
     ErrorCode _castTypeConstructor(ConstructorID cid);

@@ -18,6 +18,8 @@
 //  Module Imports
 #define MAX_INCLUDE_SIZE 25
 
+//  Identifiers
+#define MAX_IDENTIFIER_SIZE 255
 
 
 #endif

@@ -105,8 +105,6 @@ int main(int argc, char** argv)
 			yyin = fopen(argv[i], "r");
 			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
 
-			initializePrimitives();
-
 			//  Set Parser File Pointer
 			//yypush_buffer_state(YY_CURRENT_BUFFER);
 			while(!feof(yyin)) yyparse();
@@ -120,8 +118,6 @@ int main(int argc, char** argv)
 			
 			yyin = fopen(argv[i], "r");
 			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
-
-			initializePrimitives();
 
 			//  Set Parser File Pointer
 			//yypush_buffer_state(YY_CURRENT_BUFFER);

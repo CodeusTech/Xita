@@ -26,6 +26,7 @@
 */
 
 #include "manager.h"
+#include "../expressions/primitives/primitives.h"
 
 /*
   Constructors
@@ -35,6 +36,8 @@ ContextManager::ContextManager()
   //  Add Root Module/Scope
   modules.push_back(ModuleNode(0, ModuleType::XCSL_SOURCE, 0, this));
   _context = &modules[0];
+
+  initializePrimitives(*this);
 
   //  Set Type
   LastType(TYPE_ARBITRARY);
@@ -247,8 +250,8 @@ ContextManager::ContextManager()
       if ((tid = modules[_context->imported[i]]._resolveType(ident)))
         return LastType(tid);
 
-      std::string str = "Failed to Resolve Type: " + string(ident);
-      l.log('E', "ExpType", str);
+    std::string str = "Failed to Resolve Type: " + string(ident);
+    l.log('E', "ExpType", str);
 
     return NULL;
   }
@@ -381,6 +384,12 @@ ContextManager::ContextManager()
 
     switch (last.tid)
     {
+      case TYPE_NULL:
+      case TYPE_ARBITRARY:
+      case TYPE_LIST:         //  TODO:  Lists should EVENTUALLY be able to be constant
+        free (str);
+        l.log('W', "DeclConst", string("Type not supported for Constant Declarations"));
+        return ERR_TYPE_UNSUPPORTED;
       case TYPE_INTEGER:
       case TYPE_U32:
       case TYPE_I32:
@@ -398,8 +407,14 @@ ContextManager::ContextManager()
         addConstant(str);
         break;
       default:
-        printf("Type Not Supported for Constant Declarations\n");
-        l.log('W', "DeclConst", string("Type not supported for Constant Declarations"));
+        int chk = _context->typeCheck(last.tid);
+        if (chk)
+        {
+          free (str);
+          l.log('W', "DeclConst", string("Type not defined"));
+          return ERR_TYPE_UNDEFINED;
+        }
+        
     }
 
     free (str);

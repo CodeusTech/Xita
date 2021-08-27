@@ -14,6 +14,11 @@
 #include "topics/modules.h"
 
 
+/*
+  Defined as such to prevent expected crashes from testing.
+*/
+void yyerror(const char* error) {  }
+
 int main()
 {
   //  Prepare Test Environment
@@ -25,7 +30,7 @@ int main()
   printf("Testing Register Stacks with Arbitrary Data...\n");
   RegisterStacks.DescribeAndTest();
 
-
+  printf("Testing Module Node Internals...\n");
   Modules.DescribeAndTest();
 
   return SUCCESS;

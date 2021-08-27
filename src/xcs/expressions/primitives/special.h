@@ -15,22 +15,20 @@
 #include <xcs/std/includes.h>
 #include <xcs/context/manager.h>
 
-extern ContextManager context;
-
 
 /*
   Initialize Special Primitives
 */
 
-ErrorCode initializeSpecialPrimitives()
+ErrorCode initializeSpecialPrimitives(ContextManager context)
 {
   char* name = (char*) malloc(50);
 
   sprintf(name, "null"); context.declareType(name);
   sprintf(name, "NULL"); context.declareTypeConstructor(name);
 
-  sprintf(name, "a'"); context.declareType(name, 4);
-  sprintf(name, "A'"); context.declareTypeConstructor(name);
+  sprintf(name, "Arbitrary"); context.declareType(name, 4);
+  sprintf(name, "Arbitrary"); context.declareTypeConstructor(name);
 
   free(name);
   return SUCCESS;

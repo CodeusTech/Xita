@@ -20,14 +20,12 @@
 #include <xcs/std/includes.h>
 #include <xcs/context/manager.h>
 
-extern ContextManager context;
-
 
 /*
   Initialize Integer Primitives
 */
 
-ErrorCode initializeIntegerPrimitives()
+ErrorCode initializeIntegerPrimitives(ContextManager context)
 {
   char* name = (char*) malloc(50);
 
@@ -68,7 +66,7 @@ ErrorCode initializeIntegerPrimitives()
     0, if Successful
 
 */
-ErrorCode pushInteger(Arbitrary value)
+ErrorCode pushInteger(Arbitrary value, ContextManager context)
 {
   TypeID tid = context.LastType();
   int bytes = 4;

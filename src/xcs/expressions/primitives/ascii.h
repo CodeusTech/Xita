@@ -20,8 +20,6 @@
 #include <xcs/std/includes.h>
 #include <xcs/context/manager.h>
 
-extern ContextManager context;
-
 
 Index countStrings = 0;
 
@@ -29,7 +27,7 @@ Index countStrings = 0;
   1.) Initialize ASCII Primitives
 */
 
-ErrorCode initializeASCIIPrimitives()
+ErrorCode initializeASCIIPrimitives(ContextManager context)
 {
   char* name = (char*) malloc(50);
 
@@ -42,7 +40,7 @@ ErrorCode initializeASCIIPrimitives()
 }
 
 
-ErrorCode pushString(char* str)
+ErrorCode pushString(char* str, ContextManager context)
 {
   context.addString(str);
   context.LastConstructor(TYPE_STRING);

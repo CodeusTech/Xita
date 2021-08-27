@@ -294,16 +294,16 @@ exp_driver:
 ;
 
 memory:
-    MEM_ACC INT    { printf("Memory Accessed at: %d\n", (int) $2); pushInteger((Arbitrary)$2); }
+    MEM_ACC INT    { printf("Memory Accessed at: %d\n", (int) $2); pushInteger((Arbitrary)$2, context); }
   | MEM_ACC IDENTIFIER { printf("Memory Accessed for Constant: %s\n", (char*) $2); }
   | set_memory exps_driver
   | memory_variable IN exps_driver
 ;
   memory_variable:
-    INT MEM_READ IDENTIFIER { printf("Memory ( %lld ) Read into Variable: %s\n", $1, $3); context.addMemoryVariable($3); pushInteger((Arbitrary)$1); }
+    INT MEM_READ IDENTIFIER { printf("Memory ( %lld ) Read into Variable: %s\n", $1, $3); context.addMemoryVariable($3); pushInteger((Arbitrary)$1, context); }
   ;
   set_memory:
-    INT MEM_SET   { printf("Memory Set at: %lld\n", $1); pushInteger((Arbitrary)$1); }
+    INT MEM_SET   { printf("Memory Set at: %lld\n", $1); pushInteger((Arbitrary)$1, context); }
   ;
 
 /*
@@ -459,7 +459,7 @@ exp:
 */
 primitive:
     REAL
-  | INT { pushInteger((Arbitrary) $1); }
+  | INT { pushInteger((Arbitrary) $1, context); }
   | TRUE
   | FALSE
   | STRING

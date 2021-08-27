@@ -24,14 +24,12 @@
 #include <xcs/std/includes.h>
 #include <xcs/context/manager.h>
 
-extern ContextManager context;
-
 
 /*
   1.) Initialize Event Primitives
 */
 
-ErrorCode initializeEventPrimitives()
+ErrorCode initializeEventPrimitives(ContextManager context)
 {
   char* name = (char*) malloc(50);
 

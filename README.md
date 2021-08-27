@@ -1,8 +1,8 @@
-# Xita Cross-Compiler (AArch64)
+# Xita Cross-Compiler
 #### Version: v0.27.9
 [![Build Status](https://app.travis-ci.com/CodeusTech/Xita.svg?branch=PreAlpha-Stable)](https://app.travis-ci.com/CodeusTech/Xita)
 
-This respository provides the Linux-to-Xita cross compiler.  This **Xita Control System** compiler currently targets Arm64 architecture, though a current thrust area for development is to support Arm32 and x86 architectures.
+This respository provides the Linux-to-Xita cross compiler.  This **Xita Control System** compiler currently targets Arm64 and Arm32 architectures, but we've planned for supporting x86_64 architecture in the future.
 
 ### Table of Contents
 
@@ -40,14 +40,14 @@ $  sudo pacman -Syyu
 $  sudo pacman -S make gcc flex bison
 ```
 
-##### CentOS/RHEL/Scientific Linux/Fedora
+##### CentOS/RHEL/Scientific Linux
 
 ``` bash
 $  sudo yum update
 $  sudo yum group install "Development Tools"
 ```
 
-##### Fedora 22+
+##### Fedora (22+)
 
 ``` bash
 $  sudo dnf upgrade --refresh
@@ -63,17 +63,6 @@ $  sudo apt-get upgrade
 $  sudo apt-get install build-essential flex flexc++ bison bisonc++
 ```
 
-#####  Cross-Assembler
-
-To use the Xita Cross-Compiler, we need a compliant AArch64 cross-compiler.  Using the command below will uncompress the cross-assembler into the correct location for Xita internal use.  
-
-**NOTE: Xita expects the cross assembler to reside in ~/.opt/cross**.
-
-```bash
-$  cd Xita/
-$  tar xf aarch64-assembler.tar.xz -C $HOME
-```
-
 ### Xita-AArch64 Cross-Compiler Installation
 
 ##### Build and Install Xita
@@ -85,6 +74,7 @@ $  make install
 ##### Build Xita and Do NOT Install
 
 ```bash
+$  make assemblers
 $  make build
 ```
 
@@ -96,11 +86,11 @@ $  make uninstall
 
 ###  Xita Usage 
 
-The following usage commands assume XCS-AArch64 is installed on the current
+The following usage commands assume Xita is installed on the current
 Linux system.  If it is only built (and not installed), you will need to
-use:   ` $  _build/xcs-aarch64 [...] `
+use:   ` $  _build/xita [...] `
 
-
+**NOTE:  While `xcs-aarch64` is still the correct terminal command, this will soon be deprecated in favor of `xita`.**
 ```bash
 $  xcs-aarch64 [OPTIONS] [file1 file2 ...]
 ```
