@@ -1,0 +1,236 @@
+#!/bin/bash
+#  run-tests (.sh)
+#  Codeus Tech
+#  Authored on    June 20, 2020
+#  Last Modified  June 25, 2020
+
+#
+# TABLE OF CONTENTS
+#   * Primitive Data Testing
+#   * Conditional Expressions
+#   * Datatype Testing
+#   * Functional Expression Testing
+#   * External Module Testing
+#
+
+#
+# NOTE:  It is expected that this file be run from project's root directory (Xita-AArch64)
+#
+
+#  Initial Dialog
+printf "Running XCSL Unit Tests...\n"
+
+KEEP_ASSEMBLY=false
+
+#  Expect First Argument to provide target architecture
+ARCH=$1
+CHIP="--chip ./tests/runtime/Firmware/test-${ARCH}.chip"
+
+if [ $2 == "-a" ]
+then
+  KEEP_ASSEMBLY=true
+fi
+
+#  Primitive Data Testing
+printf "\nTesting XCSL Primitives\n"
+  #  Integers
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP}  -a ./tests/runtime/Primitives/integer.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Primitives/integer.xs
+fi
+if [ $? == 0 ]
+then
+  printf "  Integer Primitives:  SUCCESS\n"
+else
+  printf "  Integer Primitives:  FAILURE\n"
+fi
+  #  Boolean
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Primitives/boolean.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Primitives/boolean.xs
+fi
+if [ $? == 0 ]
+then
+  printf "  Boolean Primitives:  SUCCESS\n"
+else
+  printf "  Boolean Primitives:  FAILURE\n"
+fi
+
+
+#  Conditional Expression Testing
+printf "\nTesting Conditional Expressions\n"
+  #  if ... then ... else ...
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Conditions/if.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Conditions/if.xs
+fi
+if [ $? == 0 ]
+then 
+  printf "  if then else:  SUCCESS\n"
+else 
+  printf "  if then else:  FAILURE\n"
+fi
+  #  ... is ...
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Conditions/is.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Conditions/is.xs
+fi
+if [ $? == 0 ]
+then
+  printf "  is Typecheck:  SUCCESS\n"
+else
+  printf "  is Typecheck:  FAILURE\n"
+fi
+
+
+#  Datatype Testing
+printf "\nTesting Datatypes\n"
+  # Basic Type Declarations
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Types/basic.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Types/basic.xs
+fi
+if [ $? == 0 ]
+then
+  printf "  Basic Type Declarations:  SUCCESS\n"
+else
+  printf "  Basic Type Declarations:  FAILURE\n"
+fi
+  # Complex Datatypes (No Default Values)
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Types/complex_nodefault.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Types/complex_nodefault.xs
+fi
+if [ $? == 0 ]
+then
+  printf "  Complex Datatypes (No Defaults): SUCCESS\n"
+else
+  printf "  Complex Datatypes (No Defaults): FAILURE\n"
+fi
+  # Complex Datatypes (With Default Values)                       NOTE:  INACTIVE!!
+#xcs-aarch64 ${CHIP} ./tests/runtime/Types/complex_wdefault.xs
+#if [ $? == 0 ]
+#then
+#  printf "  Complex Datatypes (With Defaults): SUCCESS\n"
+#else
+#  printf "  Complex Datatypes (With Defaults): FAILURE\n"
+#fi
+  # Constant Datatypes
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Types/constants.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Types/constants.xs
+fi
+if [ $? == 0 ]
+then
+  printf "  Constant Datatypes: SUCCESS\n"
+else
+  printf "  Constant Datatypes: FAILURE\n"
+fi
+  # Typeclasses
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Types/typeclass.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Types/typeclass.xs
+fi
+if [ $? == 0 ]
+then
+  printf "  Typeclass Declarations:  SUCCESS\n"
+else
+  printf "  Typeclass Declarations:  FAILURE\n"
+fi
+
+
+#  Functional Expression Testing
+printf "\nTesting Functional Expressions\n"
+  #  Constant Expressions
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Functions/constants.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Functions/constants.xs
+fi
+if [ $? == 0 ]
+then 
+  printf "  Constant Expressions:  SUCCESS\n"
+else
+  printf "  Constant Expressions:  FAILURE\n"
+fi
+  #  Functional Expressions
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Functions/functions.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Functions/functions.xs
+fi
+if [ $? == 0 ]
+then 
+  printf "  Dynamic Functions:  SUCCESS\n"
+else 
+  printf "  Dynamic Functions:  FAILURE\n"
+fi
+  #  Nested/Complex Functions
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Functions/nested.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Functions/nested.xs
+fi
+if [ $? == 0 ]
+then 
+  printf "  Nested Functions:  SUCCESS\n"
+else 
+  printf "  Nested Functions:  FAILURE\n"
+fi
+
+# 
+# The following has been commented, because the new Firmware system
+#   renders this code unusable and meaningless.
+#
+#printf "\nTesting Direct Memory Access\n"
+#if [ $KEEP_ASSEMBLY == true ]
+#then
+#  xcs-aarch64 ${CHIP} -a ./tests/runtime/Memory/memory.xs
+#else
+#  xcs-aarch64 ${CHIP} ./tests/runtime/Memory/memory.xs
+#fi
+#if [ $? == 0 ]
+#then 
+#  printf "  Memory Access:  SUCCESS\n"
+#else
+#  printf "  Memory Access:  FAILURE\n"
+#fi
+
+
+
+#  External Module Testing
+printf "\nTesting External Module Imports\n"
+if [ $KEEP_ASSEMBLY == true ]
+then
+  xcs-aarch64 ${CHIP} -a ./tests/runtime/Modules/driver.xs
+else
+  xcs-aarch64 ${CHIP} ./tests/runtime/Modules/driver.xs
+fi
+if [ $? == 0 ]
+then 
+  printf "  Module Imports:  SUCCESS\n"
+else
+  printf "  Module Imports:  FAILURE\n"
+fi
+
+
+printf "\n"
