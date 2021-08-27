@@ -1,6 +1,6 @@
 # Xita Cross-Compiler (AArch64)
-#### Version: v0.27.5
-
+#### Version: v0.27.9
+[![Build Status](https://app.travis-ci.com/CodeusTech/Xita.svg?branch=PreAlpha-Stable)](https://app.travis-ci.com/CodeusTech/Xita)
 
 This respository provides the Linux-to-Xita cross compiler.  This **Xita Control System** compiler currently targets Arm64 architecture, though a current thrust area for development is to support Arm32 and x86 architectures.
 
