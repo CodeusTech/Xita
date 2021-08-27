@@ -7,4 +7,4 @@ script: ./make unit-tests
 
 branches:
   only:
-    - v0.27-UnitTesting
+    - PreAlpha-Stable
