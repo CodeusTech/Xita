@@ -6,7 +6,7 @@
 #  Contains build directives for XCS Cross Compiler (AArch64)
 
 CCOMP=g++
-CFLAGS=-lm -Wall -I${PWD}/src
+CFLAGS=-std=c++11 -lm -Wall -I${PWD}/src
 MEMTEST=-g -O0
 SILENT=-Wno-unused-variable -Wno-unused-but-set-variable -Wno-switch -Wno-conversion-null -Wno-write-strings
 
@@ -68,6 +68,8 @@ unit-tests:
 	${CCOMP} ${CFLAGS} ${SILENT} tests/unit/XitaTests.cc -o _build/test-xita
 	./_build/test-xita
 
+runtime-tests:
+	./tests/run-tests arm64 -a
 
 
 #  PHONY TARGETS
