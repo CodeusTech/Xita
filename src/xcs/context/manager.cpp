@@ -1,8 +1,8 @@
 /*
   manager.cpp
   Codeus Tech
-  Authored on   April 18, 2020
-  Last Modified  July 03, 2021
+  Authored on    April 18, 2020
+  Last Modified August 29, 2021
 */
 
 /*

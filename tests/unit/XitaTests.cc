@@ -2,7 +2,7 @@
   XitaTests.cc
   Codeus Tech
   Authored on   August 26, 2021
-  Last Modified August 26, 2021
+  Last Modified August 29, 2021
 */
 
 /*
@@ -13,6 +13,7 @@
 #include "topics/regstack.h"
 #include "topics/modules.h"  //  Deprecated in favor of "topics/constants.h" and "topics/functions"
 #include "topics/types.h"
+#include "topics/functions.h"
 
 
 /*
@@ -27,6 +28,7 @@ int main()
   UT_RegisterStacks RegisterStacks;
   XitaTest_ModuleHandling Modules;
   UT_TypesSystem    Types;
+  UT_FunctionSystem Functions;
 
   //  Check for errors in Register Stack Descriptions
   printf("Testing Register Stacks with Arbitrary Data...\n");
@@ -37,6 +39,10 @@ int main()
 
   printf("Testing Type System Internals...\n");
   Types.Describe();
+
+  printf("Testing Function System Internals...\n");
+  Functions.Describe();
+
 
   return SUCCESS;
 }
