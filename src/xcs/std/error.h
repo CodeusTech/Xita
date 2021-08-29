@@ -35,4 +35,7 @@ ErrorCode active_error_code = 1;  //  Unhandled Exception Code
 //  Type Checking Errors
 #define ERR_TYPE_UNDEFINED      1000
 #define ERR_TYPE_UNSUPPORTED    1001
+#define ERR_TYPE_ALREADY_DECL   1002
+
+
 

@@ -20,6 +20,6 @@
 
 //  Identifiers
 #define MAX_IDENTIFIER_SIZE 255
-
+#define MAX_CONSTRUCTOR_SIZE 255
 
 #endif

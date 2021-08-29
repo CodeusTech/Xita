@@ -85,13 +85,54 @@ ErrorCode ModuleNode::concludeExpression()
   3.) Identifier Handling
 */
 
+bool ModuleNode::IdentifierExists(Identifier ident, IdentifierType type)
+{
+  switch (type)
+  {
+    case IdentifierType::TYPE:
+      for (Index i = 0; i < _types.size(); ++i)
+        if (strcmp(ident, _types[i].Ident()) == 0)
+        return true;
+      break;
+    default:
+      /* Do Nothing */
+      return false;
+  }
+
+  return false;
+}
+
+
+  /*
+    3.a) Types
+  */
+
+  //  Declare Type
+  ErrorCode ModuleNode::_declareType(TypeID tid, Identifier ident, unsigned long size)
+  {
+    //  Verify that `ident` isn't in use
+    if (IdentifierExists(ident, TYPE))
+      return ERR_TYPE_ALREADY_DECL;
+
+    //  Add New Type to Declarations Vector
+    _types.push_back(TypeNode(tid, _mid, ident, size)); 
+    return SUCCESS;
+  }
+
   //  Declare Parameter
   ErrorCode ModuleNode::_declareTypeParameter(TypeID tid, Identifier ident)
   { return _types.back().declareParameter(tid, ident); }
 
   //  Declare Element
   ErrorCode ModuleNode::_declareTypeElement(Identifier ident, TypeID tid)
-  { return _types.back().declareElement(ident, tid); }
+  { 
+    if (tid >= NUMBER_TYPES + _types.size())
+      return ERR_TYPE_UNDEFINED;
+
+    string str = "Element " + string(ident) + " added to Constructor of TypeID: " + string(context->resolveTypeIdentifier(tid));
+    l.log('D', "Types/Constructors", str);  
+    return _types.back().declareElement(ident, tid); 
+  }
 
 
 unsigned long ModuleNode::_TypeSize(TypeID tid)

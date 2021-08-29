@@ -120,9 +120,11 @@ public:
     3.) Identifier Handling
   */
 
+  bool IdentifierExists(Identifier ident, IdentifierType type);
+
   //  2.a) Types
     ErrorCode _declareType(TypeID tid, Identifier ident)                     {_types.push_back(TypeNode(tid, _mid, ident)); return 0;}//{ return _types.declareType(tid, ident); }
-    ErrorCode _declareType(TypeID tid, Identifier ident, unsigned long size) {_types.push_back(TypeNode(tid, _mid, ident, size)); return 0;}//{ return _types.declareType(tid, ident, size); }
+    ErrorCode _declareType(TypeID tid, Identifier ident, unsigned long size);
     ErrorCode _declareTypeParameter(TypeID tid, Identifier ident);
     ErrorCode _declareTypeConstructor(ConstructorID cid, Identifier ident)   {_types.back().declareConstructor(cid, ident); return 0;}//{ return _types.declareConstructor(cid, ident); }
     ErrorCode _declareTypeElement(Identifier ident, TypeID tid);

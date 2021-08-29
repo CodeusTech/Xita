@@ -7,6 +7,12 @@
 
 /*
   Contains functionality for producing random Xita data (for testing)
+
+  TABLE OF CONTENTS
+  =================
+  1.) Generate Random Identifier
+  2.) Generate Random Constructor
+  3.) Interface Functions for Use in Unit Testing
 */
 
 #pragma once
@@ -74,4 +80,11 @@ char* generate_random_constructor(const int len) {
     tmp_s[len-1] = 0;
     return tmp_s;
 }
+
+/*
+  3.) Interface Functions for Use in Unit Testing
+*/
+//  Data Generation
+#define SomeIdentifier(name) Identifier name = generate_random_identifier(MAX_IDENTIFIER_SIZE);
+#define SomeConstructor(name) Constructor name = generate_random_constructor(MAX_CONSTRUCTOR_SIZE);
 

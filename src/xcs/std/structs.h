@@ -10,24 +10,9 @@
 
   Table of Contents
   =================
-  1.) Infrastructure
-    1.a) Assembly Infrastructure
-  2.) Data Types
-  3.) Register Stacks
-  4.) Functions
-  7.) Operator Structures
-    7.a) Operand Pairs
-  8.) Internal Memory Allocation
-  9.) Internal Process Scheduling
-    9.a) Infrastructure
-    9.b) Interprocess Communication
-      9.b.1) IPC Message
-      9.b.2) Message Channel
-    9.c) Process Structure
-    9.d) Process Scheduling
-      9.d.1) Process Queues
-      9.d.2) Process Scheduler
-  10.) Tether Modules
+  1.) Basic Infrastructure
+  2.) Register Stacks
+
 */
 
 #ifndef std_STRUCTS_H
@@ -44,6 +29,10 @@ using namespace std;
 using std::vector;
 
 
+/*
+  1.) Basic Infrastructure
+*/
+
 
 /*
   Debug Messages
@@ -58,8 +47,19 @@ struct DebugMessageNode
 vector<DebugMessageNode> debug;
 
 
+enum IdentifierType
+{
+  CONSTANT,
+  FUNCTION,
+  FUNCTION_PARAMETER,
+  TYPE,
+  TYPE_PARAMETER,
+  TYPECLASS,
+  CONSTRUCTOR
+};
+
 /*
-  Register Stacks
+  2.) Register Stacks
 */
 
 struct regstack

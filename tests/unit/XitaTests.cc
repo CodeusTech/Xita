@@ -11,7 +11,8 @@
 
 
 #include "topics/regstack.h"
-#include "topics/modules.h"
+#include "topics/modules.h"  //  Deprecated in favor of "topics/constants.h" and "topics/functions"
+#include "topics/types.h"
 
 
 /*
@@ -23,15 +24,19 @@ int main()
 {
   //  Prepare Test Environment
   printf("Preparing Test Environment...\n");
-  XitaTest_RegisterStacks RegisterStacks;
+  UT_RegisterStacks RegisterStacks;
   XitaTest_ModuleHandling Modules;
+  UT_TypesSystem    Types;
 
   //  Check for errors in Register Stack Descriptions
   printf("Testing Register Stacks with Arbitrary Data...\n");
-  RegisterStacks.DescribeAndTest();
+  RegisterStacks.Describe();
 
   printf("Testing Module Node Internals...\n");
   Modules.DescribeAndTest();
+
+  printf("Testing Type System Internals...\n");
+  Types.Describe();
 
   return SUCCESS;
 }

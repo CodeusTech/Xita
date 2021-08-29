@@ -221,8 +221,6 @@ ContextManager::ContextManager()
   */
   ErrorCode ContextManager::declareTypeElement(Identifier ident, TypeID tid) 
   {
-    string str = "Element " + string(ident) + " added to Constructor of TypeID: " + string(resolveTypeIdentifier(tid));
-    l.log('D', "Types/Constructors", str);  
     return _context->_declareTypeElement(ident, tid); 
     }
 

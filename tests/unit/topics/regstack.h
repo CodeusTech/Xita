@@ -11,21 +11,13 @@
 
 #pragma once
 
-#include <stdio.h>
-#include <cassert>
-#include <random>
-
-#include <xcs/std/includes.h>
-#include <xcs/regstack/regstack.h>
-
+#include "../UnitTest.h"
 
 /*
  *  This class executes unit tests on Xita Register Stack
  */
-class XitaTest_RegisterStacks
+class UT_RegisterStacks : XitaUnitTester
 {
-
-
 
   /*
     Tests Attempt to Operate on Undefined Architecture
@@ -33,6 +25,7 @@ class XitaTest_RegisterStacks
   */
   void shouldRejectForUndefinedArchitecture()
   {
+    TestWithoutContext
     /*
       Operating Conditions/Scenario
     */
@@ -57,6 +50,7 @@ class XitaTest_RegisterStacks
   */
   void shouldCorrectlyPushAndPopRegistersFor(XitaArchitecture arch)
   {
+    TestWithoutContext
     /*
       Operating Conditions/Scenario
     */
@@ -89,6 +83,7 @@ class XitaTest_RegisterStacks
   */
   void shouldRejectPopWhenEmpty()
   {
+    TestWithoutContext
     /*
       Operating Conditions/Scenario
         * Should have consistent behavior across architectures
@@ -101,12 +96,12 @@ class XitaTest_RegisterStacks
   }
 
 public:
-  XitaTest_RegisterStacks() {}
+  UT_RegisterStacks() {}
 
   /*
     The "Main" interface function
   */
-  void DescribeAndTest()
+  void Describe() override
   {
     this->shouldRejectForUndefinedArchitecture();
 
