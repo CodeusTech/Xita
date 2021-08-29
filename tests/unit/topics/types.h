@@ -35,6 +35,11 @@ class UT_TypesSystem
     test (context.declareTypeElement( element, TYPE_INTEGER ))
       expect (SUCCESS)
 
+    free(ident);
+    free(construct);
+    free(element);
+
+
     SUCCESSFUL_ACCEPT
   }
 
@@ -42,8 +47,12 @@ class UT_TypesSystem
   {
     TestWithNewContext
 
-    test(context.declareType( generate_random_identifier(MAX_IDENTIFIER_SIZE), 0 ))
+    SomeIdentifier(ident)
+
+    test(context.declareType( ident, 0 ))
       expect(SUCCESS)
+
+    free(ident);
 
     SUCCESSFUL_ACCEPT
   }
@@ -84,6 +93,10 @@ class UT_TypesSystem
 
     test (context.declareTypeElement( element, random()+17 ))
       expect (ERR_TYPE_UNDEFINED)
+
+    free(ident);
+    free(construct);
+    free(element);
 
     SUCCESSFUL_REJECT
   }
