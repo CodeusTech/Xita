@@ -89,7 +89,7 @@ bool ModuleNode::IdentifierExists(Identifier ident, IdentifierType type)
 {
   switch (type)
   {
-    case IdentifierType::TYPE:
+    case IdentifierType::IDENT_TYPE:
       for (Index i = 0; i < _types.size(); ++i)
         if (strcmp(ident, _types[i].Ident()) == 0)
         return true;
@@ -111,7 +111,7 @@ bool ModuleNode::IdentifierExists(Identifier ident, IdentifierType type)
   ErrorCode ModuleNode::_declareType(TypeID tid, Identifier ident, unsigned long size)
   {
     //  Verify that `ident` isn't in use
-    if (IdentifierExists(ident, TYPE))
+    if (IdentifierExists(ident, IDENT_TYPE))
       return ERR_TYPE_ALREADY_DECL;
 
     //  Add New Type to Declarations Vector
