@@ -44,6 +44,20 @@ ContextManager::ContextManager()
 
   l.log('D', "ContextManager", "Context Manager has been initialized");
 }
+ContextManager::ContextManager(XitaArchitecture arch)
+  : target_arch(arch)
+{
+  //  Add Root Module/Scope
+  modules.push_back(ModuleNode(0, ModuleType::XCSL_SOURCE, 0, this));
+  _context = &modules[0];
+
+  initializePrimitives(*this);
+
+  //  Set Type
+  LastType(TYPE_ARBITRARY);
+
+  l.log('D', "ContextManager", "Context Manager has been initialized");
+}
 
 
 
@@ -484,6 +498,12 @@ ContextManager::ContextManager()
   */
   ErrorCode ContextManager::endDeclareFunction()
   {
+    if ( _context->rsSize() <= _context->_CountFunctionParameters() )
+    {
+      l.log('C', "DeclFunct", "Current Function Declaration lacks a return value.");
+      return ERR_FUNCT_NO_RETURN;
+    }
+
     char* ident;
     string logstr;
     if ((ident = _context->endDeclareFunction(LastType())))

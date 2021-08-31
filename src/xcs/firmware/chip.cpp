@@ -10,6 +10,7 @@
 */
 
 #include "chip.h"
+#include <xcs/context/manager.h>
 
 
 /*

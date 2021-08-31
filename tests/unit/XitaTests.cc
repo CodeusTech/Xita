@@ -2,7 +2,7 @@
   XitaTests.cc
   Codeus Tech
   Authored on   August 26, 2021
-  Last Modified August 29, 2021
+  Last Modified August 30, 2021
 */
 
 /*
@@ -43,6 +43,7 @@ int main()
   printf("Testing Function System Internals...\n");
   Functions.Describe();
 
+  printf("\nAll unit tests passed successfully.\n\n");
 
   return SUCCESS;
 }

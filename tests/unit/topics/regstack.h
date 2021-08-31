@@ -25,11 +25,12 @@ class UT_RegisterStacks : XitaUnitTester
   */
   void shouldRejectForUndefinedArchitecture()
   {
-    TestWithoutContext
+    TestWithNewContext
+    context.setChipArch(XitaArchitecture::Undefined);
     /*
       Operating Conditions/Scenario
     */
-    RegisterStack rs = RegisterStack(XitaArchitecture::Undefined);
+    RegisterStack rs = RegisterStack(&context);
 
     //  Push a new value onto the mock RegisterStack and check the generated code.
     const ADR generated_register_code = rs.push(TYPE_ARBITRARY);
@@ -50,11 +51,12 @@ class UT_RegisterStacks : XitaUnitTester
   */
   void shouldCorrectlyPushAndPopRegistersFor(XitaArchitecture arch)
   {
-    TestWithoutContext
+    TestWithNewContext
+    context.setChipArch(arch);
     /*
       Operating Conditions/Scenario
     */
-    RegisterStack rs = RegisterStack(arch);
+    RegisterStack rs = RegisterStack(&context);
     int number_of_data_registers;
     if (arch == XitaArchitecture::Arm64) 
       number_of_data_registers = NUM_DATA_REGISTERS_Arm64;    //  Set Number of Data Registers
@@ -83,13 +85,12 @@ class UT_RegisterStacks : XitaUnitTester
   */
   void shouldRejectPopWhenEmpty()
   {
-    TestWithoutContext
+    TestWithNewContext
     /*
       Operating Conditions/Scenario
         * Should have consistent behavior across architectures
     */
-    int random_supported_architecture = (random() % NUM_SUPPORTED_ARCH) + 1;
-    RegisterStack rs = RegisterStack((XitaArchitecture)random_supported_architecture);
+    RegisterStack rs = RegisterStack(&context);
 
     const ErrorCode pop_status = rs.pop();
     assert (pop_status == ERR_REGSTACK_POP_EMPTY);

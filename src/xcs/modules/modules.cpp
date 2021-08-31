@@ -34,7 +34,7 @@ ModuleNode::ModuleNode(ModuleID mid, ModuleType mtype, ModuleID parent, ContextM
   _mtype = mtype;
   _parent = parent;
 
-  register_stacks.push_back( RegisterStack(context->getChipArch()) );
+  register_stacks.push_back( RegisterStack(context) );
   //_types = TypeManager(mid);
 
   l.log('d', "Modules", "Initialized Module");
@@ -313,7 +313,7 @@ ConstantNode* ModuleNode::resolveConstant(Identifier ident)
   //  Declare Function
 ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
 { 
-  register_stacks.push_back( RegisterStack(context->getChipArch()) );             //  Add new Register Stack for the Function
+  register_stacks.push_back( RegisterStack(context) );             //  Add new Register Stack for the Function
   scope_stack.push_back(scope); scope = next_scope++;     //  Manipulate Relavent Scope Variables
   functions.push_back( FunctionNode(fid, _mid, ident) );  //  Add Function Node
   

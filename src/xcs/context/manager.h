@@ -66,6 +66,8 @@ class ContextManager
 
 protected:
 
+  XitaArchitecture target_arch;
+
   //  System Managers
   AssemblyManager assembly;                           //  Manages Buffers for producing Assembly Files
   OperatorManager operators = OperatorManager(this);  //  Manages Active Operator Semantics (e.g. Addition)
@@ -99,6 +101,7 @@ protected:
 public:
   //  Constructors
   ContextManager();
+  ContextManager(XitaArchitecture arch);
 
   ModuleID CurrentContext() { return _context->Id(); }
 
@@ -142,13 +145,14 @@ public:
     Chip/Firmware Operations
   */
   ErrorCode newChip(string name) { return firmware.newChip(name); }
-  ErrorCode setChipArch(string arch) { return firmware.setChipArch(arch); }
+  ErrorCode setChipArch(string arch) { firmware.setChipArch(arch); target_arch = firmware.getChipArch(); return SUCCESS; }
+  ErrorCode setChipArch(XitaArchitecture arch) { firmware.setChipArch(arch); target_arch = arch; return SUCCESS; }
+  XitaArchitecture getChipArch() { return target_arch; }
   ErrorCode addFirmwareInterface(string name) { return firmware.addInterface(name); }
   ErrorCode addFirmwareRange(int begin, int end) { return firmware.addInterfaceRange(begin, end); }
   ErrorCode requestMemoryRead(int addr) { return firmware.requestMemoryRead(addr); }
   ErrorCode requestMemoryWrite(int addr) { return firmware.requestMemoryWrite(addr); }
   ErrorCode getArchRegisterWidth() { return firmware.getArchRegisterWidth(); }
-  XitaArchitecture getChipArch() { return firmware.getChipArch(); }
 
 
   /*

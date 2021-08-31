@@ -41,30 +41,18 @@ class ContextManager;
 */
 class RegisterStack
 {
+  ContextManager* context;
   vector<ADR> registers;
   vector<TypeID> types;
-  XitaArchitecture arch = XitaArchitecture::Undefined;
 	
 
-  unsigned int MaxRegisters()
-  {
-    switch (arch)
-    {
-      case XitaArchitecture::Arm64:
-        return NUM_DATA_REGISTERS_Arm64;
-      case XitaArchitecture::Arm32:
-        return NUM_DATA_REGISTERS_Arm32;
-      case XitaArchitecture::x86_64:
-        return NUM_DATA_REGISTERS_x86_64;
-    }
-    return 0;
-  }
+  unsigned int MaxRegisters();
 
 public:
 
 //  CONSTRUCTORS
-  RegisterStack(XitaArchitecture arch)
-    : arch(arch)
+  RegisterStack(ContextManager* context)
+    : context(context)
   {
     l.log('d', "RegStack", "Initialized New Register Stack with defined architecture");
   }
@@ -73,30 +61,7 @@ public:
 /*
   MUTATORS
 */
-  ADR push(TypeID tid)
-  {
-    if (arch == XitaArchitecture::Undefined) return ERR_REGSTACK_UNDEF_ARCH;
-
-    //  If all registers are in use, reroute to extended stack space
-    if (registers.size() >= MaxRegisters()) { return MaxRegisters() + 1; } 
-    //  TODO: FIX THE ABOVE LINE!!!
-
-    //  Acquire a mangled random number in ADR range
-    ADR check = (ADR) (get_mangle() % MaxRegisters()) + 1;
-
-    //  If the test register is not in use, add it to active ADRs vector
-    while (isActive(check)) check = (ADR) (get_mangle() % MaxRegisters()) + 1;
-
-    //  If all else is kosher, Add the entry and type
-    registers.push_back(check);
-    types.push_back(tid);
-
-    string str = "Pushed register " + to_string(check) + " with TypeID: " + to_string(tid);
-
-    //l.log('D', "RegStack", str);
-
-    return check;
-  }
+  ADR push(TypeID tid);
 
   /*
     duplicateTop() 
@@ -123,14 +88,7 @@ public:
     return reg; //  Should return merged register (if 'reg' is active)
   }
 
-  ErrorCode pop()
-  {
-    if (arch == XitaArchitecture::Undefined) return ERR_REGSTACK_UNDEF_ARCH;
-    if (!registers.size()) return ERR_REGSTACK_POP_EMPTY;
-    registers.pop_back();
-    types.pop_back();
-    return SUCCESS;
-  }
+  ErrorCode pop();
 
   /*
     remove(from_top)
@@ -170,7 +128,7 @@ public:
   ACCESSORS
 */
   ADR from_top(int i) { return registers.at(registers.size()-(i+1)); }
-  ADR top() { return registers.back(); }
+  ADR top() { if (!registers.size()) { printf("Empty Registers Stack Accessed\n"); return ERR_REGSTACK_ACCESS_EMPTY; }  return registers.back(); }
   ADR sec() { return registers.at(registers.size()-2); }
 
   ADR from_top_type(int i) { return types.at(types.size()-(i+1)); }

@@ -48,6 +48,7 @@ public:
   //  Properties
   XitaArchitecture Architecture() { return arch; }
   ErrorCode setArchitecture(string target);
+  ErrorCode setArchitecture(XitaArchitecture _arch) { arch = _arch; return SUCCESS; }
   int RegisterWidth() { return register_width; }
 
   ErrorCode newInterface(string name);

@@ -20,8 +20,9 @@ ErrorCode active_error_code = 1;  //  Unhandled Exception Code
 
 //  Register Stack Errors
 /* NOTE: These return negative values, because a positive value indicates success in this case */
-#define ERR_REGSTACK_POP_EMPTY  -101
-#define ERR_REGSTACK_UNDEF_ARCH -100  //  Register Stack encountered Unsupported Target Architecture
+#define ERR_REGSTACK_POP_EMPTY      -102
+#define ERR_REGSTACK_ACCESS_EMPTY   -101
+#define ERR_REGSTACK_UNDEF_ARCH     -100  //  Register Stack encountered Unsupported Target Architecture
 
 //  Preprocess Errors
 #define ERR_UNSUPPORTED_ARCH    100   //  Unsupported Target Architecture in .chip file
@@ -36,6 +37,9 @@ ErrorCode active_error_code = 1;  //  Unhandled Exception Code
 #define ERR_TYPE_UNDEFINED      1000
 #define ERR_TYPE_UNSUPPORTED    1001
 #define ERR_TYPE_ALREADY_DECL   1002
+
+//  Function Errors
+#define ERR_FUNCT_NO_RETURN     2000
 
 
 

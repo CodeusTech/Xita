@@ -15,12 +15,14 @@
 
 #include <cassert>
 #include <random>
+#include <string>
 #include <stdio.h>
 
 #include <xcs/std/includes.h>
 #include <xcs/context/manager.h>
 #include "utils/generate.h"
 
+using namespace std;
 
 /*
   Base for Unit Tests
@@ -49,16 +51,18 @@ public:
 /*
   Description-Based Syntax Simplification
 */
-#define TestWithNewContext { context = ContextManager(); }
+#define TestWithNewContext { context = ContextManager(XitaArchitecture::Arm64);  }
 #define TestWithoutContext { /* Maybe this should NULL out context? */ }
 
 #define  and_it     &&
 #define _and_it     ||
-#define but_it      !=(
-#define _____       );
+#define  but_it     !=(
+#define  _____      );
 
 #define test(expr)  { status = expr; }
 #define expect(err) { assert(status == err); }
+#define expect_greater_than(err) { assert(status > err); }
+#define expect_less_than(err) { assert(status < err); }
 
 #define SUCCESSFUL_ACCEPT { return true;  }
 #define SUCCESSFUL_REJECT { return false; }

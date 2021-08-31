@@ -10,6 +10,7 @@
 */
 
 #include "structs.h"
+#include <xcs/context/manager.h>
 
 //  TODO: Add COntextManager as owner of register stack.  
 //        Add Serialization Instructions to COntext assembly.
@@ -64,3 +65,51 @@ ErrorCode RegisterStack::serialize(int top_n)
 }
 
 
+unsigned int RegisterStack::MaxRegisters()
+{
+switch (context->getChipArch())
+{
+  case XitaArchitecture::Arm64:
+    return NUM_DATA_REGISTERS_Arm64;
+  case XitaArchitecture::Arm32:
+    return NUM_DATA_REGISTERS_Arm32;
+  case XitaArchitecture::x86_64:
+    return NUM_DATA_REGISTERS_x86_64;
+}
+return 0;
+}
+
+ErrorCode RegisterStack::pop()
+{
+if (context->getChipArch() == XitaArchitecture::Undefined) return ERR_REGSTACK_UNDEF_ARCH;
+if (!registers.size()) return ERR_REGSTACK_POP_EMPTY;
+registers.pop_back();
+types.pop_back();
+return SUCCESS;
+}
+
+
+ADR RegisterStack::push(TypeID tid)
+{
+if (context->getChipArch() == XitaArchitecture::Undefined) return ERR_REGSTACK_UNDEF_ARCH;
+
+//  If all registers are in use, reroute to extended stack space
+if (registers.size() >= MaxRegisters()) { return MaxRegisters() + 1; } 
+//  TODO: FIX THE ABOVE LINE!!!
+
+//  Acquire a mangled random number in ADR range
+ADR check = (ADR) (get_mangle() % MaxRegisters()) + 1;
+
+//  If the test register is not in use, add it to active ADRs vector
+while (isActive(check)) check = (ADR) (get_mangle() % MaxRegisters()) + 1;
+
+//  If all else is kosher, Add the entry and type
+registers.push_back(check);
+types.push_back(tid);
+
+string str = "Pushed register " + to_string(check) + " with TypeID: " + to_string(tid);
+
+//l.log('D', "RegStack", str);
+
+return check;
+}

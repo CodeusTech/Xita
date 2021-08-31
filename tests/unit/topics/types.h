@@ -2,7 +2,7 @@
   types.h (Unit Test)
   Codeus Tech
   Authored on   August 27, 2021
-  Last Modified August 29, 2021
+  Last Modified August 30, 2021
 */
 
 /*
@@ -35,9 +35,15 @@ class UT_TypesSystem
     test (context.declareTypeElement( element, TYPE_INTEGER ))
       expect (SUCCESS)
 
+    /*
+      NOTE!!!
+      TODO:
+        The other Xita Identifier systems (e.g. Functions, Constants)
+        free the identifier memory upon `context.declare*()` call.
+        Type/Constructor Declarations should be consistent and do the same.
+    */
     free(ident);
     free(construct);
-    //free(element);
 
 
     SUCCESSFUL_ACCEPT
@@ -96,7 +102,6 @@ class UT_TypesSystem
 
     free(ident);
     free(construct);
-    free(element);
 
     SUCCESSFUL_REJECT
   }
