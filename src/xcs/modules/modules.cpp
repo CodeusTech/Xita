@@ -329,6 +329,15 @@ ErrorCode ModuleNode::declareFunction(FunctionID fid, Identifier ident)
   //  End Function Declaration
   char* ModuleNode::endDeclareFunction(TypeID tid)
   {
+    for (Index i = 0; i < functions.size()-1; ++i)
+      if (strcmp(functions.back().Ident(), functions[i].Ident()) == 0)
+        if (functions[i].CountParameters() == functions.back().CountParameters())
+        {
+          l.log("E", "DeclFunct", "Attempted to Overload a function with a matching type signature to another defined function.");
+          active_error_code = ERR_FUNCT_REDEFINE;
+          return 0;
+        }
+
     functions.back().Type(tid);
     functions.back().Register(rsTop());
 

@@ -40,6 +40,6 @@ ErrorCode active_error_code = 1;  //  Unhandled Exception Code
 
 //  Function Errors
 #define ERR_FUNCT_NO_RETURN     2000
-
+#define ERR_FUNCT_REDEFINE      2001
 
 

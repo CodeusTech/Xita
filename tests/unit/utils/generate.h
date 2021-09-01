@@ -85,6 +85,7 @@ char* generate_random_constructor(const int len) {
   3.) Interface Functions for Use in Unit Testing
 */
 //  Data Generation
-#define SomeIdentifier(name) Identifier name = generate_random_identifier(MAX_IDENTIFIER_SIZE);
-#define SomeConstructor(name) Constructor name = generate_random_constructor(MAX_CONSTRUCTOR_SIZE);
+#define GivenSomeIdentifier(name) Identifier name = generate_random_identifier(MAX_IDENTIFIER_SIZE);
+#define GivenDuplIdentifier(other, name) Identifier name = strndup(other, strlen(other));
+#define GivenSomeConstructor(name) Constructor name = generate_random_constructor(MAX_CONSTRUCTOR_SIZE);
 

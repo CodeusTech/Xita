@@ -517,7 +517,7 @@ ContextManager::ContextManager(XitaArchitecture arch)
       if (XCS_VERBOSE) printf("Declared Function: %s\n", ident);
     } else
     {
-      yyerror(string("Function Declaration Failed").c_str());
+      return active_error_code;
     }
     return SUCCESS;
   }

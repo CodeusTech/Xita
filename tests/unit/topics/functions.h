@@ -23,7 +23,7 @@ class UT_FunctionSystem
     TestWithNewContext
 
     // Generate Random Valid Identifier
-    SomeIdentifier(funct)
+    GivenSomeIdentifier (funct)
 
     // Declare a Function with that Identifier
     test( context.declareFunction(funct) )
@@ -44,14 +44,13 @@ class UT_FunctionSystem
     TestWithNewContext
 
     // Generate Random Valid Identifiers
-    SomeIdentifier(funct)
-    SomeIdentifier(param1)
-    SomeIdentifier(param2)
+    GivenSomeIdentifier(funct)
+    GivenSomeIdentifier(param1)
+    GivenSomeIdentifier(param2)
 
     // Declare a Function with that Identifier
     test( context.declareFunction(funct) )
       expect(SUCCESS)
-
 
     test( context.declareFunctionParameter(param1) )
       expect(SUCCESS)
@@ -66,18 +65,78 @@ class UT_FunctionSystem
     test( context.endDeclareFunction() )
       expect(SUCCESS)
 
-    
-
     SUCCESSFUL_ACCEPT
   }
 
   bool shouldAcceptOverloadedFunctionsWithDifferentParameters()
   {
+    TestWithNewContext
+
+    // Generate Random Valid Identifiers
+    GivenSomeIdentifier(funct)
+    GivenDuplIdentifier(funct, funct2)
+    GivenSomeIdentifier(param1)
+
+    // Declare a Function with that Identifier
+    test( context.declareFunction(funct) )
+      expect(SUCCESS)
+
+    // Need Data to be declared for return value
+    test( context.rsPush(TYPE_ARBITRARY) )
+      expect_greater_than(0)
+
+    test( context.endDeclareFunction() )
+      expect(SUCCESS)
+
+    // Declare a Function with duplicated Identifier
+    test( context.declareFunction(funct2) )
+      expect(SUCCESS)
+
+    //  Add a Parameter to change overloading properties
+    test( context.declareFunctionParameter(param1) )
+      expect(SUCCESS)
+
+    // Need Data to be declared for return value
+    test( context.rsPush(TYPE_ARBITRARY) )
+      expect_greater_than(0)
+
+    test( context.endDeclareFunction() )
+      expect(SUCCESS)
+
     SUCCESSFUL_ACCEPT
   }
 
   bool shouldRejectOverloadedFunctionsWithSameParameters()
   {
+    TestWithNewContext
+
+    // Generate Random Valid Identifiers
+    GivenSomeIdentifier(funct)
+    GivenDuplIdentifier(funct, funct2)
+    GivenSomeIdentifier(param1)
+
+    // Declare a Function with that Identifier
+    test( context.declareFunction(funct) )
+      expect(SUCCESS)
+
+    // Need Data to be declared for return value
+    test( context.rsPush(TYPE_ARBITRARY) )
+      expect_greater_than(0)
+
+    test( context.endDeclareFunction() )
+      expect(SUCCESS)
+
+    // Declare a Function with duplicated Identifier
+    test( context.declareFunction(funct2) )
+      expect(SUCCESS)
+
+    // Need Data to be declared for return value
+    test( context.rsPush(TYPE_ARBITRARY) )
+      expect_greater_than(0)
+
+    test( context.endDeclareFunction() )
+      expect(ERR_FUNCT_REDEFINE)
+
     SUCCESSFUL_REJECT
   }
 
@@ -86,7 +145,7 @@ class UT_FunctionSystem
     TestWithNewContext
 
     // Generate Random Valid Identifier
-    SomeIdentifier(funct)
+    GivenSomeIdentifier(funct)
 
     // Declare a Function with that Identifier
     test( context.declareFunction(funct) )

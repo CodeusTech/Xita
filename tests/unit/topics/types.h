@@ -22,9 +22,9 @@ class UT_TypesSystem
     TestWithNewContext
 
     //  Produce Random Identifier and Declare Type
-    SomeIdentifier(ident)
-    SomeConstructor(construct)
-    SomeIdentifier(element)
+    GivenSomeIdentifier(ident)
+    GivenSomeConstructor(construct)
+    GivenSomeIdentifier(element)
 
     test (context.declareType( ident ))
       expect (SUCCESS)
@@ -53,7 +53,7 @@ class UT_TypesSystem
   {
     TestWithNewContext
 
-    SomeIdentifier(ident)
+    GivenSomeIdentifier(ident)
 
     test(context.declareType( ident, 0 ))
       expect(SUCCESS)
@@ -68,7 +68,7 @@ class UT_TypesSystem
     TestWithNewContext
 
     //  Produce Random Identifier and Declare Type
-    SomeIdentifier(ident)
+    GivenSomeIdentifier(ident)
     
     test (context.declareType( ident, 0 ))
       expect (SUCCESS)
@@ -87,9 +87,9 @@ class UT_TypesSystem
     TestWithNewContext
 
     //  Produce Random Identifier and Declare Type
-    SomeIdentifier(ident)
-    SomeConstructor(construct)
-    SomeIdentifier(element)
+    GivenSomeIdentifier(ident)
+    GivenSomeConstructor(construct)
+    GivenSomeIdentifier(element)
 
     test (context.declareType( ident ))
       expect (SUCCESS)
