@@ -54,15 +54,21 @@ public:
 #define TestWithNewContext { context = ContextManager(XitaArchitecture::Arm64);  }
 #define TestWithoutContext { /* Maybe this should NULL out context? */ }
 
-#define  and_it     &&
-#define _and_it     ||
-#define  but_it     !=(
-#define  _____      );
+#define this_describes(name) void Describe(void) override { description =
+#define   it     this ->
+#define  and_it  &&
+#define _and_it  ||
+#define  but_it  !=(
+#define  _____   ); ValidateDescription(); }
 
-#define test(expr)  { status = expr; }
-#define expect(err) { assert(status == err); }
-#define expect_greater_than(err) { assert(status > err); }
-#define expect_less_than(err) { assert(status < err); }
+#define expect(expr)  { status = expr; }
+
+#define to_succeed { assert(status == SUCCESS); }
+#define to_fail { assert(status != SUCCESS); }
+
+#define to_be(err) { assert(status == err); }
+#define to_be_greater_than(err) { assert(status > err); }
+#define to_be_less_than(err) { assert(status < err); }
 
 #define SUCCESSFUL_ACCEPT { return true;  }
 #define SUCCESSFUL_REJECT { return false; }

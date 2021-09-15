@@ -26,15 +26,15 @@ class UT_FunctionSystem
     GivenSomeIdentifier (funct)
 
     // Declare a Function with that Identifier
-    test( context.declareFunction(funct) )
-      expect(SUCCESS)
+    expect( context.declareFunction(funct) )
+      to_succeed
 
     // Need Data to be declared for return value
-    test( context.rsPush(TYPE_ARBITRARY) )
-      expect_greater_than(0)
+    expect( context.rsPush(TYPE_ARBITRARY) )
+      to_be_greater_than(0)
 
-    test( context.endDeclareFunction() )
-      expect(SUCCESS)
+    expect( context.endDeclareFunction() )
+      to_succeed
 
     SUCCESSFUL_ACCEPT
   }
@@ -49,21 +49,21 @@ class UT_FunctionSystem
     GivenSomeIdentifier(param2)
 
     // Declare a Function with that Identifier
-    test( context.declareFunction(funct) )
-      expect(SUCCESS)
+    expect( context.declareFunction(funct) )
+      to_succeed
 
-    test( context.declareFunctionParameter(param1) )
-      expect(SUCCESS)
+    expect( context.declareFunctionParameter(param1) )
+      to_succeed
 
-    test( context.declareFunctionParameter(param2) )
-      expect(SUCCESS)
+    expect( context.declareFunctionParameter(param2) )
+      to_succeed
 
     // Need Data to be declared for return value
-    test( context.rsPush(TYPE_ARBITRARY) )
-      expect_greater_than(0)
+    expect( context.rsPush(TYPE_ARBITRARY) )
+      to_be_greater_than(0)
 
-    test( context.endDeclareFunction() )
-      expect(SUCCESS)
+    expect( context.endDeclareFunction() )
+      to_succeed
 
     SUCCESSFUL_ACCEPT
   }
@@ -78,30 +78,30 @@ class UT_FunctionSystem
     GivenSomeIdentifier(param1)
 
     // Declare a Function with that Identifier
-    test( context.declareFunction(funct) )
-      expect(SUCCESS)
+    expect( context.declareFunction(funct) )
+      to_succeed
 
     // Need Data to be declared for return value
-    test( context.rsPush(TYPE_ARBITRARY) )
-      expect_greater_than(0)
+    expect( context.rsPush(TYPE_ARBITRARY) )
+      to_be_greater_than(0)
 
-    test( context.endDeclareFunction() )
-      expect(SUCCESS)
+    expect( context.endDeclareFunction() )
+      to_succeed
 
     // Declare a Function with duplicated Identifier
-    test( context.declareFunction(funct2) )
-      expect(SUCCESS)
+    expect( context.declareFunction(funct2) )
+      to_succeed
 
     //  Add a Parameter to change overloading properties
-    test( context.declareFunctionParameter(param1) )
-      expect(SUCCESS)
+    expect( context.declareFunctionParameter(param1) )
+      to_succeed
 
     // Need Data to be declared for return value
-    test( context.rsPush(TYPE_ARBITRARY) )
-      expect_greater_than(0)
+    expect( context.rsPush(TYPE_ARBITRARY) )
+      to_be_greater_than(0)
 
-    test( context.endDeclareFunction() )
-      expect(SUCCESS)
+    expect( context.endDeclareFunction() )
+      to_succeed
 
     SUCCESSFUL_ACCEPT
   }
@@ -116,26 +116,26 @@ class UT_FunctionSystem
     GivenSomeIdentifier(param1)
 
     // Declare a Function with that Identifier
-    test( context.declareFunction(funct) )
-      expect(SUCCESS)
+    expect( context.declareFunction(funct) )
+      to_succeed
 
     // Need Data to be declared for return value
-    test( context.rsPush(TYPE_ARBITRARY) )
-      expect_greater_than(0)
+    expect( context.rsPush(TYPE_ARBITRARY) )
+      to_be_greater_than(0)
 
-    test( context.endDeclareFunction() )
-      expect(SUCCESS)
+    expect( context.endDeclareFunction() )
+      to_succeed
 
     // Declare a Function with duplicated Identifier
-    test( context.declareFunction(funct2) )
-      expect(SUCCESS)
+    expect( context.declareFunction(funct2) )
+      to_succeed
 
     // Need Data to be declared for return value
-    test( context.rsPush(TYPE_ARBITRARY) )
-      expect_greater_than(0)
+    expect( context.rsPush(TYPE_ARBITRARY) )
+      to_be_greater_than(0)
 
-    test( context.endDeclareFunction() )
-      expect(ERR_FUNCT_REDEFINE)
+    expect( context.endDeclareFunction() )
+      to_be(ERR_FUNCT_REDEFINE)
 
     SUCCESSFUL_REJECT
   }
@@ -148,15 +148,15 @@ class UT_FunctionSystem
     GivenSomeIdentifier(funct)
 
     // Declare a Function with that Identifier
-    test( context.declareFunction(funct) )
-      expect(SUCCESS)
+    expect( context.declareFunction(funct) )
+      to_succeed
 
     // Need Data to be declared for return value
     //    Note that this has been excluded for this test
 
     //  Try to wrap up function without return value
-    test( context.endDeclareFunction() )
-      expect(ERR_FUNCT_NO_RETURN)
+    expect( context.endDeclareFunction() )
+      to_be(ERR_FUNCT_NO_RETURN)
 
     SUCCESSFUL_REJECT
   }
@@ -164,20 +164,14 @@ class UT_FunctionSystem
 public:
   UT_FunctionSystem () { }
 
-  void Describe(void) override
-  {
-    description = 
-      this -> 
-                shouldAcceptFunctionsWithNoParameters()
-        and_it  shouldAcceptFunctionsWithParameters()
-        and_it  shouldAcceptOverloadedFunctionsWithDifferentParameters()
-      
-        but_it  shouldRejectOverloadedFunctionsWithSameParameters()
-        _and_it shouldRejectFunctionsWithNoReturnValue()
-    _____
-
-    ValidateDescription();
-  }
+  this_describes(functions)
+        it  shouldAcceptFunctionsWithNoParameters()
+    and_it  shouldAcceptFunctionsWithParameters()
+    and_it  shouldAcceptOverloadedFunctionsWithDifferentParameters()
+  
+    but_it  shouldRejectOverloadedFunctionsWithSameParameters()
+    _and_it shouldRejectFunctionsWithNoReturnValue()
+  _____
 
 };
 

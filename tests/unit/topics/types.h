@@ -26,14 +26,14 @@ class UT_TypesSystem
     GivenSomeConstructor(construct)
     GivenSomeIdentifier(element)
 
-    test (context.declareType( ident ))
-      expect (SUCCESS)
+    expect (context.declareType( ident ))
+      to_succeed
 
-    test (context.declareTypeConstructor(construct))
-      expect (SUCCESS)
+    expect (context.declareTypeConstructor(construct))
+      to_succeed
 
-    test (context.declareTypeElement( element, TYPE_INTEGER ))
-      expect (SUCCESS)
+    expect (context.declareTypeElement( element, TYPE_INTEGER ))
+      to_succeed
 
     /*
       NOTE!!!
@@ -55,8 +55,8 @@ class UT_TypesSystem
 
     GivenSomeIdentifier(ident)
 
-    test(context.declareType( ident, 0 ))
-      expect(SUCCESS)
+    expect(context.declareType( ident, 0 ))
+      to_succeed
 
     free(ident);
 
@@ -70,12 +70,12 @@ class UT_TypesSystem
     //  Produce Random Identifier and Declare Type
     GivenSomeIdentifier(ident)
     
-    test (context.declareType( ident, 0 ))
-      expect (SUCCESS)
+    expect (context.declareType( ident, 0 ))
+      to_succeed
     
     //  Declare another type with the same identifier
-    test (context.declareType( ident, 0 ))
-      expect (ERR_TYPE_ALREADY_DECL)
+    expect (context.declareType( ident, 0 ))
+      to_be (ERR_TYPE_ALREADY_DECL)
 
     free(ident);
 
@@ -91,14 +91,14 @@ class UT_TypesSystem
     GivenSomeConstructor(construct)
     GivenSomeIdentifier(element)
 
-    test (context.declareType( ident ))
-      expect (SUCCESS)
+    expect (context.declareType( ident ))
+      to_succeed
 
-    test (context.declareTypeConstructor(construct))
-      expect (SUCCESS)
+    expect (context.declareTypeConstructor(construct))
+      to_succeed
 
-    test (context.declareTypeElement( element, random()+17 ))
-      expect (ERR_TYPE_UNDEFINED)
+    expect (context.declareTypeElement( element, random()+17 ))
+      to_be (ERR_TYPE_UNDEFINED)
 
     free(ident);
     free(construct);
@@ -110,20 +110,14 @@ class UT_TypesSystem
 public:
   UT_TypesSystem () { }
 
-  void Describe() override
-  {
-    description = 
-      this ->
-                shouldAcceptCorrectlyFormedTypeDeclarations()
-        and_it  shouldAcceptTypesWithNullSize()
+  this_describes (types)
+        it shouldAcceptCorrectlyFormedTypeDeclarations()
+    and_it shouldAcceptTypesWithNullSize()
 
-        but_it  shouldRejectTypesWithDuplicateIdentifiers()
-        _and_it shouldRejectRecordsWithUndefinedType()
-    _____
+    but_it shouldRejectTypesWithDuplicateIdentifiers()
+    _and_it shouldRejectRecordsWithUndefinedType()
+  _____
 
-
-    ValidateDescription();
-  }
 
 
 };
