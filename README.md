@@ -2,6 +2,8 @@
 #### Version: v0.27.9
 [![Build Status](https://app.travis-ci.com/CodeusTech/Xita.svg?branch=PreAlpha-Stable)](https://app.travis-ci.com/CodeusTech/Xita)
 
+**Note:**  The C++ version of Xita Cross-Compiler is currently deprecated.  For mathematical verifiability, the existing project is in process of being translated to Haskell.  The code state of this repository is also badly in need of review by a third party.  
+
 This respository provides the Linux-to-Xita cross compiler.  This **Xita Control System** compiler currently targets Arm64 architecture, though a current thrust area for development is to support Arm32 and x86 architectures.
 
 ### Table of Contents
