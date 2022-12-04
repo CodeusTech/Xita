@@ -1,0 +1,10 @@
+# .travis.yml
+language: c++
+compiler: gcc
+
+os: linux
+script: make unit-tests
+
+branches:
+  only:
+    - PreAlpha-Stable
