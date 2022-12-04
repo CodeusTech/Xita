@@ -11,7 +11,7 @@
 
   Table of Contents
   =================
-  1.) 
+  1.) Initialization
   2.) Public Operations
     2.a) Module Operations
     2.b) Assembly Operations
@@ -28,18 +28,27 @@
 #include "manager.h"
 
 /*
-  Constructors
+  1.) Initialization
 */
-ContextManager::ContextManager()
+ContextManager::ContextManager(XitaArchitecture arch)
 {
   //  Add Root Module/Scope
   modules.push_back(ModuleNode(0, ModuleType::XCSL_SOURCE, 0, this));
   _context = &modules[0];
-
+  
   //  Set Type
   LastType(TYPE_ARBITRARY);
 
   l.log('D', "ContextManager", "Context Manager has been initialized");
+}
+
+ErrorCode ContextManager::setChipArch(char* arch)
+{ 
+  //  Reset Root Module/Scope
+  int rtn = firmware.setChipArch(arch);
+  modules.pop_back();
+  modules.push_back(ModuleNode(0, ModuleType::XCSL_SOURCE, 0, this));
+  return rtn; 
 }
 
 

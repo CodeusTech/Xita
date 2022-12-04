@@ -46,7 +46,7 @@
 extern FILE* yyin;
 extern int yylineno;
 
-ContextManager context;
+ContextManager context = ContextManager(XitaArchitecture::Undefined);
 
 //  Driver File
 int main(int argc, char** argv) 
@@ -57,10 +57,10 @@ int main(int argc, char** argv)
 	*/
 	bool interpreted 		= false;  //  This feature should normally be 'true' by default
 																//  but is currently deactivated.	
+	XitaArchitecture arch = XitaArchitecture::Undefined;
 	bool keep_assembly 	= false;
 			 XCS_VERBOSE    = false;
 
- 
 	/*
 		2.) Handle Compiler Options
 	*/
@@ -105,8 +105,6 @@ int main(int argc, char** argv)
 			yyin = fopen(argv[i], "r");
 			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
 
-			initializePrimitives();
-
 			//  Set Parser File Pointer
 			//yypush_buffer_state(YY_CURRENT_BUFFER);
 			while(!feof(yyin)) yyparse();
@@ -117,6 +115,8 @@ int main(int argc, char** argv)
 		{
 			yylineno = 1;
 			interpreted = false;
+
+			if (context.getChipArch() == XitaArchitecture::Undefined) throw ExceptionMissingChipFile;
 			
 			yyin = fopen(argv[i], "r");
 			yypush_buffer_state(yy_create_buffer(yyin, YY_BUF_SIZE));
@@ -138,7 +138,6 @@ int main(int argc, char** argv)
 			obj_fname[strlen(argv[i])] = 0;
 			strncpy(obj_fname, argv[i], strlen(argv[i]));
 			strncat(obj_fname, ".o", 3);
-
 
 			//  Produce Assembly File
 			FILE* asm_file = fopen(asm_fname, "w");

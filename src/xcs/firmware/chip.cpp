@@ -15,34 +15,34 @@
 /*
   Architecture Metadata
 */
-ErrorCode XitaChip::setArchitecture(string target)
+ErrorCode XitaChip::setArchitecture(char* target)
 {
-  if (strcmp("Arm32", target.c_str()) == 0)
+  if (strncmp(target, "arm32", 5))
   {
+    printf ("Check: 32\n");
     target_architecture = XitaArchitecture::Arm32;
     arch = XitaArchitecture::Arm32;
     register_width = 32;
     l.log('d', "Chip", "Set System for 32-Bit Arm Architecture");
   }
-  else if (strcmp("Arm64", target.c_str()) == 0)
+  else if (strncmp(target, "arm64", 5))
   {
+    printf ("Check: 64\n");
     target_architecture = XitaArchitecture::Arm64;
     arch = XitaArchitecture::Arm64;
     register_width = 64;
     l.log('d', "Chip", "Set System for 64-Bit Arm Architecture");
   }
-  else if (strcmp("x86_64", target.c_str()) == 0)
+  else if (strncmp(target, "x86_64", 6))
   {
     target_architecture = XitaArchitecture::x86_64;
     arch = XitaArchitecture::x86_64;
     register_width = 64;
-    l.log('d', "Chip", "Set System for 64-Bit Arm Architecture");
+    l.log('d', "Chip", "Set System for 64-Bit x86 Architecture");
   }
   else
   {
-    active_error_code = ERR_UNSUPPORTED_ARCH;
-    yyerror("Chip file specifies an unsupported target architecture.\n Acceptable architectures include:  Arm32, Arm64");
-    return ERR_UNSUPPORTED_ARCH;
+    throw ExceptionUnsupportedArchitecture;
   }
 
   return SUCCESS;

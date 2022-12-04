@@ -26,7 +26,7 @@ uninstall:
 	rm -rf ${CROSS}
 
 #  Build XCSL Cross Compiler
-build:  grammar src/xcs/xcs.cc
+build:  grammar tidy src/xcs/xcs.cc
 	rm -rf _build
 	mkdir _build
 	${CCOMP} ${CFLAGS} ${SILENT} src/xcs/xcs.cc -o _build/xcs-aarch64

@@ -32,3 +32,21 @@ ErrorCode active_error_code = 1;  //  Unhandled Exception Code
 #define ERR_MEMORY_ACCESS       500   //  Illegal Attempt to Directly Access Memory
 
 
+
+/*
+  CRITICAL EXCEPTIONS
+*/
+
+class ExceptionUnsupportedArchitecture: public exception {
+  virtual const char* what() const throw() {
+    return "Xita Compiler ran with unsupported architecture.\n  Please use one of the following: 'Arm64', 'Arm32'";
+  }
+} ExceptionUnsupportedArchitecture;
+
+class ExceptionMissingChipFile : public exception {
+  virtual const char* what() const throw() {
+    return "A chip file must be specified with `--chip [path/to/file.chip]`";
+  }
+} ExceptionMissingChipFile;
+
+

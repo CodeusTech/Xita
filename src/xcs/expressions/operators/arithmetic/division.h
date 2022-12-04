@@ -39,7 +39,6 @@ public:
 
     char* top = get_reg(rs->top(), 32);
     char* sec = get_reg(rs->sec(), 32);
-
     char* str = (char*) malloc(50);
 
     if (target_architecture == XitaArchitecture::Arm32 || 

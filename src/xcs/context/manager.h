@@ -98,9 +98,10 @@ protected:
 
 public:
   //  Constructors
-  ContextManager();
+  ContextManager(XitaArchitecture arch);
 
   ModuleID CurrentContext() { return _context->Id(); }
+  void Initialize() { modules.push_back(ModuleNode(0, ModuleType::XCSL_SOURCE, 0, this)); }
 
   //  Last Encountered Data /* DEPRECATED SECTION */
   /*
@@ -142,7 +143,7 @@ public:
     Chip/Firmware Operations
   */
   ErrorCode newChip(string name) { return firmware.newChip(name); }
-  ErrorCode setChipArch(string arch) { return firmware.setChipArch(arch); }
+  ErrorCode setChipArch(char* arch);
   ErrorCode addFirmwareInterface(string name) { return firmware.addInterface(name); }
   ErrorCode addFirmwareRange(int begin, int end) { return firmware.addInterfaceRange(begin, end); }
   ErrorCode requestMemoryRead(int addr) { return firmware.requestMemoryRead(addr); }

@@ -49,6 +49,7 @@ char* get_reg(ADR i, unsigned char bits)
         if (i < 30) sprintf(str, "x%u", i);
         break;
     }
+    printf ("Check: %s\n",str);
   /* Get string representation of ARMv7 register */
   } else if (target_architecture == XitaArchitecture::Arm32)
   {
