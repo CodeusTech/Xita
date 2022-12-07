@@ -19,14 +19,16 @@ update: build tidy
 	sudo cp _build/xcs-aarch64 ${DESTDIR}/xita
 	sudo rm -rf _build
 
-install: assemblers update
+install: assemblers build tidy
+	sudo cp _build/xcs-aarch64 ${DESTDIR}/xita
+	sudo rm -rf _build
 
 uninstall: 
 	sudo rm -rf ${DESTDIR}/xita
 	rm -rf ${CROSS}
 
 #  Build XCSL Cross Compiler
-build:  grammar tidy src/xcs/xcs.cc
+build:  grammar src/xcs/xcs.cc
 	rm -rf _build
 	mkdir _build
 	${CCOMP} ${CFLAGS} ${SILENT} src/xcs/xcs.cc -o _build/xcs-aarch64

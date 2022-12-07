@@ -17,23 +17,22 @@
 */
 ErrorCode XitaChip::setArchitecture(char* target)
 {
-  if (strncmp(target, "arm32", 5))
+  if (strncmp(target, "arm64", 5) == 0)
   {
-    printf ("Check: 32\n");
-    target_architecture = XitaArchitecture::Arm32;
-    arch = XitaArchitecture::Arm32;
-    register_width = 32;
-    l.log('d', "Chip", "Set System for 32-Bit Arm Architecture");
-  }
-  else if (strncmp(target, "arm64", 5))
-  {
-    printf ("Check: 64\n");
     target_architecture = XitaArchitecture::Arm64;
     arch = XitaArchitecture::Arm64;
     register_width = 64;
     l.log('d', "Chip", "Set System for 64-Bit Arm Architecture");
   }
-  else if (strncmp(target, "x86_64", 6))
+  else if (strncmp(target, "arm32", 5) == 0)
+  {
+    printf ("Check 32\n");
+    target_architecture = XitaArchitecture::Arm32;
+    arch = XitaArchitecture::Arm32;
+    register_width = 32;
+    l.log('d', "Chip", "Set System for 32-Bit Arm Architecture");
+  }
+  else if (strncmp(target, "x86_64", 6) == 0)
   {
     target_architecture = XitaArchitecture::x86_64;
     arch = XitaArchitecture::x86_64;

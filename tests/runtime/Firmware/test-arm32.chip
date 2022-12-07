@@ -13,7 +13,7 @@
 !CHIP Test32
 
 --  Declare ARM 64-Bit Architecture/Assembly
-arch="Arm32"
+arch="arm32"
 --arch="Error"  -- Throws "Unsupported Architecture Error"
 
 
