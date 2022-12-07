@@ -1,8 +1,8 @@
 /*
   manager.h (context)
   Codeus Tech
-  Authored on    April 15, 2020
-  Last Modified August 03, 2021
+  Authored on     April 15, 2020
+  Last Modified December 7, 2022
 */
 
 /*

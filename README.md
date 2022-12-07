@@ -1,5 +1,5 @@
 # Xita Cross-Compiler (AArch64)
-#### Version: v0.27.9
+#### Version: v0.27.10
 [![Build Status](https://app.travis-ci.com/CodeusTech/Xita.svg?branch=PreAlpha-Stable)](https://app.travis-ci.com/CodeusTech/Xita)
 
 **Note:**  The C++ version of Xita Cross-Compiler is currently deprecated.  For mathematical verifiability, the existing project is in process of being translated to Haskell.  The code state of this repository is also badly in need of review by a third party.  
