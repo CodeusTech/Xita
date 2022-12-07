@@ -10,10 +10,11 @@
 
 # Generated Flex/Bison files
 lex.yy.c
-xcsl.tab.c
+*.tab.c
 
 # _build Directory
 _build
+debian
 
 #  Generated Files
 *.chip.o

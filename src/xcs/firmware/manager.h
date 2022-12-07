@@ -38,7 +38,7 @@ public:
   FirmwareManager(ContextManager* context);
   
   ErrorCode newChip(string name);
-  ErrorCode setChipArch(string arch) { return chip.setArchitecture(arch); }
+  ErrorCode setChipArch(char* arch) {return chip.setArchitecture(arch); }
   XitaArchitecture getChipArch() { return chip.Architecture(); }
   int getArchRegisterWidth() { return chip.RegisterWidth(); }
 

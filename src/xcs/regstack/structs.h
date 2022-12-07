@@ -43,7 +43,7 @@ class RegisterStack
 {
   vector<ADR> registers;
   vector<TypeID> types;
-  XitaArchitecture arch = XitaArchitecture::Undefined;
+  XitaArchitecture arch;
 	
 
   unsigned int MaxRegisters()
@@ -92,8 +92,6 @@ public:
     types.push_back(tid);
 
     string str = "Pushed register " + to_string(check) + " with TypeID: " + to_string(tid);
-
-    //l.log('D', "RegStack", str);
 
     return check;
   }

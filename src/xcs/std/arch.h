@@ -32,6 +32,17 @@ enum XitaArchitecture
 XitaArchitecture target_architecture = XitaArchitecture::Arm64;
 
 
+XitaArchitecture get_arch(char* arch)
+{
+  if (strncmp(arch, "Arm64", 5))
+    return XitaArchitecture::Arm64;
+  else if (strncmp(arch, "Arm32", 5))
+    return XitaArchitecture::Arm32;
+  else if (strncmp(arch, "x86_64", 6))
+    return XitaArchitecture::x86_64;
+  else
+    return XitaArchitecture::Undefined;
+}
 
 
 

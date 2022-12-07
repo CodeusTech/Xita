@@ -19,7 +19,9 @@ update: build tidy
 	sudo cp _build/xcs-aarch64 ${DESTDIR}/xita
 	sudo rm -rf _build
 
-install: assemblers update
+install: assemblers build tidy
+	sudo cp _build/xcs-aarch64 ${DESTDIR}/xita
+	sudo rm -rf _build
 
 uninstall: 
 	sudo rm -rf ${DESTDIR}/xita
