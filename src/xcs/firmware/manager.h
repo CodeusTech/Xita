@@ -1,8 +1,8 @@
 /*
   manager.h (firmware)
   Codeus Tech
-  Authored on   July 22, 2021
-  Last Modified July 22, 2021
+  Authored on      July 22, 2021
+  Last Modified December 7, 2022
 */
 
 /*
