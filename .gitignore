@@ -14,6 +14,7 @@ lex.yy.c
 
 # _build Directory
 _build
+debian
 
 #  Generated Files
 *.chip.o
